@@ -61,7 +61,9 @@ Button, Input, Textarea, Checkbox, Radio, Card, Badge, Alert, Modal, Divider, Pr
 
 ## Docs
 
-See the documentation site in `apps/docs` of this monorepo.
+Live site: [doodle-ui.netlify.app](https://doodle-ui.netlify.app)
+
+The source for that site is `apps/docs` in the [doodle-ui](https://github.com/KanchanaSW/doodle-ui) monorepo.
 
 ## License
 

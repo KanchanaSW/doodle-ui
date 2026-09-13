@@ -1,7 +1,8 @@
 [build]
-  command = "pnpm turbo run build --filter=docs"
-  publish = "apps/docs/.next"
+  command = "pnpm --filter doodleui-react build && pnpm --filter docs build"
+  publish = "apps/docs/out"
 
 [build.environment]
   NODE_VERSION = "20"
   PNPM_VERSION = "9.15.9"
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
