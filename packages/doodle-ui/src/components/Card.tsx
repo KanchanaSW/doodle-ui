@@ -3,7 +3,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { SketchBox, type SketchBoxProps } from "../primitives/SketchBox";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
+import { cn, doodleUiFontWeight } from "../utils";
 
 export interface CardProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color" | "title">,
@@ -56,7 +56,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
       {title ? (
         <div
           style={{
-            fontWeight: 700,
+            fontWeight: doodleUiFontWeight(700),
             fontSize: 16,
             marginBottom: 10,
           }}

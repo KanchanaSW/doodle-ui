@@ -10,7 +10,7 @@ export default function DocsLayout({
       <aside className="lg:sticky lg:top-24 lg:self-start">
         <DocsNav />
       </aside>
-      <article className="min-w-0 pb-16">{children}</article>
+      <article className="min-w-0 pb-16 font-sans">{children}</article>
     </div>
   );
 }

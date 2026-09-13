@@ -8,7 +8,7 @@ import {
 } from "react";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
+import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export interface TextareaProps
   extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "color">,
@@ -50,7 +50,14 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         }}
       >
         {label ? (
-          <span style={{ fontSize: 13, fontWeight: 600, color: ink }}>
+          <span
+            style={{
+              fontSize: 13,
+              fontWeight: doodleUiFontWeight(600),
+              fontFamily: doodleUiFontFamily,
+              color: ink,
+            }}
+          >
             {label}
           </span>
         ) : null}
@@ -86,7 +93,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               outline: "none",
               background: "transparent",
               color: ink,
-              fontFamily: "inherit",
+              fontFamily: doodleUiFontFamily,
               fontSize: 15,
               lineHeight: 1.5,
               padding: "10px 12px",

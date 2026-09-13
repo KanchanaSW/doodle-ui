@@ -8,7 +8,7 @@ import {
 } from "react";
 import { RoughSvg } from "./RoughSvg";
 import type { FillStyle, RoughShape, SketchProps } from "../types";
-import { cn } from "../utils";
+import { cn, doodleUiFontFamily } from "../utils";
 
 export interface SketchBoxProps
   extends SketchProps, Omit<HTMLAttributes<HTMLDivElement>, "color"> {
@@ -81,7 +81,12 @@ export const SketchBox = forwardRef<HTMLDivElement, SketchBoxProps>(
         />
         <div
           className={contentClassName}
-          style={{ position: "relative", zIndex: 1, ...contentStyle }}
+          style={{
+            position: "relative",
+            zIndex: 1,
+            fontFamily: doodleUiFontFamily,
+            ...contentStyle,
+          }}
         >
           {children}
         </div>

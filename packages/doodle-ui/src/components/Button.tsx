@@ -8,7 +8,7 @@ import {
 } from "react";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
+import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
 export type ButtonSize = "sm" | "md" | "lg";
@@ -88,8 +88,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           background: "transparent",
           cursor: disabled ? "not-allowed" : "pointer",
           color: ink,
-          fontFamily: "inherit",
-          fontWeight: 600,
+          fontFamily: doodleUiFontFamily,
+          fontWeight: doodleUiFontWeight(600),
           lineHeight: 1.2,
           opacity: disabled ? 0.45 : 1,
           ...SIZE_STYLES[size],

@@ -3,7 +3,7 @@ import { Alert, Button, Card } from "doodleui-react";
 
 export default function InstallPage() {
   return (
-    <main className="max-w-3xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <main className="max-w-3xl mx-auto px-4 md:px-8 py-12 md:py-16 font-sans">
       <h1 className="text-4xl font-semibold tracking-tight mb-4">Install</h1>
       <p className="text-mute dark:text-chalkink/80 leading-relaxed mb-8 max-w-[65ch]">
         doodle-ui is a React 18+ library. rough.js ships with the package. React stays a peer dependency.

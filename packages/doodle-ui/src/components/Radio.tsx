@@ -9,7 +9,7 @@ import {
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
+import { cn, doodleUiFontFamily } from "../utils";
 
 export interface RadioGroupProps
   extends ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {}
@@ -124,7 +124,10 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
         </RadioGroupPrimitive.Indicator>
       </RadioGroupPrimitive.Item>
       {label ? (
-        <label htmlFor={inputId} style={{ fontSize: 15, cursor: "pointer" }}>
+        <label
+          htmlFor={inputId}
+          style={{ fontSize: 15, cursor: "pointer", fontFamily: doodleUiFontFamily }}
+        >
           {label}
         </label>
       ) : null}

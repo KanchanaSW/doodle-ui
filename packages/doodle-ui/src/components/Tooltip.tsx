@@ -4,7 +4,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { SketchBox } from "../primitives/SketchBox";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
+import { cn, doodleUiFontFamily } from "../utils";
 
 export const TooltipProvider = TooltipPrimitive.Provider;
 
@@ -53,6 +53,7 @@ export function Tooltip({
               padding: "6px 10px",
               fontSize: 13,
               lineHeight: 1.35,
+              fontFamily: doodleUiFontFamily,
               color: ink,
               maxWidth: 240,
             }}

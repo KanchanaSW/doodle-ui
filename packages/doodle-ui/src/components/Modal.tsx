@@ -5,7 +5,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { SketchBox } from "../primitives/SketchBox";
 import { Button } from "./Button";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
+import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export interface ModalProps extends SketchProps {
   open?: boolean;
@@ -85,7 +85,8 @@ export function Modal({
                   style={{
                     margin: 0,
                     fontSize: 18,
-                    fontWeight: 700,
+                    fontWeight: doodleUiFontWeight(700),
+                    fontFamily: doodleUiFontFamily,
                     color: ink,
                   }}
                 >

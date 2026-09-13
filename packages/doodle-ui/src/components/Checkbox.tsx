@@ -4,7 +4,7 @@ import { forwardRef, useId, type ReactNode } from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
+import { cn, doodleUiFontFamily } from "../utils";
 
 export interface CheckboxProps
   extends Omit<CheckboxPrimitive.CheckboxProps, "asChild">,
@@ -99,7 +99,10 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
           </CheckboxPrimitive.Indicator>
         </CheckboxPrimitive.Root>
         {label ? (
-          <label htmlFor={inputId} style={{ fontSize: 15, cursor: "pointer" }}>
+          <label
+            htmlFor={inputId}
+            style={{ fontSize: 15, cursor: "pointer", fontFamily: doodleUiFontFamily }}
+          >
             {label}
           </label>
         ) : null}

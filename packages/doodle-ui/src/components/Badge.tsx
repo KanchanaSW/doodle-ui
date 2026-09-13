@@ -3,7 +3,7 @@
 import { forwardRef, type HTMLAttributes } from "react";
 import { SketchBox } from "../primitives/SketchBox";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
+import { cn, doodleUiFontWeight } from "../utils";
 
 export type BadgeVariant = "default" | "accent" | "outline";
 
@@ -52,7 +52,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
       contentStyle={{
         padding: "2px 10px",
         fontSize: 12,
-        fontWeight: 650,
+        fontWeight: doodleUiFontWeight(650),
         lineHeight: 1.4,
         letterSpacing: "0.01em",
       }}

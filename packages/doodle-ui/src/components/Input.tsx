@@ -8,7 +8,7 @@ import {
 } from "react";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
+import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "color" | "size">,
@@ -49,7 +49,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       }}
     >
       {label ? (
-        <span style={{ fontSize: 13, fontWeight: 600, color: ink }}>
+        <span
+          style={{
+            fontSize: 13,
+            fontWeight: doodleUiFontWeight(600),
+            fontFamily: doodleUiFontFamily,
+            color: ink,
+          }}
+        >
           {label}
         </span>
       ) : null}
@@ -84,7 +91,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
             outline: "none",
             background: "transparent",
             color: ink,
-            fontFamily: "inherit",
+            fontFamily: doodleUiFontFamily,
             fontSize: 15,
             padding: "8px 12px",
             ...style,

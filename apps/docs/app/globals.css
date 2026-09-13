@@ -6,6 +6,8 @@
   --paper: #eef0ea;
   --ink: #1f1d1a;
   --accent: #e24b3b;
+  --doodle-ui-font: var(--font-patrick-hand);
+  --doodle-ui-font-weight: 400;
 }
 
 html {
@@ -57,4 +59,13 @@ body {
 ::selection {
   background: #e24b3b;
   color: #f7f6f2;
+}
+
+.font-hand {
+  font-weight: var(--doodle-ui-font-weight, inherit);
+}
+
+.doodle-shuffle-type {
+  font-family: var(--doodle-ui-font, inherit);
+  font-weight: var(--doodle-ui-font-weight, 600);
 }

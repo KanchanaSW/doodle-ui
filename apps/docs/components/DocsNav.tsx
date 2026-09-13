@@ -8,7 +8,7 @@ export function DocsNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="text-sm">
+    <nav className="text-sm font-sans">
       <Link
         href="/install"
         className="block mb-4 font-medium hover:text-accent"

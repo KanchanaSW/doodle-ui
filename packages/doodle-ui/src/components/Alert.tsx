@@ -3,7 +3,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { SketchBox } from "../primitives/SketchBox";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
+import { cn, doodleUiFontWeight } from "../utils";
 
 export type AlertVariant = "info" | "warning" | "error" | "success";
 
@@ -65,7 +65,13 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
       {...rest}
     >
       {title ? (
-        <div style={{ fontWeight: 700, marginBottom: 4, fontSize: 15 }}>
+        <div
+          style={{
+            fontWeight: doodleUiFontWeight(700),
+            marginBottom: 4,
+            fontSize: 15,
+          }}
+        >
           {title}
         </div>
       ) : null}

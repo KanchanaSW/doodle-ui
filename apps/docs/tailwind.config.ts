@@ -19,7 +19,11 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-outfit)", "ui-sans-serif", "system-ui", "sans-serif"],
-        hand: ["var(--font-caveat)", "ui-sans-serif", "cursive"],
+        hand: [
+          "var(--doodle-ui-font, var(--font-caveat))",
+          "ui-sans-serif",
+          "cursive",
+        ],
         mono: ["var(--font-ibm)", "ui-monospace", "monospace"],
       },
     },
