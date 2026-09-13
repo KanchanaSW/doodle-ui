@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Alert, Button, Card } from "doodle-ui";
+import { Alert, Button, Card } from "doodleui-react";
 
 export default function InstallPage() {
   return (
@@ -10,11 +10,11 @@ export default function InstallPage() {
       </p>
 
       <h2 className="text-2xl font-semibold mb-3">Package</h2>
-      <pre className="font-mono text-sm bg-ink text-chalkink p-4 mb-3 overflow-x-auto">{`npm install doodle-ui
-pnpm add doodle-ui
-yarn add doodle-ui`}</pre>
-      <Alert variant="warning" title="Name note" className="mb-10">
-        npm still holds an unpublished 0.0.0 stub named doodle-ui from 2023. If publish is blocked, the fallback name is doodleui-react.
+      <pre className="font-mono text-sm bg-ink text-chalkink p-4 mb-3 overflow-x-auto">{`npm install doodleui-react
+pnpm add doodleui-react
+yarn add doodleui-react`}</pre>
+      <Alert variant="info" title="Package name" className="mb-10">
+        Install <code className="font-mono">doodleui-react</code>. The name doodle-ui is blocked on npm by an unpublished 2023 stub.
       </Alert>
 
       <h2 className="text-2xl font-semibold mt-10 mb-3">Quickstart</h2>
@@ -26,7 +26,7 @@ yarn add doodle-ui`}</pre>
   TooltipProvider,
   Button,
   useSketchSeed,
-} from "doodle-ui";
+} from "doodleui-react";
 
 function Shuffle() {
   const { shuffle } = useSketchSeed();

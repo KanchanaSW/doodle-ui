@@ -9,7 +9,7 @@ import {
   Checkbox,
   Input,
   Progress,
-} from "doodle-ui";
+} from "doodleui-react";
 
 export function HeroSketch() {
   const [checked, setChecked] = useState(true);

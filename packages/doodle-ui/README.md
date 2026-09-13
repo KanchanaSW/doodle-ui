@@ -5,12 +5,10 @@ Hand-drawn React components with an Excalidraw-like sketch aesthetic. Chrome is 
 ## Install
 
 ```bash
-npm install doodle-ui
+npm install doodleui-react
 # or
-pnpm add doodle-ui
+pnpm add doodleui-react
 ```
-
-> The name `doodle-ui` was previously used for an unpublished `0.0.0` stub (2023). If `npm publish` rejects the name, the fallback is `doodleui-react`.
 
 Peer dependencies: `react` and `react-dom` >= 18.
 
@@ -23,7 +21,7 @@ import {
   Button,
   Card,
   useSketchSeed,
-} from "doodle-ui";
+} from "doodleui-react";
 
 function Shuffle() {
   const { shuffle } = useSketchSeed();

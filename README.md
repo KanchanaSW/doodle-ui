@@ -24,11 +24,10 @@ pnpm typecheck
 ## Publish (library)
 
 ```bash
-pnpm --filter doodle-ui pack --dry-run
-pnpm --filter doodle-ui publish
+pnpm --filter doodleui-react publish --access public
 ```
 
-If npm rejects `doodle-ui` because of an old unpublished stub, rename the package to `doodleui-react`.
+The published package name is `doodleui-react` because `doodle-ui` is blocked by an unpublished npm stub.
 
 ## License
 

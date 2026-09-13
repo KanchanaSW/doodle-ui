@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { SketchSeedProvider, TooltipProvider } from "doodle-ui";
+import { SketchSeedProvider, TooltipProvider } from "doodleui-react";
 
 export function Providers({ children }: { children: ReactNode }) {
   return (

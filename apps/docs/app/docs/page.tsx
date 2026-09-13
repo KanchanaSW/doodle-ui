@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Card } from "doodle-ui";
+import { Card } from "doodleui-react";
 import { COMPONENT_PAGES } from "@/lib/nav";
 
 export default function DocsIndexPage() {

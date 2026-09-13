@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Badge, Button, Card, Divider } from "doodle-ui";
+import { Badge, Button, Card, Divider } from "doodleui-react";
 import { HeroSketch } from "@/components/HeroSketch";
 import { ShuffleButton } from "@/components/ShuffleButton";
 import { COMPONENT_PAGES } from "@/lib/nav";
@@ -30,7 +30,7 @@ export default function HomePage() {
       <section className="max-w-[1400px] mx-auto px-4 md:px-8 pb-20">
         <p className="font-mono text-[13px] text-mute mb-3">Install</p>
         <pre className="font-mono text-sm md:text-base bg-ink text-chalkink px-5 py-4 inline-block">
-          npm install doodle-ui
+          npm install doodleui-react
         </pre>
       </section>
 

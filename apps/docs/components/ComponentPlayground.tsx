@@ -15,7 +15,7 @@ import {
   RadioGroup,
   Textarea,
   Tooltip,
-} from "doodle-ui";
+} from "doodleui-react";
 import type { ComponentSlug } from "@/lib/nav";
 import {
   Playground,

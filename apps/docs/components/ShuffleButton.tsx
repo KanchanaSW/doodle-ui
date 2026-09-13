@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, useSketchSeed } from "doodle-ui";
+import { Button, useSketchSeed } from "doodleui-react";
 
 export function ShuffleButton({
   size = "md",
