@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #eef0ea;
+  --ink: #1f1d1a;
+  --accent: #e24b3b;
+}
+
+html {
+  background: var(--paper);
+}
+
+body {
+  min-height: 100dvh;
+  background:
+    linear-gradient(180deg, rgb(238 240 234 / 0.96), rgb(238 240 234 / 0.96)),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 23px,
+      rgb(31 29 26 / 0.035) 23px,
+      rgb(31 29 26 / 0.035) 24px
+    );
+  color: var(--ink);
+}
+
+.paper-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #161513;
+    --ink: #e8e4d9;
+  }
+
+  html,
+  body {
+    background: #161513;
+    color: #e8e4d9;
+  }
+
+  .paper-grain {
+    mix-blend-mode: overlay;
+    opacity: 0.22;
+  }
+}
+
+::selection {
+  background: #e24b3b;
+  color: #f7f6f2;
+}

@@ -1,0 +1,28 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { modalProps } from "@/lib/props";
+
+# Modal
+
+Radix Dialog with a sketch frame and a dimmed backdrop. Focus trap, Escape to close, and ARIA labelling are inherited.
+
+<ComponentPlayground name="modal" />
+
+## Usage
+
+```tsx
+import { Modal, Button } from "doodle-ui";
+
+<Modal
+  title="Scratch pad"
+  trigger={<Button>Open modal</Button>}
+>
+  Any content.
+</Modal>
+```
+
+Compound exports (`ModalRoot`, `ModalTrigger`, `ModalClose`, `ModalTitle`, `ModalDescription`) are available if you need the full Radix structure.
+
+## Props
+
+<PropsTable rows={modalProps} />

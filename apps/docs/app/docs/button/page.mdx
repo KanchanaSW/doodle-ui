@@ -1,0 +1,25 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { buttonProps } from "@/lib/props";
+
+# Button
+
+A clickable control. The label is real HTML. The border and fill are a rough.js rectangle sitting behind it.
+
+<ComponentPlayground name="button" />
+
+## Usage
+
+```tsx
+import { Button } from "doodle-ui";
+
+<Button variant="primary" size="md">
+  Draw me
+</Button>
+```
+
+Primary and secondary use hachure fills. Outline is stroke-only. Ghost hides the stroke until hover.
+
+## Props
+
+<PropsTable rows={buttonProps} />

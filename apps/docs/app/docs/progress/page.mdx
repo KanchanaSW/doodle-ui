@@ -1,0 +1,23 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { progressProps } from "@/lib/props";
+
+# Progress
+
+Outer sketch bar plus an inner fill drawn with slightly higher roughness, so it looks hand-filled.
+
+<ComponentPlayground name="progress" />
+
+## Usage
+
+```tsx
+import { Progress } from "doodle-ui";
+
+<Progress value={62} max={100} />
+```
+
+Exposes `role="progressbar"` with `aria-valuenow`, `aria-valuemin`, and `aria-valuemax`.
+
+## Props
+
+<PropsTable rows={progressProps} />

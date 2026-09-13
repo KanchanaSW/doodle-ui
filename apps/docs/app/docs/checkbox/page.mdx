@@ -1,0 +1,23 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { checkboxProps } from "@/lib/props";
+
+# Checkbox
+
+Radix checkbox with a sketch square. The checkmark is a rough.js path, not a font glyph.
+
+<ComponentPlayground name="checkbox" />
+
+## Usage
+
+```tsx
+import { Checkbox } from "doodle-ui";
+
+<Checkbox label="Keep the wobble" defaultChecked />
+```
+
+Keyboard, mixed state, and `aria-checked` come from Radix. doodle-ui only skins the box.
+
+## Props
+
+<PropsTable rows={checkboxProps} />

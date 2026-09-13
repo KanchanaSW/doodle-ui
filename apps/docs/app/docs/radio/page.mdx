@@ -1,0 +1,26 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { radioProps } from "@/lib/props";
+
+# Radio
+
+Sketch circle with a solid inner dot when selected. Must live inside `RadioGroup`.
+
+<ComponentPlayground name="radio" />
+
+## Usage
+
+```tsx
+import { RadioGroup, Radio } from "doodle-ui";
+
+<RadioGroup defaultValue="pen">
+  <Radio value="pen" label="Pen" />
+  <Radio value="pencil" label="Pencil" />
+</RadioGroup>
+```
+
+## Props
+
+`RadioGroup` accepts the Radix root API (`value`, `onValueChange`, `orientation`, `disabled`). Sketch props live on each `Radio`.
+
+<PropsTable rows={radioProps} />

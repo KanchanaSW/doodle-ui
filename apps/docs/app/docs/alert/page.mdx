@@ -1,0 +1,23 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { alertProps } from "@/lib/props";
+
+# Alert
+
+Callout with a color-coded stroke: info, warning, error, success. Body copy stays ink-colored so it stays readable.
+
+<ComponentPlayground name="alert" />
+
+## Usage
+
+```tsx
+import { Alert } from "doodle-ui";
+
+<Alert variant="warning" title="Heads up">
+  Seed values lock screenshots. Shuffle is for demos.
+</Alert>
+```
+
+## Props
+
+<PropsTable rows={alertProps} />

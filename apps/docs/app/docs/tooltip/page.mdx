@@ -1,0 +1,27 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { tooltipProps } from "@/lib/props";
+
+# Tooltip
+
+Radix Tooltip with a small sketch bubble. Wrap the app in `TooltipProvider` once (the docs site already does).
+
+<ComponentPlayground name="tooltip" />
+
+## Usage
+
+```tsx
+import { Tooltip, TooltipProvider, Button } from "doodle-ui";
+
+<TooltipProvider>
+  <Tooltip content="A small sketch bubble">
+    <Button variant="outline">Hover me</Button>
+  </Tooltip>
+</TooltipProvider>
+```
+
+The trigger must accept a ref. Native elements and doodle-ui buttons both work. If you pass a custom component, wrap it with `forwardRef`.
+
+## Props
+
+<PropsTable rows={tooltipProps} />

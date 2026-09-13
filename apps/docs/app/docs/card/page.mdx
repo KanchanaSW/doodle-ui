@@ -1,0 +1,25 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { cardProps } from "@/lib/props";
+
+# Card
+
+Container with a sketch border. Optional offset rectangle behind it reads as a paper shadow.
+
+<ComponentPlayground name="card" />
+
+## Usage
+
+```tsx
+import { Card } from "doodle-ui";
+
+<Card title="Field notes" shadow>
+  A container with a sketch border.
+</Card>
+```
+
+Cards do not bundle drop-shadow CSS. The shadow is another rough.js rectangle, translated a few pixels.
+
+## Props
+
+<PropsTable rows={cardProps} />

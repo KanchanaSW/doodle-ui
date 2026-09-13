@@ -1,0 +1,23 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { inputProps } from "@/lib/props";
+
+# Input
+
+Single-line text field with a sketchy border. Native focus rings are removed. Focus thickens the sketch stroke and shifts it toward the accent color.
+
+<ComponentPlayground name="input" />
+
+## Usage
+
+```tsx
+import { Input } from "doodle-ui";
+
+<Input label="Email" placeholder="you@studio.dev" />
+```
+
+Pass a `label` instead of using placeholder-as-label. All native input attributes (`type`, `name`, `autoComplete`, `onChange`) forward to the control.
+
+## Props
+
+<PropsTable rows={inputProps} />

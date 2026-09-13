@@ -1,0 +1,24 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { dividerProps } from "@/lib/props";
+
+# Divider
+
+A squiggly rule. Horizontal fills the width. Vertical fills the height.
+
+<ComponentPlayground name="divider" />
+
+## Usage
+
+```tsx
+import { Divider } from "doodle-ui";
+
+<Divider />
+<Divider orientation="vertical" style={{ height: 120 }} />
+```
+
+Bowing defaults a little higher than other components so the line reads as a drawn stroke, not a hairline.
+
+## Props
+
+<PropsTable rows={dividerProps} />

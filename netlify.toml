@@ -1,0 +1,7 @@
+[build]
+  command = "pnpm turbo run build --filter=docs"
+  publish = "apps/docs/.next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  PNPM_VERSION = "9.15.9"
