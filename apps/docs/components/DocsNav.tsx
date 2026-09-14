@@ -27,7 +27,7 @@ export function DocsNav() {
                 className={
                   active
                     ? "text-accent font-medium"
-                    : "text-mute dark:text-chalkink/70 hover:text-ink dark:hover:text-chalkink"
+                    : "text-mute hover:text-ink"
                 }
               >
                 {item.title}

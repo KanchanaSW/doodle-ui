@@ -5,7 +5,7 @@ export default function InstallPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 md:px-8 py-12 md:py-16 font-sans">
       <h1 className="text-4xl font-semibold tracking-tight mb-4">Install</h1>
-      <p className="text-mute dark:text-chalkink/80 leading-relaxed mb-8 max-w-[65ch]">
+      <p className="text-mute leading-relaxed mb-8 max-w-[65ch]">
         doodle-ui is a React 18+ library. rough.js ships with the package. React stays a peer dependency.
       </p>
 
@@ -18,7 +18,7 @@ yarn add doodleui-react`}</pre>
       </Alert>
 
       <h2 className="text-2xl font-semibold mt-10 mb-3">Quickstart</h2>
-      <p className="text-mute dark:text-chalkink/80 mb-3 max-w-[65ch]">
+      <p className="text-mute mb-3 max-w-[65ch]">
         Wrap the tree once. TooltipProvider is required for tooltips. SketchSeedProvider is required for Shuffle.
       </p>
       <pre className="font-mono text-sm bg-ink text-chalkink p-4 mb-8 overflow-x-auto">{`import {

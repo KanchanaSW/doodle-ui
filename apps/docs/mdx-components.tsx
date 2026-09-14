@@ -19,7 +19,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <h3 className="text-lg font-semibold mt-8 mb-2" {...props} />
     ),
     p: (props) => (
-      <p className="text-base leading-relaxed text-mute dark:text-chalkink/80 mb-4 max-w-[65ch]" {...props} />
+      <p className="text-base leading-relaxed text-mute mb-4 max-w-[65ch]" {...props} />
     ),
     a: ({ href, children, ...props }) => (
       <Link
@@ -31,17 +31,17 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </Link>
     ),
     ul: (props) => (
-      <ul className="list-disc pl-5 mb-4 space-y-1 text-mute dark:text-chalkink/80" {...props} />
+      <ul className="list-disc pl-5 mb-4 space-y-1 text-mute" {...props} />
     ),
     code: (props) => (
       <code
-        className="font-mono text-[13px] bg-ink/5 dark:bg-white/10 px-1.5 py-0.5 rounded-sm"
+        className="font-mono text-[13px] bg-ink/5 px-1.5 py-0.5 rounded-sm"
         {...props}
       />
     ),
     pre: (props) => (
       <pre
-        className="font-mono text-[13px] leading-relaxed bg-ink dark:bg-black text-chalkink p-4 overflow-x-auto mb-6 rounded-none"
+        className="font-mono text-[13px] leading-relaxed bg-ink text-chalkink p-4 overflow-x-auto mb-6 rounded-none"
         {...props}
       />
     ),

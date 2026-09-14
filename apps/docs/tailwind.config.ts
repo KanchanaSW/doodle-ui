@@ -6,7 +6,6 @@ const config: Config = {
     "./components/**/*.{ts,tsx,mdx}",
     "./mdx-components.tsx",
   ],
-  darkMode: "media",
   theme: {
     extend: {
       colors: {
@@ -14,7 +13,6 @@ const config: Config = {
         ink: "#1f1d1a",
         accent: "#e24b3b",
         mute: "#5c5852",
-        chalk: "#161513",
         chalkink: "#e8e4d9",
       },
       fontFamily: {

@@ -80,7 +80,7 @@ export function Playground({
 
   return (
     <div className="my-8 grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)]">
-      <div className="relative min-h-[220px] bg-white/70 dark:bg-white/5 p-8 flex items-center justify-center">
+      <div className="relative min-h-[220px] bg-white/70 p-8 flex items-center justify-center">
         {render(values)}
       </div>
       <div className="flex flex-col gap-4">
@@ -117,7 +117,7 @@ export function Playground({
                   <select
                     value={String(values[control.key])}
                     onChange={(event) => setKey(control.key, event.target.value)}
-                    className="w-full bg-transparent border border-ink/20 dark:border-white/20 px-2 py-1.5 text-sm"
+                    className="w-full bg-transparent border border-ink/20 px-2 py-1.5 text-sm"
                   >
                     {control.options.map((option) => (
                       <option key={option} value={option}>
@@ -161,7 +161,7 @@ export function PropsTable({ rows }: { rows: PropRow[] }) {
     <div className="overflow-x-auto my-6">
       <table className="w-full text-left text-sm border-collapse">
         <thead>
-          <tr className="border-b border-ink/20 dark:border-white/20">
+          <tr className="border-b border-ink/20">
             <th className="py-2 pr-4 font-semibold">Prop</th>
             <th className="py-2 pr-4 font-semibold">Type</th>
             <th className="py-2 pr-4 font-semibold">Default</th>
@@ -172,16 +172,16 @@ export function PropsTable({ rows }: { rows: PropRow[] }) {
           {rows.map((row) => (
             <tr
               key={row.name}
-              className="border-b border-ink/10 dark:border-white/10 align-top"
+              className="border-b border-ink/10 align-top"
             >
               <td className="py-2 pr-4 font-mono text-[13px] whitespace-nowrap">
                 {row.name}
               </td>
-              <td className="py-2 pr-4 font-mono text-[12px] text-mute dark:text-chalkink/70">
+              <td className="py-2 pr-4 font-mono text-[12px] text-mute">
                 {row.type}
               </td>
               <td className="py-2 pr-4 font-mono text-[12px]">{row.defaultValue}</td>
-              <td className="py-2 text-mute dark:text-chalkink/80">
+              <td className="py-2 text-mute">
                 {row.description}
               </td>
             </tr>

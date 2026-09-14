@@ -6,7 +6,7 @@ export default function DocsIndexPage() {
   return (
     <div>
       <h1 className="text-4xl font-semibold tracking-tight mb-3">Components</h1>
-      <p className="text-mute dark:text-chalkink/80 mb-8 max-w-[65ch]">
+      <p className="text-mute mb-8 max-w-[65ch]">
         Each page has a live playground, a copyable snippet, and a props table. Sketch props (`roughness`, `seed`, `sketchColor`) are shared across the set.
       </p>
       <div className="grid sm:grid-cols-2 gap-4">
