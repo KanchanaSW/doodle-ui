@@ -260,3 +260,250 @@ export const tooltipProps: PropRow[] = [
   },
   ...sharedSketchProps,
 ];
+
+export const selectProps: PropRow[] = [
+  {
+    name: "options",
+    type: "SelectOption[]",
+    defaultValue: "required",
+    description: "Menu items. Each option has value, label, and optional disabled.",
+  },
+  {
+    name: "placeholder",
+    type: "string",
+    defaultValue: '"Select…"',
+    description: "Shown when no value is selected.",
+  },
+  {
+    name: "value / onValueChange",
+    type: "string / (value: string) => void",
+    defaultValue: "uncontrolled",
+    description: "Radix controlled API. Keyboard nav and ARIA come with the primitive.",
+  },
+  ...sharedSketchProps,
+];
+
+export const switchProps: PropRow[] = [
+  {
+    name: "label",
+    type: "ReactNode",
+    defaultValue: "undefined",
+    description: "Caption sitting to the right of the track.",
+  },
+  {
+    name: "checked / onCheckedChange",
+    type: "boolean / (checked: boolean) => void",
+    defaultValue: "uncontrolled",
+    description: "Radix controlled API.",
+  },
+  ...sharedSketchProps,
+];
+
+export const sliderProps: PropRow[] = [
+  {
+    name: "value / defaultValue",
+    type: "number[]",
+    defaultValue: "required (defaultValue)",
+    description: "Radix slider values. Use a one-item array for a single thumb.",
+  },
+  {
+    name: "min / max / step",
+    type: "number",
+    defaultValue: "0 / 100 / 1",
+    description: "Range bounds and increment.",
+  },
+  {
+    name: "thumbShape",
+    type: '"circle" | "square"',
+    defaultValue: '"circle"',
+    description: "Rough thumb geometry.",
+  },
+  ...sharedSketchProps,
+];
+
+export const tabsProps: PropRow[] = [
+  {
+    name: "defaultValue / value",
+    type: "string",
+    defaultValue: "required",
+    description: "Active tab. Switching redraws the underline with a derived seed.",
+  },
+  {
+    name: "onValueChange",
+    type: "(value: string) => void",
+    defaultValue: "undefined",
+    description: "Fires when the active tab changes.",
+  },
+  ...sharedSketchProps,
+];
+
+export const accordionProps: PropRow[] = [
+  {
+    name: "type",
+    type: '"single" | "multiple"',
+    defaultValue: '"single"',
+    description: "One open panel, or many.",
+  },
+  {
+    name: "collapsible",
+    type: "boolean",
+    defaultValue: "true",
+    description: "When type is single, allows closing the open item.",
+  },
+  {
+    name: "defaultValue / value",
+    type: "string | string[]",
+    defaultValue: "undefined",
+    description: "Open item id(s).",
+  },
+  ...sharedSketchProps,
+];
+
+export const tableProps: PropRow[] = [
+  {
+    name: "headerUnderline",
+    type: "boolean",
+    defaultValue: "true",
+    description: "Draw a heavier sketch rule under the header row.",
+  },
+  ...sharedSketchProps,
+];
+
+export const toastProps: PropRow[] = [
+  {
+    name: "variant",
+    type: '"info" | "warning" | "error" | "success"',
+    defaultValue: '"info"',
+    description: "Sets stroke and wash color, matching Alert.",
+  },
+  {
+    name: "title",
+    type: "ReactNode",
+    defaultValue: "undefined",
+    description: "Bold first line.",
+  },
+  {
+    name: "open / onOpenChange",
+    type: "boolean / (open: boolean) => void",
+    defaultValue: "uncontrolled",
+    description: "Radix toast visibility. Auto-dismiss comes from ToastProvider duration.",
+  },
+  {
+    name: "duration",
+    type: "number",
+    defaultValue: "provider",
+    description: "Override auto-dismiss for this toast, in milliseconds.",
+  },
+  ...sharedSketchProps,
+];
+
+export const avatarProps: PropRow[] = [
+  {
+    name: "src",
+    type: "string",
+    defaultValue: "undefined",
+    description: "Image URL. Falls back to initials if missing or loading.",
+  },
+  {
+    name: "fallback",
+    type: "ReactNode",
+    defaultValue: "undefined",
+    description: "Initials or placeholder shown without an image.",
+  },
+  {
+    name: "size",
+    type: "number",
+    defaultValue: "40",
+    description: "Width and height in pixels.",
+  },
+  {
+    name: "shape",
+    type: '"circle" | "square"',
+    defaultValue: '"circle"',
+    description: "Frame geometry.",
+  },
+  {
+    name: "status",
+    type: '"online" | "offline" | "busy"',
+    defaultValue: "undefined",
+    description: "Optional sketch status dot.",
+  },
+  ...sharedSketchProps,
+];
+
+export const paginationProps: PropRow[] = [
+  {
+    name: "page",
+    type: "number",
+    defaultValue: "required",
+    description: "1-based current page. Gets aria-current.",
+  },
+  {
+    name: "count",
+    type: "number",
+    defaultValue: "required",
+    description: "Total page count.",
+  },
+  {
+    name: "onPageChange",
+    type: "(page: number) => void",
+    defaultValue: "undefined",
+    description: "Fires for numbered buttons and prev/next.",
+  },
+  ...sharedSketchProps,
+];
+
+export const breadcrumbProps: PropRow[] = [
+  {
+    name: "separator",
+    type: '"slash" | "chevron"',
+    defaultValue: '"slash"',
+    description: "Hand-drawn mark between crumbs.",
+  },
+  ...sharedSketchProps,
+];
+
+export const skeletonProps: PropRow[] = [
+  {
+    name: "variant",
+    type: '"text" | "rect" | "circle"',
+    defaultValue: '"rect"',
+    description: "Placeholder shape.",
+  },
+  {
+    name: "pulse",
+    type: "boolean",
+    defaultValue: "true",
+    description: "Reseeds the hatch on an interval so the scribble redraws.",
+  },
+  {
+    name: "width / height",
+    type: "number | string",
+    defaultValue: "varies by variant",
+    description: "Box size. Circle defaults to 40×40.",
+  },
+  ...sharedSketchProps,
+];
+
+export const stepperProps: PropRow[] = [
+  {
+    name: "steps",
+    type: "Array<StepperStep | ReactNode>",
+    defaultValue: "required",
+    description: "Labels, or { label, description } objects.",
+  },
+  {
+    name: "current",
+    type: "number",
+    defaultValue: "0",
+    description: "0-based active step. Earlier steps fill in.",
+  },
+  {
+    name: "orientation",
+    type: '"horizontal" | "vertical"',
+    defaultValue: '"horizontal"',
+    description: "Layout axis for markers and connectors.",
+  },
+  ...sharedSketchProps,
+];
+

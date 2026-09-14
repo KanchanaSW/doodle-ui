@@ -1,0 +1,25 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { skeletonProps } from "@/lib/props";
+
+# Skeleton
+
+A scribble-fill placeholder. Pulse reseeds the hatch on an interval so the doodle redraws instead of shimmering.
+
+<ComponentPlayground name="skeleton" />
+
+## Usage
+
+```tsx
+import { Skeleton } from "doodleui-react";
+
+<Skeleton variant="rect" height={72} />
+<Skeleton variant="text" />
+<Skeleton variant="circle" />
+```
+
+Marked `aria-hidden`. Pair it with Progress or Stepper while real content loads.
+
+## Props
+
+<PropsTable rows={skeletonProps} />

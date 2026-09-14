@@ -1,0 +1,23 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { avatarProps } from "@/lib/props";
+
+# Avatar
+
+Radix avatar with a sketch circular or square frame. Falls back to initials, with an optional status dot.
+
+<ComponentPlayground name="avatar" />
+
+## Usage
+
+```tsx
+import { Avatar } from "doodleui-react";
+
+<Avatar fallback="AL" alt="Ada Lovelace" status="online" />
+```
+
+Image loading and the fallback swap come from Radix. doodle-ui draws the frame and the status badge.
+
+## Props
+
+<PropsTable rows={avatarProps} />

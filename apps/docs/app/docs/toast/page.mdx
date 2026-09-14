@@ -1,0 +1,28 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { toastProps } from "@/lib/props";
+
+# Toast
+
+Radix toast with Alert-like sketch chrome. Wrap the tree in `ToastProvider` for stacking, auto-dismiss, and the live region.
+
+<ComponentPlayground name="toast" />
+
+## Usage
+
+```tsx
+import { Toast, ToastProvider, Button } from "doodleui-react";
+
+<ToastProvider>
+  <Button onClick={() => setOpen(true)}>Show toast</Button>
+  <Toast open={open} onOpenChange={setOpen} variant="success" title="Saved">
+    The sketch is in the notebook.
+  </Toast>
+</ToastProvider>
+```
+
+ARIA live region, duration, and swipe come from Radix. Enter animation is an inline transform — there is no exit animation.
+
+## Props
+
+<PropsTable rows={toastProps} />

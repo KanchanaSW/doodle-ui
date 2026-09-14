@@ -1,0 +1,27 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { breadcrumbProps } from "@/lib/props";
+
+# Breadcrumb
+
+A nav trail with hand-drawn slash or chevron separators between crumbs.
+
+<ComponentPlayground name="breadcrumb" />
+
+## Usage
+
+```tsx
+import { Breadcrumb, BreadcrumbItem } from "doodleui-react";
+
+<Breadcrumb>
+  <BreadcrumbItem href="/">Home</BreadcrumbItem>
+  <BreadcrumbItem href="/docs">Docs</BreadcrumbItem>
+  <BreadcrumbItem current>Breadcrumb</BreadcrumbItem>
+</Breadcrumb>
+```
+
+The current crumb sets `aria-current="page"`. Separators are decorative and hidden from assistive tech.
+
+## Props
+
+<PropsTable rows={breadcrumbProps} />

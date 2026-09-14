@@ -25,3 +25,15 @@ export function cn(
   const value = parts.filter(Boolean).join(" ");
   return value.length > 0 ? value : undefined;
 }
+
+/**
+ * Offset a resolved sketch seed by a stable hash of `key`.
+ * Items in a list keep distinct wobbles that still redraw together on Shuffle.
+ */
+export function deriveSeed(base: number, key: string): number {
+  let hash = 0;
+  for (let i = 0; i < key.length; i += 1) {
+    hash = (hash * 31 + key.charCodeAt(i)) | 0;
+  }
+  return (base + (hash >>> 0)) % 2 ** 31;
+}

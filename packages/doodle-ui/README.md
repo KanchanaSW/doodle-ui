@@ -57,7 +57,9 @@ Every component accepts:
 
 ## Components
 
-Button, Input, Textarea, Checkbox, Radio, Card, Badge, Alert, Modal, Divider, Progress, Tooltip, plus the `RoughSvg` primitive.
+Button, Input, Textarea, Checkbox, Radio, Select, Switch, Slider, Card, Badge, Alert, Modal, Divider, Progress, Tooltip, Tabs, Accordion, Table, Toast, Avatar, Pagination, Breadcrumb, Skeleton, Stepper, plus the `RoughSvg` primitive.
+
+Modal, Tooltip, Checkbox, Radio, Select, Switch, Tabs, Accordion, Slider, Toast, and Avatar sit on Radix primitives.
 
 ## Docs
 

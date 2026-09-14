@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { SketchSeedProvider, TooltipProvider } from "doodleui-react";
+import { SketchSeedProvider, TooltipProvider, ToastProvider } from "doodleui-react";
 
 const DOODLE_FONTS = [
   "var(--font-outfit)",
@@ -14,7 +14,9 @@ const DOODLE_FONTS = [
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <SketchSeedProvider fonts={DOODLE_FONTS} initialFontIndex={1}>
-      <TooltipProvider delayDuration={200}>{children}</TooltipProvider>
+      <TooltipProvider delayDuration={200}>
+        <ToastProvider position="bottom-right">{children}</ToastProvider>
+      </TooltipProvider>
     </SketchSeedProvider>
   );
 }

@@ -1,0 +1,23 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { sliderProps } from "@/lib/props";
+
+# Slider
+
+Radix slider with a wobbly track line and a sketch thumb. The filled range is a second, rougher stroke.
+
+<ComponentPlayground name="slider" />
+
+## Usage
+
+```tsx
+import { Slider } from "doodleui-react";
+
+<Slider defaultValue={[40]} min={0} max={100} />
+```
+
+Pointer, keyboard, and `aria-valuenow` come from Radix. doodle-ui only skins the track and thumb.
+
+## Props
+
+<PropsTable rows={sliderProps} />

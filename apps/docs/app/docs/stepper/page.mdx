@@ -1,0 +1,26 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { stepperProps } from "@/lib/props";
+
+# Stepper
+
+Numbered sketch circles joined by hand-drawn connectors. Completed steps fill in; the current step keeps a heavier ring.
+
+<ComponentPlayground name="stepper" />
+
+## Usage
+
+```tsx
+import { Stepper } from "doodleui-react";
+
+<Stepper
+  steps={["Details", "Sketch", "Publish"]}
+  current={1}
+/>
+```
+
+The active step sets `aria-current="step"`. A complement to Progress for multi-step flows.
+
+## Props
+
+<PropsTable rows={stepperProps} />

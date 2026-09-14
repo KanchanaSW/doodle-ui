@@ -36,7 +36,7 @@ export default function HomePage() {
 
       <section className="max-w-[1400px] mx-auto px-4 md:px-8 pb-24">
         <h2 className="doodle-shuffle-type text-3xl font-semibold tracking-tight mb-8">
-          Twelve pieces, one pencil
+          Two dozen pieces, one pencil
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {COMPONENT_PAGES.map((item) => (
@@ -54,7 +54,7 @@ export default function HomePage() {
           Sketch the frame. Keep the accessibility.
         </h2>
         <p className="mt-4 max-w-[65ch] text-[15px] leading-relaxed text-mute">
-          Modal, tooltip, checkbox, and radio sit on Radix primitives. Focus traps, Escape, and ARIA come for free. rough.js only draws the SVG layer behind the real controls. Pass a seed to lock a doodle for tests or screenshots. Skip it and Shuffle gives every line a new wobble.
+          Modal, tooltip, checkbox, radio, select, switch, tabs, accordion, slider, toast, and avatar sit on Radix primitives. Focus traps, Escape, and ARIA come for free. rough.js only draws the SVG layer behind the real controls. Pass a seed to lock a doodle for tests or screenshots. Skip it and Shuffle gives every line a new wobble.
         </p>
         <div className="mt-6">
           <Link href="/docs/button">

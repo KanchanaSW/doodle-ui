@@ -2,18 +2,43 @@
 
 import { useState } from "react";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
   Alert,
+  Avatar,
   Badge,
+  Breadcrumb,
+  BreadcrumbItem,
   Button,
   Card,
   Checkbox,
   Divider,
   Input,
   Modal,
+  Pagination,
   Progress,
   Radio,
   RadioGroup,
+  Select,
+  Skeleton,
+  Slider,
+  Stepper,
+  Switch,
+  Tab,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableRow,
+  TabList,
+  TabPanel,
+  Tabs,
   Textarea,
+  Toast,
+  ToastProvider,
   Tooltip,
 } from "doodleui-react";
 import type { ComponentSlug } from "@/lib/nav";
@@ -56,6 +81,30 @@ export function ComponentPlayground({ name }: { name: ComponentSlug }) {
       return <ProgressPlayground />;
     case "tooltip":
       return <TooltipPlayground />;
+    case "select":
+      return <SelectPlayground />;
+    case "switch":
+      return <SwitchPlayground />;
+    case "slider":
+      return <SliderPlayground />;
+    case "tabs":
+      return <TabsPlayground />;
+    case "accordion":
+      return <AccordionPlayground />;
+    case "table":
+      return <TablePlayground />;
+    case "toast":
+      return <ToastPlayground />;
+    case "avatar":
+      return <AvatarPlayground />;
+    case "pagination":
+      return <PaginationPlayground />;
+    case "breadcrumb":
+      return <BreadcrumbPlayground />;
+    case "skeleton":
+      return <SkeletonPlayground />;
+    case "stepper":
+      return <StepperPlayground />;
     default:
       return null;
   }
@@ -412,6 +461,508 @@ function TooltipPlayground() {
         `<Tooltip content="A small sketch bubble" ${sketchSnippetProps(v)}>
   <Button variant="outline">Hover me</Button>
 </Tooltip>`
+      }
+    />
+  );
+}
+
+function SelectPlayground() {
+  return (
+    <Playground
+      controls={sketchControls}
+      render={(v) => (
+        <LiveSelect roughness={Number(v.roughness)} seed={seedFrom(v)} />
+      )}
+      snippet={(v) =>
+        `<Select
+  placeholder="Pick a tool"
+  options={[
+    { value: "pen", label: "Pen" },
+    { value: "pencil", label: "Pencil" },
+    { value: "brush", label: "Brush" },
+  ]}
+  ${sketchSnippetProps(v)}
+/>`
+      }
+    />
+  );
+}
+
+function LiveSelect({ roughness, seed }: { roughness: number; seed?: number }) {
+  const [value, setValue] = useState("pen");
+  return (
+    <Select
+      value={value}
+      onValueChange={setValue}
+      placeholder="Pick a tool"
+      aria-label="Pick a tool"
+      options={[
+        { value: "pen", label: "Pen" },
+        { value: "pencil", label: "Pencil" },
+        { value: "brush", label: "Brush" },
+      ]}
+      roughness={roughness}
+      seed={seed}
+    />
+  );
+}
+
+function SwitchPlayground() {
+  return (
+    <Playground
+      controls={sketchControls}
+      render={(v) => (
+        <LiveSwitch roughness={Number(v.roughness)} seed={seedFrom(v)} />
+      )}
+      snippet={(v) =>
+        `<Switch label="Keep the wobble" defaultChecked ${sketchSnippetProps(v)} />`
+      }
+    />
+  );
+}
+
+function LiveSwitch({ roughness, seed }: { roughness: number; seed?: number }) {
+  const [checked, setChecked] = useState(true);
+  return (
+    <Switch
+      label="Keep the wobble"
+      checked={checked}
+      onCheckedChange={setChecked}
+      roughness={roughness}
+      seed={seed}
+    />
+  );
+}
+
+function SliderPlayground() {
+  const controls: Control[] = [
+    ...sketchControls,
+    {
+      type: "select",
+      key: "thumbShape",
+      label: "Thumb",
+      options: ["circle", "square"],
+      defaultValue: "circle",
+    },
+  ];
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <div className="w-full max-w-sm">
+          <LiveSlider
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+            thumbShape={v.thumbShape as "circle"}
+          />
+        </div>
+      )}
+      snippet={(v) =>
+        `<Slider defaultValue={[40]} thumbShape="${v.thumbShape}" ${sketchSnippetProps(v)} />`
+      }
+    />
+  );
+}
+
+function LiveSlider({
+  roughness,
+  seed,
+  thumbShape,
+}: {
+  roughness: number;
+  seed?: number;
+  thumbShape: "circle" | "square";
+}) {
+  const [value, setValue] = useState([40]);
+  return (
+    <Slider
+      value={value}
+      onValueChange={setValue}
+      thumbShape={thumbShape}
+      roughness={roughness}
+      seed={seed}
+    />
+  );
+}
+
+function TabsPlayground() {
+  return (
+    <Playground
+      controls={sketchControls}
+      render={(v) => (
+        <div className="w-full max-w-md">
+          <LiveTabs roughness={Number(v.roughness)} seed={seedFrom(v)} />
+        </div>
+      )}
+      snippet={(v) =>
+        `<Tabs defaultValue="ink" ${sketchSnippetProps(v)}>
+  <TabList>
+    <Tab value="ink">Ink</Tab>
+    <Tab value="wash">Wash</Tab>
+  </TabList>
+  <TabPanel value="ink">Real HTML under a sketch underline.</TabPanel>
+  <TabPanel value="wash">Switching tabs redraws the rule.</TabPanel>
+</Tabs>`
+      }
+    />
+  );
+}
+
+function LiveTabs({ roughness, seed }: { roughness: number; seed?: number }) {
+  return (
+    <Tabs defaultValue="ink" roughness={roughness} seed={seed}>
+      <TabList>
+        <Tab value="ink">Ink</Tab>
+        <Tab value="wash">Wash</Tab>
+        <Tab value="paper">Paper</Tab>
+      </TabList>
+      <TabPanel value="ink">Real HTML under a sketch underline.</TabPanel>
+      <TabPanel value="wash">Switching tabs redraws the rule.</TabPanel>
+      <TabPanel value="paper">Shuffle still wobbles every stroke.</TabPanel>
+    </Tabs>
+  );
+}
+
+function AccordionPlayground() {
+  return (
+    <Playground
+      controls={sketchControls}
+      render={(v) => (
+        <div className="w-full max-w-md">
+          <Accordion
+            defaultValue="one"
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+          >
+            <AccordionItem value="one">
+              <AccordionTrigger>What is a seed?</AccordionTrigger>
+              <AccordionContent>
+                A number that locks the wobble. Omit it and Shuffle redraws every line.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="two">
+              <AccordionTrigger>Is the text sketched?</AccordionTrigger>
+              <AccordionContent>
+                No. Text stays HTML so it stays crisp and selectable.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+      )}
+      snippet={(v) =>
+        `<Accordion defaultValue="one" ${sketchSnippetProps(v)}>
+  <AccordionItem value="one">
+    <AccordionTrigger>What is a seed?</AccordionTrigger>
+    <AccordionContent>A number that locks the wobble.</AccordionContent>
+  </AccordionItem>
+</Accordion>`
+      }
+    />
+  );
+}
+
+function TablePlayground() {
+  const controls: Control[] = [
+    ...sketchControls,
+    {
+      type: "toggle",
+      key: "headerUnderline",
+      label: "Header underline",
+      defaultValue: true,
+    },
+  ];
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <div className="w-full max-w-md">
+          <Table
+            headerUnderline={Boolean(v.headerUnderline)}
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+          >
+            <TableHead>
+              <TableRow>
+                <TableHeaderCell>Tool</TableHeaderCell>
+                <TableHeaderCell>Weight</TableHeaderCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>Pen</TableCell>
+                <TableCell>0.5</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Pencil</TableCell>
+                <TableCell>2B</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Brush</TableCell>
+                <TableCell>6</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+      )}
+      snippet={(v) =>
+        `<Table headerUnderline={${Boolean(v.headerUnderline)}} ${sketchSnippetProps(v)}>
+  <TableHead>
+    <TableRow>
+      <TableHeaderCell>Tool</TableHeaderCell>
+      <TableHeaderCell>Weight</TableHeaderCell>
+    </TableRow>
+  </TableHead>
+  <TableBody>
+    <TableRow>
+      <TableCell>Pen</TableCell>
+      <TableCell>0.5</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>`
+      }
+    />
+  );
+}
+
+function ToastPlayground() {
+  const controls: Control[] = [
+    ...sketchControls,
+    {
+      type: "select",
+      key: "variant",
+      label: "Variant",
+      options: ["info", "warning", "error", "success"],
+      defaultValue: "success",
+    },
+  ];
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <LiveToast
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          variant={v.variant as "success"}
+        />
+      )}
+      snippet={(v) =>
+        `<Toast variant="${v.variant}" title="Saved" ${sketchSnippetProps(v)}>
+  The sketch is in the notebook.
+</Toast>`
+      }
+    />
+  );
+}
+
+function LiveToast({
+  roughness,
+  seed,
+  variant,
+}: {
+  roughness: number;
+  seed?: number;
+  variant: "info" | "warning" | "error" | "success";
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <ToastProvider duration={3200}>
+      <div className="flex flex-col items-center gap-3">
+        <Button
+          variant="outline"
+          roughness={roughness}
+          seed={seed}
+          onClick={() => setOpen(true)}
+        >
+          Show toast
+        </Button>
+        <Toast
+          open={open}
+          onOpenChange={setOpen}
+          variant={variant}
+          title="Saved"
+          duration={3200}
+          roughness={roughness}
+          seed={seed}
+        >
+          The sketch is in the notebook.
+        </Toast>
+      </div>
+    </ToastProvider>
+  );
+}
+
+function AvatarPlayground() {
+  const controls: Control[] = [
+    ...sketchControls,
+    {
+      type: "select",
+      key: "shape",
+      label: "Shape",
+      options: ["circle", "square"],
+      defaultValue: "circle",
+    },
+    {
+      type: "select",
+      key: "status",
+      label: "Status",
+      options: ["online", "offline", "busy"],
+      defaultValue: "online",
+    },
+  ];
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <Avatar
+          fallback="AL"
+          alt="Ada Lovelace"
+          size={48}
+          shape={v.shape as "circle"}
+          status={v.status as "online"}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+        />
+      )}
+      snippet={(v) =>
+        `<Avatar fallback="AL" shape="${v.shape}" status="${v.status}" ${sketchSnippetProps(v)} />`
+      }
+    />
+  );
+}
+
+function PaginationPlayground() {
+  return (
+    <Playground
+      controls={sketchControls}
+      render={(v) => (
+        <LivePagination roughness={Number(v.roughness)} seed={seedFrom(v)} />
+      )}
+      snippet={(v) =>
+        `<Pagination page={2} count={8} onPageChange={setPage} ${sketchSnippetProps(v)} />`
+      }
+    />
+  );
+}
+
+function LivePagination({
+  roughness,
+  seed,
+}: {
+  roughness: number;
+  seed?: number;
+}) {
+  const [page, setPage] = useState(2);
+  return (
+    <Pagination
+      page={page}
+      count={8}
+      onPageChange={setPage}
+      roughness={roughness}
+      seed={seed}
+    />
+  );
+}
+
+function BreadcrumbPlayground() {
+  const controls: Control[] = [
+    ...sketchControls,
+    {
+      type: "select",
+      key: "separator",
+      label: "Separator",
+      options: ["slash", "chevron"],
+      defaultValue: "slash",
+    },
+  ];
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <Breadcrumb
+          separator={v.separator as "slash"}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+        >
+          <BreadcrumbItem href="/">Home</BreadcrumbItem>
+          <BreadcrumbItem href="/docs">Docs</BreadcrumbItem>
+          <BreadcrumbItem current>Breadcrumb</BreadcrumbItem>
+        </Breadcrumb>
+      )}
+      snippet={(v) =>
+        `<Breadcrumb separator="${v.separator}" ${sketchSnippetProps(v)}>
+  <BreadcrumbItem href="/">Home</BreadcrumbItem>
+  <BreadcrumbItem current>Breadcrumb</BreadcrumbItem>
+</Breadcrumb>`
+      }
+    />
+  );
+}
+
+function SkeletonPlayground() {
+  const controls: Control[] = [
+    ...sketchControls,
+    {
+      type: "select",
+      key: "variant",
+      label: "Variant",
+      options: ["text", "rect", "circle"],
+      defaultValue: "rect",
+    },
+    { type: "toggle", key: "pulse", label: "Pulse", defaultValue: true },
+  ];
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <div className="w-full max-w-xs">
+          <Skeleton
+            variant={v.variant as "rect"}
+            pulse={Boolean(v.pulse)}
+            height={v.variant === "circle" ? 48 : v.variant === "text" ? 16 : 72}
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+          />
+        </div>
+      )}
+      snippet={(v) =>
+        `<Skeleton variant="${v.variant}" pulse={${Boolean(v.pulse)}} ${sketchSnippetProps(v)} />`
+      }
+    />
+  );
+}
+
+function StepperPlayground() {
+  const controls: Control[] = [
+    ...sketchControls,
+    {
+      type: "slider",
+      key: "current",
+      label: "Current",
+      min: 0,
+      max: 2,
+      step: 1,
+      defaultValue: 1,
+    },
+  ];
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <div className="w-full max-w-md">
+          <Stepper
+            steps={["Details", "Sketch", "Publish"]}
+            current={Number(v.current)}
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+          />
+        </div>
+      )}
+      snippet={(v) =>
+        `<Stepper
+  steps={["Details", "Sketch", "Publish"]}
+  current={${Number(v.current)}}
+  ${sketchSnippetProps(v)}
+/>`
       }
     />
   );

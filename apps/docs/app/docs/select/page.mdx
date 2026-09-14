@@ -1,0 +1,29 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { selectProps } from "@/lib/props";
+
+# Select
+
+Radix select with a sketch trigger and a framed popover. Highlighted and selected items get a hand-drawn underline.
+
+<ComponentPlayground name="select" />
+
+## Usage
+
+```tsx
+import { Select } from "doodleui-react";
+
+<Select
+  placeholder="Pick a tool"
+  options={[
+    { value: "pen", label: "Pen" },
+    { value: "pencil", label: "Pencil" },
+  ]}
+/>
+```
+
+Keyboard navigation, typeahead, and ARIA combobox roles come from Radix. doodle-ui only skins the chrome.
+
+## Props
+
+<PropsTable rows={selectProps} />

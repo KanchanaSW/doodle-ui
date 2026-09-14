@@ -1,0 +1,33 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { accordionProps } from "@/lib/props";
+
+# Accordion
+
+Radix accordion with sketch dividers between items and a hand-drawn chevron that rotates on expand.
+
+<ComponentPlayground name="accordion" />
+
+## Usage
+
+```tsx
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "doodleui-react";
+
+<Accordion defaultValue="one">
+  <AccordionItem value="one">
+    <AccordionTrigger>What is a seed?</AccordionTrigger>
+    <AccordionContent>A number that locks the wobble.</AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
+Keyboard, collapse, and ARIA come from Radix. doodle-ui draws the rules and the chevron.
+
+## Props
+
+<PropsTable rows={accordionProps} />

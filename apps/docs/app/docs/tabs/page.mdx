@@ -1,0 +1,30 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { tabsProps } from "@/lib/props";
+
+# Tabs
+
+Radix tabs with a sketch underline under the active trigger. Switching tabs derives a new seed so the line redraws.
+
+<ComponentPlayground name="tabs" />
+
+## Usage
+
+```tsx
+import { Tabs, TabList, Tab, TabPanel } from "doodleui-react";
+
+<Tabs defaultValue="ink">
+  <TabList>
+    <Tab value="ink">Ink</Tab>
+    <Tab value="wash">Wash</Tab>
+  </TabList>
+  <TabPanel value="ink">Real HTML under a sketch underline.</TabPanel>
+  <TabPanel value="wash">Switching tabs redraws the rule.</TabPanel>
+</Tabs>
+```
+
+Arrow keys, `aria-selected`, and tab panels come from Radix. doodle-ui only draws the active underline.
+
+## Props
+
+<PropsTable rows={tabsProps} />

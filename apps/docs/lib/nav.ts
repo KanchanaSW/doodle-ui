@@ -11,6 +11,18 @@ export const COMPONENT_PAGES = [
   { slug: "divider", title: "Divider", blurb: "Squiggly rule, horizontal or vertical" },
   { slug: "progress", title: "Progress", blurb: "Outer bar plus a rougher fill" },
   { slug: "tooltip", title: "Tooltip", blurb: "Radix tooltip in a sketch bubble" },
+  { slug: "select", title: "Select", blurb: "Sketchy trigger with a framed menu" },
+  { slug: "switch", title: "Switch", blurb: "Pill track and a sliding thumb" },
+  { slug: "slider", title: "Slider", blurb: "Wobbly track with a sketch thumb" },
+  { slug: "tabs", title: "Tabs", blurb: "Active underline redraws per tab" },
+  { slug: "accordion", title: "Accordion", blurb: "Dividers and a rotating chevron" },
+  { slug: "table", title: "Table", blurb: "Hand-drawn row rules" },
+  { slug: "toast", title: "Toast", blurb: "Sketch card that slides in" },
+  { slug: "avatar", title: "Avatar", blurb: "Framed image or initials" },
+  { slug: "pagination", title: "Pagination", blurb: "Circled page buttons" },
+  { slug: "breadcrumb", title: "Breadcrumb", blurb: "Hand-drawn slash separators" },
+  { slug: "skeleton", title: "Skeleton", blurb: "Scribble-fill loading placeholder" },
+  { slug: "stepper", title: "Stepper", blurb: "Numbered circles on a sketch path" },
 ] as const;
 
 export type ComponentSlug = (typeof COMPONENT_PAGES)[number]["slug"];

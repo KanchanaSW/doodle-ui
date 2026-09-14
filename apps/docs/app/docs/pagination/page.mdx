@@ -1,0 +1,23 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { paginationProps } from "@/lib/props";
+
+# Pagination
+
+Sketch-circled page buttons with a heavier active ring. Prev/next use hand-drawn arrows.
+
+<ComponentPlayground name="pagination" />
+
+## Usage
+
+```tsx
+import { Pagination } from "doodleui-react";
+
+<Pagination page={2} count={8} onPageChange={setPage} />
+```
+
+The current page sets `aria-current="page"`. The nav is labeled "Pagination".
+
+## Props
+
+<PropsTable rows={paginationProps} />

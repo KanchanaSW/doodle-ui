@@ -1,0 +1,43 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { tableProps } from "@/lib/props";
+
+# Table
+
+A real HTML table with hand-drawn row dividers instead of CSS borders. Optional heavier underline under the header.
+
+<ComponentPlayground name="table" />
+
+## Usage
+
+```tsx
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableHeaderCell,
+  TableCell,
+} from "doodleui-react";
+
+<Table>
+  <TableHead>
+    <TableRow>
+      <TableHeaderCell>Tool</TableHeaderCell>
+      <TableHeaderCell>Weight</TableHeaderCell>
+    </TableRow>
+  </TableHead>
+  <TableBody>
+    <TableRow>
+      <TableCell>Pen</TableCell>
+      <TableCell>0.5</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+Semantics stay native `table` markup. doodle-ui measures row edges and draws rough.js lines over them.
+
+## Props
+
+<PropsTable rows={tableProps} />

@@ -1,0 +1,23 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { switchProps } from "@/lib/props";
+
+# Switch
+
+Radix switch with a sketch pill track and a circular thumb that slides.
+
+<ComponentPlayground name="switch" />
+
+## Usage
+
+```tsx
+import { Switch } from "doodleui-react";
+
+<Switch label="Keep the wobble" defaultChecked />
+```
+
+Checked state, keyboard, and `aria-checked` come from Radix. doodle-ui draws the track and thumb.
+
+## Props
+
+<PropsTable rows={switchProps} />
