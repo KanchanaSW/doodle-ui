@@ -233,3 +233,20 @@ export {
   type AlertDialogActionProps,
   type AlertDialogCancelProps,
 } from "./components/AlertDialog";
+export {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandSeparator,
+  CommandShortcut,
+  type CommandProps,
+  type CommandInputProps,
+  type CommandListProps,
+  type CommandEmptyProps,
+  type CommandGroupProps,
+  type CommandItemProps,
+  type CommandSeparatorProps,
+} from "./components/Command";
