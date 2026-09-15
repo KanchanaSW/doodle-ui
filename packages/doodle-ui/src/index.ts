@@ -194,3 +194,21 @@ export {
   type DropdownMenuLabelProps,
   type DropdownMenuSeparatorProps,
 } from "./components/DropdownMenu";
+export {
+  Dialog,
+  DialogTrigger,
+  DialogPortal,
+  DialogClose,
+  DialogOverlay,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+  type DialogProps,
+  type DialogContentProps,
+  type DialogHeaderProps,
+  type DialogFooterProps,
+  type DialogTitleProps,
+  type DialogDescriptionProps,
+} from "./components/Dialog";
