@@ -6,16 +6,21 @@ import { buttonProps } from "@/lib/props";
 
 A clickable control. The label is real HTML. The border and fill are a rough.js rectangle sitting behind it.
 
+The border draws itself in on mount, then re-inks with a second seed on hover. Toggle `animate` in the playground to compare. See [Animation](/docs/animation) for the library-wide pattern.
+
 <ComponentPlayground name="button" />
 
 ## Usage
 
 ```tsx
-import { Button } from "doodleui-react";
+import { Button, DoodleUIProvider } from "doodleui-react";
 
-<Button variant="primary" size="md">
-  Draw me
-</Button>
+<DoodleUIProvider>
+  <Button variant="primary" size="md">
+    Draw me
+  </Button>
+  <Button animate={false}>Static sketch</Button>
+</DoodleUIProvider>
 ```
 
 Primary and secondary use hachure fills. Outline is stroke-only. Ghost hides the stroke until hover.

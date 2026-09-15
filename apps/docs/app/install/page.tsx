@@ -19,9 +19,10 @@ yarn add doodleui-react`}</pre>
 
       <h2 className="text-2xl font-semibold mt-10 mb-3">Quickstart</h2>
       <p className="text-mute mb-3 max-w-[65ch]">
-        Wrap the tree once. TooltipProvider is required for tooltips. ToastProvider is required for toasts. SketchSeedProvider is required for Shuffle.
+        Wrap the tree once. TooltipProvider is required for tooltips. ToastProvider is required for toasts. SketchSeedProvider is required for Shuffle. DoodleUIProvider is optional — animations default on, and you can pass `animate={false}` on a component or on the provider.
       </p>
       <pre className="font-mono text-sm bg-ink text-chalkink p-4 mb-8 overflow-x-auto">{`import {
+  DoodleUIProvider,
   SketchSeedProvider,
   TooltipProvider,
   Button,
@@ -35,12 +36,14 @@ function Shuffle() {
 
 export function App() {
   return (
-    <SketchSeedProvider>
-      <TooltipProvider>
-        <Shuffle />
-        <Button variant="primary">Hello</Button>
-      </TooltipProvider>
-    </SketchSeedProvider>
+    <DoodleUIProvider>
+      <SketchSeedProvider>
+        <TooltipProvider>
+          <Shuffle />
+          <Button variant="primary">Hello</Button>
+        </TooltipProvider>
+      </SketchSeedProvider>
+    </DoodleUIProvider>
   );
 }`}</pre>
 

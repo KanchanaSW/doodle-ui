@@ -44,6 +44,8 @@ export function App() {
 
 Wrap the tree in `SketchSeedProvider` so a Shuffle action can redraw every unlocked sketch. Pass `seed={123}` on a component to lock its wobble.
 
+Sketch strokes draw in on mount. Set `animate={false}` on a component, or wrap the tree in `DoodleUIProvider animate={false}`, to opt out. See the docs for the full animation map.
+
 ## Shared sketch props
 
 Every component accepts:
@@ -58,6 +60,8 @@ Every component accepts:
 ## Components
 
 Button, Input, Textarea, Checkbox, Radio, Select, Switch, Slider, Card, Badge, Alert, Modal, Divider, Progress, Tooltip, Tabs, Accordion, Table, Toast, Avatar, Pagination, Breadcrumb, Skeleton, Stepper, plus the `RoughSvg` primitive.
+
+Most of those sketch in on mount (draw-in) and re-ink on interaction. Default on; pass `animate={false}` to skip. Slider, Accordion, Avatar, Pagination, Breadcrumb, Skeleton, and Stepper stay static for now.
 
 Modal, Tooltip, Checkbox, Radio, Select, Switch, Tabs, Accordion, Slider, Toast, and Avatar sit on Radix primitives.
 

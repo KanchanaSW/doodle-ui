@@ -11,6 +11,10 @@ export interface BadgeProps
   extends Omit<HTMLAttributes<HTMLSpanElement>, "color">,
     SketchProps {
   variant?: BadgeVariant;
+  /**
+   * Draw-in the border on mount. Defaults to the DoodleUIProvider value (true).
+   */
+  animate?: boolean;
 }
 
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
@@ -25,6 +29,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
     bowing,
     fillStyle,
     strokeWidth,
+    animate,
     ...rest
   },
   ref,
@@ -63,6 +68,7 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
       sketchColor={ink}
       bowing={bowing}
       strokeWidth={strokeWidth ?? 1.4}
+      animate={animate}
       {...rest}
     >
       <span ref={ref}>{children}</span>

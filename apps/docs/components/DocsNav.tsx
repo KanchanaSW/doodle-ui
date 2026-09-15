@@ -15,6 +15,14 @@ export function DocsNav() {
       >
         Install
       </Link>
+      <Link
+        href="/docs/animation"
+        className={`block mb-4 font-medium ${
+          pathname === "/docs/animation" ? "text-accent" : "hover:text-accent"
+        }`}
+      >
+        Animation
+      </Link>
       <p className="font-semibold mb-2">Components</p>
       <ul className="space-y-1">
         {COMPONENT_PAGES.map((item) => {

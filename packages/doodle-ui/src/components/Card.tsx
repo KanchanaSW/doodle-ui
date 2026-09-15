@@ -12,6 +12,10 @@ export interface CardProps
   fill?: string;
   title?: ReactNode;
   footer?: ReactNode;
+  /**
+   * Draw-in the border on mount. Defaults to the DoodleUIProvider value (true).
+   */
+  animate?: boolean;
 }
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
@@ -29,6 +33,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
     bowing,
     fillStyle,
     strokeWidth,
+    animate,
     ...rest
   },
   ref,
@@ -42,6 +47,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
     bowing,
     fillStyle,
     strokeWidth,
+    animate,
   };
 
   return (

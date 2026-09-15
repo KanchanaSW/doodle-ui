@@ -46,7 +46,7 @@ export function App() {
 }
 ```
 
-Wrap the tree in `SketchSeedProvider` so Shuffle can redraw every unlocked sketch. Wrap in `TooltipProvider` if you use tooltips. Pass `seed={123}` on a component to lock its wobble.
+Wrap the tree in `SketchSeedProvider` so Shuffle can redraw every unlocked sketch. Wrap in `TooltipProvider` if you use tooltips. Pass `seed={123}` on a component to lock its wobble. Sketch animations are on by default; wrap in `DoodleUIProvider` or pass `animate={false}` to opt out.
 
 ## Shared sketch props
 
@@ -66,6 +66,8 @@ Every component accepts:
 ## Components
 
 Button, Input, Textarea, Checkbox, Radio, Select, Switch, Slider, Card, Badge, Alert, Modal, Divider, Progress, Tooltip, Tabs, Accordion, Table, Toast, Avatar, Pagination, Breadcrumb, Skeleton, Stepper, plus the `RoughSvg` primitive.
+
+Most components draw in on mount and re-ink on interaction (default on, opt out with `animate={false}` or `DoodleUIProvider`).
 
 Modal, Tooltip, Checkbox, Radio, Select, Switch, Tabs, Accordion, Slider, Toast, and Avatar sit on Radix primitives, so focus traps, Escape, and ARIA come with the sketch chrome.
 

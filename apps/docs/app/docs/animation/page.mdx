@@ -1,0 +1,46 @@
+# Animation
+
+Sketch strokes draw themselves in on mount. Interactions re-ink with a second seed. Everything is **on by default** and opt-out.
+
+## Defaults
+
+Wrap the tree once. Per-component `animate` wins when it is set. `prefers-reduced-motion: reduce` disables animation unless the provider sets `forceAnimate`.
+
+```tsx
+import { DoodleUIProvider, Button, Card } from "doodleui-react";
+
+<DoodleUIProvider>
+  <Button>Draws in</Button>
+  <Card animate={false}>Static sketch</Card>
+</DoodleUIProvider>
+
+<DoodleUIProvider animate={false}>
+  <Button>Static unless you pass animate</Button>
+  <Button animate>Forced on</Button>
+</DoodleUIProvider>
+```
+
+Toggle `animate` on any component playground to compare the animated sketch with the instant one.
+
+## Components
+
+- [Button](/docs/button) — border draw-in on mount; seed-morph on hover
+- [Card](/docs/card) — border draw-in on mount
+- [Badge](/docs/badge) — border draw-in on mount
+- [Alert](/docs/alert) — border draw-in on mount (~200ms)
+- [Divider](/docs/divider) — line extends across its length
+- [Table](/docs/table) — row rules draw in on mount, staggered
+- [Input](/docs/input) / [Textarea](/docs/textarea) — border draw-in; seed-morph on focus
+- [Checkbox](/docs/checkbox) — box draw-in; checkmark path draws on check
+- [Radio](/docs/radio) — ring draw-in; dot scales and draws on select
+- [Progress](/docs/progress) — track draw-in; fill width and roughness redraw on value
+- [Tooltip](/docs/tooltip) — bubble draw-in (~180ms)
+- [Select](/docs/select) — trigger draw-in; popover border draws on open
+- [Tabs](/docs/tabs) — active underline draw-in; redraws and slides on change
+- [Modal](/docs/modal) — panel border draw-in; backdrop fade and panel enter/exit
+- [Switch](/docs/switch) — track draw-in; thumb spring and track seed-morph
+- [Toast](/docs/toast) — border draw-in; slide and settle wobble, reverse on exit
+
+Set `animate={false}` (or wrap in `DoodleUIProvider animate={false}`) to render the final sketch immediately, with no dash leftover and no motion.
+
+[Open a playground](/docs/button)

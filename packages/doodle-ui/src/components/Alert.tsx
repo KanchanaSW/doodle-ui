@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
+import { DRAW_IN_ALERT_MS } from "../animations";
 import { SketchBox } from "../primitives/SketchBox";
 import { SKETCH_COLORS, type SketchProps } from "../types";
 import { cn, doodleUiFontWeight } from "../utils";
@@ -12,6 +13,10 @@ export interface AlertProps
     SketchProps {
   variant?: AlertVariant;
   title?: ReactNode;
+  /**
+   * Draw-in the border on mount (~200ms). Defaults to the DoodleUIProvider value (true).
+   */
+  animate?: boolean;
 }
 
 const VARIANT_COLOR: Record<AlertVariant, string> = {
@@ -42,6 +47,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
     fillStyle,
     strokeWidth,
     role = "status",
+    animate,
     ...rest
   },
   ref,
@@ -62,6 +68,8 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
       fillStyle={fillStyle ?? "hachure"}
       fill={VARIANT_FILL[variant]}
       strokeWidth={strokeWidth}
+      animate={animate}
+      drawInDuration={DRAW_IN_ALERT_MS}
       {...rest}
     >
       {title ? (

@@ -16,6 +16,7 @@ export default defineConfig({
     "react",
     "react-dom",
     "react/jsx-runtime",
+    "framer-motion",
     /^@radix-ui\//,
   ],
   async onSuccess() {

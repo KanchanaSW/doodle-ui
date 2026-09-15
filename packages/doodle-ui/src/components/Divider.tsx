@@ -1,9 +1,19 @@
 "use client";
 
-import { forwardRef, type HTMLAttributes } from "react";
+import {
+  forwardRef,
+  useRef,
+  type HTMLAttributes,
+  type MutableRefObject,
+} from "react";
+import {
+  DRAW_IN_DURATION_MS,
+  useAnimate,
+  useDrawIn,
+} from "../animations";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
+import { assignRef, cn } from "../utils";
 
 export type DividerOrientation = "horizontal" | "vertical";
 
@@ -11,6 +21,11 @@ export interface DividerProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color">,
     SketchProps {
   orientation?: DividerOrientation;
+  /**
+   * Draw-in so the line extends across its length. Defaults to the
+   * DoodleUIProvider value (true).
+   */
+  animate?: boolean;
 }
 
 export const Divider = forwardRef<HTMLDivElement, DividerProps>(
@@ -24,15 +39,22 @@ export const Divider = forwardRef<HTMLDivElement, DividerProps>(
       sketchColor,
       bowing,
       strokeWidth,
+      animate,
       ...rest
     },
     ref,
   ) {
+    const rootRef = useRef<HTMLDivElement>(null);
+    const shouldAnimate = useAnimate(animate);
     const horizontal = orientation === "horizontal";
+    useDrawIn(rootRef, DRAW_IN_DURATION_MS, shouldAnimate);
 
     return (
       <div
-        ref={ref}
+        ref={(node) => {
+          (rootRef as MutableRefObject<HTMLDivElement | null>).current = node;
+          assignRef(ref, node);
+        }}
         role="separator"
         aria-orientation={orientation}
         className={cn(className)}

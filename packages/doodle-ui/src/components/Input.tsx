@@ -2,18 +2,30 @@
 
 import {
   forwardRef,
+  useRef,
   useState,
   type InputHTMLAttributes,
   type ReactNode,
 } from "react";
+import {
+  DRAW_IN_DURATION_MS,
+  useAnimate,
+  useDrawIn,
+} from "../animations";
+import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
+import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "color" | "size">,
     SketchProps {
   label?: ReactNode;
+  /**
+   * Draw-in the border on mount and seed-morph on focus.
+   * Defaults to the DoodleUIProvider value (true).
+   */
+  animate?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
@@ -30,13 +42,22 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     id,
     onFocus,
     onBlur,
+    animate,
     ...rest
   },
   ref,
 ) {
   const [focused, setFocused] = useState(false);
+  const fieldRef = useRef<HTMLSpanElement>(null);
+  const shouldAnimate = useAnimate(animate);
+  const resolvedSeed = useResolvedSeed(seed);
+  const focusSeed = deriveSeed(resolvedSeed, "focus");
+  const sketchSeed =
+    shouldAnimate && focused ? focusSeed : resolvedSeed;
   const ink = sketchColor ?? SKETCH_COLORS.ink;
   const inputId = id;
+
+  useDrawIn(fieldRef, DRAW_IN_DURATION_MS, shouldAnimate, sketchSeed);
 
   return (
     <label
@@ -60,15 +81,21 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           {label}
         </span>
       ) : null}
-      <span style={{ position: "relative", display: "block" }}>
+      <span ref={fieldRef} style={{ position: "relative", display: "block" }}>
         <RoughSvg
           shape="rectangle"
           roughness={roughness}
-          seed={seed}
+          seed={sketchSeed}
           sketchColor={focused ? SKETCH_COLORS.accent : ink}
           bowing={bowing}
           fillStyle={fillStyle}
-          strokeWidth={focused ? (strokeWidth ?? 1.75) + 0.35 : strokeWidth}
+          strokeWidth={
+            focused && !shouldAnimate
+              ? (strokeWidth ?? 1.75) + 0.35
+              : focused
+                ? (strokeWidth ?? 1.75) + 0.2
+                : strokeWidth
+          }
         />
         <input
           ref={ref}

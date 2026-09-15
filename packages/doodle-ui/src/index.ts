@@ -24,6 +24,20 @@ export {
 } from "./hooks/useSketchSeed";
 export { useResolvedSeed } from "./hooks/useResolvedSeed";
 
+export {
+  DoodleUIProvider,
+  useDoodleUI,
+  useAnimate,
+  useDrawIn,
+  DRAW_IN_DURATION_MS,
+  DRAW_IN_ALERT_MS,
+  DRAW_IN_TOOLTIP_MS,
+  DRAW_IN_MARK_MS,
+  TABLE_STAGGER_MS,
+  type DoodleUIProviderProps,
+  type DoodleUIContextValue,
+} from "./animations";
+
 export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from "./components/Button";
 export { Input, type InputProps } from "./components/Input";
 export { Textarea, type TextareaProps } from "./components/Textarea";

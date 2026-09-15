@@ -5,6 +5,15 @@ export interface PropRow {
   description: string;
 }
 
+export function animateProp(description: string): PropRow {
+  return {
+    name: "animate",
+    type: "boolean",
+    defaultValue: "true",
+    description: `${description} Overrides DoodleUIProvider. Reduced motion disables this unless the provider set forceAnimate.`,
+  };
+}
+
 export const sharedSketchProps: PropRow[] = [
   {
     name: "roughness",
@@ -58,6 +67,9 @@ export const buttonProps: PropRow[] = [
     defaultValue: "false",
     description: "Native disabled state. Lowers opacity.",
   },
+  animateProp(
+    "Draw-in on mount and seed-morph on hover. Set false for a static sketch.",
+  ),
   ...sharedSketchProps,
 ];
 
@@ -74,6 +86,7 @@ export const inputProps: PropRow[] = [
     defaultValue: "undefined",
     description: "Native placeholder. Not a substitute for label.",
   },
+  animateProp("Draw-in the border on mount. Seed-morph on focus."),
   ...sharedSketchProps,
 ];
 
@@ -90,6 +103,7 @@ export const textareaProps: PropRow[] = [
     defaultValue: "4",
     description: "Visible line count.",
   },
+  animateProp("Draw-in the border on mount. Seed-morph on focus."),
   ...sharedSketchProps,
 ];
 
@@ -112,6 +126,7 @@ export const checkboxProps: PropRow[] = [
     defaultValue: "undefined",
     description: "Radix change handler.",
   },
+  animateProp("Draw-in the box on mount. Checkmark path draws in when checked."),
   ...sharedSketchProps,
 ];
 
@@ -128,6 +143,7 @@ export const radioProps: PropRow[] = [
     defaultValue: "undefined",
     description: "Caption sitting to the right of the circle.",
   },
+  animateProp("Draw-in the ring on mount. Dot scales and draws in on select."),
   ...sharedSketchProps,
 ];
 
@@ -156,6 +172,7 @@ export const cardProps: PropRow[] = [
     defaultValue: "undefined",
     description: "rough.js fill color for the face rectangle.",
   },
+  animateProp("Draw-in the border on mount."),
   ...sharedSketchProps,
 ];
 
@@ -166,6 +183,7 @@ export const badgeProps: PropRow[] = [
     defaultValue: '"default"',
     description: "Fill and stroke pairing.",
   },
+  animateProp("Draw-in the border on mount."),
   ...sharedSketchProps,
 ];
 
@@ -182,6 +200,7 @@ export const alertProps: PropRow[] = [
     defaultValue: "undefined",
     description: "Bold first line.",
   },
+  animateProp("Draw-in the border on mount (~200ms, snappy for dynamic callouts)."),
   ...sharedSketchProps,
 ];
 
@@ -210,6 +229,9 @@ export const modalProps: PropRow[] = [
     defaultValue: "uncontrolled",
     description: "Radix controlled API. Focus trap and Escape are built in.",
   },
+  animateProp(
+    "Backdrop fade, panel enter/exit, and border draw-in on open.",
+  ),
   ...sharedSketchProps,
 ];
 
@@ -220,6 +242,7 @@ export const dividerProps: PropRow[] = [
     defaultValue: '"horizontal"',
     description: "Axis of the squiggle.",
   },
+  animateProp("Draw-in so the line extends across its length."),
   ...sharedSketchProps,
 ];
 
@@ -236,6 +259,9 @@ export const progressProps: PropRow[] = [
     defaultValue: "100",
     description: "Maximum value. Sets aria-valuemax.",
   },
+  animateProp(
+    "Draw-in the track on mount. Fill width and roughness redraw as value changes.",
+  ),
   ...sharedSketchProps,
 ];
 
@@ -258,6 +284,7 @@ export const tooltipProps: PropRow[] = [
     defaultValue: "200",
     description: "Hover delay in milliseconds.",
   },
+  animateProp("Quick draw-in when the bubble shows (~180ms)."),
   ...sharedSketchProps,
 ];
 
@@ -280,6 +307,7 @@ export const selectProps: PropRow[] = [
     defaultValue: "uncontrolled",
     description: "Radix controlled API. Keyboard nav and ARIA come with the primitive.",
   },
+  animateProp("Draw-in the trigger on mount. Popover border draws in on open."),
   ...sharedSketchProps,
 ];
 
@@ -296,6 +324,7 @@ export const switchProps: PropRow[] = [
     defaultValue: "uncontrolled",
     description: "Radix controlled API.",
   },
+  animateProp("Thumb slides with a spring. Track seed-morphs on toggle."),
   ...sharedSketchProps,
 ];
 
@@ -334,6 +363,7 @@ export const tabsProps: PropRow[] = [
     defaultValue: "undefined",
     description: "Fires when the active tab changes.",
   },
+  animateProp("Active underline redraws and slides to the selected tab."),
   ...sharedSketchProps,
 ];
 
@@ -366,6 +396,7 @@ export const tableProps: PropRow[] = [
     defaultValue: "true",
     description: "Draw a heavier sketch rule under the header row.",
   },
+  animateProp("Row rules draw in on mount, staggered slightly."),
   ...sharedSketchProps,
 ];
 
@@ -394,6 +425,7 @@ export const toastProps: PropRow[] = [
     defaultValue: "provider",
     description: "Override auto-dismiss for this toast, in milliseconds.",
   },
+  animateProp("Slide-in with a sketchy settle wobble; reverse on exit."),
   ...sharedSketchProps,
 ];
 

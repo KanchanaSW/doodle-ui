@@ -4,16 +4,23 @@ import {
   createContext,
   forwardRef,
   useContext,
+  useRef,
   useState,
   type CSSProperties,
+  type MutableRefObject,
   type ReactNode,
 } from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
+import {
+  DRAW_IN_DURATION_MS,
+  useAnimate,
+  useDrawIn,
+} from "../animations";
+import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SketchBox } from "../primitives/SketchBox";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
-import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { assignRef, cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 const CHEVRON_PATH = "M 4 6 L 10 12 L 16 6";
 const UNDERLINE_INSET = 4;
@@ -30,6 +37,7 @@ interface SelectSketchContextValue extends SketchProps {
   selectedValue?: string;
   selectedLabel?: ReactNode;
   placeholder?: string;
+  animate?: boolean;
 }
 
 const SelectSketchContext = createContext<SelectSketchContextValue | null>(
@@ -52,6 +60,11 @@ export interface SelectProps
   className?: string;
   style?: CSSProperties;
   "aria-label"?: string;
+  /**
+   * Draw-in the trigger on mount and the popover border on open.
+   * Defaults to the DoodleUIProvider value (true).
+   */
+  animate?: boolean;
 }
 
 export function Select({
@@ -68,6 +81,7 @@ export function Select({
   value,
   defaultValue,
   onValueChange,
+  animate,
   "aria-label": ariaLabel,
   ...rest
 }: SelectProps) {
@@ -92,6 +106,7 @@ export function Select({
         selectedValue,
         selectedLabel,
         placeholder,
+        animate,
       }}
     >
       <SelectPrimitive.Root
@@ -137,10 +152,17 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
   ) {
     const sketch = useSelectSketch();
     const [openish, setOpenish] = useState(false);
+    const rootRef = useRef<HTMLButtonElement>(null);
+    const shouldAnimate = useAnimate(sketch.animate);
+    useDrawIn(rootRef, DRAW_IN_DURATION_MS, shouldAnimate);
 
     return (
       <SelectPrimitive.Trigger
-        ref={ref}
+        ref={(node) => {
+          (rootRef as MutableRefObject<HTMLButtonElement | null>).current =
+            node;
+          assignRef(ref, node);
+        }}
         className={cn(className)}
         onPointerDown={() => setOpenish(true)}
         onBlur={() => setOpenish(false)}
@@ -248,6 +270,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
             fillStyle={sketch.fillStyle ?? "solid"}
             fill="#f7f6f2"
             strokeWidth={sketch.strokeWidth ?? 1.5}
+            animate={sketch.animate}
             contentStyle={{ padding: "6px 4px" }}
           >
             <SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>

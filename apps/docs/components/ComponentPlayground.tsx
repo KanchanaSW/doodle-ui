@@ -51,6 +51,23 @@ import {
 
 const LOCKED_SEED = 42;
 
+const animateControl: Control = {
+  type: "toggle",
+  key: "animate",
+  label: "Animate",
+  defaultValue: true,
+};
+
+function withAnimate(controls: Control[]): Control[] {
+  return [...controls, animateControl];
+}
+
+function snippetExtras(v: Record<string, unknown>): string {
+  return [Boolean(v.animate) ? null : "animate={false}", sketchSnippetProps(v)]
+    .filter(Boolean)
+    .join(" ");
+}
+
 function seedFrom(values: Record<string, unknown>): number | undefined {
   return values.lockSeed ? LOCKED_SEED : undefined;
 }
@@ -111,7 +128,7 @@ export function ComponentPlayground({ name }: { name: ComponentSlug }) {
 }
 
 function ButtonPlayground() {
-  const controls: Control[] = [
+  const controls: Control[] = withAnimate([
     ...sketchControls,
     {
       type: "select",
@@ -127,22 +144,24 @@ function ButtonPlayground() {
       options: ["sm", "md", "lg"],
       defaultValue: "md",
     },
-  ];
+  ]);
   return (
     <Playground
       controls={controls}
       render={(v) => (
         <Button
+          key={String(v.animate)}
           variant={v.variant as "primary"}
           size={v.size as "md"}
           roughness={Number(v.roughness)}
           seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
         >
           Draw me
         </Button>
       )}
       snippet={(v) =>
-        `<Button variant="${v.variant}" size="${v.size}" ${sketchSnippetProps(v)}>
+        `<Button variant="${v.variant}" size="${v.size}" ${snippetExtras(v)}>
   Draw me
 </Button>`
       }
@@ -153,19 +172,21 @@ function ButtonPlayground() {
 function InputPlayground() {
   return (
     <Playground
-      controls={sketchControls}
+      controls={withAnimate(sketchControls)}
       render={(v) => (
         <div className="w-full max-w-sm">
           <Input
+            key={String(v.animate)}
             label="Email"
             placeholder="you@studio.dev"
             roughness={Number(v.roughness)}
             seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
           />
         </div>
       )}
       snippet={(v) =>
-        `<Input label="Email" placeholder="you@studio.dev" ${sketchSnippetProps(v)} />`
+        `<Input label="Email" placeholder="you@studio.dev" ${snippetExtras(v)} />`
       }
     />
   );
@@ -174,19 +195,21 @@ function InputPlayground() {
 function TextareaPlayground() {
   return (
     <Playground
-      controls={sketchControls}
+      controls={withAnimate(sketchControls)}
       render={(v) => (
         <div className="w-full max-w-sm">
           <Textarea
+            key={String(v.animate)}
             label="Note"
             placeholder="Scratch something down"
             roughness={Number(v.roughness)}
             seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
           />
         </div>
       )}
       snippet={(v) =>
-        `<Textarea label="Note" placeholder="Scratch something down" ${sketchSnippetProps(v)} />`
+        `<Textarea label="Note" placeholder="Scratch something down" ${snippetExtras(v)} />`
       }
     />
   );
@@ -195,12 +218,17 @@ function TextareaPlayground() {
 function CheckboxPlayground() {
   return (
     <Playground
-      controls={sketchControls}
+      controls={withAnimate(sketchControls)}
       render={(v) => (
-        <LiveCheckbox roughness={Number(v.roughness)} seed={seedFrom(v)} />
+        <LiveCheckbox
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        />
       )}
       snippet={(v) =>
-        `<Checkbox label="Keep the wobble" defaultChecked ${sketchSnippetProps(v)} />`
+        `<Checkbox label="Keep the wobble" defaultChecked ${snippetExtras(v)} />`
       }
     />
   );
@@ -209,9 +237,11 @@ function CheckboxPlayground() {
 function LiveCheckbox({
   roughness,
   seed,
+  animate,
 }: {
   roughness: number;
   seed?: number;
+  animate: boolean;
 }) {
   const [checked, setChecked] = useState(true);
   return (
@@ -221,6 +251,7 @@ function LiveCheckbox({
       onCheckedChange={(value) => setChecked(value === true)}
       roughness={roughness}
       seed={seed}
+      animate={animate}
     />
   );
 }
@@ -228,51 +259,78 @@ function LiveCheckbox({
 function RadioPlayground() {
   return (
     <Playground
-      controls={sketchControls}
+      controls={withAnimate(sketchControls)}
       render={(v) => (
-        <LiveRadio roughness={Number(v.roughness)} seed={seedFrom(v)} />
+        <LiveRadio
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        />
       )}
       snippet={(v) =>
         `<RadioGroup defaultValue="pen">
-  <Radio value="pen" label="Pen" ${sketchSnippetProps(v)} />
-  <Radio value="pencil" label="Pencil" ${sketchSnippetProps(v)} />
+  <Radio value="pen" label="Pen" ${snippetExtras(v)} />
+  <Radio value="pencil" label="Pencil" ${snippetExtras(v)} />
 </RadioGroup>`
       }
     />
   );
 }
 
-function LiveRadio({ roughness, seed }: { roughness: number; seed?: number }) {
+function LiveRadio({
+  roughness,
+  seed,
+  animate,
+}: {
+  roughness: number;
+  seed?: number;
+  animate: boolean;
+}) {
   const [value, setValue] = useState("pen");
   return (
     <RadioGroup value={value} onValueChange={setValue}>
-      <Radio value="pen" label="Pen" roughness={roughness} seed={seed} />
-      <Radio value="pencil" label="Pencil" roughness={roughness} seed={seed} />
+      <Radio
+        value="pen"
+        label="Pen"
+        roughness={roughness}
+        seed={seed}
+        animate={animate}
+      />
+      <Radio
+        value="pencil"
+        label="Pencil"
+        roughness={roughness}
+        seed={seed}
+        animate={animate}
+      />
     </RadioGroup>
   );
 }
 
 function CardPlayground() {
-  const controls: Control[] = [
+  const controls: Control[] = withAnimate([
     ...sketchControls,
     { type: "toggle", key: "shadow", label: "Shadow", defaultValue: true },
-  ];
+  ]);
   return (
     <Playground
       controls={controls}
       render={(v) => (
         <Card
+          key={String(v.animate)}
           title="Field notes"
           shadow={Boolean(v.shadow)}
           roughness={Number(v.roughness)}
           seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
           style={{ width: 280 }}
         >
           A container with a sketch border. Text inside stays HTML.
         </Card>
       )}
       snippet={(v) =>
-        `<Card title="Field notes" shadow={${Boolean(v.shadow)}} ${sketchSnippetProps(v)}>
+        `<Card title="Field notes" shadow={${Boolean(v.shadow)}} ${snippetExtras(v)}>
   A container with a sketch border.
 </Card>`
       }
@@ -281,7 +339,7 @@ function CardPlayground() {
 }
 
 function BadgePlayground() {
-  const controls: Control[] = [
+  const controls: Control[] = withAnimate([
     ...sketchControls,
     {
       type: "select",
@@ -290,28 +348,30 @@ function BadgePlayground() {
       options: ["default", "accent", "outline"],
       defaultValue: "accent",
     },
-  ];
+  ]);
   return (
     <Playground
       controls={controls}
       render={(v) => (
         <Badge
+          key={String(v.animate)}
           variant={v.variant as "accent"}
           roughness={Number(v.roughness)}
           seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
         >
           sketch
         </Badge>
       )}
       snippet={(v) =>
-        `<Badge variant="${v.variant}" ${sketchSnippetProps(v)}>sketch</Badge>`
+        `<Badge variant="${v.variant}" ${snippetExtras(v)}>sketch</Badge>`
       }
     />
   );
 }
 
 function AlertPlayground() {
-  const controls: Control[] = [
+  const controls: Control[] = withAnimate([
     ...sketchControls,
     {
       type: "select",
@@ -320,23 +380,25 @@ function AlertPlayground() {
       options: ["info", "warning", "error", "success"],
       defaultValue: "info",
     },
-  ];
+  ]);
   return (
     <Playground
       controls={controls}
       render={(v) => (
         <Alert
+          key={String(v.animate)}
           variant={v.variant as "info"}
           title="Heads up"
           roughness={Number(v.roughness)}
           seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
           style={{ maxWidth: 360 }}
         >
           Callouts keep a color-coded stroke and a light wash fill.
         </Alert>
       )}
       snippet={(v) =>
-        `<Alert variant="${v.variant}" title="Heads up" ${sketchSnippetProps(v)}>
+        `<Alert variant="${v.variant}" title="Heads up" ${snippetExtras(v)}>
   Callouts keep a color-coded stroke.
 </Alert>`
       }
@@ -347,14 +409,23 @@ function AlertPlayground() {
 function ModalPlayground() {
   return (
     <Playground
-      controls={sketchControls}
+      controls={withAnimate(sketchControls)}
       render={(v) => (
         <Modal
           title="Scratch pad"
           description="Radix handles focus, Escape, and ARIA. doodle-ui draws the frame."
           roughness={Number(v.roughness)}
           seed={seedFrom(v)}
-          trigger={<Button roughness={Number(v.roughness)} seed={seedFrom(v)}>Open modal</Button>}
+          animate={Boolean(v.animate)}
+          trigger={
+            <Button
+              roughness={Number(v.roughness)}
+              seed={seedFrom(v)}
+              animate={Boolean(v.animate)}
+            >
+              Open modal
+            </Button>
+          }
         >
           <p style={{ margin: 0, fontSize: 14, lineHeight: 1.5 }}>
             Drop any HTML in here. The sketch layer stays behind the content.
@@ -365,7 +436,7 @@ function ModalPlayground() {
         `<Modal
   title="Scratch pad"
   trigger={<Button>Open modal</Button>}
-  ${sketchSnippetProps(v)}
+  ${snippetExtras(v)}
 >
   Content
 </Modal>`
@@ -375,7 +446,7 @@ function ModalPlayground() {
 }
 
 function DividerPlayground() {
-  const controls: Control[] = [
+  const controls: Control[] = withAnimate([
     ...sketchControls,
     {
       type: "select",
@@ -384,7 +455,7 @@ function DividerPlayground() {
       options: ["horizontal", "vertical"],
       defaultValue: "horizontal",
     },
-  ];
+  ]);
   return (
     <Playground
       controls={controls}
@@ -397,21 +468,23 @@ function DividerPlayground() {
           }
         >
           <Divider
+            key={`${v.orientation}-${String(v.animate)}`}
             orientation={v.orientation as "horizontal"}
             roughness={Number(v.roughness)}
             seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
           />
         </div>
       )}
       snippet={(v) =>
-        `<Divider orientation="${v.orientation}" ${sketchSnippetProps(v)} />`
+        `<Divider orientation="${v.orientation}" ${snippetExtras(v)} />`
       }
     />
   );
 }
 
 function ProgressPlayground() {
-  const controls: Control[] = [
+  const controls: Control[] = withAnimate([
     ...sketchControls,
     {
       type: "slider",
@@ -422,21 +495,23 @@ function ProgressPlayground() {
       step: 1,
       defaultValue: 62,
     },
-  ];
+  ]);
   return (
     <Playground
       controls={controls}
       render={(v) => (
         <div className="w-full max-w-sm">
           <Progress
+            key={String(v.animate)}
             value={Number(v.value)}
             roughness={Number(v.roughness)}
             seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
           />
         </div>
       )}
       snippet={(v) =>
-        `<Progress value={${Number(v.value)}} ${sketchSnippetProps(v)} />`
+        `<Progress value={${Number(v.value)}} ${snippetExtras(v)} />`
       }
     />
   );
@@ -445,20 +520,26 @@ function ProgressPlayground() {
 function TooltipPlayground() {
   return (
     <Playground
-      controls={sketchControls}
+      controls={withAnimate(sketchControls)}
       render={(v) => (
         <Tooltip
           content="A small sketch bubble"
           roughness={Number(v.roughness)}
           seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
         >
-          <Button variant="outline" roughness={Number(v.roughness)} seed={seedFrom(v)}>
+          <Button
+            variant="outline"
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
+          >
             Hover me
           </Button>
         </Tooltip>
       )}
       snippet={(v) =>
-        `<Tooltip content="A small sketch bubble" ${sketchSnippetProps(v)}>
+        `<Tooltip content="A small sketch bubble" ${snippetExtras(v)}>
   <Button variant="outline">Hover me</Button>
 </Tooltip>`
       }
@@ -469,9 +550,14 @@ function TooltipPlayground() {
 function SelectPlayground() {
   return (
     <Playground
-      controls={sketchControls}
+      controls={withAnimate(sketchControls)}
       render={(v) => (
-        <LiveSelect roughness={Number(v.roughness)} seed={seedFrom(v)} />
+        <LiveSelect
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        />
       )}
       snippet={(v) =>
         `<Select
@@ -481,14 +567,22 @@ function SelectPlayground() {
     { value: "pencil", label: "Pencil" },
     { value: "brush", label: "Brush" },
   ]}
-  ${sketchSnippetProps(v)}
+  ${snippetExtras(v)}
 />`
       }
     />
   );
 }
 
-function LiveSelect({ roughness, seed }: { roughness: number; seed?: number }) {
+function LiveSelect({
+  roughness,
+  seed,
+  animate,
+}: {
+  roughness: number;
+  seed?: number;
+  animate: boolean;
+}) {
   const [value, setValue] = useState("pen");
   return (
     <Select
@@ -503,6 +597,7 @@ function LiveSelect({ roughness, seed }: { roughness: number; seed?: number }) {
       ]}
       roughness={roughness}
       seed={seed}
+      animate={animate}
     />
   );
 }
@@ -510,18 +605,31 @@ function LiveSelect({ roughness, seed }: { roughness: number; seed?: number }) {
 function SwitchPlayground() {
   return (
     <Playground
-      controls={sketchControls}
+      controls={withAnimate(sketchControls)}
       render={(v) => (
-        <LiveSwitch roughness={Number(v.roughness)} seed={seedFrom(v)} />
+        <LiveSwitch
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        />
       )}
       snippet={(v) =>
-        `<Switch label="Keep the wobble" defaultChecked ${sketchSnippetProps(v)} />`
+        `<Switch label="Keep the wobble" defaultChecked ${snippetExtras(v)} />`
       }
     />
   );
 }
 
-function LiveSwitch({ roughness, seed }: { roughness: number; seed?: number }) {
+function LiveSwitch({
+  roughness,
+  seed,
+  animate,
+}: {
+  roughness: number;
+  seed?: number;
+  animate: boolean;
+}) {
   const [checked, setChecked] = useState(true);
   return (
     <Switch
@@ -530,6 +638,7 @@ function LiveSwitch({ roughness, seed }: { roughness: number; seed?: number }) {
       onCheckedChange={setChecked}
       roughness={roughness}
       seed={seed}
+      animate={animate}
     />
   );
 }
@@ -588,14 +697,19 @@ function LiveSlider({
 function TabsPlayground() {
   return (
     <Playground
-      controls={sketchControls}
+      controls={withAnimate(sketchControls)}
       render={(v) => (
         <div className="w-full max-w-md">
-          <LiveTabs roughness={Number(v.roughness)} seed={seedFrom(v)} />
+          <LiveTabs
+            key={String(v.animate)}
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
+          />
         </div>
       )}
       snippet={(v) =>
-        `<Tabs defaultValue="ink" ${sketchSnippetProps(v)}>
+        `<Tabs defaultValue="ink" ${snippetExtras(v)}>
   <TabList>
     <Tab value="ink">Ink</Tab>
     <Tab value="wash">Wash</Tab>
@@ -608,9 +722,22 @@ function TabsPlayground() {
   );
 }
 
-function LiveTabs({ roughness, seed }: { roughness: number; seed?: number }) {
+function LiveTabs({
+  roughness,
+  seed,
+  animate,
+}: {
+  roughness: number;
+  seed?: number;
+  animate: boolean;
+}) {
   return (
-    <Tabs defaultValue="ink" roughness={roughness} seed={seed}>
+    <Tabs
+      defaultValue="ink"
+      roughness={roughness}
+      seed={seed}
+      animate={animate}
+    >
       <TabList>
         <Tab value="ink">Ink</Tab>
         <Tab value="wash">Wash</Tab>
@@ -662,7 +789,7 @@ function AccordionPlayground() {
 }
 
 function TablePlayground() {
-  const controls: Control[] = [
+  const controls: Control[] = withAnimate([
     ...sketchControls,
     {
       type: "toggle",
@@ -670,16 +797,18 @@ function TablePlayground() {
       label: "Header underline",
       defaultValue: true,
     },
-  ];
+  ]);
   return (
     <Playground
       controls={controls}
       render={(v) => (
         <div className="w-full max-w-md">
           <Table
+            key={String(v.animate)}
             headerUnderline={Boolean(v.headerUnderline)}
             roughness={Number(v.roughness)}
             seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
           >
             <TableHead>
               <TableRow>
@@ -705,7 +834,7 @@ function TablePlayground() {
         </div>
       )}
       snippet={(v) =>
-        `<Table headerUnderline={${Boolean(v.headerUnderline)}} ${sketchSnippetProps(v)}>
+        `<Table headerUnderline={${Boolean(v.headerUnderline)}} ${snippetExtras(v)}>
   <TableHead>
     <TableRow>
       <TableHeaderCell>Tool</TableHeaderCell>
@@ -725,7 +854,7 @@ function TablePlayground() {
 }
 
 function ToastPlayground() {
-  const controls: Control[] = [
+  const controls: Control[] = withAnimate([
     ...sketchControls,
     {
       type: "select",
@@ -734,7 +863,7 @@ function ToastPlayground() {
       options: ["info", "warning", "error", "success"],
       defaultValue: "success",
     },
-  ];
+  ]);
   return (
     <Playground
       controls={controls}
@@ -743,10 +872,11 @@ function ToastPlayground() {
           roughness={Number(v.roughness)}
           seed={seedFrom(v)}
           variant={v.variant as "success"}
+          animate={Boolean(v.animate)}
         />
       )}
       snippet={(v) =>
-        `<Toast variant="${v.variant}" title="Saved" ${sketchSnippetProps(v)}>
+        `<Toast variant="${v.variant}" title="Saved" ${snippetExtras(v)}>
   The sketch is in the notebook.
 </Toast>`
       }
@@ -758,10 +888,12 @@ function LiveToast({
   roughness,
   seed,
   variant,
+  animate,
 }: {
   roughness: number;
   seed?: number;
   variant: "info" | "warning" | "error" | "success";
+  animate: boolean;
 }) {
   const [open, setOpen] = useState(false);
   return (
@@ -771,6 +903,7 @@ function LiveToast({
           variant="outline"
           roughness={roughness}
           seed={seed}
+          animate={animate}
           onClick={() => setOpen(true)}
         >
           Show toast
@@ -783,6 +916,7 @@ function LiveToast({
           duration={3200}
           roughness={roughness}
           seed={seed}
+          animate={animate}
         >
           The sketch is in the notebook.
         </Toast>

@@ -2,13 +2,20 @@
 
 import {
   forwardRef,
+  useRef,
   type CSSProperties,
   type HTMLAttributes,
+  type MutableRefObject,
   type ReactNode,
 } from "react";
-import { RoughSvg } from "./RoughSvg";
+import {
+  DRAW_IN_DURATION_MS,
+  useAnimate,
+  useDrawIn,
+} from "../animations";
 import type { FillStyle, RoughShape, SketchProps } from "../types";
-import { cn, doodleUiFontFamily } from "../utils";
+import { assignRef, cn, doodleUiFontFamily } from "../utils";
+import { RoughSvg } from "./RoughSvg";
 
 export interface SketchBoxProps
   extends SketchProps, Omit<HTMLAttributes<HTMLDivElement>, "color"> {
@@ -21,6 +28,14 @@ export interface SketchBoxProps
   contentStyle?: CSSProperties;
   inset?: number;
   path?: string;
+  /**
+   * Sketch-in the border on mount. Defaults to the DoodleUIProvider value.
+   */
+  animate?: boolean;
+  /** Override the default 400ms draw-in duration. */
+  drawInDuration?: number;
+  /** Replay draw-in when this value changes. */
+  drawInKey?: unknown;
 }
 
 export const SketchBox = forwardRef<HTMLDivElement, SketchBoxProps>(
@@ -42,13 +57,23 @@ export const SketchBox = forwardRef<HTMLDivElement, SketchBoxProps>(
       strokeWidth,
       inset,
       path,
+      animate,
+      drawInDuration = DRAW_IN_DURATION_MS,
+      drawInKey,
       ...rest
     },
     ref,
   ) {
+    const rootRef = useRef<HTMLDivElement>(null);
+    const shouldAnimate = useAnimate(animate);
+    useDrawIn(rootRef, drawInDuration, shouldAnimate, drawInKey);
+
     return (
       <div
-        ref={ref}
+        ref={(node) => {
+          (rootRef as MutableRefObject<HTMLDivElement | null>).current = node;
+          assignRef(ref, node);
+        }}
         className={cn(className)}
         style={{ position: "relative", ...style }}
         {...rest}

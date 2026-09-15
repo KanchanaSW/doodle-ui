@@ -13,15 +13,21 @@ import {
   type ThHTMLAttributes,
   type TableHTMLAttributes,
 } from "react";
+import {
+  DRAW_IN_DURATION_MS,
+  TABLE_STAGGER_MS,
+  useAnimate,
+  useDrawIn,
+} from "../animations";
+import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
-import { useResolvedSeed } from "../hooks/useResolvedSeed";
-import { deriveSeed } from "../utils";
+import { assignRef, cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 interface TableSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  shouldAnimate: boolean;
 }
 
 const TableSketchContext = createContext<TableSketchContextValue | null>(null);
@@ -39,6 +45,11 @@ export interface TableProps
     SketchProps {
   headerUnderline?: boolean;
   children?: ReactNode;
+  /**
+   * Draw-in row rules on mount, staggered slightly. Defaults to the
+   * DoodleUIProvider value (true).
+   */
+  animate?: boolean;
 }
 
 interface RowLine {
@@ -46,6 +57,64 @@ interface RowLine {
   width: number;
   key: string;
   header: boolean;
+  index: number;
+}
+
+function TableRule({
+  line,
+  headerUnderline,
+  roughness,
+  resolvedSeed,
+  ink,
+  bowing,
+  strokeWidth,
+  shouldAnimate,
+}: {
+  line: RowLine;
+  headerUnderline: boolean;
+  roughness?: number;
+  resolvedSeed: number;
+  ink: string;
+  bowing?: number;
+  strokeWidth?: number;
+  shouldAnimate: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const delay = shouldAnimate
+    ? Math.min(line.index, 6) * TABLE_STAGGER_MS
+    : 0;
+  useDrawIn(ref, DRAW_IN_DURATION_MS, shouldAnimate, undefined, delay);
+
+  if (line.header && !headerUnderline) return null;
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        position: "absolute",
+        left: 0,
+        width: line.width,
+        top: line.y - 6,
+        height: 12,
+      }}
+    >
+      <RoughSvg
+        shape="line"
+        roughness={
+          line.header ? (roughness ?? 1.5) + 0.2 : roughness ?? 1.7
+        }
+        seed={deriveSeed(resolvedSeed, line.key)}
+        sketchColor={ink}
+        bowing={bowing ?? (line.header ? 1.4 : 2)}
+        strokeWidth={
+          line.header
+            ? (strokeWidth ?? 1.75) + 0.35
+            : strokeWidth ?? 1.35
+        }
+        inset={6}
+      />
+    </div>
+  );
 }
 
 export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
@@ -60,6 +129,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
     bowing,
     fillStyle,
     strokeWidth,
+    animate,
     ...rest
   },
   ref,
@@ -69,6 +139,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   const [lines, setLines] = useState<RowLine[]>([]);
   const resolvedSeed = useResolvedSeed(seed);
   const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const shouldAnimate = useAnimate(animate);
 
   useLayoutEffect(() => {
     const wrapper = wrapperRef.current;
@@ -87,6 +158,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
           width: table.offsetWidth,
           key: isHeader ? `header-${index}` : `row-${index}`,
           header: Boolean(isHeader),
+          index,
         });
       });
       setLines(next);
@@ -110,6 +182,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
         strokeWidth,
         resolvedSeed,
         ink,
+        shouldAnimate,
       }}
     >
       <div
@@ -127,45 +200,24 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
             overflow: "visible",
           }}
         >
-          {lines.map((line) => {
-            if (line.header && !headerUnderline) return null;
-            return (
-              <div
-                key={line.key}
-                style={{
-                  position: "absolute",
-                  left: 0,
-                  width: line.width,
-                  top: line.y - 6,
-                  height: 12,
-                }}
-              >
-                <RoughSvg
-                  shape="line"
-                  roughness={
-                    line.header
-                      ? (roughness ?? 1.5) + 0.2
-                      : roughness ?? 1.7
-                  }
-                  seed={deriveSeed(resolvedSeed, line.key)}
-                  sketchColor={ink}
-                  bowing={bowing ?? (line.header ? 1.4 : 2)}
-                  strokeWidth={
-                    line.header
-                      ? (strokeWidth ?? 1.75) + 0.35
-                      : strokeWidth ?? 1.35
-                  }
-                  inset={6}
-                />
-              </div>
-            );
-          })}
+          {lines.map((line) => (
+            <TableRule
+              key={line.key}
+              line={line}
+              headerUnderline={headerUnderline}
+              roughness={roughness}
+              resolvedSeed={resolvedSeed}
+              ink={ink}
+              bowing={bowing}
+              strokeWidth={strokeWidth}
+              shouldAnimate={shouldAnimate}
+            />
+          ))}
         </div>
         <table
           ref={(node) => {
             tableRef.current = node;
-            if (typeof ref === "function") ref(node);
-            else if (ref) ref.current = node;
+            assignRef(ref, node);
           }}
           style={{
             width: "100%",

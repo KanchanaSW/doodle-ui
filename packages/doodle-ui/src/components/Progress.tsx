@@ -1,15 +1,32 @@
 "use client";
 
-import { forwardRef, type HTMLAttributes } from "react";
+import {
+  forwardRef,
+  useRef,
+  type HTMLAttributes,
+  type MutableRefObject,
+} from "react";
+import {
+  DRAW_IN_DURATION_MS,
+  useAnimate,
+  useDrawIn,
+  useTweenNumber,
+} from "../animations";
+import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
+import { assignRef, cn, deriveSeed } from "../utils";
 
 export interface ProgressProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color">,
     SketchProps {
   value?: number;
   max?: number;
+  /**
+   * Draw-in the track on mount and redraw the fill as value changes.
+   * Defaults to the DoodleUIProvider value (true).
+   */
+  animate?: boolean;
 }
 
 export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
@@ -25,17 +42,33 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       bowing,
       fillStyle,
       strokeWidth,
+      animate,
       ...rest
     },
     ref,
   ) {
+    const rootRef = useRef<HTMLDivElement>(null);
+    const trackRef = useRef<HTMLSpanElement>(null);
     const ink = sketchColor ?? SKETCH_COLORS.accent;
     const clamped = Math.min(max, Math.max(0, value));
     const percent = max === 0 ? 0 : (clamped / max) * 100;
+    const shouldAnimate = useAnimate(animate);
+    const displayed = useTweenNumber(percent, shouldAnimate, 420);
+    const resolvedSeed = useResolvedSeed(seed);
+    const fillSeed = shouldAnimate
+      ? deriveSeed(resolvedSeed, `fill-${Math.round(displayed / 6)}`)
+      : resolvedSeed;
+    const fillRoughness =
+      (roughness ?? 1.5) + 0.4 + (displayed / 100) * 0.7;
+
+    useDrawIn(trackRef, DRAW_IN_DURATION_MS, shouldAnimate);
 
     return (
       <div
-        ref={ref}
+        ref={(node) => {
+          (rootRef as MutableRefObject<HTMLDivElement | null>).current = node;
+          assignRef(ref, node);
+        }}
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={max}
@@ -49,31 +82,36 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
         }}
         {...rest}
       >
-        <RoughSvg
-          shape="rectangle"
-          roughness={roughness}
-          seed={seed}
-          sketchColor={SKETCH_COLORS.ink}
-          bowing={bowing}
-          strokeWidth={strokeWidth ?? 1.5}
-          inset={2}
-        />
-        {percent > 0 ? (
+        <span
+          ref={trackRef}
+          style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+        >
+          <RoughSvg
+            shape="rectangle"
+            roughness={roughness}
+            seed={resolvedSeed}
+            sketchColor={SKETCH_COLORS.ink}
+            bowing={bowing}
+            strokeWidth={strokeWidth ?? 1.5}
+            inset={2}
+          />
+        </span>
+        {displayed > 0 ? (
           <div
             style={{
               position: "absolute",
               left: 5,
               top: 4,
               bottom: 4,
-              width: `calc(${percent}% - 10px)`,
-              minWidth: percent > 0 ? 8 : 0,
+              width: `calc(${displayed}% - 10px)`,
+              minWidth: displayed > 0 ? 8 : 0,
               overflow: "hidden",
             }}
           >
             <RoughSvg
               shape="rectangle"
-              roughness={(roughness ?? 1.5) + 0.55}
-              seed={seed}
+              roughness={fillRoughness}
+              seed={fillSeed}
               sketchColor={ink}
               fill={ink}
               fillStyle={fillStyle ?? "hachure"}

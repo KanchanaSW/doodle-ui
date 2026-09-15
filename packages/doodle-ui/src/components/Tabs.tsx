@@ -4,21 +4,29 @@ import {
   createContext,
   forwardRef,
   useContext,
+  useLayoutEffect,
+  useRef,
   useState,
   type ComponentPropsWithoutRef,
+  type MutableRefObject,
   type ReactNode,
 } from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
+import {
+  DRAW_IN_MARK_MS,
+  useAnimate,
+  useDrawIn,
+} from "../animations";
+import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
-import { useResolvedSeed } from "../hooks/useResolvedSeed";
-import { deriveSeed } from "../utils";
+import { assignRef, cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 interface TabsSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
   current: string | undefined;
+  shouldAnimate: boolean;
 }
 
 const TabsSketchContext = createContext<TabsSketchContextValue | null>(null);
@@ -33,7 +41,13 @@ function useTabsSketch(): TabsSketchContextValue {
 
 export interface TabsProps
   extends Omit<ComponentPropsWithoutRef<typeof TabsPrimitive.Root>, "asChild">,
-    SketchProps {}
+    SketchProps {
+  /**
+   * Draw-in the active underline and slide it on tab change.
+   * Defaults to the DoodleUIProvider value (true).
+   */
+  animate?: boolean;
+}
 
 export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   {
@@ -49,6 +63,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     bowing,
     fillStyle,
     strokeWidth,
+    animate,
     ...rest
   },
   ref,
@@ -57,6 +72,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   const current = value ?? uncontrolled;
   const resolvedSeed = useResolvedSeed(seed);
   const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const shouldAnimate = useAnimate(animate);
 
   return (
     <TabsSketchContext.Provider
@@ -70,6 +86,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
         resolvedSeed,
         ink,
         current,
+        shouldAnimate,
       }}
     >
       <TabsPrimitive.Root
@@ -96,21 +113,106 @@ export interface TabListProps
     "asChild"
   > {}
 
+interface UnderlineBox {
+  left: number;
+  top: number;
+  width: number;
+}
+
+function TabUnderline({
+  box,
+  seed,
+  sketch,
+}: {
+  box: UnderlineBox;
+  seed: number;
+  sketch: TabsSketchContextValue;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  useDrawIn(ref, DRAW_IN_MARK_MS, sketch.shouldAnimate, seed);
+
+  return (
+    <span
+      ref={ref}
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        left: box.left,
+        top: box.top,
+        width: box.width,
+        height: 10,
+        pointerEvents: "none",
+        transition: sketch.shouldAnimate
+          ? "left 220ms ease, width 220ms ease, top 220ms ease"
+          : undefined,
+      }}
+    >
+      <RoughSvg
+        shape="line"
+        roughness={(sketch.roughness ?? 1.5) + 0.35}
+        seed={seed}
+        sketchColor={SKETCH_COLORS.accent}
+        bowing={sketch.bowing ?? 1.8}
+        strokeWidth={(sketch.strokeWidth ?? 1.75) + 0.4}
+        inset={2}
+      />
+    </span>
+  );
+}
+
 export const TabList = forwardRef<HTMLDivElement, TabListProps>(
   function TabList({ className, style, children, ...rest }, ref) {
+    const sketch = useTabsSketch();
+    const listRef = useRef<HTMLDivElement>(null);
+    const [underline, setUnderline] = useState<UnderlineBox | null>(null);
+
+    useLayoutEffect(() => {
+      const list = listRef.current;
+      if (!list) return;
+
+      const measure = () => {
+        const active = list.querySelector<HTMLElement>('[data-state="active"]');
+        if (!active) {
+          setUnderline(null);
+          return;
+        }
+        setUnderline({
+          left: active.offsetLeft + 8,
+          top: active.offsetTop + active.offsetHeight - 10,
+          width: Math.max(12, active.offsetWidth - 16),
+        });
+      };
+
+      measure();
+      const observer = new ResizeObserver(measure);
+      observer.observe(list);
+      return () => observer.disconnect();
+    }, [sketch.current, children]);
+
     return (
       <TabsPrimitive.List
-        ref={ref}
+        ref={(node) => {
+          (listRef as MutableRefObject<HTMLDivElement | null>).current = node;
+          assignRef(ref, node);
+        }}
         className={cn(className)}
         style={{
           display: "flex",
           flexWrap: "wrap",
           gap: 4,
+          position: "relative",
           ...style,
         }}
         {...rest}
       >
         {children}
+        {underline && sketch.current ? (
+          <TabUnderline
+            box={underline}
+            seed={deriveSeed(sketch.resolvedSeed, sketch.current)}
+            sketch={sketch}
+          />
+        ) : null}
       </TabsPrimitive.List>
     );
   },
@@ -154,28 +256,6 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(function Tab(
       {...rest}
     >
       <span style={{ position: "relative", zIndex: 1 }}>{children}</span>
-      {active ? (
-        <span
-          style={{
-            position: "absolute",
-            left: 8,
-            right: 8,
-            bottom: 2,
-            height: 10,
-            pointerEvents: "none",
-          }}
-        >
-          <RoughSvg
-            shape="line"
-            roughness={(sketch.roughness ?? 1.5) + 0.35}
-            seed={deriveSeed(sketch.resolvedSeed, value)}
-            sketchColor={SKETCH_COLORS.accent}
-            bowing={sketch.bowing ?? 1.8}
-            strokeWidth={(sketch.strokeWidth ?? 1.75) + 0.4}
-            inset={2}
-          />
-        </span>
-      ) : null}
     </TabsPrimitive.Trigger>
   );
 });

@@ -1,3 +1,11 @@
+import type { ForwardedRef, MutableRefObject } from "react";
+
+export function assignRef<T>(ref: ForwardedRef<T> | undefined, value: T | null) {
+  if (!ref) return;
+  if (typeof ref === "function") ref(value);
+  else (ref as MutableRefObject<T | null>).current = value;
+}
+
 export function randomSeed(): number {
   return Math.floor(Math.random() * 2 ** 31);
 }
