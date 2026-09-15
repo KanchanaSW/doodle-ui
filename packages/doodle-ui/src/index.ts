@@ -155,3 +155,4 @@ export {
   type StepperStep,
   type StepperOrientation,
 } from "./components/Stepper";
+export { Label, type LabelProps } from "./components/Label";
