@@ -250,3 +250,4 @@ export {
   type CommandItemProps,
   type CommandSeparatorProps,
 } from "./components/Command";
+export { Combobox, type ComboboxProps } from "./components/Combobox";
