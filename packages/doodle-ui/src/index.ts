@@ -174,3 +174,23 @@ export {
   type PopoverProps,
   type PopoverContentProps,
 } from "./components/Popover";
+export {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuGroup,
+  DropdownMenuRadioGroup,
+  DropdownMenuSub,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  type DropdownMenuProps,
+  type DropdownMenuContentProps,
+  type DropdownMenuItemProps,
+  type DropdownMenuCheckboxItemProps,
+  type DropdownMenuRadioItemProps,
+  type DropdownMenuLabelProps,
+  type DropdownMenuSeparatorProps,
+} from "./components/DropdownMenu";
