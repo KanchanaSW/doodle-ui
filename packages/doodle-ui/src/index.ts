@@ -156,3 +156,11 @@ export {
   type StepperOrientation,
 } from "./components/Stepper";
 export { Label, type LabelProps } from "./components/Label";
+export {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+  type CollapsibleProps,
+  type CollapsibleTriggerProps,
+  type CollapsibleContentProps,
+} from "./components/Collapsible";
