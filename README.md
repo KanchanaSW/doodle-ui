@@ -4,7 +4,7 @@ Hand-drawn React components with an Excalidraw-like sketch aesthetic. Chrome is 
 
 The published package is `[doodleui-react](https://www.npmjs.com/package/doodleui-react)`. Docs live at [doodle-ui.netlify.app](https://doodle-ui.netlify.app).
 
-<img width="2964" height="4067" alt="image" src="https://github.com/user-attachments/assets/5ebf0f9f-2ae0-41a6-bba1-66b796d99050" />
+![image](https://github.com/user-attachments/assets/5ebf0f9f-2ae0-41a6-bba1-66b796d99050)
 
 Install
 
@@ -92,6 +92,8 @@ pnpm typecheck
 
 ```bash
 pnpm --filter doodleui-react publish --access public
+
+npx pnpm --filter doodleui-react publish --access public --no-git-checks
 ```
 
 `doodle-ui` is blocked on npm by an unpublished stub, so the package name is `doodleui-react`.
