@@ -1,0 +1,133 @@
+"use client";
+
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+} from "react";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
+import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { SketchBox } from "../primitives/SketchBox";
+import { SKETCH_COLORS, type SketchProps } from "../types";
+import { cn } from "../utils";
+
+interface PopoverSketchContextValue extends SketchProps {
+  resolvedSeed: number;
+  ink: string;
+  animate?: boolean;
+}
+
+const PopoverSketchContext = createContext<PopoverSketchContextValue | null>(
+  null,
+);
+
+function usePopoverSketch(): PopoverSketchContextValue {
+  const ctx = useContext(PopoverSketchContext);
+  if (!ctx) {
+    throw new Error("Popover parts must be used inside <Popover>.");
+  }
+  return ctx;
+}
+
+export interface PopoverProps
+  extends Omit<PopoverPrimitive.PopoverProps, "children">,
+    SketchProps {
+  children?: ReactNode;
+  /**
+   * Draw-in the panel border when the popover opens.
+   * Defaults to the DoodleUIProvider value (true).
+   */
+  animate?: boolean;
+}
+
+export function Popover({
+  children,
+  roughness,
+  seed,
+  sketchColor,
+  bowing,
+  fillStyle,
+  strokeWidth,
+  animate,
+  ...rest
+}: PopoverProps) {
+  const resolvedSeed = useResolvedSeed(seed);
+  const ink = sketchColor ?? SKETCH_COLORS.ink;
+
+  return (
+    <PopoverSketchContext.Provider
+      value={{
+        roughness,
+        seed: resolvedSeed,
+        sketchColor,
+        bowing,
+        fillStyle,
+        strokeWidth,
+        resolvedSeed,
+        ink,
+        animate,
+      }}
+    >
+      <PopoverPrimitive.Root {...rest}>{children}</PopoverPrimitive.Root>
+    </PopoverSketchContext.Provider>
+  );
+}
+
+export const PopoverTrigger = PopoverPrimitive.Trigger;
+export const PopoverAnchor = PopoverPrimitive.Anchor;
+export const PopoverClose = PopoverPrimitive.Close;
+
+export interface PopoverContentProps
+  extends Omit<PopoverPrimitive.PopoverContentProps, "asChild"> {
+  children?: ReactNode;
+}
+
+export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
+  function PopoverContent(
+    { className, style, children, sideOffset = 8, ...rest },
+    ref,
+  ) {
+    const sketch = usePopoverSketch();
+
+    return (
+      <PopoverPrimitive.Portal>
+        <PopoverPrimitive.Content
+          ref={ref}
+          sideOffset={sideOffset}
+          className={cn(className)}
+          style={{ zIndex: 80, outline: "none", ...style }}
+          {...rest}
+        >
+          <SketchBox
+            roughness={sketch.roughness}
+            seed={sketch.resolvedSeed}
+            sketchColor={sketch.ink}
+            bowing={sketch.bowing}
+            fillStyle={sketch.fillStyle ?? "solid"}
+            fill="#f7f6f2"
+            strokeWidth={sketch.strokeWidth ?? 1.5}
+            shadow
+            animate={sketch.animate}
+            contentStyle={{ padding: "14px 16px", minWidth: 200 }}
+          >
+            {children}
+          </SketchBox>
+        </PopoverPrimitive.Content>
+      </PopoverPrimitive.Portal>
+    );
+  },
+);
+
+export interface PopoverArrowProps
+  extends ComponentPropsWithoutRef<typeof PopoverPrimitive.Arrow> {}
+
+export const PopoverArrow = forwardRef<SVGSVGElement, PopoverArrowProps>(
+  function PopoverArrow(props, ref) {
+    const sketch = usePopoverSketch();
+    return (
+      <PopoverPrimitive.Arrow ref={ref} fill={sketch.ink} {...props} />
+    );
+  },
+);

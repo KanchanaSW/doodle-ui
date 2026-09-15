@@ -164,3 +164,13 @@ export {
   type CollapsibleTriggerProps,
   type CollapsibleContentProps,
 } from "./components/Collapsible";
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverAnchor,
+  PopoverClose,
+  PopoverContent,
+  PopoverArrow,
+  type PopoverProps,
+  type PopoverContentProps,
+} from "./components/Popover";
