@@ -93,6 +93,9 @@ pnpm typecheck
 ## Publish (library)
 
 ```bash
+npm login
+npm whoami
+
 pnpm --filter doodleui-react publish --access public
 
 npx pnpm --filter doodleui-react publish --access public --no-git-checks
