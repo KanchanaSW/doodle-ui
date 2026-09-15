@@ -1,0 +1,30 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { comboboxProps } from "@/lib/props";
+
+# Combobox
+
+A searchable select. Radix has no dedicated Combobox primitive, so this composes `Popover` (positioning) and `Command` (search/filter) behind a sketchy, `Select`-styled trigger — the same recipe shadcn uses.
+
+<ComponentPlayground name="combobox" />
+
+## Usage
+
+```tsx
+import { Combobox } from "doodleui-react";
+
+<Combobox
+  options={[
+    { value: "pen", label: "Pen" },
+    { value: "pencil", label: "Pencil" },
+    { value: "brush", label: "Brush" },
+  ]}
+  placeholder="Select a tool…"
+/>
+```
+
+Reach for `Select` when the list is short and doesn't need search; reach for `Combobox` once the list is long enough that typing beats scrolling.
+
+## Props
+
+<PropsTable rows={comboboxProps} />

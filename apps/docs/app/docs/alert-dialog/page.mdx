@@ -1,0 +1,48 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { alertDialogProps } from "@/lib/props";
+
+# Alert Dialog
+
+The confirm / destructive-action variant of `Dialog`, built on Radix Alert Dialog. Unlike `Dialog`, there is no dismiss-on-outside-click or Escape by default — the user must pick an action.
+
+<ComponentPlayground name="alert-dialog" />
+
+## Usage
+
+```tsx
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+  Button,
+} from "doodleui-react";
+
+<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="outline">Delete sketch</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Delete this sketch?</AlertDialogTitle>
+      <AlertDialogDescription>This can't be undone.</AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
+
+`AlertDialogAction` renders an accent-filled `Button`; `AlertDialogCancel` renders an outline `Button`.
+
+## Props
+
+<PropsTable rows={alertDialogProps} />

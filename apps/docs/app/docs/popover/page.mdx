@@ -1,0 +1,28 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { popoverProps } from "@/lib/props";
+
+# Popover
+
+A sketchy-bordered floating panel anchored to a trigger, built on Radix Popover. The panel border draws in on open, same recipe as the Select menu.
+
+<ComponentPlayground name="popover" />
+
+## Usage
+
+```tsx
+import { Popover, PopoverTrigger, PopoverContent, Button } from "doodleui-react";
+
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Open popover</Button>
+  </PopoverTrigger>
+  <PopoverContent>
+    A sketchy floating panel anchored to its trigger.
+  </PopoverContent>
+</Popover>
+```
+
+## Props
+
+<PropsTable rows={popoverProps} />

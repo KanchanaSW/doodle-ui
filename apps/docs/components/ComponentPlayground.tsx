@@ -7,6 +7,15 @@ import {
   AccordionItem,
   AccordionTrigger,
   Alert,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
   Avatar,
   Badge,
   Breadcrumb,
@@ -14,10 +23,38 @@ import {
   Button,
   Card,
   Checkbox,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  Combobox,
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
   Divider,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
   Input,
+  Label,
   Modal,
   Pagination,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Progress,
   Radio,
   RadioGroup,
@@ -122,6 +159,22 @@ export function ComponentPlayground({ name }: { name: ComponentSlug }) {
       return <SkeletonPlayground />;
     case "stepper":
       return <StepperPlayground />;
+    case "label":
+      return <LabelPlayground />;
+    case "collapsible":
+      return <CollapsiblePlayground />;
+    case "popover":
+      return <PopoverPlayground />;
+    case "dropdown-menu":
+      return <DropdownMenuPlayground />;
+    case "dialog":
+      return <DialogPlayground />;
+    case "alert-dialog":
+      return <AlertDialogPlayground />;
+    case "command":
+      return <CommandPlayground />;
+    case "combobox":
+      return <ComboboxPlayground />;
     default:
       return null;
   }
@@ -1098,6 +1151,341 @@ function StepperPlayground() {
   ${sketchSnippetProps(v)}
 />`
       }
+    />
+  );
+}
+
+function LabelPlayground() {
+  const controls: Control[] = withAnimate([
+    ...sketchControls,
+    { type: "toggle", key: "required", label: "Required", defaultValue: true },
+  ]);
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <div className="flex flex-col gap-2">
+          <Label
+            key={String(v.animate)}
+            htmlFor="playground-email"
+            required={Boolean(v.required)}
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
+          >
+            Email
+          </Label>
+          <Input id="playground-email" placeholder="you@studio.dev" />
+        </div>
+      )}
+      snippet={(v) =>
+        `<Label htmlFor="email" required={${Boolean(v.required)}} ${snippetExtras(v)}>
+  Email
+</Label>
+<Input id="email" placeholder="you@studio.dev" />`
+      }
+    />
+  );
+}
+
+function CollapsiblePlayground() {
+  return (
+    <Playground
+      controls={sketchControls}
+      render={(v) => (
+        <div className="w-full max-w-md">
+          <Collapsible
+            defaultOpen
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+          >
+            <CollapsibleTrigger>What is a seed?</CollapsibleTrigger>
+            <CollapsibleContent>
+              A number that locks the wobble. Omit it and Shuffle redraws every line.
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
+      )}
+      snippet={(v) =>
+        `<Collapsible defaultOpen ${sketchSnippetProps(v)}>
+  <CollapsibleTrigger>What is a seed?</CollapsibleTrigger>
+  <CollapsibleContent>A number that locks the wobble.</CollapsibleContent>
+</Collapsible>`
+      }
+    />
+  );
+}
+
+function PopoverPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <Popover
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <PopoverTrigger asChild>
+            <Button variant="outline">Open popover</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <p className="text-sm m-0">A sketchy floating panel anchored to its trigger.</p>
+          </PopoverContent>
+        </Popover>
+      )}
+      snippet={(v) =>
+        `<Popover ${snippetExtras(v)}>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Open popover</Button>
+  </PopoverTrigger>
+  <PopoverContent>A sketchy floating panel.</PopoverContent>
+</Popover>`
+      }
+    />
+  );
+}
+
+function DropdownMenuPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <DropdownMenu
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">Open menu</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Tools</DropdownMenuLabel>
+            <DropdownMenuItem>Pen</DropdownMenuItem>
+            <DropdownMenuItem>Pencil</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Brush</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+      snippet={(v) =>
+        `<DropdownMenu ${snippetExtras(v)}>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Open menu</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>Tools</DropdownMenuLabel>
+    <DropdownMenuItem>Pen</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>Brush</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>`
+      }
+    />
+  );
+}
+
+function DialogPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <Dialog
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <DialogTrigger asChild>
+            <Button variant="outline">Open dialog</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Rename sketch</DialogTitle>
+              <DialogDescription>Give this notebook page a new title.</DialogDescription>
+            </DialogHeader>
+            <Input defaultValue="Field notes" />
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="ghost">Cancel</Button>
+              </DialogClose>
+              <DialogClose asChild>
+                <Button variant="primary">Save</Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
+      snippet={(v) =>
+        `<Dialog ${snippetExtras(v)}>
+  <DialogTrigger asChild>
+    <Button variant="outline">Open dialog</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Rename sketch</DialogTitle>
+      <DialogDescription>Give this notebook page a new title.</DialogDescription>
+    </DialogHeader>
+    <Input defaultValue="Field notes" />
+    <DialogFooter>
+      <DialogClose asChild><Button variant="ghost">Cancel</Button></DialogClose>
+      <DialogClose asChild><Button variant="primary">Save</Button></DialogClose>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>`
+      }
+    />
+  );
+}
+
+function AlertDialogPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <AlertDialog
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <AlertDialogTrigger asChild>
+            <Button variant="outline">Delete sketch</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete this sketch?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This can&apos;t be undone. The page and its history are gone for good.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction>Delete</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
+      snippet={(v) =>
+        `<AlertDialog ${snippetExtras(v)}>
+  <AlertDialogTrigger asChild>
+    <Button variant="outline">Delete sketch</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Delete this sketch?</AlertDialogTitle>
+      <AlertDialogDescription>This can't be undone.</AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Delete</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`
+      }
+    />
+  );
+}
+
+const COMMAND_TOOLS = ["Pen", "Pencil", "Brush", "Eraser", "Ruler"];
+
+function CommandPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <div className="w-full max-w-sm">
+          <Command
+            key={String(v.animate)}
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
+          >
+            <CommandInput placeholder="Search tools…" />
+            <CommandList>
+              <CommandEmpty>No results.</CommandEmpty>
+              <CommandGroup>
+                {COMMAND_TOOLS.map((tool) => (
+                  <CommandItem key={tool} value={tool}>
+                    {tool}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </div>
+      )}
+      snippet={(v) =>
+        `<Command ${snippetExtras(v)}>
+  <CommandInput placeholder="Search tools…" />
+  <CommandList>
+    <CommandEmpty>No results.</CommandEmpty>
+    <CommandGroup>
+      <CommandItem value="Pen">Pen</CommandItem>
+      <CommandItem value="Pencil">Pencil</CommandItem>
+    </CommandGroup>
+  </CommandList>
+</Command>`
+      }
+    />
+  );
+}
+
+function ComboboxPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <div className="w-full max-w-sm">
+          <LiveCombobox
+            key={String(v.animate)}
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
+          />
+        </div>
+      )}
+      snippet={(v) =>
+        `<Combobox
+  options={[
+    { value: "pen", label: "Pen" },
+    { value: "pencil", label: "Pencil" },
+    { value: "brush", label: "Brush" },
+  ]}
+  placeholder="Select a tool…"
+  ${snippetExtras(v)}
+/>`
+      }
+    />
+  );
+}
+
+function LiveCombobox({
+  roughness,
+  seed,
+  animate,
+}: {
+  roughness: number;
+  seed?: number;
+  animate: boolean;
+}) {
+  const [value, setValue] = useState("pencil");
+  return (
+    <Combobox
+      options={[
+        { value: "pen", label: "Pen" },
+        { value: "pencil", label: "Pencil" },
+        { value: "brush", label: "Brush" },
+        { value: "ruler", label: "Ruler" },
+      ]}
+      value={value}
+      onValueChange={setValue}
+      placeholder="Select a tool…"
+      roughness={roughness}
+      seed={seed}
+      animate={animate}
     />
   );
 }

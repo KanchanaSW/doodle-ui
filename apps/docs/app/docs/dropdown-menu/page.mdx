@@ -1,0 +1,41 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { dropdownMenuProps } from "@/lib/props";
+
+# Dropdown Menu
+
+A sketchy-bordered menu panel with hand-drawn item separators, built on Radix Dropdown Menu. Includes items, checkbox items, radio items, labels, and separators.
+
+<ComponentPlayground name="dropdown-menu" />
+
+## Usage
+
+```tsx
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  Button,
+} from "doodleui-react";
+
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Open menu</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>Tools</DropdownMenuLabel>
+    <DropdownMenuItem>Pen</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>Brush</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+`DropdownMenuCheckboxItem` and `DropdownMenuRadioGroup` / `DropdownMenuRadioItem` are also exported for multi-select and single-select item groups.
+
+## Props
+
+<PropsTable rows={dropdownMenuProps} />

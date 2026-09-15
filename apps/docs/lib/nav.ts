@@ -23,6 +23,14 @@ export const COMPONENT_PAGES = [
   { slug: "breadcrumb", title: "Breadcrumb", blurb: "Hand-drawn slash separators" },
   { slug: "skeleton", title: "Skeleton", blurb: "Scribble-fill loading placeholder" },
   { slug: "stepper", title: "Stepper", blurb: "Numbered circles on a sketch path" },
+  { slug: "label", title: "Label", blurb: "Typographic caption tied to a field" },
+  { slug: "collapsible", title: "Collapsible", blurb: "Single section, chevron rotates open" },
+  { slug: "popover", title: "Popover", blurb: "Sketchy floating panel anchored to a trigger" },
+  { slug: "dropdown-menu", title: "Dropdown Menu", blurb: "Sketchy menu with hand-drawn separators" },
+  { slug: "dialog", title: "Dialog", blurb: "Lighter, composable sibling to Modal" },
+  { slug: "alert-dialog", title: "Alert Dialog", blurb: "Confirm/destructive-action prompt" },
+  { slug: "command", title: "Command", blurb: "Cmd+K style searchable list, cmdk-powered" },
+  { slug: "combobox", title: "Combobox", blurb: "Searchable select — Popover + Command" },
 ] as const;
 
 export type ComponentSlug = (typeof COMPONENT_PAGES)[number]["slug"];

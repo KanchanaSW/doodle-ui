@@ -1,0 +1,39 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { commandProps } from "@/lib/props";
+
+# Command
+
+A command palette / cmd+k style searchable list, powered by [cmdk](https://cmdk.paco.me) inside a sketch-bordered panel.
+
+<ComponentPlayground name="command" />
+
+## Usage
+
+```tsx
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from "doodleui-react";
+
+<Command>
+  <CommandInput placeholder="Search tools…" />
+  <CommandList>
+    <CommandEmpty>No results.</CommandEmpty>
+    <CommandGroup>
+      <CommandItem value="Pen">Pen</CommandItem>
+      <CommandItem value="Pencil">Pencil</CommandItem>
+    </CommandGroup>
+  </CommandList>
+</Command>
+```
+
+`CommandSeparator` (a drawn line) and `CommandShortcut` (a muted trailing caption) round out the set. See `Combobox` for a ready-made searchable select built on top of `Command` + `Popover`.
+
+## Props
+
+<PropsTable rows={commandProps} />

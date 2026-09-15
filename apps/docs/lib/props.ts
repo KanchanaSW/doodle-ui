@@ -517,6 +517,141 @@ export const skeletonProps: PropRow[] = [
   ...sharedSketchProps,
 ];
 
+export const labelProps: PropRow[] = [
+  {
+    name: "htmlFor",
+    type: "string",
+    defaultValue: "undefined",
+    description: "Ties the label to a field's id, same as the native attribute.",
+  },
+  {
+    name: "required",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Adds a small hand-drawn accent dot after the text.",
+  },
+  animateProp("Draw-in the required mark on mount."),
+  ...sharedSketchProps,
+];
+
+export const collapsibleProps: PropRow[] = [
+  {
+    name: "open / onOpenChange",
+    type: "boolean / (open: boolean) => void",
+    defaultValue: "uncontrolled",
+    description: "Radix controlled API.",
+  },
+  {
+    name: "defaultOpen",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Initial open state when uncontrolled.",
+  },
+  ...sharedSketchProps,
+];
+
+export const popoverProps: PropRow[] = [
+  {
+    name: "open / onOpenChange",
+    type: "boolean / (open: boolean) => void",
+    defaultValue: "uncontrolled",
+    description: "Radix controlled API.",
+  },
+  animateProp("Draw-in the panel border when the popover opens."),
+  ...sharedSketchProps,
+];
+
+export const dropdownMenuProps: PropRow[] = [
+  {
+    name: "open / onOpenChange",
+    type: "boolean / (open: boolean) => void",
+    defaultValue: "uncontrolled",
+    description: "Radix controlled API.",
+  },
+  animateProp("Draw-in the panel border when the menu opens."),
+  ...sharedSketchProps,
+];
+
+export const dialogProps: PropRow[] = [
+  {
+    name: "open / onOpenChange",
+    type: "boolean / (open: boolean) => void",
+    defaultValue: "uncontrolled",
+    description: "Radix controlled API. Focus trap and Escape are built in.",
+  },
+  {
+    name: "DialogContent contentStyle",
+    type: "CSSProperties",
+    defaultValue: "undefined",
+    description: "Padding for the inner content area. No forced width or shadow, unlike Modal.",
+  },
+  animateProp("Backdrop fade, panel enter/exit, and border draw-in on open."),
+  ...sharedSketchProps,
+];
+
+export const alertDialogProps: PropRow[] = [
+  {
+    name: "open / onOpenChange",
+    type: "boolean / (open: boolean) => void",
+    defaultValue: "uncontrolled",
+    description: "Radix controlled API. No outside-click or Escape dismiss by default.",
+  },
+  {
+    name: "AlertDialogAction / AlertDialogCancel",
+    type: "components",
+    defaultValue: "n/a",
+    description: "Pre-styled confirm (accent Button) and cancel (outline Button).",
+  },
+  animateProp("Backdrop fade, panel enter/exit, and border draw-in on open."),
+  ...sharedSketchProps,
+];
+
+export const commandProps: PropRow[] = [
+  {
+    name: "shouldFilter / filter",
+    type: "boolean / (value, search, keywords?) => number",
+    defaultValue: "true / cmdk default",
+    description: "cmdk's built-in fuzzy filtering, or bring your own.",
+  },
+  {
+    name: "value / onValueChange",
+    type: "string / (value: string) => void",
+    defaultValue: "uncontrolled",
+    description: "Controls the highlighted item value.",
+  },
+  animateProp("Draw-in the panel border on mount."),
+  ...sharedSketchProps,
+];
+
+export const comboboxProps: PropRow[] = [
+  {
+    name: "options",
+    type: "SelectOption[]",
+    defaultValue: "required",
+    description: "Same shape as Select's options: value, label, optional disabled.",
+  },
+  {
+    name: "placeholder / searchPlaceholder",
+    type: "string",
+    defaultValue: '"Select…" / "Search…"',
+    description: "Trigger caption and the Command input's placeholder.",
+  },
+  {
+    name: "emptyMessage",
+    type: "ReactNode",
+    defaultValue: '"No results."',
+    description: "Shown when the search matches nothing.",
+  },
+  {
+    name: "value / onValueChange",
+    type: "string / (value: string) => void",
+    defaultValue: "uncontrolled",
+    description: "Selected option value.",
+  },
+  animateProp("Draw-in the trigger on mount and the popover border on open."),
+  ...sharedSketchProps,
+];
+
 export const stepperProps: PropRow[] = [
   {
     name: "steps",

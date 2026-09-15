@@ -1,0 +1,28 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { collapsibleProps } from "@/lib/props";
+
+# Collapsible
+
+A single expand/collapse section — the simpler primitive behind `Accordion`. The chevron rotates open with the same hand-drawn path.
+
+<ComponentPlayground name="collapsible" />
+
+## Usage
+
+```tsx
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "doodleui-react";
+
+<Collapsible defaultOpen>
+  <CollapsibleTrigger>What is a seed?</CollapsibleTrigger>
+  <CollapsibleContent>
+    A number that locks the wobble.
+  </CollapsibleContent>
+</Collapsible>
+```
+
+Reach for `Accordion` instead when you need multiple sections that share open/close behavior.
+
+## Props
+
+<PropsTable rows={collapsibleProps} />

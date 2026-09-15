@@ -1,0 +1,26 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { labelProps } from "@/lib/props";
+
+# Label
+
+A thin, mostly-typographic wrapper around Radix Label. Ties a caption to a form field via `htmlFor`. The only sketch chrome is a small hand-drawn dot after the text when `required` is set.
+
+<ComponentPlayground name="label" />
+
+## Usage
+
+```tsx
+import { Label, Input } from "doodleui-react";
+
+<Label htmlFor="email" required>
+  Email
+</Label>
+<Input id="email" placeholder="you@studio.dev" />
+```
+
+Text stays real HTML — only the required mark is drawn.
+
+## Props
+
+<PropsTable rows={labelProps} />
