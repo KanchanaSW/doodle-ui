@@ -1,11 +1,11 @@
 "use client";
 
 import { forwardRef, type ButtonHTMLAttributes, type HTMLAttributes } from "react";
-import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
-import { deriveSeed } from "../utils";
+import { useSketchTheme } from "../hooks/useSketchTheme";
+import { RoughSvg } from "../primitives/RoughSvg";
+import type { SketchProps } from "../types";
+import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 const PREV_PATH = "M 12 4 L 6 10 L 12 16";
 const NEXT_PATH = "M 6 4 L 12 10 L 6 16";
@@ -49,7 +49,12 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
     },
     ref,
   ) {
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
+    const accent = sketchColor ?? theme.accent;
+    const accentFill = theme.isDark
+      ? (sketchColor ? `${sketchColor}25` : theme.accentFill)
+      : theme.accentFill;
     const resolvedSeed = useResolvedSeed(seed);
     const items = pageItems(page, count);
 
@@ -62,6 +67,7 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
           display: "inline-flex",
           alignItems: "center",
           gap: 4,
+          color: ink,
           ...style,
         }}
         {...rest}
@@ -73,6 +79,9 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
           roughness={roughness}
           seed={deriveSeed(resolvedSeed, "prev")}
           ink={ink}
+          accent={accent}
+          accentFill={accentFill}
+          isDark={theme.isDark}
           bowing={bowing}
           strokeWidth={strokeWidth}
         >
@@ -111,6 +120,9 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
               roughness={roughness}
               seed={deriveSeed(resolvedSeed, `page-${item}`)}
               ink={ink}
+              accent={accent}
+              accentFill={accentFill}
+              isDark={theme.isDark}
               bowing={bowing}
               strokeWidth={strokeWidth}
             >
@@ -125,6 +137,9 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
           roughness={roughness}
           seed={deriveSeed(resolvedSeed, "next")}
           ink={ink}
+          accent={accent}
+          accentFill={accentFill}
+          isDark={theme.isDark}
           bowing={bowing}
           strokeWidth={strokeWidth}
         >
@@ -151,6 +166,9 @@ interface PageButtonProps
   roughness?: number;
   seed?: number;
   ink: string;
+  accent?: string;
+  accentFill?: string;
+  isDark?: boolean;
   bowing?: number;
   strokeWidth?: number;
 }
@@ -164,10 +182,16 @@ function PageButton({
   roughness,
   seed,
   ink,
+  accent,
+  accentFill,
+  isDark,
   bowing,
   strokeWidth,
   ...rest
 }: PageButtonProps) {
+  const activeColor = accent ?? ink;
+  const textColor = active ? (isDark ? "#ffffff" : activeColor) : ink;
+
   return (
     <button
       type="button"
@@ -181,7 +205,7 @@ function PageButton({
         border: "none",
         background: "transparent",
         cursor: disabled ? "not-allowed" : "pointer",
-        color: ink,
+        color: textColor,
         fontFamily: doodleUiFontFamily,
         fontWeight: active ? doodleUiFontWeight(700) : doodleUiFontWeight(400),
         fontSize: 14,
@@ -195,9 +219,9 @@ function PageButton({
         shape="ellipse"
         roughness={roughness}
         seed={seed}
-        sketchColor={active ? SKETCH_COLORS.accent : ink}
+        sketchColor={active ? activeColor : ink}
         bowing={bowing}
-        fill={active ? SKETCH_COLORS.accentFill : undefined}
+        fill={active ? accentFill : undefined}
         fillStyle={active ? "hachure" : undefined}
         strokeWidth={active ? (strokeWidth ?? 1.6) + 0.3 : strokeWidth ?? 1.4}
         inset={1.5}
@@ -207,7 +231,7 @@ function PageButton({
           shape="ellipse"
           roughness={(roughness ?? 1.5) + 0.45}
           seed={seed}
-          sketchColor={SKETCH_COLORS.accent}
+          sketchColor={activeColor}
           bowing={bowing ?? 1.6}
           strokeWidth={1.1}
           inset={-1.5}

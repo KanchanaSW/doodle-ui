@@ -20,8 +20,9 @@ import {
   useDrawIn,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { assignRef, cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 interface TableSketchContextValue extends SketchProps {
@@ -138,7 +139,8 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   const tableRef = useRef<HTMLTableElement | null>(null);
   const [lines, setLines] = useState<RowLine[]>([]);
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
   const shouldAnimate = useAnimate(animate);
 
   useLayoutEffect(() => {

@@ -11,9 +11,10 @@ import {
 } from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { deriveSeed } from "../utils";
 
 const CHEVRON_PATH = "M 6 4 L 12 10 L 6 16";
@@ -67,11 +68,15 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
     },
     ref,
   ) {
     const resolvedSeed = useResolvedSeed(seed);
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
     const [uncontrolled, setUncontrolled] = useState<
       string | string[] | undefined
     >(defaultValue ?? (type === "multiple" ? [] : undefined));
@@ -80,10 +85,13 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
     const sketchValue: AccordionSketchContextValue = {
       roughness,
       seed: resolvedSeed,
-      sketchColor,
+      sketchColor: ink,
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       resolvedSeed,
       ink,
       openValue,

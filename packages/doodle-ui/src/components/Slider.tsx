@@ -2,11 +2,11 @@
 
 import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
-import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn } from "../utils";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
-import { deriveSeed } from "../utils";
+import { useSketchTheme } from "../hooks/useSketchTheme";
+import { RoughSvg } from "../primitives/RoughSvg";
+import type { SketchProps } from "../types";
+import { cn, deriveSeed } from "../utils";
 
 export type SliderThumbShape = "circle" | "square";
 
@@ -17,24 +17,32 @@ export interface SliderProps
     >,
     SketchProps {
   thumbShape?: SliderThumbShape;
+  fill?: string;
 }
 
 export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
   {
     className,
     style,
+    fill,
     roughness,
     seed,
     sketchColor,
     bowing,
     fillStyle,
     strokeWidth,
+    hachureGap,
+    hachureAngle,
+    fillWeight,
     thumbShape = "circle",
     ...rest
   },
   ref,
 ) {
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
+  const accent = sketchColor ?? theme.accent;
+  const trackInk = sketchColor ?? (theme.isDark ? "rgba(243, 244, 246, 0.4)" : theme.ink);
   const resolvedSeed = useResolvedSeed(seed);
 
   return (
@@ -49,6 +57,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
         height: 28,
         userSelect: "none",
         touchAction: "none",
+        color: ink,
         ...style,
       }}
       {...rest}
@@ -64,7 +73,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
           shape="line"
           roughness={roughness ?? 1.8}
           seed={resolvedSeed}
-          sketchColor={ink}
+          sketchColor={trackInk}
           bowing={bowing ?? 2}
           strokeWidth={strokeWidth ?? 1.6}
           inset={4}
@@ -80,7 +89,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
             shape="line"
             roughness={(roughness ?? 1.5) + 0.4}
             seed={deriveSeed(resolvedSeed, "range")}
-            sketchColor={SKETCH_COLORS.accent}
+            sketchColor={accent}
             bowing={bowing ?? 1.6}
             strokeWidth={(strokeWidth ?? 1.6) + 0.6}
             inset={4}
@@ -101,11 +110,14 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
           shape={thumbShape === "square" ? "rectangle" : "ellipse"}
           roughness={(roughness ?? 1.5) * 0.85}
           seed={deriveSeed(resolvedSeed, "thumb")}
-          sketchColor={SKETCH_COLORS.accent}
-          fill="#f7f6f2"
+          sketchColor={accent}
+          fill={fill ?? theme.paper}
           fillStyle={fillStyle ?? "solid"}
           bowing={bowing}
           strokeWidth={(strokeWidth ?? 1.5) + 0.3}
+          hachureGap={hachureGap}
+          hachureAngle={hachureAngle}
+          fillWeight={fillWeight}
           inset={1}
         />
       </SliderPrimitive.Thumb>

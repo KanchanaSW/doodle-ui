@@ -1,11 +1,11 @@
 "use client";
 
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
-import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
-import { deriveSeed } from "../utils";
+import { useSketchTheme } from "../hooks/useSketchTheme";
+import { RoughSvg } from "../primitives/RoughSvg";
+import type { SketchProps } from "../types";
+import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export type StepperOrientation = "horizontal" | "vertical";
 
@@ -20,6 +20,7 @@ export interface StepperProps
   steps: Array<StepperStep | ReactNode>;
   current?: number;
   orientation?: StepperOrientation;
+  fill?: string;
 }
 
 function normalizeSteps(steps: Array<StepperStep | ReactNode>): StepperStep[] {
@@ -38,17 +39,23 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(
       steps,
       current = 0,
       orientation = "horizontal",
+      fill,
       roughness,
       seed,
       sketchColor,
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       ...rest
     },
     ref,
   ) {
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
+    const accent = sketchColor ?? theme.accent;
     const resolvedSeed = useResolvedSeed(seed);
     const items = normalizeSteps(steps);
     const horizontal = orientation === "horizontal";
@@ -62,6 +69,7 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(
           display: "flex",
           flexDirection: horizontal ? "row" : "column",
           alignItems: horizontal ? "flex-start" : "stretch",
+          color: ink,
           ...style,
         }}
         {...rest}
@@ -69,7 +77,10 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(
         {items.map((step, index) => {
           const complete = index < current;
           const active = index === current;
-          const markerColor = complete || active ? SKETCH_COLORS.accent : ink;
+          const markerColor = complete || active ? accent : ink;
+          const completeFill = theme.isDark
+            ? (sketchColor ? `${sketchColor}25` : theme.accentFill)
+            : theme.accentFill;
 
           return (
             <div
@@ -114,9 +125,9 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(
                     sketchColor={markerColor}
                     fill={
                       complete
-                        ? SKETCH_COLORS.accentFill
+                        ? completeFill
                         : active
-                          ? "#f7f6f2"
+                          ? (fill ?? theme.paper)
                           : undefined
                     }
                     fillStyle={
@@ -128,6 +139,9 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(
                         ? (strokeWidth ?? 1.6) + 0.4
                         : strokeWidth ?? 1.5
                     }
+                    hachureGap={hachureGap}
+                    hachureAngle={hachureAngle}
+                    fillWeight={fillWeight}
                     inset={1.5}
                   />
                   <span style={{ position: "relative", zIndex: 1 }}>
@@ -149,7 +163,13 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(
                       shape={horizontal ? "line" : "line-vertical"}
                       roughness={(roughness ?? 1.5) + 0.3}
                       seed={deriveSeed(resolvedSeed, `connector-${index}`)}
-                      sketchColor={complete ? SKETCH_COLORS.accent : ink}
+                      sketchColor={
+                        complete
+                          ? accent
+                          : theme.isDark
+                            ? "rgba(243, 244, 246, 0.35)"
+                            : ink
+                      }
                       bowing={bowing ?? 2}
                       strokeWidth={strokeWidth ?? 1.4}
                       inset={2}

@@ -9,13 +9,15 @@ import {
 } from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn } from "../utils";
 
 interface PopoverSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  paper: string;
   animate?: boolean;
 }
 
@@ -35,6 +37,7 @@ export interface PopoverProps
   extends Omit<PopoverPrimitive.PopoverProps, "children">,
     SketchProps {
   children?: ReactNode;
+  fill?: string;
   /**
    * Draw-in the panel border when the popover opens.
    * Defaults to the DoodleUIProvider value (true).
@@ -44,17 +47,22 @@ export interface PopoverProps
 
 export function Popover({
   children,
+  fill,
   roughness,
   seed,
   sketchColor,
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
   ...rest
 }: PopoverProps) {
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
 
   return (
     <PopoverSketchContext.Provider
@@ -65,8 +73,12 @@ export function Popover({
         bowing,
         fillStyle,
         strokeWidth,
+        hachureGap,
+        hachureAngle,
+        fillWeight,
         resolvedSeed,
         ink,
+        paper: fill ?? theme.paper,
         animate,
       }}
     >
@@ -82,11 +94,12 @@ export const PopoverClose = PopoverPrimitive.Close;
 export interface PopoverContentProps
   extends Omit<PopoverPrimitive.PopoverContentProps, "asChild"> {
   children?: ReactNode;
+  fill?: string;
 }
 
 export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
   function PopoverContent(
-    { className, style, children, sideOffset = 8, ...rest },
+    { className, style, children, fill, sideOffset = 8, ...rest },
     ref,
   ) {
     const sketch = usePopoverSketch();
@@ -97,7 +110,7 @@ export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
           ref={ref}
           sideOffset={sideOffset}
           className={cn(className)}
-          style={{ zIndex: 80, outline: "none", ...style }}
+          style={{ zIndex: 80, outline: "none", color: sketch.ink, ...style }}
           {...rest}
         >
           <SketchBox
@@ -106,11 +119,14 @@ export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
             sketchColor={sketch.ink}
             bowing={sketch.bowing}
             fillStyle={sketch.fillStyle ?? "solid"}
-            fill="#f7f6f2"
+            fill={fill ?? sketch.paper}
             strokeWidth={sketch.strokeWidth ?? 1.5}
+            hachureGap={sketch.hachureGap}
+            hachureAngle={sketch.hachureAngle}
+            fillWeight={sketch.fillWeight}
             shadow
             animate={sketch.animate}
-            contentStyle={{ padding: "14px 16px", minWidth: 200 }}
+            contentStyle={{ padding: "14px 16px", minWidth: 200, color: sketch.ink }}
           >
             {children}
           </SketchBox>
@@ -120,14 +136,8 @@ export const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
   },
 );
 
-export interface PopoverArrowProps
-  extends ComponentPropsWithoutRef<typeof PopoverPrimitive.Arrow> {}
-
-export const PopoverArrow = forwardRef<SVGSVGElement, PopoverArrowProps>(
-  function PopoverArrow(props, ref) {
-    const sketch = usePopoverSketch();
-    return (
-      <PopoverPrimitive.Arrow ref={ref} fill={sketch.ink} {...props} />
-    );
-  },
-);
+export function PopoverArrow(
+  props: ComponentPropsWithoutRef<typeof PopoverPrimitive.Arrow>,
+) {
+  return <PopoverPrimitive.Arrow {...props} />;
+}

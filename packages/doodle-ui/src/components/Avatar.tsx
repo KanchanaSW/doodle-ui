@@ -2,20 +2,14 @@
 
 import { forwardRef, type CSSProperties, type ReactNode } from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
-import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type RoughShape, type SketchProps } from "../types";
-import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
-import { deriveSeed } from "../utils";
+import { useSketchTheme } from "../hooks/useSketchTheme";
+import { RoughSvg } from "../primitives/RoughSvg";
+import type { RoughShape, SketchProps } from "../types";
+import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export type AvatarStatus = "online" | "offline" | "busy";
 export type AvatarShape = "circle" | "square";
-
-const STATUS_COLOR: Record<AvatarStatus, string> = {
-  online: SKETCH_COLORS.success,
-  offline: "#8a8680",
-  busy: SKETCH_COLORS.accent,
-};
 
 export interface AvatarProps
   extends Omit<AvatarPrimitive.AvatarProps, "asChild">,
@@ -26,6 +20,7 @@ export interface AvatarProps
   size?: number;
   shape?: AvatarShape;
   status?: AvatarStatus;
+  fill?: string;
 }
 
 export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
@@ -39,20 +34,32 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
       size = 40,
       shape = "circle",
       status,
+      fill,
       roughness,
       seed,
       sketchColor,
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       ...rest
     },
     ref,
   ) {
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
     const resolvedSeed = useResolvedSeed(seed);
     const roughShape: RoughShape = shape === "circle" ? "ellipse" : "rectangle";
     const badge = 12;
+
+    const statusColors: Record<AvatarStatus, string> = {
+      online: theme.success,
+      offline: theme.isDark ? "#9ca3af" : "#8a8680",
+      busy: theme.accent,
+    };
+
     const rootStyle: CSSProperties = {
       position: "relative",
       display: "inline-flex",
@@ -77,8 +84,11 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
           sketchColor={ink}
           bowing={bowing}
           fillStyle={fillStyle ?? "solid"}
-          fill="#f7f6f2"
+          fill={fill ?? theme.paper}
           strokeWidth={strokeWidth ?? 1.6}
+          hachureGap={hachureGap}
+          hachureAngle={hachureAngle}
+          fillWeight={fillWeight}
           inset={1.5}
         />
         <span
@@ -116,7 +126,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
               fontWeight: doodleUiFontWeight(650),
               fontSize: Math.max(12, size * 0.36),
               color: ink,
-              background: SKETCH_COLORS.secondaryFill,
+              background: theme.secondaryFill,
             }}
           >
             {fallback}
@@ -137,8 +147,8 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
               shape="ellipse"
               roughness={(roughness ?? 1.5) * 0.8}
               seed={deriveSeed(resolvedSeed, "status")}
-              sketchColor={STATUS_COLOR[status]}
-              fill={STATUS_COLOR[status]}
+              sketchColor={statusColors[status]}
+              fill={statusColors[status]}
               fillStyle="solid"
               bowing={bowing}
               strokeWidth={1}

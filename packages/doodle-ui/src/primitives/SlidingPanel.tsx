@@ -12,8 +12,9 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { useAnimate } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export type SlidingPanelSide = "top" | "right" | "bottom" | "left";
@@ -21,6 +22,8 @@ export type SlidingPanelSide = "top" | "right" | "bottom" | "left";
 interface SlidingPanelSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  paper: string;
+  isDark: boolean;
   animate?: boolean;
   open: boolean;
   side: SlidingPanelSide;
@@ -42,6 +45,7 @@ export interface SlidingPanelRootProps
     SketchProps {
   children?: ReactNode;
   side?: SlidingPanelSide;
+  fill?: string;
   animate?: boolean;
 }
 
@@ -51,17 +55,22 @@ export function SlidingPanelRoot({
   defaultOpen,
   onOpenChange,
   side = "right",
+  fill,
   roughness,
   seed,
   sketchColor,
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
   ...rest
 }: SlidingPanelRootProps) {
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
   const [uncontrolled, setUncontrolled] = useState(defaultOpen === true);
   const isOpen = open ?? uncontrolled;
 
@@ -74,8 +83,13 @@ export function SlidingPanelRoot({
         bowing,
         fillStyle,
         strokeWidth,
+        hachureGap,
+        hachureAngle,
+        fillWeight,
         resolvedSeed,
         ink,
+        paper: fill ?? theme.paper,
+        isDark: theme.isDark,
         animate,
         open: isOpen,
         side,
@@ -173,7 +187,7 @@ export const SlidingPanelOverlay = forwardRef<
         style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(31, 29, 26, 0.38)",
+          background: sketch.isDark ? "rgba(0, 0, 0, 0.65)" : "rgba(31, 29, 26, 0.38)",
           zIndex: 70,
           ...style,
         }}
@@ -186,6 +200,7 @@ export interface SlidingPanelContentProps
   extends Omit<DialogPrimitive.DialogContentProps, "asChild" | "forceMount"> {
   children?: ReactNode;
   contentStyle?: CSSProperties;
+  fill?: string;
   /** Extra chrome above panel content (e.g. drawer handle). */
   chrome?: ReactNode;
 }
@@ -194,7 +209,7 @@ export const SlidingPanelContent = forwardRef<
   HTMLDivElement,
   SlidingPanelContentProps
 >(function SlidingPanelContent(
-  { className, style, contentStyle, children, chrome, ...rest },
+  { className, style, contentStyle, fill, children, chrome, ...rest },
   ref,
 ) {
   const sketch = useSlidingPanelSketch();
@@ -233,8 +248,11 @@ export const SlidingPanelContent = forwardRef<
                 sketchColor={sketch.ink}
                 bowing={sketch.bowing}
                 fillStyle={sketch.fillStyle ?? "solid"}
-                fill="#f7f6f2"
+                fill={fill ?? sketch.paper}
                 strokeWidth={sketch.strokeWidth ?? 2}
+                hachureGap={sketch.hachureGap}
+                hachureAngle={sketch.hachureAngle}
+                fillWeight={sketch.fillWeight}
                 animate={sketch.animate}
                 contentStyle={{
                   padding: 20,
@@ -242,6 +260,7 @@ export const SlidingPanelContent = forwardRef<
                   boxSizing: "border-box",
                   display: "flex",
                   flexDirection: "column",
+                  color: sketch.ink,
                   ...contentStyle,
                 }}
                 style={{ height: "100%" }}

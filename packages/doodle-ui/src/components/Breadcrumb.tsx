@@ -12,9 +12,10 @@ import {
   type ReactNode,
 } from "react";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily } from "../utils";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { deriveSeed } from "../utils";
 
 const SLASH_PATH = "M 10 3 L 6 15";
@@ -58,11 +59,15 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
       sketchColor,
       bowing,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       ...rest
     },
     ref,
   ) {
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
     const resolvedSeed = useResolvedSeed(seed);
     const items = Children.toArray(children).filter(isValidElement);
 
@@ -71,9 +76,12 @@ export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
         value={{
           roughness,
           seed: resolvedSeed,
-          sketchColor,
+          sketchColor: ink,
           bowing,
           strokeWidth,
+          hachureGap,
+          hachureAngle,
+          fillWeight,
           resolvedSeed,
           ink,
           separator,

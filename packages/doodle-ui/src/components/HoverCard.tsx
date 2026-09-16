@@ -9,13 +9,15 @@ import {
 } from "react";
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn } from "../utils";
 
 interface HoverCardSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  paper: string;
   animate?: boolean;
 }
 
@@ -35,22 +37,28 @@ export interface HoverCardProps
   extends Omit<ComponentPropsWithoutRef<typeof HoverCardPrimitive.Root>, "children">,
     SketchProps {
   children?: ReactNode;
+  fill?: string;
   animate?: boolean;
 }
 
 export function HoverCard({
   children,
+  fill,
   roughness,
   seed,
   sketchColor,
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
   ...rest
 }: HoverCardProps) {
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
 
   return (
     <HoverCardSketchContext.Provider
@@ -61,8 +69,12 @@ export function HoverCard({
         bowing,
         fillStyle,
         strokeWidth,
+        hachureGap,
+        hachureAngle,
+        fillWeight,
         resolvedSeed,
         ink,
+        paper: fill ?? theme.paper,
         animate,
       }}
     >
@@ -76,13 +88,14 @@ export const HoverCardTrigger = HoverCardPrimitive.Trigger;
 export interface HoverCardContentProps
   extends ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content> {
   children?: ReactNode;
+  fill?: string;
 }
 
 export const HoverCardContent = forwardRef<
   HTMLDivElement,
   HoverCardContentProps
 >(function HoverCardContent(
-  { className, style, children, sideOffset = 6, align = "center", ...rest },
+  { className, style, children, fill, sideOffset = 6, align = "center", ...rest },
   ref,
 ) {
   const sketch = useHoverCardSketch();
@@ -94,7 +107,7 @@ export const HoverCardContent = forwardRef<
         sideOffset={sideOffset}
         align={align}
         className={cn(className)}
-        style={{ zIndex: 75, outline: "none", ...style }}
+        style={{ zIndex: 75, outline: "none", color: sketch.ink, ...style }}
         {...rest}
       >
         <SketchBox
@@ -103,11 +116,14 @@ export const HoverCardContent = forwardRef<
           sketchColor={sketch.ink}
           bowing={sketch.bowing}
           fillStyle={sketch.fillStyle ?? "solid"}
-          fill="#f7f6f2"
+          fill={fill ?? sketch.paper}
           strokeWidth={sketch.strokeWidth ?? 1.5}
+          hachureGap={sketch.hachureGap}
+          hachureAngle={sketch.hachureAngle}
+          fillWeight={sketch.fillWeight}
           shadow
           animate={sketch.animate}
-          contentStyle={{ padding: 14, maxWidth: 320, fontSize: 14 }}
+          contentStyle={{ padding: 14, maxWidth: 320, fontSize: 14, color: sketch.ink }}
         >
           {children}
         </SketchBox>

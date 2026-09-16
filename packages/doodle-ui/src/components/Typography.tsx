@@ -7,9 +7,10 @@ import {
 } from "react";
 import { DRAW_IN_MARK_MS, useAnimate, useDrawIn } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
@@ -51,7 +52,12 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
     ref,
   ) {
     const Tag = `h${level}` as const;
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
+    const accentColor = sketchColor ?? theme.accent;
+    const accentFill = theme.isDark
+      ? (sketchColor ? `${sketchColor}25` : theme.accentFill)
+      : theme.accentFill;
     const resolvedSeed = useResolvedSeed(seed);
     const shouldAnimate = useAnimate(animate);
     const accentRef = useRef<HTMLSpanElement>(null);
@@ -93,8 +99,8 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
                 shape="rectangle"
                 roughness={roughness}
                 seed={resolvedSeed}
-                sketchColor={SKETCH_COLORS.accent}
-                fill={SKETCH_COLORS.accentFill}
+                sketchColor={accentColor}
+                fill={accentFill}
                 fillStyle="solid"
                 bowing={bowing}
                 strokeWidth={strokeWidth ?? 1.2}
@@ -122,7 +128,7 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
               path="M 2 4 Q 40 1 80 5 T 160 3"
               roughness={roughness}
               seed={resolvedSeed}
-              sketchColor={ink}
+              sketchColor={accentColor}
               bowing={bowing}
               strokeWidth={strokeWidth ?? 1.5}
             />
@@ -141,6 +147,7 @@ export const Text = forwardRef<HTMLParagraphElement, TextProps>(function Text(
   { variant = "body", className, style, children, ...rest },
   ref,
 ) {
+  const theme = useSketchTheme();
   const sizes = { body: 14, lead: 17, muted: 13 };
   const opacity = variant === "muted" ? 0.75 : 1;
   return (
@@ -153,7 +160,7 @@ export const Text = forwardRef<HTMLParagraphElement, TextProps>(function Text(
         fontSize: sizes[variant],
         fontWeight: doodleUiFontWeight(variant === "lead" ? 500 : 400),
         lineHeight: 1.55,
-        color: SKETCH_COLORS.ink,
+        color: theme.ink,
         opacity,
         ...style,
       }}
@@ -188,7 +195,9 @@ export const Blockquote = forwardRef<HTMLQuoteElement, BlockquoteProps>(
     },
     ref,
   ) {
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
+    const accent = sketchColor ?? theme.accent;
     const resolvedSeed = useResolvedSeed(seed);
     const shouldAnimate = useAnimate(animate);
     const ruleRef = useRef<HTMLSpanElement>(null);
@@ -221,7 +230,7 @@ export const Blockquote = forwardRef<HTMLQuoteElement, BlockquoteProps>(
             shape="line-vertical"
             roughness={roughness}
             seed={resolvedSeed}
-            sketchColor={ink}
+            sketchColor={accent}
             bowing={bowing}
             strokeWidth={strokeWidth ?? 2}
           />
@@ -235,6 +244,7 @@ export const Blockquote = forwardRef<HTMLQuoteElement, BlockquoteProps>(
 export interface InlineCodeProps
   extends Omit<HTMLAttributes<HTMLElement>, "color">,
     SketchProps {
+  fill?: string;
   animate?: boolean;
 }
 
@@ -244,35 +254,44 @@ export const InlineCode = forwardRef<HTMLElement, InlineCodeProps>(
       className,
       style,
       children,
+      fill,
       roughness,
       seed,
       sketchColor,
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       animate,
       ...rest
     },
     ref,
   ) {
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
 
     return (
       <SketchBox
         className={cn(className)}
-        style={{ display: "inline-flex", verticalAlign: "baseline", ...style }}
+        style={{ display: "inline-flex", verticalAlign: "baseline", color: ink, ...style }}
         contentStyle={{
           padding: "1px 6px",
           fontSize: "0.9em",
           fontFamily: "ui-monospace, monospace",
+          color: ink,
         }}
-        fill={SKETCH_COLORS.paper}
-        fillStyle={fillStyle ?? "hachure"}
+        fill={fill ?? theme.paper}
+        fillStyle={fillStyle ?? "solid"}
         roughness={roughness}
         seed={seed}
         sketchColor={ink}
         bowing={bowing}
         strokeWidth={strokeWidth ?? 1.2}
+        hachureGap={hachureGap}
+        hachureAngle={hachureAngle}
+        fillWeight={fillWeight}
         animate={animate}
         {...rest}
       >
@@ -296,6 +315,7 @@ export const InlineCode = forwardRef<HTMLElement, InlineCodeProps>(
 export interface HighlightProps
   extends Omit<HTMLAttributes<HTMLSpanElement>, "color">,
     SketchProps {
+  fill?: string;
   animate?: boolean;
 }
 
@@ -305,6 +325,7 @@ export const Highlight = forwardRef<HTMLSpanElement, HighlightProps>(
       className,
       style,
       children,
+      fill,
       roughness,
       seed,
       sketchColor,
@@ -316,6 +337,11 @@ export const Highlight = forwardRef<HTMLSpanElement, HighlightProps>(
     ref,
   ) {
     const resolvedSeed = useResolvedSeed(seed);
+    const theme = useSketchTheme(sketchColor);
+    const accent = sketchColor ?? theme.accent;
+    const accentFill = fill ?? (theme.isDark
+      ? (sketchColor ? `${sketchColor}25` : theme.accentFill)
+      : theme.accentFill);
     const shouldAnimate = useAnimate(animate);
     const markRef = useRef<HTMLSpanElement>(null);
     useDrawIn(markRef, DRAW_IN_MARK_MS, shouldAnimate);
@@ -343,8 +369,8 @@ export const Highlight = forwardRef<HTMLSpanElement, HighlightProps>(
             shape="rectangle"
             roughness={roughness}
             seed={resolvedSeed}
-            sketchColor={sketchColor ?? SKETCH_COLORS.accent}
-            fill={SKETCH_COLORS.accentFill}
+            sketchColor={accent}
+            fill={accentFill}
             fillStyle="solid"
             bowing={bowing}
             strokeWidth={strokeWidth ?? 1}

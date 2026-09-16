@@ -13,8 +13,9 @@ import {
   useTweenNumber,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { assignRef, cn, deriveSeed } from "../utils";
 
 export interface ProgressProps
@@ -42,6 +43,8 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      fillWeight,
       animate,
       ...rest
     },
@@ -49,7 +52,9 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
   ) {
     const rootRef = useRef<HTMLDivElement>(null);
     const trackRef = useRef<HTMLSpanElement>(null);
-    const ink = sketchColor ?? SKETCH_COLORS.accent;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.accent;
+    const trackInk = sketchColor ?? (theme.isDark ? "rgba(243, 244, 246, 0.45)" : theme.ink);
     const clamped = Math.min(max, Math.max(0, value));
     const percent = max === 0 ? 0 : (clamped / max) * 100;
     const shouldAnimate = useAnimate(animate);
@@ -90,7 +95,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
             shape="rectangle"
             roughness={roughness}
             seed={resolvedSeed}
-            sketchColor={SKETCH_COLORS.ink}
+            sketchColor={trackInk}
             bowing={bowing}
             strokeWidth={strokeWidth ?? 1.5}
             inset={2}
@@ -117,6 +122,8 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
               fillStyle={fillStyle ?? "hachure"}
               bowing={bowing}
               strokeWidth={1.1}
+              hachureGap={hachureGap ?? 5}
+              fillWeight={fillWeight ?? 1.2}
               inset={1}
             />
           </div>

@@ -13,8 +13,9 @@ import {
   useDrawIn,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 const CHEVRON_PATH = "M 4 6 L 10 12 L 16 6";
@@ -29,6 +30,7 @@ export interface NativeSelectProps
   extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "color" | "size">,
     SketchProps {
   options?: NativeSelectOption[];
+  fill?: string;
   /** Draw-in the border on mount. Defaults to DoodleUIProvider (true). */
   animate?: boolean;
   className?: string;
@@ -42,12 +44,16 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
       style,
       options,
       children,
+      fill,
       roughness,
       seed,
       sketchColor,
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       animate,
       disabled,
       ...rest
@@ -57,7 +63,8 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
     const fieldRef = useRef<HTMLSpanElement>(null);
     const shouldAnimate = useAnimate(animate);
     const resolvedSeed = useResolvedSeed(seed);
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
 
     useDrawIn(fieldRef, DRAW_IN_DURATION_MS, shouldAnimate);
 
@@ -69,6 +76,7 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
           display: "block",
           width: "100%",
           opacity: disabled ? 0.6 : 1,
+          color: ink,
           ...style,
         }}
       >
@@ -79,9 +87,12 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
             seed={resolvedSeed}
             sketchColor={ink}
             bowing={bowing}
-            fillStyle={fillStyle}
-            fill={SKETCH_COLORS.paper}
+            fillStyle={fillStyle ?? "solid"}
+            fill={fill ?? theme.paper}
             strokeWidth={strokeWidth}
+            hachureGap={hachureGap}
+            hachureAngle={hachureAngle}
+            fillWeight={fillWeight}
           />
           <select
             ref={ref}

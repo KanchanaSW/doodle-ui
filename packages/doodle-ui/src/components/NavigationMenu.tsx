@@ -10,14 +10,16 @@ import {
 } from "react";
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 interface NavigationMenuSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  paper: string;
   animate?: boolean;
 }
 
@@ -39,22 +41,28 @@ export interface NavigationMenuProps
     >,
     SketchProps {
   children?: ReactNode;
+  fill?: string;
   animate?: boolean;
 }
 
 export function NavigationMenu({
   children,
+  fill,
   roughness,
   seed,
   sketchColor,
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
   ...rest
 }: NavigationMenuProps) {
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
 
   return (
     <NavigationMenuSketchContext.Provider
@@ -65,8 +73,12 @@ export function NavigationMenu({
         bowing,
         fillStyle,
         strokeWidth,
+        hachureGap,
+        hachureAngle,
+        fillWeight,
         resolvedSeed,
         ink,
+        paper: fill ?? theme.paper,
         animate,
       }}
     >
@@ -133,14 +145,14 @@ export const NavigationMenuTrigger = forwardRef<
 
 export const NavigationMenuContent = forwardRef<
   HTMLDivElement,
-  ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Content>
->(function NavigationMenuContent({ className, style, children, ...rest }, ref) {
+  ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Content> & { fill?: string }
+>(function NavigationMenuContent({ className, style, children, fill, ...rest }, ref) {
   const sketch = useNavigationMenuSketch();
   return (
     <NavigationMenuPrimitive.Content
       ref={ref}
       className={cn(className)}
-      style={{ outline: "none", ...style }}
+      style={{ outline: "none", color: sketch.ink, ...style }}
       {...rest}
     >
       <SketchBox
@@ -149,11 +161,14 @@ export const NavigationMenuContent = forwardRef<
         sketchColor={sketch.ink}
         bowing={sketch.bowing}
         fillStyle={sketch.fillStyle ?? "solid"}
-        fill="#f7f6f2"
+        fill={fill ?? sketch.paper}
         strokeWidth={sketch.strokeWidth ?? 1.5}
+        hachureGap={sketch.hachureGap}
+        hachureAngle={sketch.hachureAngle}
+        fillWeight={sketch.fillWeight}
         shadow
         animate={sketch.animate}
-        contentStyle={{ padding: 12, minWidth: 200 }}
+        contentStyle={{ padding: 12, minWidth: 200, color: sketch.ink }}
       >
         {children}
       </SketchBox>

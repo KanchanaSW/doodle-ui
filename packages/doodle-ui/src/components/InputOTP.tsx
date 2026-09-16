@@ -18,13 +18,17 @@ import {
   useDrawIn,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, assignRef, deriveSeed, doodleUiFontFamily } from "../utils";
 
 interface InputOTPSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  accent: string;
+  paper: string;
+  fill?: string;
   animate?: boolean;
 }
 
@@ -43,6 +47,7 @@ function useInputOTPSketch(): InputOTPSketchContextValue {
 export interface InputOTPProps
   extends Omit<ComponentPropsWithoutRef<typeof OTPInput>, "render">,
     SketchProps {
+  fill?: string;
   animate?: boolean;
 }
 
@@ -57,6 +62,10 @@ export const InputOTP = forwardRef<HTMLInputElement, InputOTPProps>(
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
+      fill,
       animate,
       children,
       ...rest
@@ -64,19 +73,26 @@ export const InputOTP = forwardRef<HTMLInputElement, InputOTPProps>(
     ref,
   ) {
     const resolvedSeed = useResolvedSeed(seed);
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
 
     return (
       <InputOTPSketchContext.Provider
         value={{
           roughness,
           seed: resolvedSeed,
-          sketchColor,
+          sketchColor: ink,
           bowing,
           fillStyle,
           strokeWidth,
+          hachureGap,
+          hachureAngle,
+          fillWeight,
+          fill,
           resolvedSeed,
           ink,
+          accent: theme.accent,
+          paper: theme.paper,
           animate,
         }}
       >
@@ -163,9 +179,13 @@ export const InputOTPSlot = forwardRef<HTMLDivElement, InputOTPSlotProps>(
           shape="rectangle"
           roughness={sketch.roughness}
           seed={slotSeed}
-          sketchColor={isActive ? SKETCH_COLORS.accent : sketch.ink}
+          sketchColor={isActive ? sketch.accent : sketch.ink}
           bowing={sketch.bowing}
           fillStyle={sketch.fillStyle}
+          fill={sketch.fill}
+          hachureGap={sketch.hachureGap}
+          hachureAngle={sketch.hachureAngle}
+          fillWeight={sketch.fillWeight}
           strokeWidth={
             isActive ? (sketch.strokeWidth ?? 1.75) + 0.15 : sketch.strokeWidth
           }

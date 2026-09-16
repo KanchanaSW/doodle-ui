@@ -2,8 +2,9 @@
 
 import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
 import type { CSSProperties, ReactNode } from "react";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn } from "../utils";
 
 export interface AspectRatioProps extends SketchProps {
@@ -13,6 +14,7 @@ export interface AspectRatioProps extends SketchProps {
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
+  fill?: string;
   animate?: boolean;
 }
 
@@ -22,14 +24,21 @@ export function AspectRatio({
   className,
   style,
   children,
+  fill,
   roughness,
   seed,
   sketchColor,
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
 }: AspectRatioProps) {
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
+
   const inner = (
     <AspectRatioPrimitive.Root
       ratio={ratio}
@@ -37,6 +46,7 @@ export function AspectRatio({
       style={{
         width: "100%",
         overflow: "hidden",
+        color: ink,
         ...style,
       }}
     >
@@ -51,13 +61,16 @@ export function AspectRatio({
   return (
     <SketchBox
       className={cn(className)}
-      style={{ width: "100%", ...style }}
-      contentStyle={{ padding: 0, width: "100%" }}
-      fill={SKETCH_COLORS.paper}
-      fillStyle={fillStyle ?? "hachure"}
+      style={{ width: "100%", color: ink, ...style }}
+      contentStyle={{ padding: 0, width: "100%", color: ink }}
+      fill={fill ?? theme.paper}
+      fillStyle={fillStyle ?? "solid"}
+      hachureGap={hachureGap}
+      hachureAngle={hachureAngle}
+      fillWeight={fillWeight}
       roughness={roughness}
       seed={seed}
-      sketchColor={sketchColor}
+      sketchColor={ink}
       bowing={bowing}
       strokeWidth={strokeWidth}
       animate={animate}

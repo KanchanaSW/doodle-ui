@@ -12,14 +12,17 @@ import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAnimate } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 import { Button } from "./Button";
 
 interface AlertDialogSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  paper: string;
+  isDark: boolean;
   animate?: boolean;
   open: boolean;
 }
@@ -41,6 +44,7 @@ export interface AlertDialogProps
   extends Omit<AlertDialogPrimitive.AlertDialogProps, "children">,
     SketchProps {
   children?: ReactNode;
+  fill?: string;
   /**
    * Backdrop fade, panel enter/exit, and border draw-in on open.
    * Defaults to the DoodleUIProvider value (true).
@@ -59,17 +63,22 @@ export function AlertDialog({
   open,
   defaultOpen,
   onOpenChange,
+  fill,
   roughness,
   seed,
   sketchColor,
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
   ...rest
 }: AlertDialogProps) {
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
   const [uncontrolled, setUncontrolled] = useState(defaultOpen === true);
   const isOpen = open ?? uncontrolled;
 
@@ -82,8 +91,13 @@ export function AlertDialog({
         bowing,
         fillStyle,
         strokeWidth,
+        hachureGap,
+        hachureAngle,
+        fillWeight,
         resolvedSeed,
         ink,
+        paper: fill ?? theme.paper,
+        isDark: theme.isDark,
         animate,
         open: isOpen,
       }}
@@ -130,7 +144,7 @@ export const AlertDialogOverlay = forwardRef<
         style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(31, 29, 26, 0.38)",
+          background: sketch.isDark ? "rgba(0, 0, 0, 0.65)" : "rgba(31, 29, 26, 0.38)",
           zIndex: 70,
           ...style,
         }}
@@ -145,6 +159,7 @@ export interface AlertDialogContentProps
     "asChild" | "forceMount"
   > {
   children?: ReactNode;
+  fill?: string;
   contentStyle?: CSSProperties;
 }
 
@@ -152,7 +167,7 @@ export const AlertDialogContent = forwardRef<
   HTMLDivElement,
   AlertDialogContentProps
 >(function AlertDialogContent(
-  { className, style, contentStyle, children, ...rest },
+  { className, style, contentStyle, fill, children, ...rest },
   ref,
 ) {
   const sketch = useAlertDialogSketch();
@@ -194,6 +209,7 @@ export const AlertDialogContent = forwardRef<
                   width: "min(420px, calc(100vw - 32px))",
                   outline: "none",
                   pointerEvents: "auto",
+                  color: sketch.ink,
                   ...style,
                 }}
               >
@@ -203,10 +219,13 @@ export const AlertDialogContent = forwardRef<
                   sketchColor={sketch.ink}
                   bowing={sketch.bowing}
                   fillStyle={sketch.fillStyle ?? "solid"}
-                  fill="#f7f6f2"
+                  fill={fill ?? sketch.paper}
                   strokeWidth={sketch.strokeWidth ?? 2}
+                  hachureGap={sketch.hachureGap}
+                  hachureAngle={sketch.hachureAngle}
+                  fillWeight={sketch.fillWeight}
                   animate={sketch.animate}
-                  contentStyle={{ padding: 20, ...contentStyle }}
+                  contentStyle={{ padding: 20, color: sketch.ink, ...contentStyle }}
                 >
                   {children}
                 </SketchBox>

@@ -3,8 +3,9 @@
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { DRAW_IN_TOOLTIP_MS } from "../animations";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily } from "../utils";
 
 export const TooltipProvider = TooltipPrimitive.Provider;
@@ -15,6 +16,7 @@ export interface TooltipProps extends SketchProps {
   side?: ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>["side"];
   delayDuration?: number;
   className?: string;
+  fill?: string;
   /**
    * Quick draw-in when the bubble shows (~180ms). Defaults to the
    * DoodleUIProvider value (true).
@@ -28,15 +30,20 @@ export function Tooltip({
   side = "top",
   delayDuration = 200,
   className,
+  fill,
   roughness,
   seed,
   sketchColor,
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
 }: TooltipProps) {
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
 
   return (
     <TooltipPrimitive.Root delayDuration={delayDuration}>
@@ -54,8 +61,11 @@ export function Tooltip({
             sketchColor={ink}
             bowing={bowing}
             fillStyle={fillStyle ?? "solid"}
-            fill="#f7f6f2"
+            fill={fill ?? theme.paper}
             strokeWidth={strokeWidth ?? 1.4}
+            hachureGap={hachureGap}
+            hachureAngle={hachureAngle}
+            fillWeight={fillWeight}
             animate={animate}
             drawInDuration={DRAW_IN_TOOLTIP_MS}
             contentStyle={{

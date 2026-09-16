@@ -10,8 +10,9 @@ import {
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAnimate } from "../animations";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export type ToastVariant = "info" | "warning" | "error" | "success";
@@ -21,18 +22,18 @@ export type ToastPosition =
   | "bottom-left"
   | "bottom-right";
 
-const VARIANT_COLOR: Record<ToastVariant, string> = {
-  info: SKETCH_COLORS.info,
-  warning: SKETCH_COLORS.warning,
-  error: SKETCH_COLORS.error,
-  success: SKETCH_COLORS.success,
-};
-
-const VARIANT_FILL: Record<ToastVariant, string> = {
+const LIGHT_VARIANT_FILL: Record<ToastVariant, string> = {
   info: "#d2deec",
   warning: "#f3e2c0",
   error: "#f3d0cc",
   success: "#d3e8dc",
+};
+
+const DARK_VARIANT_FILL: Record<ToastVariant, string> = {
+  info: "rgba(96, 165, 250, 0.16)",
+  warning: "rgba(251, 191, 36, 0.16)",
+  error: "rgba(248, 113, 113, 0.16)",
+  success: "rgba(52, 211, 153, 0.16)",
 };
 
 const POSITION_STYLE: Record<ToastPosition, CSSProperties> = {
@@ -94,6 +95,7 @@ export interface ToastProps extends SketchProps {
   title?: ReactNode;
   children?: ReactNode;
   variant?: ToastVariant;
+  fill?: string;
   duration?: number;
   className?: string;
   style?: CSSProperties;
@@ -111,6 +113,7 @@ export function Toast({
   title,
   children,
   variant = "info",
+  fill,
   duration,
   className,
   style,
@@ -120,6 +123,9 @@ export function Toast({
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
 }: ToastProps) {
   const position = useContext(ToastPositionContext);
@@ -127,7 +133,10 @@ export function Toast({
   const [uncontrolled, setUncontrolled] = useState(defaultOpen ?? false);
   const isOpen = open ?? uncontrolled;
   const shouldAnimate = useAnimate(animate);
-  const color = sketchColor ?? VARIANT_COLOR[variant];
+  const theme = useSketchTheme(sketchColor);
+  const color = sketchColor ?? theme[variant];
+  const defaultFill = theme.isDark ? DARK_VARIANT_FILL[variant] : LIGHT_VARIANT_FILL[variant];
+  const resolvedFill = fill ?? defaultFill;
   const offset = fromTop ? -14 : 14;
 
   function handleOpenChange(next: boolean) {
@@ -179,11 +188,14 @@ export function Toast({
               sketchColor={color}
               bowing={bowing}
               fillStyle={fillStyle ?? "hachure"}
-              fill={VARIANT_FILL[variant]}
+              fill={resolvedFill}
               strokeWidth={strokeWidth ?? 1.7}
+              hachureGap={hachureGap ?? 9}
+              hachureAngle={hachureAngle}
+              fillWeight={fillWeight ?? 0.85}
               shadow
               animate={animate}
-              contentStyle={{ padding: "12px 16px" }}
+              contentStyle={{ padding: "12px 16px", color: theme.ink }}
             >
               {title ? (
                 <ToastPrimitive.Title
@@ -206,7 +218,7 @@ export function Toast({
                     fontSize: 14,
                     lineHeight: 1.5,
                     fontFamily: doodleUiFontFamily,
-                    color: SKETCH_COLORS.ink,
+                    color: theme.ink,
                   }}
                 >
                   {children}

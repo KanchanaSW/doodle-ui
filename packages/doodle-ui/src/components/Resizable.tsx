@@ -6,8 +6,9 @@ import {
 } from "react";
 import * as ResizablePrimitive from "react-resizable-panels";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, deriveSeed } from "../utils";
 
 export type ResizablePanelGroupProps = ComponentPropsWithoutRef<
@@ -49,7 +50,8 @@ export function ResizableHandle({
   ...rest
 }: ResizableHandleProps) {
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
   const handleSeed = deriveSeed(resolvedSeed, "handle");
 
   const base: CSSProperties = {

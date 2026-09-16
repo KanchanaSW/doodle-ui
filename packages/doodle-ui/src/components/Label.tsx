@@ -4,8 +4,9 @@ import { forwardRef, useRef, type ReactNode } from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { DRAW_IN_MARK_MS, useAnimate, useDrawIn } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export interface LabelProps
@@ -37,12 +38,16 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(function Label(
     sketchColor,
     bowing,
     strokeWidth,
+    hachureGap,
+    hachureAngle,
+    fillWeight,
     animate,
     ...rest
   },
   ref,
 ) {
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
   const resolvedSeed = useResolvedSeed(seed);
   const shouldAnimate = useAnimate(animate);
   const markRef = useRef<HTMLSpanElement>(null);
@@ -76,11 +81,14 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(function Label(
             shape="ellipse"
             roughness={(roughness ?? 1.5) * 0.9}
             seed={resolvedSeed}
-            sketchColor={SKETCH_COLORS.accent}
+            sketchColor={theme.accent}
             bowing={bowing}
             fillStyle="solid"
-            fill={SKETCH_COLORS.accent}
+            fill={theme.accent}
             strokeWidth={strokeWidth ?? 1.2}
+            hachureGap={hachureGap}
+            hachureAngle={hachureAngle}
+            fillWeight={fillWeight}
             inset={1}
           />
         </span>

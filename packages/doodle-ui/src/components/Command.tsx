@@ -18,14 +18,16 @@ import {
   CommandSeparator as CmdkSeparator,
 } from "cmdk";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily } from "../utils";
 
 interface CommandSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  paper: string;
   animate?: boolean;
 }
 
@@ -69,13 +71,17 @@ export const Command = forwardRef<HTMLDivElement, CommandProps>(
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       animate,
       ...rest
     },
     ref,
   ) {
     const resolvedSeed = useResolvedSeed(seed);
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
 
     return (
       <CommandSketchContext.Provider
@@ -86,23 +92,30 @@ export const Command = forwardRef<HTMLDivElement, CommandProps>(
           bowing,
           fillStyle,
           strokeWidth,
+          hachureGap,
+          hachureAngle,
+          fillWeight,
           resolvedSeed,
           ink,
+          paper: theme.paper,
           animate,
         }}
       >
         <SketchBox
           className={cn(className)}
-          style={style}
+          style={{ color: ink, ...style }}
           roughness={roughness}
           seed={resolvedSeed}
           sketchColor={ink}
           bowing={bowing}
           fillStyle={fillStyle ?? "solid"}
-          fill="#f7f6f2"
+          fill={theme.paper}
           strokeWidth={strokeWidth ?? 1.5}
+          hachureGap={hachureGap}
+          hachureAngle={hachureAngle}
+          fillWeight={fillWeight}
           animate={animate}
-          contentStyle={{ padding: 0, display: "flex", flexDirection: "column" }}
+          contentStyle={{ padding: 0, display: "flex", flexDirection: "column", color: ink }}
         >
           <CmdkCommand ref={ref} {...rest}>
             {children}

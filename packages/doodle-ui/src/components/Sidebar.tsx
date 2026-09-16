@@ -12,8 +12,9 @@ import {
   type ReactNode,
 } from "react";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 import { Button } from "./Button";
 
@@ -26,6 +27,7 @@ interface SidebarContextValue {
   collapsed: boolean;
   toggleCollapsed: () => void;
   ink: string;
+  paper: string;
   sketch: SketchProps;
 }
 
@@ -74,7 +76,9 @@ export function SidebarProvider({
   const toggleCollapsed = useCallback(() => {
     setCollapsed((c) => !c);
   }, []);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
+  const paper = theme.paper;
   const value = useMemo(
     () => ({
       open,
@@ -82,7 +86,8 @@ export function SidebarProvider({
       collapsed,
       toggleCollapsed,
       ink,
-      sketch: { roughness, seed, sketchColor, bowing, strokeWidth },
+      paper,
+      sketch: { roughness, seed, sketchColor: ink, bowing, strokeWidth },
     }),
     [
       open,
@@ -90,9 +95,9 @@ export function SidebarProvider({
       collapsed,
       toggleCollapsed,
       ink,
+      paper,
       roughness,
       seed,
-      sketchColor,
       bowing,
       strokeWidth,
     ],
@@ -105,13 +110,14 @@ export function SidebarProvider({
 
 export interface SidebarProps extends HTMLAttributes<HTMLElement> {
   side?: "left" | "right";
+  fill?: string;
 }
 
 export const Sidebar = forwardRef<HTMLElement, SidebarProps>(function Sidebar(
-  { className, style, children, side = "left", ...rest },
+  { className, style, children, fill, side = "left", ...rest },
   ref,
 ) {
-  const { open, collapsed, sketch } = useSidebar();
+  const { open, collapsed, ink, paper, sketch } = useSidebar();
   const resolvedSeed = useResolvedSeed(sketch.seed);
   const width = collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH;
 
@@ -131,7 +137,8 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(function Sidebar(
         transition: "width 200ms ease",
         display: "flex",
         flexDirection: "column",
-        background: SKETCH_COLORS.paper,
+        background: fill ?? paper,
+        color: ink,
         ...style,
       }}
       data-side={side}
@@ -153,7 +160,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>(function Sidebar(
           shape="line-vertical"
           roughness={sketch.roughness}
           seed={resolvedSeed}
-          sketchColor={sketch.sketchColor ?? SKETCH_COLORS.ink}
+          sketchColor={sketch.sketchColor ?? ink}
           bowing={sketch.bowing}
           strokeWidth={sketch.strokeWidth ?? 1.5}
         />
@@ -168,13 +175,13 @@ export function SidebarHeader({
   children,
   ...rest
 }: HTMLAttributes<HTMLDivElement>) {
-  const { collapsed } = useSidebar();
+  const { collapsed, ink } = useSidebar();
   return (
     <div
       className={cn(className)}
       style={{
         padding: collapsed ? "12px 8px" : "16px 14px",
-        borderBottom: `1px solid ${SKETCH_COLORS.ink}22`,
+        borderBottom: `1px solid ${ink}22`,
         ...style,
       }}
       {...rest}
@@ -212,12 +219,13 @@ export function SidebarFooter({
   children,
   ...rest
 }: HTMLAttributes<HTMLDivElement>) {
+  const { ink } = useSidebar();
   return (
     <div
       className={cn(className)}
       style={{
         padding: "12px 10px",
-        borderTop: `1px solid ${SKETCH_COLORS.ink}22`,
+        borderTop: `1px solid ${ink}22`,
         ...style,
       }}
       {...rest}

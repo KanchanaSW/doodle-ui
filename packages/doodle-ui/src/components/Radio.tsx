@@ -15,8 +15,9 @@ import {
   useAnimate,
   useDrawIn,
 } from "../animations";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily } from "../utils";
 
 export interface RadioGroupProps
@@ -49,6 +50,7 @@ export interface RadioProps
     >,
     SketchProps {
   label?: ReactNode;
+  fill?: string;
   /**
    * Draw-in the ring on mount and scale/draw the dot on select.
    * Defaults to the DoodleUIProvider value (true).
@@ -61,11 +63,13 @@ const SIZE = 20;
 function RadioDot({
   roughness,
   seed,
+  sketchColor,
   bowing,
   shouldAnimate,
 }: {
   roughness?: number;
   seed?: number;
+  sketchColor?: string;
   bowing?: number;
   shouldAnimate: boolean;
 }) {
@@ -99,8 +103,8 @@ function RadioDot({
         shape="ellipse"
         roughness={(roughness ?? 1.5) + 0.2}
         seed={seed}
-        sketchColor={SKETCH_COLORS.accent}
-        fill={SKETCH_COLORS.accent}
+        sketchColor={sketchColor}
+        fill={sketchColor}
         fillStyle="solid"
         bowing={bowing}
         strokeWidth={1}
@@ -115,19 +119,25 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
     className,
     style,
     label,
+    fill,
     roughness,
     seed,
     sketchColor,
     bowing,
     fillStyle,
     strokeWidth,
+    hachureGap,
+    hachureAngle,
+    fillWeight,
     id,
     animate,
     ...rest
   },
   ref,
 ) {
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
+  const accent = sketchColor ?? theme.accent;
   const generatedId = useId();
   const inputId = id ?? generatedId;
   const ringRef = useRef<HTMLSpanElement>(null);
@@ -143,6 +153,7 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
         gap: 8,
         cursor: "pointer",
         userSelect: "none",
+        color: ink,
         ...style,
       }}
     >
@@ -172,8 +183,12 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
             seed={seed}
             sketchColor={ink}
             bowing={bowing}
-            fillStyle={fillStyle}
+            fillStyle={fillStyle ?? (fill ? "solid" : undefined)}
+            fill={fill}
             strokeWidth={strokeWidth ?? 1.6}
+            hachureGap={hachureGap}
+            hachureAngle={hachureAngle}
+            fillWeight={fillWeight}
             inset={1.5}
           />
         </span>
@@ -187,6 +202,7 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
           <RadioDot
             roughness={roughness}
             seed={seed}
+            sketchColor={accent}
             bowing={bowing}
             shouldAnimate={shouldAnimate}
           />
@@ -195,7 +211,7 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
       {label ? (
         <label
           htmlFor={inputId}
-          style={{ fontSize: 15, cursor: "pointer", fontFamily: doodleUiFontFamily }}
+          style={{ fontSize: 15, cursor: "pointer", fontFamily: doodleUiFontFamily, color: ink }}
         >
           {label}
         </label>

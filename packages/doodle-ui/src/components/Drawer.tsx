@@ -15,7 +15,6 @@ import {
   type SlidingPanelContentProps,
   type SlidingPanelRootProps,
 } from "../primitives/SlidingPanel";
-import { SKETCH_COLORS } from "../types";
 import { deriveSeed } from "../utils";
 
 export type DrawerProps = Omit<SlidingPanelRootProps, "side">;
@@ -46,7 +45,7 @@ export const DrawerHandle = forwardRef<HTMLDivElement, { className?: string }>(
           shape="line"
           roughness={(sketch.roughness ?? 1.5) + 0.3}
           seed={deriveSeed(sketch.resolvedSeed, "drawer-handle")}
-          sketchColor={sketch.sketchColor ?? SKETCH_COLORS.ink}
+          sketchColor={sketch.sketchColor ?? sketch.ink}
           bowing={sketch.bowing ?? 1.6}
           strokeWidth={2.4}
           width={48}

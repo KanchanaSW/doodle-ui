@@ -7,8 +7,9 @@ import {
   type CSSProperties,
   type HTMLAttributes,
 } from "react";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 interface EmptyContextValue {
@@ -19,7 +20,8 @@ const EmptyContext = createContext<EmptyContextValue | null>(null);
 
 function useEmptyInk(): string {
   const ctx = useContext(EmptyContext);
-  return ctx?.ink ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme();
+  return ctx?.ink ?? theme.ink;
 }
 
 const emptyContentStyle: CSSProperties = {
@@ -38,6 +40,7 @@ export interface EmptyProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color">,
     SketchProps {
   bordered?: boolean;
+  fill?: string;
   animate?: boolean;
 }
 
@@ -47,25 +50,30 @@ export const Empty = forwardRef<HTMLDivElement, EmptyProps>(function Empty(
     style,
     children,
     bordered = true,
+    fill,
     roughness,
     seed,
     sketchColor,
     bowing,
     fillStyle,
     strokeWidth,
+    hachureGap,
+    hachureAngle,
+    fillWeight,
     animate,
     ...rest
   },
   ref,
 ) {
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
 
   const inner = (
     <EmptyContext.Provider value={{ ink }}>
       <div
         ref={bordered ? undefined : ref}
         className={cn(className)}
-        style={{ ...emptyContentStyle, ...style }}
+        style={{ ...emptyContentStyle, color: ink, ...style }}
         {...(bordered ? {} : rest)}
       >
         {children}
@@ -81,13 +89,16 @@ export const Empty = forwardRef<HTMLDivElement, EmptyProps>(function Empty(
     <SketchBox
       ref={ref}
       className={cn(className)}
-      style={{ width: "100%", ...style }}
-      contentStyle={emptyContentStyle}
-      fill={SKETCH_COLORS.secondaryFill}
+      style={{ width: "100%", color: ink, ...style }}
+      contentStyle={{ ...emptyContentStyle, color: ink }}
+      fill={fill ?? theme.secondaryFill}
       fillStyle={fillStyle ?? "hachure"}
+      hachureGap={hachureGap ?? 8}
+      hachureAngle={hachureAngle}
+      fillWeight={fillWeight ?? 0.85}
       roughness={roughness}
       seed={seed}
-      sketchColor={sketchColor}
+      sketchColor={ink}
       bowing={bowing}
       strokeWidth={strokeWidth}
       animate={animate}

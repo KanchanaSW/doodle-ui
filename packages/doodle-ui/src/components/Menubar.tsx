@@ -11,14 +11,16 @@ import {
 } from "react";
 import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily } from "../utils";
 
 interface MenubarSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  paper: string;
   animate?: boolean;
 }
 
@@ -38,6 +40,7 @@ export interface MenubarProps
   extends Omit<ComponentPropsWithoutRef<typeof MenubarPrimitive.Root>, "children">,
     SketchProps {
   children?: ReactNode;
+  fill?: string;
   animate?: boolean;
 }
 
@@ -45,17 +48,22 @@ export function Menubar({
   children,
   className,
   style,
+  fill,
   roughness,
   seed,
   sketchColor,
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
   ...rest
 }: MenubarProps) {
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
 
   return (
     <MenubarSketchContext.Provider
@@ -66,8 +74,12 @@ export function Menubar({
         bowing,
         fillStyle,
         strokeWidth,
+        hachureGap,
+        hachureAngle,
+        fillWeight,
         resolvedSeed,
         ink,
+        paper: fill ?? theme.paper,
         animate,
       }}
     >
@@ -119,9 +131,9 @@ export const MenubarTrigger = forwardRef<
 
 export const MenubarContent = forwardRef<
   HTMLDivElement,
-  ComponentPropsWithoutRef<typeof MenubarPrimitive.Content>
+  ComponentPropsWithoutRef<typeof MenubarPrimitive.Content> & { fill?: string }
 >(function MenubarContent(
-  { className, style, children, align = "start", sideOffset = 6, ...rest },
+  { className, style, children, fill, align = "start", sideOffset = 6, ...rest },
   ref,
 ) {
   const sketch = useMenubarSketch();
@@ -132,7 +144,7 @@ export const MenubarContent = forwardRef<
         align={align}
         sideOffset={sideOffset}
         className={cn(className)}
-        style={{ zIndex: 80, outline: "none", minWidth: 180, ...style }}
+        style={{ zIndex: 80, outline: "none", minWidth: 180, color: sketch.ink, ...style }}
         {...rest}
       >
         <SketchBox
@@ -141,11 +153,14 @@ export const MenubarContent = forwardRef<
           sketchColor={sketch.ink}
           bowing={sketch.bowing}
           fillStyle={sketch.fillStyle ?? "solid"}
-          fill="#f7f6f2"
+          fill={fill ?? sketch.paper}
           strokeWidth={sketch.strokeWidth ?? 1.5}
+          hachureGap={sketch.hachureGap}
+          hachureAngle={sketch.hachureAngle}
+          fillWeight={sketch.fillWeight}
           shadow
           animate={sketch.animate}
-          contentStyle={{ padding: "6px 4px" }}
+          contentStyle={{ padding: "6px 4px", color: sketch.ink }}
         >
           {children}
         </SketchBox>

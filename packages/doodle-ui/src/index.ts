@@ -9,7 +9,12 @@ export {
   DEFAULT_BOWING,
   DEFAULT_STROKE_WIDTH,
   DEFAULT_INK,
+  DEFAULT_PAPER,
+  DEFAULT_DARK_INK,
+  DEFAULT_DARK_PAPER,
+  DEFAULT_DARK_CARD_BG,
   SKETCH_COLORS,
+  DARK_SKETCH_COLORS,
   toRoughOptions,
 } from "./types";
 
@@ -23,6 +28,7 @@ export {
   type SketchSeedProviderProps,
 } from "./hooks/useSketchSeed";
 export { useResolvedSeed } from "./hooks/useResolvedSeed";
+export { useSketchTheme, type SketchTheme } from "./hooks/useSketchTheme";
 
 export {
   DoodleUIProvider,

@@ -24,9 +24,10 @@ import {
   useDrawIn,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { assignRef, cn, deriveSeed } from "../utils";
 
 type CarouselApi = UseEmblaCarouselType[1];
@@ -39,7 +40,7 @@ interface CarouselContextValue {
   canScrollPrev: boolean;
   canScrollNext: boolean;
   orientation: "horizontal" | "vertical";
-  sketch: SketchProps & { animate?: boolean };
+  sketch: SketchProps & { animate?: boolean; paper: string; ink: string };
   bordered: boolean;
 }
 
@@ -64,6 +65,7 @@ export interface CarouselProps extends SketchProps {
   style?: CSSProperties;
   children?: ReactNode;
   setApi?: (api: CarouselApi) => void;
+  fill?: string;
   animate?: boolean;
 }
 
@@ -76,12 +78,16 @@ export function Carousel({
   style,
   children,
   setApi,
+  fill,
   roughness,
   seed,
   sketchColor,
   bowing,
   strokeWidth,
   fillStyle,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
 }: CarouselProps) {
   const [emblaRef, api] = useEmblaCarousel(
@@ -93,6 +99,10 @@ export function Carousel({
   );
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
+
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
+  const paper = fill ?? theme.paper;
 
   const scrollPrev = useCallback(() => api?.scrollPrev(), [api]);
   const scrollNext = useCallback(() => api?.scrollNext(), [api]);
@@ -147,11 +157,16 @@ export function Carousel({
     sketch: {
       roughness,
       seed,
-      sketchColor,
+      sketchColor: ink,
       bowing,
       strokeWidth,
       fillStyle,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       animate,
+      paper,
+      ink,
     },
     bordered,
   };
@@ -167,6 +182,8 @@ export function Carousel({
         style={{
           position: "relative",
           width: "100%",
+          outline: "none",
+          color: ink,
           ...style,
         }}
       >
@@ -208,15 +225,18 @@ export const CarouselContent = forwardRef<HTMLDivElement, CarouselContentProps>(
 
     return (
       <SketchBox
-        fill={SKETCH_COLORS.paper}
-        fillStyle={sketch.fillStyle ?? "hachure"}
+        fill={sketch.paper}
+        fillStyle={sketch.fillStyle ?? "solid"}
         roughness={sketch.roughness}
         seed={sketch.seed}
         sketchColor={sketch.sketchColor}
         bowing={sketch.bowing}
         strokeWidth={sketch.strokeWidth}
+        hachureGap={sketch.hachureGap}
+        hachureAngle={sketch.hachureAngle}
+        fillWeight={sketch.fillWeight}
         animate={sketch.animate}
-        contentStyle={{ padding: 8 }}
+        contentStyle={{ padding: 8, color: sketch.ink }}
       >
         {viewport}
       </SketchBox>
@@ -275,7 +295,7 @@ const CarouselArrow = forwardRef<
     orientation,
   } = useCarousel();
   const resolvedSeed = useResolvedSeed(sketch.seed);
-  const ink = sketch.sketchColor ?? SKETCH_COLORS.ink;
+  const ink = sketch.sketchColor ?? sketch.ink;
   const isPrev = direction === "prev";
   const disabled = isPrev ? !canScrollPrev : !canScrollNext;
   const shouldAnimate = useAnimate(sketch.animate);
@@ -330,7 +350,7 @@ const CarouselArrow = forwardRef<
         seed={sketchSeed}
         sketchColor={ink}
         bowing={sketch.bowing}
-        fill={SKETCH_COLORS.paper}
+        fill={sketch.paper}
         fillStyle="solid"
         strokeWidth={sketch.strokeWidth ?? 1.5}
         inset={1.5}

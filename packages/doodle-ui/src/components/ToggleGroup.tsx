@@ -17,14 +17,18 @@ import {
   useDrawIn,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, assignRef, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 import type { ToggleSize } from "./Toggle";
 
 interface ToggleGroupSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  accent: string;
+  accentFill: string;
+  isDark: boolean;
   animate?: boolean;
   size: ToggleSize;
 }
@@ -64,13 +68,21 @@ export function ToggleGroup(props: ToggleGroupProps) {
     bowing,
     fillStyle,
     strokeWidth,
+    hachureGap,
+    hachureAngle,
+    fillWeight,
     size = "md",
     animate,
     type = "single",
     ...rest
   } = props;
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
+  const accent = sketchColor ?? theme.accent;
+  const accentFill = theme.isDark
+    ? (sketchColor ? `${sketchColor}25` : theme.accentFill)
+    : theme.accentFill;
 
   const rootStyle = { display: "inline-flex", gap: 6, flexWrap: "wrap" as const };
 
@@ -83,8 +95,14 @@ export function ToggleGroup(props: ToggleGroupProps) {
         bowing,
         fillStyle,
         strokeWidth,
+        hachureGap,
+        hachureAngle,
+        fillWeight,
         resolvedSeed,
         ink,
+        accent,
+        accentFill,
+        isDark: theme.isDark,
         animate,
         size,
       }}
@@ -159,6 +177,10 @@ export const ToggleGroupItem = forwardRef<
 
   useDrawIn(rootRef, DRAW_IN_DURATION_MS, shouldAnimate, sketchSeed);
 
+  const textColor = pressed
+    ? (sketch.isDark ? "#ffffff" : sketch.accent)
+    : sketch.ink;
+
   return (
     <ToggleGroupPrimitive.Item
       ref={(node) => {
@@ -176,7 +198,7 @@ export const ToggleGroupItem = forwardRef<
         border: "none",
         background: "transparent",
         cursor: disabled ? "not-allowed" : "pointer",
-        color: sketch.ink,
+        color: textColor,
         fontFamily: doodleUiFontFamily,
         fontWeight: doodleUiFontWeight(600),
         opacity: disabled ? 0.45 : 1,
@@ -190,11 +212,14 @@ export const ToggleGroupItem = forwardRef<
         shape="rectangle"
         roughness={sketch.roughness}
         seed={sketchSeed}
-        sketchColor={pressed ? SKETCH_COLORS.accent : sketch.ink}
+        sketchColor={pressed ? sketch.accent : sketch.ink}
         bowing={sketch.bowing}
         fillStyle={sketch.fillStyle ?? "hachure"}
-        fill={pressed ? SKETCH_COLORS.accentFill : undefined}
+        fill={pressed ? sketch.accentFill : undefined}
         strokeWidth={sketch.strokeWidth ?? 1.6}
+        hachureGap={sketch.hachureGap ?? 7}
+        hachureAngle={sketch.hachureAngle}
+        fillWeight={sketch.fillWeight ?? 1}
       />
       <span style={{ position: "relative", zIndex: 1 }}>{children}</span>
     </ToggleGroupPrimitive.Item>

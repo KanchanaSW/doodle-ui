@@ -4,8 +4,9 @@ import { useState, type ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAnimate } from "../animations";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 import { Button } from "./Button";
 
@@ -18,6 +19,7 @@ export interface ModalProps extends SketchProps {
   description?: ReactNode;
   children?: ReactNode;
   className?: string;
+  fill?: string;
   /**
    * Backdrop fade, panel enter/exit, and border draw-in on open.
    * Defaults to the DoodleUIProvider value (true).
@@ -34,15 +36,20 @@ export function Modal({
   description,
   children,
   className,
+  fill,
   roughness,
   seed,
   sketchColor,
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
 }: ModalProps) {
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
   const [uncontrolled, setUncontrolled] = useState(defaultOpen === true);
   const isOpen = open ?? uncontrolled;
   const shouldAnimate = useAnimate(animate);
@@ -71,7 +78,7 @@ export function Modal({
                 style={{
                   position: "fixed",
                   inset: 0,
-                  background: "rgba(31, 29, 26, 0.38)",
+                  background: theme.isDark ? "rgba(0, 0, 0, 0.65)" : "rgba(31, 29, 26, 0.38)",
                   zIndex: 70,
                 }}
               />
@@ -111,6 +118,7 @@ export function Modal({
                     width: "min(480px, calc(100vw - 32px))",
                     outline: "none",
                     pointerEvents: "auto",
+                    color: ink,
                   }}
                 >
                   <SketchBox
@@ -119,11 +127,14 @@ export function Modal({
                     sketchColor={ink}
                     bowing={bowing}
                     fillStyle={fillStyle ?? "solid"}
-                    fill="#f7f6f2"
+                    fill={fill ?? theme.paper}
                     strokeWidth={strokeWidth ?? 2}
+                    hachureGap={hachureGap}
+                    hachureAngle={hachureAngle}
+                    fillWeight={fillWeight}
                     shadow
                     animate={animate}
-                    contentStyle={{ padding: "20px 22px 18px" }}
+                    contentStyle={{ padding: "20px 22px 18px", color: ink }}
                   >
                     <div
                       style={{
@@ -163,24 +174,24 @@ export function Modal({
                         <Button
                           variant="ghost"
                           size="sm"
-                          roughness={roughness}
-                          seed={seed}
                           sketchColor={ink}
-                          animate={animate}
-                          aria-label="Close"
+                          aria-label="Close dialog"
+                          style={{ padding: "2px 8px", minHeight: 26 }}
                         >
-                          Close
+                          ✕
                         </Button>
                       </Dialog.Close>
                     </div>
                     {description ? (
                       <Dialog.Description
                         style={{
-                          margin: "0 0 14px",
+                          margin: 0,
+                          marginBottom: 14,
                           fontSize: 14,
-                          lineHeight: 1.5,
+                          lineHeight: 1.4,
+                          opacity: 0.78,
+                          fontFamily: doodleUiFontFamily,
                           color: ink,
-                          opacity: 0.8,
                         }}
                       >
                         {description}

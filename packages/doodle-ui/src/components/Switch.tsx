@@ -9,8 +9,9 @@ import {
   useDrawIn,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily } from "../utils";
 
 const TRACK_W = 44;
@@ -53,7 +54,12 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
   ) {
     const [uncontrolled, setUncontrolled] = useState(defaultChecked === true);
     const isOn = checked ?? uncontrolled;
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
+    const activeColor = sketchColor ?? theme.accent;
+    const activeFill = theme.isDark
+      ? (sketchColor ? `${sketchColor}25` : theme.accentFill)
+      : theme.accentFill;
     const resolvedSeed = useResolvedSeed(seed);
     const shouldAnimate = useAnimate(animate);
     const trackRef = useRef<HTMLSpanElement>(null);
@@ -72,6 +78,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           gap: 8,
           cursor: "pointer",
           userSelect: "none",
+          color: ink,
           ...style,
         }}
       >
@@ -105,10 +112,10 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
               shape="rectangle"
               roughness={roughness}
               seed={trackSeed}
-              sketchColor={isOn ? SKETCH_COLORS.accent : ink}
+              sketchColor={isOn ? activeColor : ink}
               bowing={bowing ?? 1.4}
               fillStyle={fillStyle ?? (isOn ? "hachure" : undefined)}
-              fill={isOn ? SKETCH_COLORS.accentFill : undefined}
+              fill={isOn ? activeFill : undefined}
               strokeWidth={strokeWidth ?? 1.6}
               inset={1.5}
             />
@@ -136,8 +143,8 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
                 shape="ellipse"
                 roughness={(roughness ?? 1.5) * 0.85}
                 seed={deriveSeed(resolvedSeed, "thumb")}
-                sketchColor={isOn ? SKETCH_COLORS.accent : ink}
-                fill="#f7f6f2"
+                sketchColor={isOn ? activeColor : ink}
+                fill={theme.paper}
                 fillStyle="solid"
                 bowing={bowing}
                 strokeWidth={(strokeWidth ?? 1.5) + 0.2}
@@ -153,6 +160,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
               fontSize: 15,
               cursor: "pointer",
               fontFamily: doodleUiFontFamily,
+              color: ink,
             }}
           >
             {label}

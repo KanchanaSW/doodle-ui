@@ -23,6 +23,12 @@ export interface SketchProps {
   bowing?: number;
   fillStyle?: FillStyle;
   strokeWidth?: number;
+  /** Spacing between hatch lines for patterned fills. Defaults to 4 in roughjs, higher = airier */
+  hachureGap?: number;
+  /** Angle in degrees of the hatch lines */
+  hachureAngle?: number;
+  /** Weight/thickness of the hatch lines */
+  fillWeight?: number;
 }
 
 export interface RoughSvgProps extends SketchProps {
@@ -54,6 +60,9 @@ export function toRoughOptions(
   if (props.fill) {
     options.fill = props.fill;
     options.fillStyle = props.fillStyle ?? "hachure";
+    if (props.hachureGap !== undefined) options.hachureGap = props.hachureGap;
+    if (props.hachureAngle !== undefined) options.hachureAngle = props.hachureAngle;
+    if (props.fillWeight !== undefined) options.fillWeight = props.fillWeight;
   }
   return options;
 }
@@ -62,6 +71,10 @@ export const DEFAULT_ROUGHNESS = 1.5;
 export const DEFAULT_BOWING = 1;
 export const DEFAULT_STROKE_WIDTH = 1.75;
 export const DEFAULT_INK = "#1f1d1a";
+export const DEFAULT_DARK_INK = "#f3f4f6";
+export const DEFAULT_PAPER = "#f7f6f2";
+export const DEFAULT_DARK_PAPER = "#131923";
+export const DEFAULT_DARK_CARD_BG = "#131923";
 export const DEFAULT_INSET = 3;
 
 export const SKETCH_COLORS = {
@@ -74,4 +87,18 @@ export const SKETCH_COLORS = {
   warning: "#c47b17",
   error: "#c0392b",
   success: "#2d6a4f",
+} as const;
+
+export const DARK_SKETCH_COLORS = {
+  ink: DEFAULT_DARK_INK,
+  accent: "#f87171",
+  accentFill: "rgba(248, 113, 113, 0.22)",
+  secondaryFill: "rgba(255, 255, 255, 0.08)",
+  paper: DEFAULT_DARK_PAPER,
+  cardBg: DEFAULT_DARK_CARD_BG,
+  shadow: "#000000",
+  info: "#60a5fa",
+  warning: "#fbbf24",
+  error: "#f87171",
+  success: "#34d399",
 } as const;

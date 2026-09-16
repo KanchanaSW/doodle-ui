@@ -15,8 +15,9 @@ import {
   useDrawIn,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
@@ -61,6 +62,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       disabled,
       animate,
       onMouseEnter,
@@ -71,26 +75,36 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) {
     const rootRef = useRef<HTMLButtonElement>(null);
     const [hovered, setHovered] = useState(false);
+    const theme = useSketchTheme(sketchColor);
     const shouldAnimate = useAnimate(animate);
     const resolvedSeed = useResolvedSeed(seed);
     const hoverSeed = deriveSeed(resolvedSeed, "hover");
     const sketchSeed =
       shouldAnimate && hovered && !disabled ? hoverSeed : resolvedSeed;
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const ink = sketchColor ?? theme.ink;
 
     const fill =
       variant === "primary"
-        ? SKETCH_COLORS.accentFill
+        ? (theme.isDark
+            ? (sketchColor ? `${sketchColor}28` : theme.accentFill)
+            : theme.accentFill)
         : variant === "secondary"
-          ? SKETCH_COLORS.secondaryFill
-          : undefined;
+          ? theme.secondaryFill
+          : hovered && variant === "ghost"
+            ? (theme.isDark ? "rgba(255,255,255,0.06)" : "rgba(31,29,26,0.05)")
+            : undefined;
 
     const stroke =
       variant === "ghost" && !hovered
         ? "transparent"
         : variant === "primary"
-          ? sketchColor ?? SKETCH_COLORS.accent
+          ? (sketchColor ?? theme.accent)
           : ink;
+
+    const textColor =
+      variant === "primary"
+        ? (sketchColor ?? (theme.isDark ? "#ffffff" : ink))
+        : ink;
 
     useDrawIn(rootRef, DRAW_IN_DURATION_MS, shouldAnimate, sketchSeed);
 
@@ -121,7 +135,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           border: "none",
           background: "transparent",
           cursor: disabled ? "not-allowed" : "pointer",
-          color: ink,
+          color: textColor,
           fontFamily: doodleUiFontFamily,
           fontWeight: doodleUiFontWeight(600),
           lineHeight: 1.2,
@@ -137,8 +151,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           seed={sketchSeed}
           sketchColor={stroke}
           bowing={bowing}
-          fillStyle={fillStyle ?? "hachure"}
+          fillStyle={fillStyle ?? (fill ? "hachure" : undefined)}
           fill={fill}
+          hachureGap={hachureGap ?? 7}
+          hachureAngle={hachureAngle}
+          fillWeight={fillWeight ?? 1}
           strokeWidth={
             !shouldAnimate && hovered
               ? (strokeWidth ?? 1.75) + 0.4

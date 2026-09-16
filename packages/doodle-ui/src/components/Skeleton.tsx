@@ -2,9 +2,10 @@
 
 import { forwardRef, useEffect, useState, type HTMLAttributes } from "react";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type RoughShape, type SketchProps } from "../types";
+import type { RoughShape, SketchProps } from "../types";
 import { cn } from "../utils";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { deriveSeed } from "../utils";
 
 export type SkeletonVariant = "text" | "rect" | "circle";
@@ -33,13 +34,17 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       ...rest
     },
     ref,
   ) {
     const base = useResolvedSeed(seed);
     const [tick, setTick] = useState(0);
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
 
     useEffect(() => {
       if (!pulse) return;
@@ -77,6 +82,9 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
           fillStyle={fillStyle ?? "hachure"}
           bowing={bowing ?? 1.6}
           strokeWidth={strokeWidth ?? 1.1}
+          hachureGap={hachureGap}
+          hachureAngle={hachureAngle}
+          fillWeight={fillWeight}
           inset={2}
           style={{ opacity: 0.28 }}
         />

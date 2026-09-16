@@ -10,14 +10,17 @@ import {
 } from "react";
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily } from "../utils";
 
 interface ContextMenuSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  paper: string;
+  accent: string;
   animate?: boolean;
 }
 
@@ -38,6 +41,7 @@ export interface ContextMenuProps
   extends Omit<ContextMenuPrimitive.ContextMenuProps, "children">,
     SketchProps {
   children?: ReactNode;
+  fill?: string;
   /**
    * Draw-in the panel border when the menu opens.
    * Defaults to the DoodleUIProvider value (true).
@@ -47,17 +51,22 @@ export interface ContextMenuProps
 
 export function ContextMenu({
   children,
+  fill,
   roughness,
   seed,
   sketchColor,
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
   ...rest
 }: ContextMenuProps) {
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
 
   return (
     <ContextMenuSketchContext.Provider
@@ -68,8 +77,13 @@ export function ContextMenu({
         bowing,
         fillStyle,
         strokeWidth,
+        hachureGap,
+        hachureAngle,
+        fillWeight,
         resolvedSeed,
         ink,
+        paper: fill ?? theme.paper,
+        accent: theme.accent,
         animate,
       }}
     >
@@ -88,13 +102,14 @@ export const ContextMenuSub = ContextMenuPrimitive.Sub;
 export interface ContextMenuContentProps
   extends Omit<ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Content>, "asChild"> {
   children?: ReactNode;
+  fill?: string;
 }
 
 export const ContextMenuContent = forwardRef<
   HTMLDivElement,
   ContextMenuContentProps
 >(function ContextMenuContent(
-  { className, style, children, ...rest },
+  { className, style, children, fill, ...rest },
   ref,
 ) {
   const sketch = useContextMenuSketch();
@@ -104,7 +119,7 @@ export const ContextMenuContent = forwardRef<
       <ContextMenuPrimitive.Content
         ref={ref}
         className={cn(className)}
-        style={{ zIndex: 80, outline: "none", minWidth: 180, ...style }}
+        style={{ zIndex: 80, outline: "none", minWidth: 180, color: sketch.ink, ...style }}
         {...rest}
       >
         <SketchBox
@@ -113,11 +128,14 @@ export const ContextMenuContent = forwardRef<
           sketchColor={sketch.ink}
           bowing={sketch.bowing}
           fillStyle={sketch.fillStyle ?? "solid"}
-          fill="#f7f6f2"
+          fill={fill ?? sketch.paper}
           strokeWidth={sketch.strokeWidth ?? 1.5}
+          hachureGap={sketch.hachureGap}
+          hachureAngle={sketch.hachureAngle}
+          fillWeight={sketch.fillWeight}
           shadow
           animate={sketch.animate}
-          contentStyle={{ padding: "6px 4px" }}
+          contentStyle={{ padding: "6px 4px", color: sketch.ink }}
         >
           {children}
         </SketchBox>
@@ -258,7 +276,7 @@ export const ContextMenuCheckboxItem = forwardRef<
             path={CHECK_PATH}
             roughness={(sketch.roughness ?? 1.5) * 0.7}
             seed={deriveSeed(sketch.resolvedSeed, "checkbox-mark")}
-            sketchColor={SKETCH_COLORS.accent}
+            sketchColor={sketch.accent}
             bowing={sketch.bowing}
             strokeWidth={1.6}
             inset={0}
@@ -333,10 +351,10 @@ export const ContextMenuRadioItem = forwardRef<
             shape="ellipse"
             roughness={(sketch.roughness ?? 1.5) * 0.8}
             seed={deriveSeed(sketch.resolvedSeed, "radio-mark")}
-            sketchColor={SKETCH_COLORS.accent}
+            sketchColor={sketch.accent}
             bowing={sketch.bowing}
             fillStyle="solid"
-            fill={SKETCH_COLORS.accent}
+            fill={sketch.accent}
             strokeWidth={1.2}
             inset={0}
           />

@@ -25,6 +25,9 @@ export function RoughSvg({
   fillStyle,
   strokeWidth,
   fill,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   inset = DEFAULT_INSET,
   path,
   className,
@@ -53,6 +56,9 @@ export function RoughSvg({
       fillStyle,
       strokeWidth,
       fill,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
     });
 
     const x = inset;
@@ -91,6 +97,9 @@ export function RoughSvg({
     fillStyle,
     strokeWidth,
     fill,
+    hachureGap,
+    hachureAngle,
+    fillWeight,
     inset,
     path,
   ]);

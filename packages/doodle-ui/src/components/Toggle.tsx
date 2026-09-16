@@ -13,8 +13,9 @@ import {
   useDrawIn,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { assignRef, cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export type ToggleSize = "sm" | "md" | "lg";
@@ -49,6 +50,9 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       pressed,
       defaultPressed,
       onPressedChange,
@@ -62,7 +66,12 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
     const rootRef = useRef<HTMLButtonElement>(null);
     const [uncontrolled, setUncontrolled] = useState(defaultPressed === true);
     const isPressed = pressed ?? uncontrolled;
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
+    const accent = sketchColor ?? theme.accent;
+    const accentFill = theme.isDark
+      ? (sketchColor ? `${sketchColor}25` : theme.accentFill)
+      : theme.accentFill;
     const resolvedSeed = useResolvedSeed(seed);
     const shouldAnimate = useAnimate(animate);
     const pressSeed = deriveSeed(resolvedSeed, isPressed ? "on" : "off");
@@ -92,7 +101,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
           border: "none",
           background: "transparent",
           cursor: disabled ? "not-allowed" : "pointer",
-          color: ink,
+          color: isPressed ? (theme.isDark ? "#ffffff" : accent) : ink,
           fontFamily: doodleUiFontFamily,
           fontWeight: doodleUiFontWeight(600),
           opacity: disabled ? 0.45 : 1,
@@ -106,11 +115,14 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
           shape="rectangle"
           roughness={roughness}
           seed={sketchSeed}
-          sketchColor={isPressed ? SKETCH_COLORS.accent : ink}
+          sketchColor={isPressed ? accent : ink}
           bowing={bowing}
           fillStyle={fillStyle ?? "hachure"}
-          fill={isPressed ? SKETCH_COLORS.accentFill : undefined}
+          fill={isPressed ? accentFill : undefined}
           strokeWidth={strokeWidth ?? 1.6}
+          hachureGap={hachureGap ?? 7}
+          hachureAngle={hachureAngle}
+          fillWeight={fillWeight ?? 1}
         />
         <span style={{ position: "relative", zIndex: 1 }}>{children}</span>
       </TogglePrimitive.Root>

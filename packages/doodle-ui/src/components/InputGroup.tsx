@@ -11,13 +11,15 @@ import {
 } from "react";
 import { useAnimate } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily } from "../utils";
 
 interface InputGroupSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  accent: string;
   animate?: boolean;
   focused: boolean;
   setFocused: (next: boolean) => void;
@@ -51,13 +53,17 @@ export function InputGroup({
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
   onFocus,
   onBlur,
   ...rest
 }: InputGroupProps) {
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
   const [focused, setFocused] = useState(false);
   const shouldAnimate = useAnimate(animate);
   const focusSeed = deriveSeed(resolvedSeed, "focus");
@@ -68,12 +74,16 @@ export function InputGroup({
       value={{
         roughness,
         seed: resolvedSeed,
-        sketchColor,
+        sketchColor: ink,
         bowing,
         fillStyle,
         strokeWidth,
+        hachureGap,
+        hachureAngle,
+        fillWeight,
         resolvedSeed,
         ink,
+        accent: theme.accent,
         animate,
         focused,
         setFocused,
@@ -97,7 +107,7 @@ export function InputGroup({
         <SketchBox
           roughness={roughness}
           seed={sketchSeed}
-          sketchColor={focused ? SKETCH_COLORS.accent : ink}
+          sketchColor={focused ? theme.accent : ink}
           bowing={bowing}
           fillStyle={fillStyle}
           strokeWidth={
@@ -105,6 +115,9 @@ export function InputGroup({
               ? (strokeWidth ?? 1.75) + 0.35
               : strokeWidth
           }
+          hachureGap={hachureGap}
+          hachureAngle={hachureAngle}
+          fillWeight={fillWeight}
           animate={animate}
           drawInKey={sketchSeed}
           contentStyle={{

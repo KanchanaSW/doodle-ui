@@ -8,8 +8,9 @@ import {
   useDrawIn,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { assignRef, cn, doodleUiFontFamily } from "../utils";
 import {
   Command,
@@ -64,6 +65,9 @@ export function Combobox({
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   animate,
   "aria-label": ariaLabel,
 }: ComboboxProps) {
@@ -74,7 +78,8 @@ export function Combobox({
     (option) => option.value === selectedValue,
   );
 
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
   const resolvedSeed = useResolvedSeed(seed);
   const shouldAnimate = useAnimate(animate);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -124,9 +129,12 @@ export function Combobox({
             shape="rectangle"
             roughness={roughness}
             seed={resolvedSeed}
-            sketchColor={open ? SKETCH_COLORS.accent : ink}
+            sketchColor={open ? theme.accent : ink}
             bowing={bowing}
             fillStyle={fillStyle}
+            hachureGap={hachureGap}
+            hachureAngle={hachureAngle}
+            fillWeight={fillWeight}
             strokeWidth={open ? (strokeWidth ?? 1.75) + 0.35 : strokeWidth}
           />
           <span
@@ -174,6 +182,9 @@ export function Combobox({
             bowing={bowing}
             fillStyle={fillStyle}
             strokeWidth={strokeWidth}
+            hachureGap={hachureGap}
+            hachureAngle={hachureAngle}
+            fillWeight={fillWeight}
             animate={animate}
           >
             <CommandInput placeholder={searchPlaceholder} />

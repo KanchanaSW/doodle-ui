@@ -4,8 +4,9 @@ import { forwardRef, type CSSProperties, type HTMLAttributes } from "react";
 import { motion } from "framer-motion";
 import { useAnimate } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn } from "../utils";
 
 /** Partial circle arc for a 24×24 viewBox */
@@ -49,7 +50,8 @@ export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
   ) {
     const px = SIZE_PX[size];
     const resolvedSeed = useResolvedSeed(seed);
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
     const shouldSpin = useAnimate(animate);
 
     const boxStyle: CSSProperties = {

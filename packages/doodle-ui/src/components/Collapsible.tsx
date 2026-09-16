@@ -10,9 +10,10 @@ import {
 } from "react";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 
 const CHEVRON_PATH = "M 6 4 L 12 10 L 6 16";
 
@@ -57,12 +58,16 @@ export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       ...rest
     },
     ref,
   ) {
     const resolvedSeed = useResolvedSeed(seed);
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
     const [uncontrolled, setUncontrolled] = useState(defaultOpen ?? false);
     const isOpen = open ?? uncontrolled;
 
@@ -71,10 +76,13 @@ export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
         value={{
           roughness,
           seed: resolvedSeed,
-          sketchColor,
+          sketchColor: ink,
           bowing,
           fillStyle,
           strokeWidth,
+          hachureGap,
+          hachureAngle,
+          fillWeight,
           resolvedSeed,
           ink,
           open: isOpen,

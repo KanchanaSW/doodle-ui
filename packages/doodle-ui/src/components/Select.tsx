@@ -17,9 +17,10 @@ import {
   useDrawIn,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { assignRef, cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 const CHEVRON_PATH = "M 4 6 L 10 12 L 16 6";
@@ -34,6 +35,8 @@ export interface SelectOption {
 interface SelectSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  paper: string;
+  accent: string;
   selectedValue?: string;
   selectedLabel?: ReactNode;
   placeholder?: string;
@@ -59,6 +62,7 @@ export interface SelectProps
   placeholder?: string;
   className?: string;
   style?: CSSProperties;
+  fill?: string;
   "aria-label"?: string;
   /**
    * Draw-in the trigger on mount and the popover border on open.
@@ -72,12 +76,16 @@ export function Select({
   placeholder = "Select…",
   className,
   style,
+  fill,
   roughness,
   seed,
   sketchColor,
   bowing,
   fillStyle,
   strokeWidth,
+  hachureGap,
+  hachureAngle,
+  fillWeight,
   value,
   defaultValue,
   onValueChange,
@@ -90,7 +98,8 @@ export function Select({
   const selectedLabel = options.find((option) => option.value === selectedValue)
     ?.label;
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
 
   return (
     <SelectSketchContext.Provider
@@ -101,8 +110,13 @@ export function Select({
         bowing,
         fillStyle,
         strokeWidth,
+        hachureGap,
+        hachureAngle,
+        fillWeight,
         resolvedSeed,
         ink,
+        paper: fill ?? theme.paper,
+        accent: theme.accent,
         selectedValue,
         selectedLabel,
         placeholder,
@@ -192,7 +206,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
           shape="rectangle"
           roughness={sketch.roughness}
           seed={sketch.resolvedSeed}
-          sketchColor={openish ? SKETCH_COLORS.accent : sketch.ink}
+          sketchColor={openish ? sketch.accent : sketch.ink}
           bowing={sketch.bowing}
           fillStyle={sketch.fillStyle}
           strokeWidth={
@@ -241,10 +255,11 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
 export interface SelectContentProps
   extends Omit<SelectPrimitive.SelectContentProps, "asChild" | "position"> {
   children?: ReactNode;
+  fill?: string;
 }
 
 export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
-  function SelectContent({ className, style, children, ...rest }, ref) {
+  function SelectContent({ className, style, children, fill, ...rest }, ref) {
     const sketch = useSelectSketch();
 
     return (
@@ -258,6 +273,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
             zIndex: 80,
             outline: "none",
             minWidth: "var(--radix-select-trigger-width)",
+            color: sketch.ink,
             ...style,
           }}
           {...rest}
@@ -268,10 +284,13 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
             sketchColor={sketch.ink}
             bowing={sketch.bowing}
             fillStyle={sketch.fillStyle ?? "solid"}
-            fill="#f7f6f2"
+            fill={fill ?? sketch.paper}
             strokeWidth={sketch.strokeWidth ?? 1.5}
+            hachureGap={sketch.hachureGap}
+            hachureAngle={sketch.hachureAngle}
+            fillWeight={sketch.fillWeight}
             animate={sketch.animate}
-            contentStyle={{ padding: "6px 4px" }}
+            contentStyle={{ padding: "6px 4px", color: sketch.ink }}
           >
             <SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>
           </SketchBox>
@@ -326,7 +345,7 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
             roughness={(sketch.roughness ?? 1.5) + 0.4}
             seed={sketch.resolvedSeed}
             sketchColor={
-              selected ? SKETCH_COLORS.accent : sketch.ink
+              selected ? sketch.accent : sketch.ink
             }
             bowing={sketch.bowing ?? 1.6}
             strokeWidth={selected ? 1.8 : 1.3}

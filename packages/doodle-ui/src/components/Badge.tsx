@@ -1,8 +1,9 @@
 "use client";
 
 import { forwardRef, type HTMLAttributes } from "react";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontWeight } from "../utils";
 
 export type BadgeVariant = "default" | "accent" | "outline";
@@ -29,22 +30,26 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
     bowing,
     fillStyle,
     strokeWidth,
+    hachureGap,
+    hachureAngle,
+    fillWeight,
     animate,
     ...rest
   },
   ref,
 ) {
+  const theme = useSketchTheme(sketchColor);
   const ink =
     variant === "accent"
-      ? sketchColor ?? SKETCH_COLORS.accent
-      : sketchColor ?? SKETCH_COLORS.ink;
+      ? sketchColor ?? theme.accent
+      : sketchColor ?? theme.ink;
 
   const fill =
     variant === "accent"
-      ? SKETCH_COLORS.accentFill
+      ? (theme.isDark ? (sketchColor ? `${sketchColor}25` : theme.accentFill) : theme.accentFill)
       : variant === "outline"
         ? undefined
-        : SKETCH_COLORS.secondaryFill;
+        : theme.secondaryFill;
 
   return (
     <SketchBox
@@ -60,9 +65,13 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
         fontWeight: doodleUiFontWeight(650),
         lineHeight: 1.4,
         letterSpacing: "0.01em",
+        color: ink,
       }}
       fill={fill}
-      fillStyle={fillStyle ?? "hachure"}
+      fillStyle={fillStyle ?? (fill ? "hachure" : undefined)}
+      hachureGap={hachureGap ?? 6}
+      hachureAngle={hachureAngle}
+      fillWeight={fillWeight ?? 0.9}
       roughness={roughness}
       seed={seed}
       sketchColor={ink}

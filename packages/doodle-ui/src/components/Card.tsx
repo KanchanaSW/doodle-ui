@@ -2,7 +2,8 @@
 
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { SketchBox, type SketchBoxProps } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import { useSketchTheme } from "../hooks/useSketchTheme";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontWeight } from "../utils";
 
 export interface CardProps
@@ -33,20 +34,29 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
     bowing,
     fillStyle,
     strokeWidth,
+    hachureGap,
+    hachureAngle,
+    fillWeight,
     animate,
     ...rest
   },
   ref,
 ) {
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
+
   const boxProps: SketchBoxProps = {
     shadow,
     fill,
     roughness,
     seed,
-    sketchColor: sketchColor ?? SKETCH_COLORS.ink,
+    sketchColor: ink,
     bowing,
     fillStyle,
     strokeWidth,
+    hachureGap,
+    hachureAngle,
+    fillWeight,
     animate,
   };
 
@@ -54,7 +64,10 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
     <SketchBox
       ref={ref}
       className={cn(className)}
-      style={style}
+      style={{
+        color: ink,
+        ...style,
+      }}
       contentStyle={{ padding: "16px 18px" }}
       {...boxProps}
       {...rest}
@@ -65,6 +78,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
             fontWeight: doodleUiFontWeight(700),
             fontSize: 16,
             marginBottom: 10,
+            color: ink,
           }}
         >
           {title}
@@ -72,7 +86,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
       ) : null}
       {children}
       {footer ? (
-        <div style={{ marginTop: 14, fontSize: 13, opacity: 0.8 }}>
+        <div style={{ marginTop: 14, fontSize: 13, opacity: 0.8, color: ink }}>
           {footer}
         </div>
       ) : null}

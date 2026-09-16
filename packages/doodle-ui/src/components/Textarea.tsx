@@ -13,8 +13,9 @@ import {
   useDrawIn,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 export interface TextareaProps
@@ -40,6 +41,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       id,
       rows = 4,
       onFocus,
@@ -51,12 +55,13 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ) {
     const [focused, setFocused] = useState(false);
     const fieldRef = useRef<HTMLSpanElement>(null);
+    const theme = useSketchTheme(sketchColor);
     const shouldAnimate = useAnimate(animate);
     const resolvedSeed = useResolvedSeed(seed);
     const focusSeed = deriveSeed(resolvedSeed, "focus");
     const sketchSeed =
       shouldAnimate && focused ? focusSeed : resolvedSeed;
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const ink = sketchColor ?? theme.ink;
 
     useDrawIn(fieldRef, DRAW_IN_DURATION_MS, shouldAnimate, sketchSeed);
 
@@ -87,9 +92,12 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             shape="rectangle"
             roughness={roughness}
             seed={sketchSeed}
-            sketchColor={focused ? SKETCH_COLORS.accent : ink}
+            sketchColor={focused ? (sketchColor ?? theme.accent) : ink}
             bowing={bowing}
             fillStyle={fillStyle}
+            hachureGap={hachureGap}
+            hachureAngle={hachureAngle}
+            fillWeight={fillWeight}
             strokeWidth={
               focused && !shouldAnimate
                 ? (strokeWidth ?? 1.75) + 0.35
@@ -122,8 +130,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               color: ink,
               fontFamily: doodleUiFontFamily,
               fontSize: 15,
-              lineHeight: 1.5,
-              padding: "10px 12px",
+              padding: "8px 12px",
               resize: "vertical",
               ...style,
             }}

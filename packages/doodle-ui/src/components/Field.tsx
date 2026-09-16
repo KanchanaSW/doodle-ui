@@ -13,7 +13,7 @@ import {
   type ReactNode,
 } from "react";
 import { Label } from "./Label";
-import { SKETCH_COLORS } from "../types";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { cn, doodleUiFontFamily } from "../utils";
 
 interface FieldContextValue {
@@ -95,6 +95,7 @@ export function FieldDescription({
   ...rest
 }: HTMLAttributes<HTMLParagraphElement>) {
   const { descriptionId } = useField();
+  const theme = useSketchTheme();
   return (
     <p
       id={descriptionId}
@@ -104,7 +105,7 @@ export function FieldDescription({
         fontFamily: doodleUiFontFamily,
         fontSize: 12,
         lineHeight: 1.45,
-        color: SKETCH_COLORS.ink,
+        color: theme.ink,
         opacity: 0.75,
         ...style,
       }}
@@ -122,6 +123,7 @@ export function FieldError({
   ...rest
 }: HTMLAttributes<HTMLParagraphElement>) {
   const { error, errorId } = useField();
+  const theme = useSketchTheme();
   const message = children ?? error;
   if (!message) return null;
 
@@ -135,7 +137,7 @@ export function FieldError({
         fontFamily: doodleUiFontFamily,
         fontSize: 12,
         lineHeight: 1.45,
-        color: SKETCH_COLORS.error,
+        color: theme.error,
         ...style,
       }}
       {...rest}

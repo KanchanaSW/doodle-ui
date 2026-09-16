@@ -18,13 +18,15 @@ import {
   useDrawIn,
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { assignRef, cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
 interface TabsSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  accent: string;
   current: string | undefined;
   shouldAnimate: boolean;
 }
@@ -71,7 +73,9 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   const [uncontrolled, setUncontrolled] = useState(defaultValue);
   const current = value ?? uncontrolled;
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
+  const accent = sketchColor ?? theme.accent;
   const shouldAnimate = useAnimate(animate);
 
   return (
@@ -85,6 +89,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
         strokeWidth,
         resolvedSeed,
         ink,
+        accent,
         current,
         shouldAnimate,
       }}
@@ -151,7 +156,7 @@ function TabUnderline({
         shape="line"
         roughness={(sketch.roughness ?? 1.5) + 0.35}
         seed={seed}
-        sketchColor={SKETCH_COLORS.accent}
+        sketchColor={sketch.accent}
         bowing={sketch.bowing ?? 1.8}
         strokeWidth={(sketch.strokeWidth ?? 1.75) + 0.4}
         inset={2}
@@ -249,7 +254,7 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(function Tab(
         fontWeight: active
           ? doodleUiFontWeight(650)
           : doodleUiFontWeight(400),
-        color: sketch.ink,
+        color: active ? sketch.accent : sketch.ink,
         outline: "none",
         ...style,
       }}

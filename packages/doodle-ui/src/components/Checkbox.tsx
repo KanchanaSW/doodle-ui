@@ -8,14 +8,16 @@ import {
   useAnimate,
   useDrawIn,
 } from "../animations";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily } from "../utils";
 
 export interface CheckboxProps
   extends Omit<CheckboxPrimitive.CheckboxProps, "asChild">,
     SketchProps {
   label?: ReactNode;
+  fill?: string;
   /**
    * Draw-in the box on mount and the checkmark when checked.
    * Defaults to the DoodleUIProvider value (true).
@@ -29,12 +31,14 @@ const CHECK_PATH = "M 4.5 10.5 L 8.5 14.5 L 15.5 5.5";
 function CheckMark({
   roughness,
   seed,
+  sketchColor,
   bowing,
   strokeWidth,
   shouldAnimate,
 }: {
   roughness?: number;
   seed?: number;
+  sketchColor?: string;
   bowing?: number;
   strokeWidth?: number;
   shouldAnimate: boolean;
@@ -52,7 +56,7 @@ function CheckMark({
         path={CHECK_PATH}
         roughness={(roughness ?? 1.5) * 0.7}
         seed={seed}
-        sketchColor={SKETCH_COLORS.accent}
+        sketchColor={sketchColor}
         bowing={bowing}
         strokeWidth={(strokeWidth ?? 1.6) + 0.4}
         inset={0}
@@ -67,12 +71,16 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
       className,
       style,
       label,
+      fill,
       roughness,
       seed,
       sketchColor,
       bowing,
       fillStyle,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       checked,
       defaultChecked,
       onCheckedChange,
@@ -82,7 +90,9 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
     },
     ref,
   ) {
-    const ink = sketchColor ?? SKETCH_COLORS.ink;
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
+    const accent = sketchColor ?? theme.accent;
     const generatedId = useId();
     const inputId = id ?? generatedId;
     const boxRef = useRef<HTMLSpanElement>(null);
@@ -98,6 +108,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
           gap: 8,
           cursor: "pointer",
           userSelect: "none",
+          color: ink,
           ...style,
         }}
       >
@@ -129,8 +140,12 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
               seed={seed}
               sketchColor={ink}
               bowing={bowing}
-              fillStyle={fillStyle}
+              fillStyle={fillStyle ?? (fill ? "solid" : undefined)}
+              fill={fill}
               strokeWidth={strokeWidth ?? 1.6}
+              hachureGap={hachureGap}
+              hachureAngle={hachureAngle}
+              fillWeight={fillWeight}
               inset={1.5}
             />
           </span>
@@ -144,6 +159,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
             <CheckMark
               roughness={roughness}
               seed={seed}
+              sketchColor={accent}
               bowing={bowing}
               strokeWidth={strokeWidth}
               shouldAnimate={shouldAnimate}
@@ -153,7 +169,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
         {label ? (
           <label
             htmlFor={inputId}
-            style={{ fontSize: 15, cursor: "pointer", fontFamily: doodleUiFontFamily }}
+            style={{ fontSize: 15, cursor: "pointer", fontFamily: doodleUiFontFamily, color: ink }}
           >
             {label}
           </label>

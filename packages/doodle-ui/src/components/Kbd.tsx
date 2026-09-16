@@ -1,13 +1,15 @@
 "use client";
 
 import { forwardRef, type HTMLAttributes } from "react";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily } from "../utils";
 
 export interface KbdProps
   extends Omit<HTMLAttributes<HTMLElement>, "color">,
     SketchProps {
+  fill?: string;
   /**
    * Draw-in the border on mount. Defaults to the DoodleUIProvider value (true).
    */
@@ -19,18 +21,23 @@ export const Kbd = forwardRef<HTMLElement, KbdProps>(function Kbd(
     children,
     className,
     style,
+    fill,
     roughness,
     seed,
     sketchColor,
     bowing,
     fillStyle,
     strokeWidth,
+    hachureGap,
+    hachureAngle,
+    fillWeight,
     animate,
     ...rest
   },
   ref,
 ) {
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
 
   return (
     <SketchBox
@@ -38,6 +45,7 @@ export const Kbd = forwardRef<HTMLElement, KbdProps>(function Kbd(
       style={{
         display: "inline-flex",
         verticalAlign: "middle",
+        color: ink,
         ...style,
       }}
       contentStyle={{
@@ -46,9 +54,13 @@ export const Kbd = forwardRef<HTMLElement, KbdProps>(function Kbd(
         fontFamily: doodleUiFontFamily,
         lineHeight: 1.35,
         letterSpacing: "0.04em",
+        color: ink,
       }}
-      fill={SKETCH_COLORS.secondaryFill}
+      fill={fill ?? theme.secondaryFill}
       fillStyle={fillStyle ?? "hachure"}
+      hachureGap={hachureGap ?? 6}
+      hachureAngle={hachureAngle}
+      fillWeight={fillWeight ?? 0.8}
       roughness={roughness}
       seed={seed}
       sketchColor={ink}

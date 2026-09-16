@@ -11,8 +11,9 @@ import {
   useAnimate,
   useDrawIn,
 } from "../animations";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { assignRef, cn } from "../utils";
 
 export type DividerOrientation = "horizontal" | "vertical";
@@ -39,12 +40,17 @@ export const Divider = forwardRef<HTMLDivElement, DividerProps>(
       sketchColor,
       bowing,
       strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
       animate,
       ...rest
     },
     ref,
   ) {
     const rootRef = useRef<HTMLDivElement>(null);
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
     const shouldAnimate = useAnimate(animate);
     const horizontal = orientation === "horizontal";
     useDrawIn(rootRef, DRAW_IN_DURATION_MS, shouldAnimate);
@@ -71,9 +77,12 @@ export const Divider = forwardRef<HTMLDivElement, DividerProps>(
           shape={horizontal ? "line" : "line-vertical"}
           roughness={roughness ?? 1.8}
           seed={seed}
-          sketchColor={sketchColor ?? SKETCH_COLORS.ink}
+          sketchColor={ink}
           bowing={bowing ?? 2}
           strokeWidth={strokeWidth ?? 1.5}
+          hachureGap={hachureGap}
+          hachureAngle={hachureAngle}
+          fillWeight={fillWeight}
           inset={4}
         />
       </div>

@@ -9,14 +9,16 @@ import {
 } from "react";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SketchBox } from "../primitives/SketchBox";
-import { SKETCH_COLORS, type SketchProps } from "../types";
+import type { SketchProps } from "../types";
 import { cn } from "../utils";
 
 interface ScrollAreaSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
+  paper: string;
   animate?: boolean;
 }
 
@@ -35,6 +37,7 @@ export interface ScrollAreaProps
   extends Omit<ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>, "children">,
     SketchProps {
   children?: ReactNode;
+  fill?: string;
   animate?: boolean;
 }
 
@@ -46,19 +49,24 @@ export const ScrollArea = forwardRef<
     className,
     style,
     children,
+    fill,
     roughness,
     seed,
     sketchColor,
     bowing,
     fillStyle,
     strokeWidth,
+    hachureGap,
+    hachureAngle,
+    fillWeight,
     animate,
     ...rest
   },
   ref,
 ) {
   const resolvedSeed = useResolvedSeed(seed);
-  const ink = sketchColor ?? SKETCH_COLORS.ink;
+  const theme = useSketchTheme(sketchColor);
+  const ink = sketchColor ?? theme.ink;
 
   return (
     <ScrollAreaSketchContext.Provider
@@ -69,15 +77,19 @@ export const ScrollArea = forwardRef<
         bowing,
         fillStyle,
         strokeWidth,
+        hachureGap,
+        hachureAngle,
+        fillWeight,
         resolvedSeed,
         ink,
+        paper: fill ?? theme.paper,
         animate,
       }}
     >
       <ScrollAreaPrimitive.Root
         ref={ref}
         className={cn(className)}
-        style={{ position: "relative", overflow: "hidden", ...style }}
+        style={{ position: "relative", overflow: "hidden", color: ink, ...style }}
         {...rest}
       >
         <SketchBox
@@ -86,10 +98,13 @@ export const ScrollArea = forwardRef<
           sketchColor={ink}
           bowing={bowing}
           fillStyle={fillStyle ?? "solid"}
-          fill="#f7f6f2"
+          fill={fill ?? theme.paper}
           strokeWidth={strokeWidth ?? 1.5}
+          hachureGap={hachureGap}
+          hachureAngle={hachureAngle}
+          fillWeight={fillWeight}
           animate={animate}
-          contentStyle={{ padding: 0, height: "100%" }}
+          contentStyle={{ padding: 0, height: "100%", color: ink }}
           style={{ height: "100%" }}
         >
           {children}
