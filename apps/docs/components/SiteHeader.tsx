@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ShuffleButton } from "@/components/ShuffleButton";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function SiteHeader() {
   return (
@@ -8,13 +9,14 @@ export function SiteHeader() {
         <Link href="/" className="font-hand text-[28px] leading-none text-ink">
           doodle-ui
         </Link>
-        <nav className="flex items-center gap-5 text-sm font-medium font-sans">
+        <nav className="flex items-center gap-4 sm:gap-5 text-sm font-medium font-sans">
           <Link href="/install" className="hover:text-accent">
             Install
           </Link>
           <Link href="/docs/button" className="hover:text-accent hidden sm:inline">
             Components
           </Link>
+          <ThemeToggle />
           <ShuffleButton size="sm" />
         </nav>
       </div>

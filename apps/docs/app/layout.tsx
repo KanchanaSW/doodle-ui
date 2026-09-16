@@ -11,6 +11,8 @@ import { Providers } from "./providers";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 
+const componentThemeBootstrap = `(function(){try{var k="doodle-ui-component-theme";var t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){var l=localStorage.getItem("doodle-ui-site-theme");if(l==="light"||l==="dark")t=l;else t="light";}document.documentElement.setAttribute("data-component-theme",t);}catch(e){document.documentElement.setAttribute("data-component-theme","light");}})();`;
+
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
@@ -68,8 +70,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-component-theme="light"
+      suppressHydrationWarning
       className={`${outfit.variable} ${caveat.variable} ${patrickHand.variable} ${kalam.variable} ${gochiHand.variable} ${ibm.variable}`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: componentThemeBootstrap }} />
+      </head>
       <body className="font-sans antialiased">
         <div className="paper-grain" aria-hidden="true" />
         <Providers>

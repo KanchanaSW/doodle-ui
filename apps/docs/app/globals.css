@@ -6,8 +6,17 @@
   --paper: #eef0ea;
   --ink: #1f1d1a;
   --accent: #e24b3b;
+  --mute: #5c5852;
+  --chalkink: #e8e4d9;
+  --site-rule: rgb(31 29 26 / 0.035);
+  --site-body-tint: rgb(238 240 234 / 0.96);
+  --component-canvas: rgb(255 255 255 / 0.72);
   --doodle-ui-font: var(--font-patrick-hand);
   --doodle-ui-font-weight: 400;
+}
+
+html[data-component-theme="dark"] {
+  --component-canvas: #131923;
 }
 
 html {
@@ -18,13 +27,13 @@ html {
 body {
   min-height: 100dvh;
   background:
-    linear-gradient(180deg, rgb(238 240 234 / 0.96), rgb(238 240 234 / 0.96)),
+    linear-gradient(180deg, var(--site-body-tint), var(--site-body-tint)),
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 23px,
-      rgb(31 29 26 / 0.035) 23px,
-      rgb(31 29 26 / 0.035) 24px
+      var(--site-rule) 23px,
+      var(--site-rule) 24px
     );
   color: var(--ink);
 }
@@ -51,4 +60,9 @@ body {
 .doodle-shuffle-type {
   font-family: var(--doodle-ui-font, inherit);
   font-weight: var(--doodle-ui-font-weight, 600);
+}
+
+.component-canvas {
+  background: var(--component-canvas);
+  transition: background-color 0.2s ease;
 }

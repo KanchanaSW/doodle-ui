@@ -80,7 +80,7 @@ export function Playground({
 
   return (
     <div className="my-8 grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)]">
-      <div className="relative min-h-[220px] bg-white/70 p-8 flex items-center justify-center">
+      <div className="component-canvas relative min-h-[220px] p-8 flex items-center justify-center border border-ink/10">
         {render(values)}
       </div>
       <div className="flex flex-col gap-4">

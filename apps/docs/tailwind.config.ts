@@ -9,11 +9,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        paper: "#eef0ea",
-        ink: "#1f1d1a",
-        accent: "#e24b3b",
-        mute: "#5c5852",
-        chalkink: "#e8e4d9",
+        paper: "var(--paper)",
+        ink: "var(--ink)",
+        accent: "var(--accent)",
+        mute: "var(--mute)",
+        chalkink: "var(--chalkink)",
       },
       fontFamily: {
         sans: ["var(--font-outfit)", "ui-sans-serif", "system-ui", "sans-serif"],

@@ -24,7 +24,9 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-        <HeroSketch />
+        <div className="component-canvas p-6 md:p-8 border border-ink/10">
+          <HeroSketch />
+        </div>
       </section>
 
       <section className="max-w-[1400px] mx-auto px-4 md:px-8 pb-20">
