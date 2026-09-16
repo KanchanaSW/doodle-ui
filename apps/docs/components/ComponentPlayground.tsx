@@ -2294,40 +2294,61 @@ function SidebarPlayground() {
 }
 
 function CarouselPlayground() {
-  const slides = ["Slide one", "Slide two", "Slide three"];
+  const slides = [1, 2, 3, 4, 5];
   const controls: Control[] = withAnimate([
     ...sketchControls,
-    { type: "toggle", key: "bordered", label: "Bordered", defaultValue: true },
+    { type: "toggle", key: "bordered", label: "Bordered", defaultValue: false },
   ]);
   return (
     <Playground
       controls={controls}
       render={(v) => (
-        <Carousel
-          key={String(v.animate)}
-          bordered={Boolean(v.bordered)}
-          roughness={Number(v.roughness)}
-          seed={seedFrom(v)}
-          animate={Boolean(v.animate)}
-          style={{ maxWidth: 420 }}
-        >
-          <CarouselContent>
-            {slides.map((label) => (
-              <CarouselItem key={label}>
-                <Card title={label}>
-                  <Text>Swipe or use the sketch arrows.</Text>
-                </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        <div style={{ width: "100%", padding: "4px 48px" }}>
+          <div style={{ maxWidth: 240, margin: "0 auto" }}>
+            <Carousel
+              key={String(v.animate)}
+              bordered={Boolean(v.bordered)}
+              roughness={Number(v.roughness)}
+              seed={seedFrom(v)}
+              animate={Boolean(v.animate)}
+            >
+              <CarouselContent>
+                {slides.map((n) => (
+                  <CarouselItem key={n}>
+                    <Card
+                      roughness={Number(v.roughness)}
+                      seed={seedFrom(v)}
+                      animate={Boolean(v.animate)}
+                    >
+                      <div
+                        style={{
+                          aspectRatio: "1 / 1",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: 48,
+                          fontWeight: 600,
+                          lineHeight: 1,
+                        }}
+                      >
+                        {n}
+                      </div>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+        </div>
       )}
       snippet={(v) =>
         `<Carousel ${snippetExtras(v)}>
   <CarouselContent>
-    <CarouselItem>...</CarouselItem>
+    <CarouselItem>
+      <Card>1</Card>
+    </CarouselItem>
   </CarouselContent>
   <CarouselPrevious />
   <CarouselNext />

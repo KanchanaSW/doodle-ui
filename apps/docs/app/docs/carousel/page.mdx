@@ -4,7 +4,7 @@ import { carouselProps } from "@/lib/props";
 
 # Carousel
 
-Embla-powered slides with sketch frame and hand-drawn previous/next controls.
+Embla-powered slides with circular sketch arrows outside the viewport, matching the usual carousel layout.
 
 <ComponentPlayground name="carousel" />
 
@@ -12,6 +12,7 @@ Embla-powered slides with sketch frame and hand-drawn previous/next controls.
 
 ```tsx
 import {
+  Card,
   Carousel,
   CarouselContent,
   CarouselItem,
@@ -19,14 +20,20 @@ import {
   CarouselPrevious,
 } from "doodleui-react";
 
-<Carousel>
-  <CarouselContent>
-    <CarouselItem>One</CarouselItem>
-    <CarouselItem>Two</CarouselItem>
-  </CarouselContent>
-  <CarouselPrevious />
-  <CarouselNext />
-</Carousel>
+<div style={{ maxWidth: 280, margin: "0 auto" }}>
+  <Carousel>
+    <CarouselContent>
+      <CarouselItem>
+        <Card style={{ aspectRatio: "1 / 1" }}>1</Card>
+      </CarouselItem>
+      <CarouselItem>
+        <Card style={{ aspectRatio: "1 / 1" }}>2</Card>
+      </CarouselItem>
+    </CarouselContent>
+    <CarouselPrevious />
+    <CarouselNext />
+  </Carousel>
+</div>
 ```
 
 ## Props

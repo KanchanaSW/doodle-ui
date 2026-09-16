@@ -9,18 +9,25 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ButtonHTMLAttributes,
   type CSSProperties,
   type HTMLAttributes,
+  type KeyboardEvent,
+  type MutableRefObject,
   type ReactNode,
 } from "react";
+import {
+  DRAW_IN_DURATION_MS,
+  useAnimate,
+  useDrawIn,
+} from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { SketchBox } from "../primitives/SketchBox";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SKETCH_COLORS, type SketchProps } from "../types";
-import { cn, deriveSeed } from "../utils";
-import { Button } from "./Button";
+import { assignRef, cn, deriveSeed } from "../utils";
 
 type CarouselApi = UseEmblaCarouselType[1];
 
@@ -64,7 +71,7 @@ export function Carousel({
   opts,
   plugins,
   orientation = "horizontal",
-  bordered = true,
+  bordered = false,
   className,
   style,
   children,
@@ -108,6 +115,27 @@ export function Carousel({
     };
   }, [api, onSelect, setApi]);
 
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLDivElement>) => {
+      if (orientation === "horizontal") {
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          scrollPrev();
+        } else if (event.key === "ArrowRight") {
+          event.preventDefault();
+          scrollNext();
+        }
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        scrollPrev();
+      } else if (event.key === "ArrowDown") {
+        event.preventDefault();
+        scrollNext();
+      }
+    },
+    [orientation, scrollPrev, scrollNext],
+  );
+
   const value: CarouselContextValue = {
     emblaRef,
     api,
@@ -122,45 +150,29 @@ export function Carousel({
       sketchColor,
       bowing,
       strokeWidth,
+      fillStyle,
       animate,
     },
     bordered,
   };
 
-  const frame = (
+  return (
     <CarouselContext.Provider value={value}>
       <div
         className={cn(className)}
+        role="region"
+        aria-roledescription="carousel"
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
         style={{
           position: "relative",
           width: "100%",
-          ...(!bordered ? style : undefined),
+          ...style,
         }}
       >
         {children}
       </div>
     </CarouselContext.Provider>
-  );
-
-  if (!bordered) {
-    return frame;
-  }
-
-  return (
-    <SketchBox
-      style={{ width: "100%", ...style }}
-      contentStyle={{ padding: 12 }}
-      fill={SKETCH_COLORS.paper}
-      fillStyle={fillStyle ?? "hachure"}
-      roughness={roughness}
-      seed={seed}
-      sketchColor={sketchColor}
-      bowing={bowing}
-      strokeWidth={strokeWidth}
-      animate={animate}
-    >
-      {frame}
-    </SketchBox>
   );
 }
 
@@ -168,9 +180,10 @@ export interface CarouselContentProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const CarouselContent = forwardRef<HTMLDivElement, CarouselContentProps>(
   function CarouselContent({ className, style, children, ...rest }, ref) {
-    const { emblaRef, orientation } = useCarousel();
+    const { emblaRef, orientation, bordered, sketch } = useCarousel();
+    const gap = 16;
 
-    return (
+    const viewport = (
       <div ref={emblaRef} style={{ overflow: "hidden" }}>
         <div
           ref={ref}
@@ -178,8 +191,8 @@ export const CarouselContent = forwardRef<HTMLDivElement, CarouselContentProps>(
           style={{
             display: "flex",
             flexDirection: orientation === "vertical" ? "column" : "row",
-            marginLeft: orientation === "horizontal" ? -4 : 0,
-            marginTop: orientation === "vertical" ? -4 : 0,
+            marginLeft: orientation === "horizontal" ? -gap : 0,
+            marginTop: orientation === "vertical" ? -gap : 0,
             ...style,
           }}
           {...rest}
@@ -187,6 +200,26 @@ export const CarouselContent = forwardRef<HTMLDivElement, CarouselContentProps>(
           {children}
         </div>
       </div>
+    );
+
+    if (!bordered) {
+      return viewport;
+    }
+
+    return (
+      <SketchBox
+        fill={SKETCH_COLORS.paper}
+        fillStyle={sketch.fillStyle ?? "hachure"}
+        roughness={sketch.roughness}
+        seed={sketch.seed}
+        sketchColor={sketch.sketchColor}
+        bowing={sketch.bowing}
+        strokeWidth={sketch.strokeWidth}
+        animate={sketch.animate}
+        contentStyle={{ padding: 8 }}
+      >
+        {viewport}
+      </SketchBox>
     );
   },
 );
@@ -196,6 +229,7 @@ export interface CarouselItemProps extends HTMLAttributes<HTMLDivElement> {}
 export const CarouselItem = forwardRef<HTMLDivElement, CarouselItemProps>(
   function CarouselItem({ className, style, children, ...rest }, ref) {
     const { orientation } = useCarousel();
+    const gap = 16;
     return (
       <div
         ref={ref}
@@ -205,8 +239,8 @@ export const CarouselItem = forwardRef<HTMLDivElement, CarouselItemProps>(
         style={{
           flex: "0 0 100%",
           minWidth: 0,
-          paddingLeft: orientation === "horizontal" ? 4 : 0,
-          paddingTop: orientation === "vertical" ? 4 : 0,
+          paddingLeft: orientation === "horizontal" ? gap : 0,
+          paddingTop: orientation === "vertical" ? gap : 0,
           ...style,
         }}
         {...rest}
@@ -219,106 +253,119 @@ export const CarouselItem = forwardRef<HTMLDivElement, CarouselItemProps>(
 
 const ARROW_PATH_PREV = "M 14 4 L 6 12 L 14 20";
 const ARROW_PATH_NEXT = "M 6 4 L 14 12 L 6 20";
+const ARROW_OFFSET = 52;
+const ARROW_SIZE = 40;
 
 export interface CarouselArrowProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
-export const CarouselPrevious = forwardRef<HTMLButtonElement, CarouselArrowProps>(
-  function CarouselPrevious({ className, style, ...rest }, ref) {
-    const { scrollPrev, canScrollPrev, sketch } = useCarousel();
-    const resolvedSeed = useResolvedSeed(sketch.seed);
-    const ink = sketch.sketchColor ?? SKETCH_COLORS.ink;
+const CarouselArrow = forwardRef<
+  HTMLButtonElement,
+  CarouselArrowProps & { direction: "prev" | "next" }
+>(function CarouselArrow(
+  { className, style, direction, ...rest },
+  ref,
+) {
+  const {
+    scrollPrev,
+    scrollNext,
+    canScrollPrev,
+    canScrollNext,
+    sketch,
+    orientation,
+  } = useCarousel();
+  const resolvedSeed = useResolvedSeed(sketch.seed);
+  const ink = sketch.sketchColor ?? SKETCH_COLORS.ink;
+  const isPrev = direction === "prev";
+  const disabled = isPrev ? !canScrollPrev : !canScrollNext;
+  const shouldAnimate = useAnimate(sketch.animate);
+  const rootRef = useRef<HTMLButtonElement>(null);
+  const sketchSeed = deriveSeed(resolvedSeed, direction);
 
-    return (
-      <Button
-        ref={ref}
-        type="button"
-        variant="outline"
-        size="sm"
-        disabled={!canScrollPrev}
-        className={cn(className)}
-        style={{
-          position: "absolute",
-          left: 8,
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 2,
-          width: 36,
-          height: 36,
-          padding: 0,
-          ...style,
-        }}
-        onClick={scrollPrev}
+  useDrawIn(rootRef, DRAW_IN_DURATION_MS, shouldAnimate, sketchSeed);
+
+  const horizontal = orientation === "horizontal";
+
+  return (
+    <button
+      ref={(node) => {
+        (rootRef as MutableRefObject<HTMLButtonElement | null>).current = node;
+        assignRef(ref, node);
+      }}
+      type="button"
+      disabled={disabled}
+      className={cn(className)}
+      style={{
+        position: "absolute",
+        zIndex: 2,
+        width: ARROW_SIZE,
+        height: ARROW_SIZE,
+        padding: 0,
+        border: "none",
+        background: "transparent",
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.5 : 1,
+        ...(horizontal
+          ? {
+              top: "50%",
+              transform: "translateY(-50%)",
+              left: isPrev ? -ARROW_OFFSET : undefined,
+              right: isPrev ? undefined : -ARROW_OFFSET,
+            }
+          : {
+              left: "50%",
+              transform: "translateX(-50%) rotate(90deg)",
+              top: isPrev ? -ARROW_OFFSET : undefined,
+              bottom: isPrev ? undefined : -ARROW_OFFSET,
+            }),
+        ...style,
+      }}
+      onClick={isPrev ? scrollPrev : scrollNext}
+      aria-label={isPrev ? "Previous slide" : "Next slide"}
+      {...rest}
+    >
+      <RoughSvg
+        shape="ellipse"
         roughness={sketch.roughness}
-        seed={deriveSeed(resolvedSeed, "prev")}
+        seed={sketchSeed}
         sketchColor={ink}
         bowing={sketch.bowing}
-        strokeWidth={sketch.strokeWidth}
-        animate={sketch.animate}
-        aria-label="Previous slide"
-        {...rest}
+        fill={SKETCH_COLORS.paper}
+        fillStyle="solid"
+        strokeWidth={sketch.strokeWidth ?? 1.5}
+        inset={1.5}
+      />
+      <span
+        style={{
+          position: "relative",
+          zIndex: 1,
+          width: 18,
+          height: 22,
+          display: "block",
+          margin: "0 auto",
+        }}
       >
-        <span style={{ position: "relative", width: 18, height: 22 }}>
-          <RoughSvg
-            shape="path"
-            path={ARROW_PATH_PREV}
-            roughness={sketch.roughness}
-            seed={deriveSeed(resolvedSeed, "prev-arrow")}
-            sketchColor={ink}
-            strokeWidth={sketch.strokeWidth ?? 1.6}
-          />
-        </span>
-      </Button>
-    );
+        <RoughSvg
+          shape="path"
+          path={isPrev ? ARROW_PATH_PREV : ARROW_PATH_NEXT}
+          roughness={sketch.roughness}
+          seed={deriveSeed(resolvedSeed, `${direction}-arrow`)}
+          sketchColor={ink}
+          strokeWidth={sketch.strokeWidth ?? 1.6}
+        />
+      </span>
+    </button>
+  );
+});
+
+export const CarouselPrevious = forwardRef<HTMLButtonElement, CarouselArrowProps>(
+  function CarouselPrevious(props, ref) {
+    return <CarouselArrow ref={ref} direction="prev" {...props} />;
   },
 );
 
 export const CarouselNext = forwardRef<HTMLButtonElement, CarouselArrowProps>(
-  function CarouselNext({ className, style, ...rest }, ref) {
-    const { scrollNext, canScrollNext, sketch } = useCarousel();
-    const resolvedSeed = useResolvedSeed(sketch.seed);
-    const ink = sketch.sketchColor ?? SKETCH_COLORS.ink;
-
-    return (
-      <Button
-        ref={ref}
-        type="button"
-        variant="outline"
-        size="sm"
-        disabled={!canScrollNext}
-        className={cn(className)}
-        style={{
-          position: "absolute",
-          right: 8,
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 2,
-          width: 36,
-          height: 36,
-          padding: 0,
-          ...style,
-        }}
-        onClick={scrollNext}
-        roughness={sketch.roughness}
-        seed={deriveSeed(resolvedSeed, "next")}
-        sketchColor={ink}
-        bowing={sketch.bowing}
-        strokeWidth={sketch.strokeWidth}
-        animate={sketch.animate}
-        aria-label="Next slide"
-        {...rest}
-      >
-        <span style={{ position: "relative", width: 18, height: 22 }}>
-          <RoughSvg
-            shape="path"
-            path={ARROW_PATH_NEXT}
-            roughness={sketch.roughness}
-            seed={deriveSeed(resolvedSeed, "next-arrow")}
-            sketchColor={ink}
-            strokeWidth={sketch.strokeWidth ?? 1.6}
-          />
-        </span>
-      </Button>
-    );
+  function CarouselNext(props, ref) {
+    return <CarouselArrow ref={ref} direction="next" {...props} />;
   },
 );

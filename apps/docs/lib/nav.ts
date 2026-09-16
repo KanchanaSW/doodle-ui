@@ -51,7 +51,7 @@ export const COMPONENT_PAGES = [
   { slug: "field", title: "Field", blurb: "Label, control, helper, and error wiring" },
   { slug: "typography", title: "Typography", blurb: "Headings and text with sketch accents" },
   { slug: "sidebar", title: "Sidebar", blurb: "Collapsible app sidebar layout" },
-  { slug: "carousel", title: "Carousel", blurb: "Embla slides with sketch arrows" },
+  { slug: "carousel", title: "Carousel", blurb: "Embla slides with outside sketch arrows" },
 ] as const;
 
 export type ComponentSlug = (typeof COMPONENT_PAGES)[number]["slug"];

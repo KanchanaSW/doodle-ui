@@ -882,8 +882,8 @@ export const carouselProps: PropRow[] = [
   {
     name: "bordered",
     type: "boolean",
-    defaultValue: "true",
-    description: "Sketch frame around the carousel viewport.",
+    defaultValue: "false",
+    description: "Sketch frame around the slide viewport. Arrows stay outside.",
   },
   {
     name: "orientation",
