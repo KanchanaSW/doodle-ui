@@ -1,0 +1,21 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { navigationMenuProps } from "@/lib/props";
+
+# Navigation Menu
+
+Horizontal navigation with sketch dropdown panels.
+
+<ComponentPlayground name="navigation-menu" />
+
+## Usage
+
+```tsx
+import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent } from "doodleui-react";
+
+<NavigationMenu>\n  <NavigationMenuList>\n    <NavigationMenuItem>\n      <NavigationMenuTrigger>Product</NavigationMenuTrigger>\n      <NavigationMenuContent>...</NavigationMenuContent>\n    </NavigationMenuItem>\n  </NavigationMenuList>\n</NavigationMenu>
+```
+
+## Props
+
+<PropsTable rows={navigationMenuProps} />

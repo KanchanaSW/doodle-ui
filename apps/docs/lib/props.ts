@@ -674,3 +674,119 @@ export const stepperProps: PropRow[] = [
   ...sharedSketchProps,
 ];
 
+export const kbdProps: PropRow[] = [
+  animateProp("Draw-in the key border on mount."),
+  ...sharedSketchProps,
+];
+
+export const spinnerProps: PropRow[] = [
+  {
+    name: "size",
+    type: '"sm" | "md" | "lg"',
+    defaultValue: '"md"',
+    description: "Arc diameter.",
+  },
+  animateProp("Continuous rotation. Reduced motion shows a static arc."),
+  ...sharedSketchProps,
+];
+
+export const toggleProps: PropRow[] = [
+  {
+    name: "size",
+    type: '"sm" | "md" | "lg"',
+    defaultValue: '"md"',
+    description: "Padding and type size.",
+  },
+  {
+    name: "pressed / onPressedChange",
+    type: "boolean / (pressed: boolean) => void",
+    defaultValue: "uncontrolled",
+    description: "Radix toggle state.",
+  },
+  animateProp("Draw-in on mount and seed morph when pressed."),
+  ...sharedSketchProps,
+];
+
+export const toggleGroupProps: PropRow[] = [
+  {
+    name: "type",
+    type: '"single" | "multiple"',
+    defaultValue: '"single"',
+    description: "Selection mode for the group.",
+  },
+  {
+    name: "size",
+    type: '"sm" | "md" | "lg"',
+    defaultValue: '"md"',
+    description: "Passed to each ToggleGroupItem.",
+  },
+  animateProp("Draw-in and pressed-state morph for items."),
+  ...sharedSketchProps,
+];
+
+export const inputGroupProps: PropRow[] = [
+  animateProp("Draw-in the outer frame; focus within morphs the border seed."),
+  ...sharedSketchProps,
+];
+
+export const inputOtpProps: PropRow[] = [
+  {
+    name: "maxLength",
+    type: "number",
+    defaultValue: "required",
+    description: "Number of OTP slots (input-otp).",
+  },
+  animateProp("Draw-in each slot; active slot uses accent stroke."),
+  ...sharedSketchProps,
+];
+
+export const scrollAreaProps: PropRow[] = [
+  animateProp("Draw-in the outer border on mount."),
+  ...sharedSketchProps,
+];
+
+export const resizableProps: PropRow[] = [
+  {
+    name: "withHandle",
+    type: "boolean",
+    defaultValue: "true",
+    description: "Sketchy grip on ResizableHandle.",
+  },
+  ...sharedSketchProps,
+];
+
+export const hoverCardProps: PropRow[] = [
+  animateProp("Draw-in the card border when opened on hover."),
+  ...sharedSketchProps,
+];
+
+export const contextMenuProps: PropRow[] = [
+  animateProp("Draw-in the menu panel on open."),
+  ...sharedSketchProps,
+];
+
+export const navigationMenuProps: PropRow[] = [
+  animateProp("Draw-in dropdown panels and indicator."),
+  ...sharedSketchProps,
+];
+
+export const menubarProps: PropRow[] = [
+  animateProp("Draw-in menu panels when opened."),
+  ...sharedSketchProps,
+];
+
+export const sheetProps: PropRow[] = [
+  {
+    name: "side",
+    type: '"top" | "right" | "bottom" | "left"',
+    defaultValue: '"right"',
+    description: "Edge the sheet slides from.",
+  },
+  animateProp("Backdrop fade, slide motion, and border draw-in."),
+  ...sharedSketchProps,
+];
+
+export const drawerProps: PropRow[] = [
+  animateProp("Bottom slide-up panel with sketch handle and draw-in border."),
+  ...sharedSketchProps,
+];

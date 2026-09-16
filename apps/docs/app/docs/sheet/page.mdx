@@ -1,0 +1,21 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { sheetProps } from "@/lib/props";
+
+# Sheet
+
+Edge-anchored slide-out panel (default: right).
+
+<ComponentPlayground name="sheet" />
+
+## Usage
+
+```tsx
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, Button } from "doodleui-react";
+
+<Sheet>\n  <SheetTrigger asChild>\n    <Button>Open</Button>\n  </SheetTrigger>\n  <SheetContent>\n    <SheetHeader>\n      <SheetTitle>Title</SheetTitle>\n    </SheetHeader>\n  </SheetContent>\n</Sheet>
+```
+
+## Props
+
+<PropsTable rows={sheetProps} />

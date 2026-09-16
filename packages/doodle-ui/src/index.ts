@@ -251,3 +251,134 @@ export {
   type CommandSeparatorProps,
 } from "./components/Command";
 export { Combobox, type ComboboxProps } from "./components/Combobox";
+export { Kbd, type KbdProps } from "./components/Kbd";
+export {
+  Spinner,
+  type SpinnerProps,
+  type SpinnerSize,
+} from "./components/Spinner";
+export { Toggle, type ToggleProps, type ToggleSize } from "./components/Toggle";
+export {
+  ToggleGroup,
+  ToggleGroupItem,
+  type ToggleGroupProps,
+  type ToggleGroupItemProps,
+} from "./components/ToggleGroup";
+export {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupButton,
+  type InputGroupProps,
+  type InputGroupAddonProps,
+  type InputGroupInputProps,
+  type InputGroupButtonProps,
+} from "./components/InputGroup";
+export {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+  type InputOTPProps,
+  type InputOTPGroupProps,
+  type InputOTPSlotProps,
+  type InputOTPSeparatorProps,
+} from "./components/InputOTP";
+export {
+  ScrollArea,
+  ScrollAreaViewport,
+  ScrollBar,
+  ScrollAreaCorner,
+  type ScrollAreaProps,
+  type ScrollBarProps,
+} from "./components/ScrollArea";
+export {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+  type ResizablePanelGroupProps,
+  type ResizableHandleProps,
+} from "./components/Resizable";
+export {
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+  HoverCardArrow,
+  type HoverCardProps,
+  type HoverCardContentProps,
+} from "./components/HoverCard";
+export {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuCheckboxItem,
+  ContextMenuRadioItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuGroup,
+  ContextMenuRadioGroup,
+  ContextMenuSub,
+  type ContextMenuProps,
+  type ContextMenuContentProps,
+  type ContextMenuItemProps,
+  type ContextMenuCheckboxItemProps,
+  type ContextMenuRadioItemProps,
+  type ContextMenuLabelProps,
+  type ContextMenuSeparatorProps,
+} from "./components/ContextMenu";
+export {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+  NavigationMenuViewport,
+  NavigationMenuIndicator,
+  NavigationMenuItemLink,
+  type NavigationMenuProps,
+  type NavigationMenuItemLinkProps,
+} from "./components/NavigationMenu";
+export {
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarSeparator,
+  MenubarLabel,
+  MenubarShortcut,
+  MenubarSub,
+  MenubarSubTrigger,
+  MenubarSubContent,
+  MenubarCheckboxItem,
+  MenubarRadioGroup,
+  MenubarRadioItem,
+  type MenubarProps,
+} from "./components/Menubar";
+export {
+  Sheet,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
+  type SheetProps,
+  type SheetContentProps,
+} from "./components/Sheet";
+export {
+  Drawer,
+  DrawerTrigger,
+  DrawerClose,
+  DrawerContent,
+  DrawerHandle,
+  DrawerHeader,
+  DrawerFooter,
+  DrawerTitle,
+  DrawerDescription,
+  type DrawerProps,
+  type DrawerContentProps,
+} from "./components/Drawer";

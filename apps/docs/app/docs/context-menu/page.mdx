@@ -1,0 +1,21 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { contextMenuProps } from "@/lib/props";
+
+# Context Menu
+
+Right-click menu with sketch panel and dividers.
+
+<ComponentPlayground name="context-menu" />
+
+## Usage
+
+```tsx
+import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from "doodleui-react";
+
+<ContextMenu>\n  <ContextMenuTrigger>Right click</ContextMenuTrigger>\n  <ContextMenuContent>\n    <ContextMenuItem>Back</ContextMenuItem>\n  </ContextMenuContent>\n</ContextMenu>
+```
+
+## Props
+
+<PropsTable rows={contextMenuProps} />

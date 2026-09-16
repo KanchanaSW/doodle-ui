@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0
+
+Navigation & layout utilities: `Kbd`, `Spinner`, `Toggle`, `ToggleGroup`, `InputGroup`, `InputOTP`, `ScrollArea`, `Resizable`, `HoverCard`, `ContextMenu`, `NavigationMenu`, `Menubar`, `Sheet`, and `Drawer`.
+
+New dependencies: Radix hover-card, context-menu, navigation-menu, menubar, toggle, toggle-group, scroll-area, plus `react-resizable-panels` and `input-otp`. `Sheet` and `Drawer` share an internal sliding-panel engine (Radix Dialog + framer-motion). `Spinner` loops continuously unless reduced motion is active.
+
 ## 0.4.0
 
 Form & overlay essentials: `Label`, `Collapsible`, `Popover`, `DropdownMenu`, `Dialog`, `AlertDialog`, `Command`, and `Combobox`.

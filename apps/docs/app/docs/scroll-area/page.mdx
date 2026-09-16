@@ -1,0 +1,21 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { scrollAreaProps } from "@/lib/props";
+
+# Scroll Area
+
+Scrollable region with sketch border and rough scrollbar.
+
+<ComponentPlayground name="scroll-area" />
+
+## Usage
+
+```tsx
+import { ScrollArea, ScrollAreaViewport, ScrollBar } from "doodleui-react";
+
+<ScrollArea style={{ height: 200 }}>\n  <ScrollAreaViewport>...</ScrollAreaViewport>\n  <ScrollBar />\n</ScrollArea>
+```
+
+## Props
+
+<PropsTable rows={scrollAreaProps} />

@@ -1,0 +1,21 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { inputGroupProps } from "@/lib/props";
+
+# Input Group
+
+One sketch frame wrapping an input and addons.
+
+<ComponentPlayground name="input-group" />
+
+## Usage
+
+```tsx
+import { InputGroup, InputGroupAddon, InputGroupInput } from "doodleui-react";
+
+<InputGroup>\n  <InputGroupAddon>@</InputGroupAddon>\n  <InputGroupInput placeholder="user" />\n</InputGroup>
+```
+
+## Props
+
+<PropsTable rows={inputGroupProps} />

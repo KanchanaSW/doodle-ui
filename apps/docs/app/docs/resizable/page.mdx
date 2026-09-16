@@ -1,0 +1,21 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { resizableProps } from "@/lib/props";
+
+# Resizable
+
+Drag to resize panels; sketch handle on the divider.
+
+<ComponentPlayground name="resizable" />
+
+## Usage
+
+```tsx
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "doodleui-react";
+
+<ResizablePanelGroup direction="horizontal">\n  <ResizablePanel defaultSize={50} />\n  <ResizableHandle />\n  <ResizablePanel defaultSize={50} />\n</ResizablePanelGroup>
+```
+
+## Props
+
+<PropsTable rows={resizableProps} />

@@ -1,0 +1,21 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { drawerProps } from "@/lib/props";
+
+# Drawer
+
+Bottom drawer with sketch pull handle.
+
+<ComponentPlayground name="drawer" />
+
+## Usage
+
+```tsx
+import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle, Button } from "doodleui-react";
+
+<Drawer>\n  <DrawerTrigger asChild>\n    <Button>Open</Button>\n  </DrawerTrigger>\n  <DrawerContent>\n    <DrawerHeader>\n      <DrawerTitle>Title</DrawerTitle>\n    </DrawerHeader>\n  </DrawerContent>\n</Drawer>
+```
+
+## Props
+
+<PropsTable rows={drawerProps} />

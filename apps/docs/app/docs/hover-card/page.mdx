@@ -1,0 +1,21 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { hoverCardProps } from "@/lib/props";
+
+# Hover Card
+
+Popover-like card that opens on hover.
+
+<ComponentPlayground name="hover-card" />
+
+## Usage
+
+```tsx
+import { HoverCard, HoverCardTrigger, HoverCardContent, Button } from "doodleui-react";
+
+<HoverCard>\n  <HoverCardTrigger asChild>\n    <Button variant="outline">Hover</Button>\n  </HoverCardTrigger>\n  <HoverCardContent>Details</HoverCardContent>\n</HoverCard>
+```
+
+## Props
+
+<PropsTable rows={hoverCardProps} />

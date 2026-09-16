@@ -31,6 +31,20 @@ export const COMPONENT_PAGES = [
   { slug: "alert-dialog", title: "Alert Dialog", blurb: "Confirm/destructive-action prompt" },
   { slug: "command", title: "Command", blurb: "Cmd+K style searchable list, cmdk-powered" },
   { slug: "combobox", title: "Combobox", blurb: "Searchable select — Popover + Command" },
+  { slug: "kbd", title: "Kbd", blurb: "Sketchy keyboard key chip" },
+  { slug: "spinner", title: "Spinner", blurb: "Hand-drawn loading arc" },
+  { slug: "toggle", title: "Toggle", blurb: "Pressed/unpressed sketch button" },
+  { slug: "toggle-group", title: "Toggle Group", blurb: "Single or multi-select toggles" },
+  { slug: "input-group", title: "Input Group", blurb: "One sketch frame for input + addons" },
+  { slug: "input-otp", title: "Input OTP", blurb: "Segmented PIN boxes with caret" },
+  { slug: "scroll-area", title: "Scroll Area", blurb: "Sketch border + rough scrollbar" },
+  { slug: "resizable", title: "Resizable", blurb: "Draggable panels with sketch handle" },
+  { slug: "hover-card", title: "Hover Card", blurb: "Hover-triggered sketch card" },
+  { slug: "context-menu", title: "Context Menu", blurb: "Right-click sketch menu" },
+  { slug: "navigation-menu", title: "Navigation Menu", blurb: "Horizontal nav with dropdowns" },
+  { slug: "menubar", title: "Menubar", blurb: "App-style File/Edit menu bar" },
+  { slug: "sheet", title: "Sheet", blurb: "Edge-anchored slide-out panel" },
+  { slug: "drawer", title: "Drawer", blurb: "Bottom sheet with drag handle" },
 ] as const;
 
 export type ComponentSlug = (typeof COMPONENT_PAGES)[number]["slug"];

@@ -1,0 +1,21 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { inputOtpProps } from "@/lib/props";
+
+# Input OTP
+
+Segmented PIN input with sketch slots.
+
+<ComponentPlayground name="input-otp" />
+
+## Usage
+
+```tsx
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "doodleui-react";
+
+<InputOTP maxLength={4}>\n  <InputOTPGroup>\n    <InputOTPSlot index={0} />\n    <InputOTPSlot index={1} />\n  </InputOTPGroup>\n</InputOTP>
+```
+
+## Props
+
+<PropsTable rows={inputOtpProps} />

@@ -33,6 +33,17 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
   Dialog,
   DialogClose,
   DialogContent,
@@ -48,9 +59,30 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
   Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+  Kbd,
   Label,
   Modal,
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
   Pagination,
   Popover,
   PopoverContent,
@@ -58,9 +90,22 @@ import {
   Progress,
   Radio,
   RadioGroup,
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+  ScrollArea,
+  ScrollAreaViewport,
+  ScrollBar,
   Select,
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
   Skeleton,
   Slider,
+  Spinner,
   Stepper,
   Switch,
   Tab,
@@ -76,6 +121,9 @@ import {
   Textarea,
   Toast,
   ToastProvider,
+  Toggle,
+  ToggleGroup,
+  ToggleGroupItem,
   Tooltip,
 } from "doodleui-react";
 import type { ComponentSlug } from "@/lib/nav";
@@ -175,6 +223,34 @@ export function ComponentPlayground({ name }: { name: ComponentSlug }) {
       return <CommandPlayground />;
     case "combobox":
       return <ComboboxPlayground />;
+    case "kbd":
+      return <KbdPlayground />;
+    case "spinner":
+      return <SpinnerPlayground />;
+    case "toggle":
+      return <TogglePlayground />;
+    case "toggle-group":
+      return <ToggleGroupPlayground />;
+    case "input-group":
+      return <InputGroupPlayground />;
+    case "input-otp":
+      return <InputOtpPlayground />;
+    case "scroll-area":
+      return <ScrollAreaPlayground />;
+    case "resizable":
+      return <ResizablePlayground />;
+    case "hover-card":
+      return <HoverCardPlayground />;
+    case "context-menu":
+      return <ContextMenuPlayground />;
+    case "navigation-menu":
+      return <NavigationMenuPlayground />;
+    case "menubar":
+      return <MenubarPlayground />;
+    case "sheet":
+      return <SheetPlayground />;
+    case "drawer":
+      return <DrawerPlayground />;
     default:
       return null;
   }
@@ -1486,6 +1562,443 @@ function LiveCombobox({
       roughness={roughness}
       seed={seed}
       animate={animate}
+    />
+  );
+}
+
+function KbdPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <p className="text-sm m-0">
+          Press <Kbd roughness={Number(v.roughness)} seed={seedFrom(v)} animate={Boolean(v.animate)}>⌘</Kbd>{" "}
+          <Kbd roughness={Number(v.roughness)} seed={seedFrom(v)} animate={Boolean(v.animate)}>K</Kbd> to search
+        </p>
+      )}
+      snippet={(v) => `<Kbd ${snippetExtras(v)}>⌘</Kbd> <Kbd ${snippetExtras(v)}>K</Kbd>`}
+    />
+  );
+}
+
+function SpinnerPlayground() {
+  return (
+    <Playground
+      controls={withAnimate([
+        ...sketchControls,
+        {
+          type: "select",
+          key: "size",
+          label: "Size",
+          options: ["sm", "md", "lg"],
+          defaultValue: "md",
+        },
+      ])}
+      render={(v) => (
+        <Spinner
+          key={String(v.animate)}
+          size={v.size as "sm" | "md" | "lg"}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        />
+      )}
+      snippet={(v) => `<Spinner size="${v.size}" ${snippetExtras(v)} />`}
+    />
+  );
+}
+
+function TogglePlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <Toggle
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+          aria-label="Bold"
+        >
+          B
+        </Toggle>
+      )}
+      snippet={(v) => `<Toggle ${snippetExtras(v)} aria-label="Bold">B</Toggle>`}
+    />
+  );
+}
+
+function ToggleGroupPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <ToggleGroup
+          key={String(v.animate)}
+          type="single"
+          defaultValue="center"
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <ToggleGroupItem value="left">Left</ToggleGroupItem>
+          <ToggleGroupItem value="center">Center</ToggleGroupItem>
+          <ToggleGroupItem value="right">Right</ToggleGroupItem>
+        </ToggleGroup>
+      )}
+      snippet={(v) =>
+        `<ToggleGroup type="single" defaultValue="center" ${snippetExtras(v)}>
+  <ToggleGroupItem value="left">Left</ToggleGroupItem>
+  <ToggleGroupItem value="center">Center</ToggleGroupItem>
+</ToggleGroup>`
+      }
+    />
+  );
+}
+
+function InputGroupPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <InputGroup
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <InputGroupAddon>@</InputGroupAddon>
+          <InputGroupInput placeholder="username" />
+        </InputGroup>
+      )}
+      snippet={(v) =>
+        `<InputGroup ${snippetExtras(v)}>
+  <InputGroupAddon>@</InputGroupAddon>
+  <InputGroupInput placeholder="username" />
+</InputGroup>`
+      }
+    />
+  );
+}
+
+function InputOtpPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <InputOTP
+          key={String(v.animate)}
+          maxLength={6}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <InputOTPGroup>
+            <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
+          </InputOTPGroup>
+          <InputOTPSeparator />
+          <InputOTPGroup>
+            <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+            <InputOTPSlot index={5} />
+          </InputOTPGroup>
+        </InputOTP>
+      )}
+      snippet={(v) =>
+        `<InputOTP maxLength={6} ${snippetExtras(v)}>
+  <InputOTPGroup>
+    <InputOTPSlot index={0} />
+    <InputOTPSlot index={1} />
+  </InputOTPGroup>
+</InputOTP>`
+      }
+    />
+  );
+}
+
+function ScrollAreaPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <ScrollArea
+          key={String(v.animate)}
+          style={{ height: 160, width: 280 }}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <ScrollAreaViewport style={{ padding: 12 }}>
+            {Array.from({ length: 12 }, (_, i) => (
+              <p key={i} className="text-sm m-0 mb-2">
+                Sketchy scroll line {i + 1}
+              </p>
+            ))}
+          </ScrollAreaViewport>
+          <ScrollBar />
+        </ScrollArea>
+      )}
+      snippet={(v) =>
+        `<ScrollArea style={{ height: 160 }} ${snippetExtras(v)}>
+  <ScrollAreaViewport>...</ScrollAreaViewport>
+  <ScrollBar />
+</ScrollArea>`
+      }
+    />
+  );
+}
+
+function ResizablePlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <ResizablePanelGroup
+          key={String(v.animate)}
+          direction="horizontal"
+          style={{ height: 160, maxWidth: 420 }}
+        >
+          <ResizablePanel defaultSize={50}>
+            <div className="p-3 text-sm">Panel A</div>
+          </ResizablePanel>
+          <ResizableHandle
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+          />
+          <ResizablePanel defaultSize={50}>
+            <div className="p-3 text-sm">Panel B</div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      )}
+      snippet={() =>
+        `<ResizablePanelGroup direction="horizontal">
+  <ResizablePanel defaultSize={50}>A</ResizablePanel>
+  <ResizableHandle />
+  <ResizablePanel defaultSize={50}>B</ResizablePanel>
+</ResizablePanelGroup>`
+      }
+    />
+  );
+}
+
+function HoverCardPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <HoverCard
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <HoverCardTrigger asChild>
+            <Button variant="outline">Hover me</Button>
+          </HoverCardTrigger>
+          <HoverCardContent>
+            <p className="text-sm m-0">Sketch card appears on hover, not click.</p>
+          </HoverCardContent>
+        </HoverCard>
+      )}
+      snippet={(v) =>
+        `<HoverCard ${snippetExtras(v)}>
+  <HoverCardTrigger asChild>
+    <Button variant="outline">Hover me</Button>
+  </HoverCardTrigger>
+  <HoverCardContent>...</HoverCardContent>
+</HoverCard>`
+      }
+    />
+  );
+}
+
+function ContextMenuPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <ContextMenu
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <ContextMenuTrigger asChild>
+            <Button variant="outline">Right-click here</Button>
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuItem>Back</ContextMenuItem>
+            <ContextMenuItem>Forward</ContextMenuItem>
+            <ContextMenuItem>Reload</ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
+      )}
+      snippet={(v) =>
+        `<ContextMenu ${snippetExtras(v)}>
+  <ContextMenuTrigger asChild>
+    <Button variant="outline">Right-click</Button>
+  </ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>Back</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>`
+      }
+    />
+  );
+}
+
+function NavigationMenuPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <NavigationMenu
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Product</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <p className="text-sm m-0">Features, pricing, changelog.</p>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Company</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <p className="text-sm m-0">About, careers, contact.</p>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+      )}
+      snippet={(v) =>
+        `<NavigationMenu ${snippetExtras(v)}>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Product</NavigationMenuTrigger>
+      <NavigationMenuContent>...</NavigationMenuContent>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>`
+      }
+    />
+  );
+}
+
+function MenubarPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <Menubar
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <MenubarMenu>
+            <MenubarTrigger>File</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem>New</MenubarItem>
+              <MenubarItem>Open</MenubarItem>
+              <MenubarItem>Save</MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+          <MenubarMenu>
+            <MenubarTrigger>Edit</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem>Undo</MenubarItem>
+              <MenubarItem>Redo</MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
+      )}
+      snippet={(v) =>
+        `<Menubar ${snippetExtras(v)}>
+  <MenubarMenu>
+    <MenubarTrigger>File</MenubarTrigger>
+    <MenubarContent>
+      <MenubarItem>New</MenubarItem>
+    </MenubarContent>
+  </MenubarMenu>
+</Menubar>`
+      }
+    />
+  );
+}
+
+function SheetPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <Sheet
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <SheetTrigger asChild>
+            <Button variant="outline">Open sheet</Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Sketch sheet</SheetTitle>
+              <SheetDescription>Slides in from the right edge.</SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
+      )}
+      snippet={(v) =>
+        `<Sheet ${snippetExtras(v)}>
+  <SheetTrigger asChild>
+    <Button variant="outline">Open sheet</Button>
+  </SheetTrigger>
+  <SheetContent>...</SheetContent>
+</Sheet>`
+      }
+    />
+  );
+}
+
+function DrawerPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <Drawer
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <DrawerTrigger asChild>
+            <Button variant="outline">Open drawer</Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Bottom drawer</DrawerTitle>
+              <DrawerDescription>Includes a sketchy pull handle.</DrawerDescription>
+            </DrawerHeader>
+            <DrawerFooter>
+              <Button>Continue</Button>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      )}
+      snippet={(v) =>
+        `<Drawer ${snippetExtras(v)}>
+  <DrawerTrigger asChild>
+    <Button variant="outline">Open drawer</Button>
+  </DrawerTrigger>
+  <DrawerContent>...</DrawerContent>
+</Drawer>`
+      }
     />
   );
 }
