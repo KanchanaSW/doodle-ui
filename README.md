@@ -6,7 +6,25 @@ The published package is `[doodleui-react](https://www.npmjs.com/package/doodleu
 
 ![image](https://github.com/user-attachments/assets/5ebf0f9f-2ae0-41a6-bba1-66b796d99050)
 
-Install
+## CLI Component Installer (shadcn-style)
+
+Copy component source code directly into your project to customize sketch styling directly:
+
+```bash
+# Initialize doodleui config & copy shared utilities
+npx doodleui-react init
+
+# Add components directly into your codebase
+npx doodleui-react add button card dialog
+
+# List available components and local install status
+npx doodleui-react list
+
+# Compare local modifications against upstream registry
+npx doodleui-react diff button
+```
+
+## Install (npm dependency)
 
 ```bash
 npm install doodleui-react

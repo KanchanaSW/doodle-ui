@@ -1,0 +1,25 @@
+{
+  "name": "toggle",
+  "displayName": "Toggle",
+  "description": "Single on/off control with sketch fill when pressed.",
+  "files": [
+    {
+      "name": "toggle.tsx",
+      "path": "components/toggle.tsx",
+      "type": "component",
+      "content": "\"use client\";\n\nimport {\n  forwardRef,\n  useRef,\n  useState,\n  type MutableRefObject,\n} from \"react\";\nimport * as TogglePrimitive from \"@radix-ui/react-toggle\";\nimport {\n  DRAW_IN_DURATION_MS,\n  useAnimate,\n  useDrawIn,\n} from \"../animations\";\nimport { useResolvedSeed } from \"../hooks/useResolvedSeed\";\nimport { useSketchTheme } from \"../hooks/useSketchTheme\";\nimport { RoughSvg } from \"../primitives/RoughSvg\";\nimport type { SketchProps } from \"../types\";\nimport { assignRef, cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from \"../utils\";\n\nexport type ToggleSize = \"sm\" | \"md\" | \"lg\";\n\nconst SIZE_STYLES: Record<ToggleSize, { fontSize: number; padding: string; minHeight: number }> =\n  {\n    sm: { fontSize: 13, padding: \"4px 10px\", minHeight: 30 },\n    md: { fontSize: 15, padding: \"7px 14px\", minHeight: 38 },\n    lg: { fontSize: 17, padding: \"10px 18px\", minHeight: 46 },\n  };\n\nexport interface ToggleProps\n  extends Omit<TogglePrimitive.ToggleProps, \"asChild\">,\n    SketchProps {\n  size?: ToggleSize;\n  /**\n   * Draw-in on mount and seed morph on press.\n   * Defaults to the DoodleUIProvider value (true).\n   */\n  animate?: boolean;\n}\n\nexport const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(\n  function Toggle(\n    {\n      className,\n      style,\n      size = \"md\",\n      roughness,\n      seed,\n      sketchColor,\n      bowing,\n      fillStyle,\n      strokeWidth,\n      hachureGap,\n      hachureAngle,\n      fillWeight,\n      pressed,\n      defaultPressed,\n      onPressedChange,\n      disabled,\n      animate,\n      children,\n      ...rest\n    },\n    ref,\n  ) {\n    const rootRef = useRef<HTMLButtonElement>(null);\n    const [uncontrolled, setUncontrolled] = useState(defaultPressed === true);\n    const isPressed = pressed ?? uncontrolled;\n    const theme = useSketchTheme(sketchColor);\n    const ink = sketchColor ?? theme.ink;\n    const accent = sketchColor ?? theme.accent;\n    const accentFill = theme.isDark\n      ? (sketchColor ? `${sketchColor}25` : theme.accentFill)\n      : theme.accentFill;\n    const resolvedSeed = useResolvedSeed(seed);\n    const shouldAnimate = useAnimate(animate);\n    const pressSeed = deriveSeed(resolvedSeed, isPressed ? \"on\" : \"off\");\n    const sketchSeed = shouldAnimate ? pressSeed : resolvedSeed;\n\n    useDrawIn(rootRef, DRAW_IN_DURATION_MS, shouldAnimate, sketchSeed);\n\n    return (\n      <TogglePrimitive.Root\n        ref={(node) => {\n          (rootRef as MutableRefObject<HTMLButtonElement | null>).current = node;\n          assignRef(ref, node);\n        }}\n        pressed={pressed}\n        defaultPressed={defaultPressed}\n        onPressedChange={(next) => {\n          setUncontrolled(next);\n          onPressedChange?.(next);\n        }}\n        disabled={disabled}\n        className={cn(className)}\n        style={{\n          position: \"relative\",\n          display: \"inline-flex\",\n          alignItems: \"center\",\n          justifyContent: \"center\",\n          border: \"none\",\n          background: \"transparent\",\n          cursor: disabled ? \"not-allowed\" : \"pointer\",\n          color: isPressed ? (theme.isDark ? \"#ffffff\" : accent) : ink,\n          fontFamily: doodleUiFontFamily,\n          fontWeight: doodleUiFontWeight(600),\n          opacity: disabled ? 0.45 : 1,\n          outline: \"none\",\n          ...SIZE_STYLES[size],\n          ...style,\n        }}\n        {...rest}\n      >\n        <RoughSvg\n          shape=\"rectangle\"\n          roughness={roughness}\n          seed={sketchSeed}\n          sketchColor={isPressed ? accent : ink}\n          bowing={bowing}\n          fillStyle={fillStyle ?? \"hachure\"}\n          fill={isPressed ? accentFill : undefined}\n          strokeWidth={strokeWidth ?? 1.6}\n          hachureGap={hachureGap ?? 7}\n          hachureAngle={hachureAngle}\n          fillWeight={fillWeight ?? 1}\n        />\n        <span style={{ position: \"relative\", zIndex: 1 }}>{children}</span>\n      </TogglePrimitive.Root>\n    );\n  },\n);\n"
+    }
+  ],
+  "dependencies": [
+    "@radix-ui/react-toggle"
+  ],
+  "internalDependencies": [
+    "animations",
+    "hooks/useResolvedSeed",
+    "hooks/useSketchTheme",
+    "primitives/RoughSvg",
+    "types",
+    "utils"
+  ],
+  "componentDependencies": []
+}
