@@ -11,7 +11,7 @@ export function ThemeToggle() {
     <div
       className="flex items-center gap-2 text-[13px] font-medium"
       role="group"
-      aria-label="Component color theme"
+      aria-label="Site color theme"
     >
       <span
         className={isDark ? "text-mute" : "text-ink font-semibold"}

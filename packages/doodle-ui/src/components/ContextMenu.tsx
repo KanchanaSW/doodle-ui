@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -186,7 +186,7 @@ export const ContextMenuItem = forwardRef<
   { className, style, children, inset, ...rest },
   ref,
 ) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const [highlighted, setHighlighted] = useState(false);
   const { sketch, mark } = useMark(highlighted);
 
@@ -251,7 +251,7 @@ export const ContextMenuCheckboxItem = forwardRef<
   { className, style, children, checked, ...rest },
   ref,
 ) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const [highlighted, setHighlighted] = useState(false);
   const { sketch, mark } = useMark(highlighted);
 
@@ -332,7 +332,7 @@ export const ContextMenuRadioItem = forwardRef<
   { className, style, children, ...rest },
   ref,
 ) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const [highlighted, setHighlighted] = useState(false);
   const { sketch, mark } = useMark(highlighted);
 
@@ -443,7 +443,7 @@ export const ContextMenuSeparator = forwardRef<
   HTMLDivElement,
   ContextMenuSeparatorProps
 >(function ContextMenuSeparator({ className, style, ...rest }, ref) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const sketch = useContextMenuSketch();
   return (
     <ContextMenuPrimitive.Separator

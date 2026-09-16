@@ -10,9 +10,10 @@ import {
 } from "next/font/google";
 import { Providers } from "./providers";
 import { SiteHeader } from "@/components/SiteHeader";
+import "doodleui-react/styles.css";
 import "./globals.css";
 
-const componentThemeBootstrap = `(function(){try{var k="doodle-ui-component-theme";var t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){var l=localStorage.getItem("doodle-ui-site-theme");if(l==="light"||l==="dark")t=l;else t="light";}document.documentElement.setAttribute("data-component-theme",t);}catch(e){document.documentElement.setAttribute("data-component-theme","light");}})();`;
+const componentThemeBootstrap = `(function(){try{var k="doodle-ui-component-theme";var t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){var l=localStorage.getItem("doodle-ui-site-theme");if(l==="light"||l==="dark")t=l;else t="dark";}var r=document.documentElement;r.setAttribute("data-component-theme",t);r.setAttribute("data-theme",t);r.classList.remove("light","dark");r.classList.add(t);r.style.colorScheme=t;}catch(e){var f=document.documentElement;f.setAttribute("data-component-theme","dark");f.setAttribute("data-theme","dark");f.classList.add("dark");f.style.colorScheme="dark";}})();`;
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -78,9 +79,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      data-component-theme="light"
+      data-component-theme="dark"
+      data-theme="dark"
       suppressHydrationWarning
-      className={`${outfit.variable} ${caveat.variable} ${patrickHand.variable} ${kalam.variable} ${gochiHand.variable} ${architectsDaughter.variable} ${ibm.variable}`}
+      className={`dark ${outfit.variable} ${caveat.variable} ${patrickHand.variable} ${kalam.variable} ${gochiHand.variable} ${architectsDaughter.variable} ${ibm.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: componentThemeBootstrap }} />

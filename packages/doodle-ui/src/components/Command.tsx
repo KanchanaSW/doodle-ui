@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -152,7 +152,7 @@ export interface CommandInputProps
 
 export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
   function CommandInput({ className, style, ...rest }, ref) {
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const sketch = useCommandSketch();
     return (
       <div style={{ position: "relative", padding: "10px 12px 12px" }}>
@@ -271,7 +271,7 @@ export const CommandItem = forwardRef<HTMLDivElement, CommandItemProps>(
     { className, style, children, onMouseEnter, onMouseLeave, ...rest },
     ref,
   ) {
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const sketch = useCommandSketch();
     const [highlighted, setHighlighted] = useState(false);
 
@@ -334,7 +334,7 @@ export const CommandSeparator = forwardRef<
   HTMLDivElement,
   CommandSeparatorProps
 >(function CommandSeparator({ className, style, ...rest }, ref) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const sketch = useCommandSketch();
   return (
     <CmdkSeparator

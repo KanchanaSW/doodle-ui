@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -221,7 +221,7 @@ export const NavigationMenuIndicator = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Indicator>
 >(function NavigationMenuIndicator({ className, style, ...rest }, ref) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const sketch = useNavigationMenuSketch();
   return (
     <NavigationMenuPrimitive.Indicator
@@ -257,7 +257,7 @@ export const NavigationMenuItemLink = forwardRef<
   { className, style, active, children, ...rest },
   ref,
 ) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const sketch = useNavigationMenuSketch();
   const [hovered, setHovered] = useState(false);
   const showMark = active || hovered;

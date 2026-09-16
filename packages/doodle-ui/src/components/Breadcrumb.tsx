@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   Children,
   cloneElement,
@@ -163,7 +163,7 @@ function SeparatorMark({
   bowing?: number;
   strokeWidth?: number;
 }) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   return (
     <span
       aria-hidden="true"

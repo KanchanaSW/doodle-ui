@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import { forwardRef, useId, useRef, type ReactNode } from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import {
@@ -52,7 +52,7 @@ function CheckMark({
   strokeWidth?: number;
   shouldAnimate: boolean;
 }) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const ref = useRef<HTMLSpanElement>(null);
   useDrawIn(ref, DRAW_IN_MARK_MS, shouldAnimate);
 

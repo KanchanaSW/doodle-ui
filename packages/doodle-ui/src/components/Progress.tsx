@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   forwardRef,
   useRef,
@@ -66,7 +66,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
   ) {
     const rootRef = useRef<HTMLDivElement>(null);
     const trackRef = useRef<HTMLSpanElement>(null);
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.accent;
     const trackInk = sketchColor ?? (theme.isDark ? "rgba(243, 244, 246, 0.45)" : theme.ink);

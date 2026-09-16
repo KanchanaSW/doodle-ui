@@ -10,8 +10,9 @@ export function randomSeed(): number {
   return Math.floor(Math.random() * 2 ** 31);
 }
 
-/** Follows SketchSeedProvider --doodle-ui-font. Unset = inherit the page default. */
-export const doodleUiFontFamily = "var(--doodle-ui-font, inherit)";
+/** Follows SketchSeedProvider --doodle-ui-font, then styles.css --doodle-ui-font-family. */
+export const doodleUiFontFamily =
+  "var(--doodle-ui-font, var(--doodle-ui-font-family, inherit))";
 
 /** When a handwriting face is active the provider sets --doodle-ui-font-weight to 400. */
 export function doodleUiFontWeight(fallback: number): string {

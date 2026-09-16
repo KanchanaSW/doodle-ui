@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+:root,
+html.light,
+html[data-theme="light"] {
   --paper: #eef0ea;
   --ink: #1f1d1a;
   --accent: #e24b3b;
@@ -11,16 +13,36 @@
   --site-rule: rgb(31 29 26 / 0.035);
   --site-body-tint: rgb(238 240 234 / 0.96);
   --component-canvas: rgb(255 255 255 / 0.72);
+  --chalkboard: #1f1d1a;
   --doodle-ui-font: var(--font-patrick-hand);
   --doodle-ui-font-weight: 400;
 }
 
-html[data-component-theme="dark"] {
-  --component-canvas: #131923;
+html.dark,
+html[data-theme="dark"] {
+  --paper: #131923;
+  --ink: #f3f4f6;
+  --accent: #f87171;
+  --mute: #a1a1aa;
+  --chalkink: #e4e4e7;
+  --site-rule: rgb(243 244 246 / 0.06);
+  --site-body-tint: rgb(19 25 35 / 0.98);
+  --component-canvas: rgb(19 25 35 / 0.92);
+  --chalkboard: #0c1118;
 }
 
 html {
   background: var(--paper);
+  color-scheme: light dark;
+}
+
+html.dark,
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html.light,
+html[data-theme="light"] {
   color-scheme: light;
 }
 
@@ -36,6 +58,9 @@ body {
       var(--site-rule) 24px
     );
   color: var(--ink);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 .paper-grain {
@@ -48,9 +73,21 @@ body {
   mix-blend-mode: multiply;
 }
 
+html.dark .paper-grain,
+html[data-theme="dark"] .paper-grain {
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
+}
+
 ::selection {
   background: #e24b3b;
   color: #f7f6f2;
+}
+
+html.dark ::selection,
+html[data-theme="dark"] ::selection {
+  background: #f87171;
+  color: #131923;
 }
 
 .font-hand {
@@ -65,4 +102,8 @@ body {
 .component-canvas {
   background: var(--component-canvas);
   transition: background-color 0.2s ease;
+}
+
+.bg-chalkboard {
+  background-color: var(--chalkboard);
 }

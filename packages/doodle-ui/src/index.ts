@@ -30,6 +30,7 @@ export {
 export { useResolvedSeed } from "./hooks/useResolvedSeed";
 export {
   useSketchDefaults,
+  useBaseRoughness,
   type SketchDefaults,
 } from "./hooks/useSketchDefaults";
 export { useSketchTheme, type SketchTheme } from "./hooks/useSketchTheme";

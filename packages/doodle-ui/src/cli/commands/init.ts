@@ -211,6 +211,7 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
   p.outro(
     `${pc.bold(pc.green("Success!"))} DoodleUI is configured and ready.\n\n` +
       `  • Add components: ${pc.cyan("npx doodleui-react add <component>")}\n` +
+      `  • Import theme CSS: ${pc.cyan('import "doodleui-react/styles.css"')}\n` +
       `  • Wrap your layout in: ${pc.cyan(
         `<DoodleUIProvider>`,
       )} from ${pc.yellow(`"${sharedAlias || "./" + sharedRelPath}/animations"`)}\n`,

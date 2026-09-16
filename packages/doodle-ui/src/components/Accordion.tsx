@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -161,7 +161,7 @@ export interface AccordionItemProps
 
 export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
   function AccordionItem({ className, style, children, value, ...rest }, ref) {
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const sketch = useAccordionSketch();
 
     return (
@@ -215,7 +215,7 @@ export const AccordionTrigger = forwardRef<
   HTMLButtonElement,
   AccordionTriggerProps
 >(function AccordionTrigger({ className, style, children, ...rest }, ref) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const sketch = useAccordionSketch();
   const itemValue = useContext(AccordionItemContext);
   const open = Array.isArray(sketch.openValue)

@@ -27,6 +27,19 @@ export function DocsNav() {
         Install
       </Link>
       <Link
+        href="/docs/theming"
+        className={`block mb-4 font-medium ${
+          pathMatches(pathname, "/docs/theming")
+            ? "text-accent"
+            : "hover:text-accent"
+        }`}
+        aria-current={
+          pathMatches(pathname, "/docs/theming") ? "page" : undefined
+        }
+      >
+        Theming
+      </Link>
+      <Link
         href="/docs/animation"
         className={`block mb-4 font-medium ${
           pathMatches(pathname, "/docs/animation")

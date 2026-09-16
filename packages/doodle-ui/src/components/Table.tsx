@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -88,7 +88,7 @@ function TableRule({
   strokeWidth?: number;
   shouldAnimate: boolean;
 }) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const ref = useRef<HTMLDivElement>(null);
   const delay = shouldAnimate
     ? Math.min(line.index, 6) * TABLE_STAGGER_MS

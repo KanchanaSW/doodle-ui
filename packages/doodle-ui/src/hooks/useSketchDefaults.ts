@@ -13,38 +13,37 @@ import {
 
 /** Resolved global sketch defaults from {@link DoodleUIProvider} (explicit props only). */
 export interface SketchDefaults {
-  roughness: number;
-  bowing: number;
-  strokeWidth: number;
+  roughness?: number;
+  bowing?: number;
+  strokeWidth?: number;
   sketchColor?: string;
   fillStyle?: FillStyle;
 }
-
-const FALLBACK: SketchDefaults = {
-  roughness: DEFAULT_ROUGHNESS,
-  bowing: DEFAULT_BOWING,
-  strokeWidth: DEFAULT_STROKE_WIDTH,
-};
 
 /**
  * Returns sketch defaults from the nearest {@link DoodleUIProvider}, or library
  * constants when no provider sketch props are set.
  */
 /**
- * Global sketch numeric defaults from {@link DoodleUIProvider} (falls back to constants).
+ * Global sketch defaults from {@link DoodleUIProvider} only (undefined when unset).
  */
 export function useSketchDefaults(): SketchDefaults {
   const ctx = useContext(DoodleUIContext);
   return useMemo(
     () => ({
-      roughness: ctx?.roughness ?? FALLBACK.roughness,
-      bowing: ctx?.bowing ?? FALLBACK.bowing,
-      strokeWidth: ctx?.strokeWidth ?? FALLBACK.strokeWidth,
+      roughness: ctx?.roughness,
+      bowing: ctx?.bowing,
+      strokeWidth: ctx?.strokeWidth,
       sketchColor: ctx?.sketchColor,
       fillStyle: ctx?.fillStyle,
     }),
     [ctx?.roughness, ctx?.bowing, ctx?.strokeWidth, ctx?.sketchColor, ctx?.fillStyle],
   );
+}
+
+/** Provider roughness with library fallback — for local math before {@link RoughSvg} merge. */
+export function useBaseRoughness(): number {
+  return useSketchDefaults().roughness ?? DEFAULT_ROUGHNESS;
 }
 
 /**

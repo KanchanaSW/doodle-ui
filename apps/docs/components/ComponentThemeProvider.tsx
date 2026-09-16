@@ -41,7 +41,7 @@ const ComponentThemeContext = createContext<ComponentThemeContextValue | null>(
 );
 
 export function ComponentThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ComponentTheme>("light");
+  const [theme, setThemeState] = useState<ComponentTheme>("dark");
 
   useEffect(() => {
     const initial = resolveInitialComponentTheme();

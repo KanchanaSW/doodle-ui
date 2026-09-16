@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import { forwardRef, useEffect, useState, type HTMLAttributes } from "react";
 import { RoughSvg } from "../primitives/RoughSvg";
 import type { RoughShape, SketchProps } from "../types";
@@ -57,7 +57,7 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
   ) {
     const base = useResolvedSeed(seed);
     const [tick, setTick] = useState(0);
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
+import { useMemo, useState } from "react";
 import {
   Badge,
   Button,
@@ -20,7 +20,7 @@ import {
   buildProviderSnippet,
   DEFAULT_GENERATOR_STATE,
   FONT_OPTIONS,
-  previewFontFamily,
+  previewScopeCssVars,
   previewTheme,
   THEME_PRESETS,
   type GeneratorFillStyle,
@@ -42,12 +42,8 @@ function PreviewPanel({ state }: { state: ThemeGeneratorState }) {
   const sketchColor = state.strokeColor;
 
   const scopeStyle = useMemo(
-    () =>
-      ({
-        "--doodle-ui-font": previewFontFamily(state.fontKey),
-        "--doodle-ui-font-weight": "400",
-      }) as CSSProperties,
-    [state.fontKey],
+    () => previewScopeCssVars(state),
+    [state],
   );
 
   return (
@@ -223,7 +219,7 @@ export function ThemeGenerator() {
               {copied === "provider" ? "Copied" : "Copy snippet"}
             </Button>
           </div>
-          <pre className="font-mono text-xs md:text-sm bg-ink text-chalkink p-4 overflow-x-auto rounded">
+          <pre className="font-mono text-xs md:text-sm bg-chalkboard text-chalkink p-4 overflow-x-auto rounded">
             {providerSnippet}
           </pre>
         </div>
@@ -235,7 +231,7 @@ export function ThemeGenerator() {
               {copied === "css" ? "Copied" : "Copy snippet"}
             </Button>
           </div>
-          <pre className="font-mono text-xs md:text-sm bg-ink text-chalkink p-4 overflow-x-auto rounded">
+          <pre className="font-mono text-xs md:text-sm bg-chalkboard text-chalkink p-4 overflow-x-auto rounded">
             {cssSnippet}
           </pre>
         </div>

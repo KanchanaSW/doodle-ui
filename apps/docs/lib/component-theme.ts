@@ -16,10 +16,15 @@ export function readStoredComponentTheme(): ComponentTheme | null {
 }
 
 export function resolveInitialComponentTheme(): ComponentTheme {
-  return readStoredComponentTheme() ?? "light";
+  return readStoredComponentTheme() ?? "dark";
 }
 
 export function applyComponentTheme(theme: ComponentTheme) {
   if (typeof document === "undefined") return;
-  document.documentElement.setAttribute("data-component-theme", theme);
+  const root = document.documentElement;
+  root.setAttribute("data-component-theme", theme);
+  root.setAttribute("data-theme", theme);
+  root.classList.remove("light", "dark");
+  root.classList.add(theme);
+  root.style.colorScheme = theme;
 }

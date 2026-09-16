@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, readFileSync, writeFileSync } from "node:fs";
 import { defineConfig } from "tsup";
 
 const outputs = ["dist/index.js", "dist/index.cjs"];
@@ -22,6 +22,7 @@ export default defineConfig([
       /^@radix-ui\//,
     ],
     async onSuccess() {
+      copyFileSync("src/styles.css", "dist/styles.css");
       for (const file of outputs) {
         const source = readFileSync(file, "utf8");
         if (source.startsWith('"use client"')) continue;

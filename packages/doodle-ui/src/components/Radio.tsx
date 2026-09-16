@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   forwardRef,
   useId,
@@ -85,7 +85,7 @@ function RadioDot({
   bowing?: number;
   shouldAnimate: boolean;
 }) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const ref = useRef<HTMLSpanElement>(null);
   useDrawIn(ref, DRAW_IN_MARK_MS, shouldAnimate);
 

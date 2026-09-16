@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
@@ -49,7 +49,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
   },
   ref,
 ) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const theme = useSketchTheme(sketchColor);
   const ink = sketchColor ?? theme.ink;
   const accent = sketchColor ?? theme.accent;

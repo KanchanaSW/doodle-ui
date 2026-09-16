@@ -1,6 +1,6 @@
 {
   "name": "doodleui-react",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "Hand-drawn React component library with an Excalidraw-like sketch aesthetic",
   "license": "MIT",
   "author": "KanchanaSW",
@@ -34,7 +34,8 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./styles.css": "./dist/styles.css"
   },
   "files": [
     "dist",
@@ -42,7 +43,7 @@
     "CHANGELOG.md",
     "LICENSE"
   ],
-  "sideEffects": false,
+  "sideEffects": ["**/*.css"],
   "scripts": {
     "build:registry": "tsx scripts/build-registry.ts",
     "build": "pnpm build:registry && tsup",

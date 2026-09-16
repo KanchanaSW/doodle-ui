@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import { forwardRef, useRef, type ReactNode } from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { DRAW_IN_MARK_MS, useAnimate, useDrawIn } from "../animations";
@@ -60,7 +60,7 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(function Label(
   },
   ref,
 ) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const theme = useSketchTheme(sketchColor);
   const ink = sketchColor ?? theme.ink;
   const resolvedSeed = useResolvedSeed(seed);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import { forwardRef } from "react";
 import { RoughSvg } from "../primitives/RoughSvg";
 import {
@@ -35,7 +35,7 @@ export const DrawerClose = SlidingPanelClose;
 
 export const DrawerHandle = forwardRef<HTMLDivElement, { className?: string }>(
   function DrawerHandle({ className }, ref) {
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const sketch = useSlidingPanelSketch();
     return (
       <div

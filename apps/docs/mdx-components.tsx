@@ -41,7 +41,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     pre: (props) => (
       <pre
-        className="font-mono text-[13px] leading-relaxed bg-ink text-chalkink p-4 overflow-x-auto mb-6 rounded-none"
+        className="font-mono text-[13px] leading-relaxed bg-chalkboard text-chalkink p-4 overflow-x-auto mb-6 rounded-none"
         {...props}
       />
     ),

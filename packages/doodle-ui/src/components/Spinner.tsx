@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import { forwardRef, type CSSProperties, type HTMLAttributes } from "react";
 import { motion } from "framer-motion";
 import { useAnimate } from "../animations";
@@ -68,7 +68,7 @@ export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
   ) {
     const px = SIZE_PX[size];
     const resolvedSeed = useResolvedSeed(seed);
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const shouldSpin = useAnimate(animate);

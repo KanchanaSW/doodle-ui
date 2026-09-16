@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
@@ -63,7 +63,7 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(
     },
     ref,
   ) {
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const accent = sketchColor ?? theme.accent;

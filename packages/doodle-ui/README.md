@@ -46,6 +46,14 @@ Wrap the tree in `SketchSeedProvider` so a Shuffle action can redraw every unloc
 
 Sketch strokes draw in on mount. Set `animate={false}` on a component, or wrap the tree in `DoodleUIProvider animate={false}`, to opt out. Pass `theme="light" | "dark" | "system"` on `DoodleUIProvider` (default `system`) so sketch ink and fills follow dark mode. See the docs for the full animation map.
 
+## Theming
+
+```tsx
+import "doodleui-react/styles.css";
+```
+
+Override `--doodle-ui-roughness`, `--doodle-ui-stroke-color`, `--doodle-ui-font-family`, and related tokens on `:root`. Dark mode follows `data-theme`, `.dark`, `prefers-color-scheme`, or `DoodleUIProvider theme`. Details: [doodle-ui.netlify.app/docs/theming](https://doodle-ui.netlify.app/docs/theming).
+
 ## Shared sketch props
 
 Every component accepts:

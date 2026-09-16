@@ -209,7 +209,7 @@ export function Toast({
               bowing={bowing}
               fillStyle={fillStyle ?? "hachure"}
               fill={resolvedFill}
-              strokeWidth={strokeWidth ?? 1.7}
+              strokeWidth={strokeWidth}
               hachureGap={hachureGap ?? 9}
               hachureAngle={hachureAngle}
               fillWeight={fillWeight ?? 0.85}

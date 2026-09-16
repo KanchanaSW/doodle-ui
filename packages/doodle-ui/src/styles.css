@@ -1,0 +1,45 @@
+/**
+ * doodleui-react global theme tokens.
+ * Import once: import "doodleui-react/styles.css"
+ * Does not load Google Fonts — set --doodle-ui-font-family or --doodle-ui-font yourself.
+ */
+
+:root,
+[data-theme="light"],
+.light {
+  --doodle-ui-roughness: 1.5;
+  --doodle-ui-bowing: 1;
+  --doodle-ui-stroke-width: 1.75;
+  --doodle-ui-stroke-color: #1f1d1a;
+  --doodle-ui-fill-style: hachure;
+  --doodle-ui-font-family: "Patrick Hand", cursive;
+  --doodle-ui-bg-color: #f7f6f2;
+  --doodle-ui-text-color: #1f1d1a;
+  --doodle-ui-color-info: #1d4e89;
+  --doodle-ui-color-warning: #c47b17;
+  --doodle-ui-color-error: #c0392b;
+  --doodle-ui-color-success: #2d6a4f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.light) {
+    --doodle-ui-stroke-color: #f3f4f6;
+    --doodle-ui-bg-color: #131923;
+    --doodle-ui-text-color: #f3f4f6;
+    --doodle-ui-color-info: #60a5fa;
+    --doodle-ui-color-warning: #fbbf24;
+    --doodle-ui-color-error: #f87171;
+    --doodle-ui-color-success: #34d399;
+  }
+}
+
+[data-theme="dark"],
+.dark {
+  --doodle-ui-stroke-color: #f3f4f6;
+  --doodle-ui-bg-color: #131923;
+  --doodle-ui-text-color: #f3f4f6;
+  --doodle-ui-color-info: #60a5fa;
+  --doodle-ui-color-warning: #fbbf24;
+  --doodle-ui-color-error: #f87171;
+  --doodle-ui-color-success: #34d399;
+}

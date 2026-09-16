@@ -13,7 +13,7 @@ export default function InstallPage() {
       <p className="text-mute mb-3 max-w-[65ch]">
         Copy component source code directly into your project so you own the styling, hooks, and sketch parameters.
       </p>
-      <pre className="font-mono text-sm bg-ink text-chalkink p-4 mb-3 overflow-x-auto">{`# Initialize project configuration & copy shared utilities
+      <pre className="font-mono text-sm bg-chalkboard text-chalkink p-4 mb-3 overflow-x-auto">{`# Initialize project configuration & copy shared utilities
 npx doodleui-react init
 
 # Add components directly into your codebase
@@ -26,7 +26,7 @@ npx doodleui-react list
 npx doodleui-react diff button`}</pre>
 
       <h2 className="text-2xl font-semibold mt-10 mb-3">Package (npm dependency)</h2>
-      <pre className="font-mono text-sm bg-ink text-chalkink p-4 mb-3 overflow-x-auto">{`npm install doodleui-react
+      <pre className="font-mono text-sm bg-chalkboard text-chalkink p-4 mb-3 overflow-x-auto">{`npm install doodleui-react
 pnpm add doodleui-react
 yarn add doodleui-react`}</pre>
       <Alert variant="info" title="Package name" className="mb-10">
@@ -37,7 +37,7 @@ yarn add doodleui-react`}</pre>
       <p className="text-mute mb-3 max-w-[65ch]">
         Wrap the tree once. TooltipProvider is required for tooltips. ToastProvider is required for toasts. SketchSeedProvider is required for Shuffle. DoodleUIProvider is optional — animations default on, and you can pass `animate={false}` on a component or on the provider.
       </p>
-      <pre className="font-mono text-sm bg-ink text-chalkink p-4 mb-8 overflow-x-auto">{`import {
+      <pre className="font-mono text-sm bg-chalkboard text-chalkink p-4 mb-8 overflow-x-auto">{`import {
   DoodleUIProvider,
   SketchSeedProvider,
   TooltipProvider,
@@ -64,12 +64,17 @@ export function App() {
 }`}</pre>
 
       <p className="text-mute mb-6 max-w-[65ch] leading-relaxed">
-        Global sketch defaults: pass <code className="font-mono">roughness</code>,{" "}
-        <code className="font-mono">strokeWidth</code>, <code className="font-mono">sketchColor</code>,{" "}
-        <code className="font-mono">bowing</code>, and <code className="font-mono">fillStyle</code> on{" "}
-        <code className="font-mono">DoodleUIProvider</code>, or set matching{" "}
-        <code className="font-mono">--doodle-ui-*</code> CSS variables. Try the{" "}
-        <Link href="/customize" className="text-accent hover:underline">theme generator</Link>.
+        Global theming: import{" "}
+        <code className="font-mono">doodleui-react/styles.css</code> and override{" "}
+        <code className="font-mono">--doodle-ui-*</code> variables. See{" "}
+        <Link href="/docs/theming" className="text-accent hover:underline">
+          Theming
+        </Link>{" "}
+        or the{" "}
+        <Link href="/customize" className="text-accent hover:underline">
+          theme generator
+        </Link>
+        .
       </p>
 
       <Card title="Lock a sketch" className="mb-10">

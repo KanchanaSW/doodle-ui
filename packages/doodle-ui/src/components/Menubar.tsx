@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -196,7 +196,7 @@ export const MenubarItem = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof MenubarPrimitive.Item>
 >(function MenubarItem({ className, style, children, ...rest }, ref) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const [highlighted, setHighlighted] = useState(false);
   const { sketch, mark } = useMark(highlighted);
 
@@ -243,7 +243,7 @@ export const MenubarSeparator = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof MenubarPrimitive.Separator>
 >(function MenubarSeparator({ className, style, ...rest }, ref) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const sketch = useMenubarSketch();
   return (
     <MenubarPrimitive.Separator

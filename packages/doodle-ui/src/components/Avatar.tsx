@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import { forwardRef, type CSSProperties, type ReactNode } from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
@@ -62,7 +62,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
     },
     ref,
   ) {
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const resolvedSeed = useResolvedSeed(seed);

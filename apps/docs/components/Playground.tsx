@@ -142,7 +142,7 @@ export function Playground({
           })}
         </div>
         <div className="relative">
-          <pre className="font-mono text-[12px] leading-relaxed bg-ink text-chalkink p-3 overflow-x-auto whitespace-pre-wrap">
+          <pre className="font-mono text-[12px] leading-relaxed bg-chalkboard text-chalkink p-3 overflow-x-auto whitespace-pre-wrap">
             {code}
           </pre>
           <div className="mt-2">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   forwardRef,
   useRef,
@@ -116,7 +116,7 @@ export const SketchBox = forwardRef<HTMLDivElement, SketchBoxProps>(
     },
     ref,
   ) {
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const rootRef = useRef<HTMLDivElement>(null);
     const theme = useSketchTheme(sketchColor);
     const resolvedInk = sketchColor ?? theme.ink;

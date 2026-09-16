@@ -158,16 +158,26 @@ export function DoodleUIProvider({
     if (sketchColor !== undefined) vars["--doodle-ui-stroke-color"] = sketchColor;
     if (fillStyle !== undefined) vars["--doodle-ui-fill-style"] = fillStyle;
     if (bowing !== undefined) vars["--doodle-ui-bowing"] = bowing;
-    if (Object.keys(vars).length === 0) return {};
     return vars as CSSProperties;
   }, [roughness, strokeWidth, sketchColor, fillStyle, bowing]);
 
-  const hasScopeVars = Object.keys(scopeStyle).length > 0;
+  const hasSketchVars = Object.keys(scopeStyle).length > 0;
+  const hasExplicitTheme = theme === "light" || theme === "dark";
+  const needsScopeWrapper = hasSketchVars || hasExplicitTheme;
+
+  const scopeClassName =
+    theme === "dark" ? "dark" : theme === "light" ? "light" : undefined;
 
   return (
     <DoodleUIContext.Provider value={value}>
-      {hasScopeVars ? (
-        <div style={{ display: "contents", ...scopeStyle }}>{children}</div>
+      {needsScopeWrapper ? (
+        <div
+          style={{ display: "contents", ...scopeStyle }}
+          data-theme={hasExplicitTheme ? theme : undefined}
+          className={scopeClassName}
+        >
+          {children}
+        </div>
       ) : (
         children
       )}

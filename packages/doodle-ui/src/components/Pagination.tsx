@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import { forwardRef, type ButtonHTMLAttributes, type HTMLAttributes } from "react";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
@@ -59,7 +59,7 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
     },
     ref,
   ) {
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const accent = sketchColor ?? theme.accent;
@@ -200,7 +200,7 @@ function PageButton({
   strokeWidth,
   ...rest
 }: PageButtonProps) {
-  const { roughness: baseRoughness } = useSketchDefaults();
+  const baseRoughness = useBaseRoughness();
   const activeColor = accent ?? ink;
   const textColor = active ? (isDark ? "#ffffff" : activeColor) : ink;
 

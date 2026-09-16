@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -164,7 +164,7 @@ export const ScrollBar = forwardRef<HTMLDivElement, ScrollBarProps>(
     { className, style, orientation = "vertical", ...rest },
     ref,
   ) {
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const sketch = useScrollAreaSketch();
 
     return (

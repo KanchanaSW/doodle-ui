@@ -14,6 +14,7 @@ const config: Config = {
         accent: "var(--accent)",
         mute: "var(--mute)",
         chalkink: "var(--chalkink)",
+        chalkboard: "var(--chalkboard)",
       },
       fontFamily: {
         sans: ["var(--font-outfit)", "ui-sans-serif", "system-ui", "sans-serif"],

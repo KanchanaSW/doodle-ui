@@ -34,13 +34,42 @@ function checkIsDark(): boolean {
     return false;
   }
   const root = document.documentElement;
-  if (root.classList.contains("dark")) return true;
+  if (root.classList.contains("light")) return false;
   const dataTheme = root.getAttribute("data-theme");
+  if (dataTheme === "light") return false;
+  if (root.classList.contains("dark")) return true;
   if (dataTheme === "dark") return true;
   if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
     return true;
   }
   return false;
+}
+
+function cssColor(name: string, fallback: string): string {
+  if (typeof window === "undefined") return fallback;
+  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return value || fallback;
+}
+
+function paletteFromCss(isDark: boolean) {
+  const js = isDark ? DARK_SKETCH_COLORS : SKETCH_COLORS;
+  const paperFallback = isDark ? DEFAULT_DARK_PAPER : DEFAULT_PAPER;
+  const cardFallback = isDark ? DEFAULT_DARK_CARD_BG : DEFAULT_PAPER;
+  const inkFallback = isDark ? DEFAULT_DARK_INK : DEFAULT_INK;
+
+  return {
+    stroke: cssColor("--doodle-ui-stroke-color", inkFallback),
+    paper: cssColor("--doodle-ui-bg-color", paperFallback),
+    cardBg: cssColor("--doodle-ui-bg-color", cardFallback),
+    info: cssColor("--doodle-ui-color-info", js.info),
+    warning: cssColor("--doodle-ui-color-warning", js.warning),
+    error: cssColor("--doodle-ui-color-error", js.error),
+    success: cssColor("--doodle-ui-color-success", js.success),
+    accent: js.accent,
+    accentFill: js.accentFill,
+    secondaryFill: js.secondaryFill,
+    shadow: isDark ? "rgba(0, 0, 0, 0.45)" : inkFallback,
+  };
 }
 
 /**
@@ -73,7 +102,6 @@ export function useSketchTheme(sketchColorOverride?: string): ResolvedSketchThem
       return;
     }
 
-    // "system" / "auto" mode: detect from DOM and media query
     const update = () => {
       setIsClientDark(checkIsDark());
     };
@@ -104,38 +132,21 @@ export function useSketchTheme(sketchColorOverride?: string): ResolvedSketchThem
 
   const isDark = contextTheme === "dark" ? true : contextTheme === "light" ? false : isClientDark;
 
-  const baseInk = isDark ? DEFAULT_DARK_INK : DEFAULT_INK;
-  const ink = sketchColorOverride ?? baseInk;
-
-  if (isDark) {
-    return {
-      isDark: true,
-      ink,
-      paper: DEFAULT_DARK_PAPER,
-      cardBg: DEFAULT_DARK_CARD_BG,
-      shadow: "rgba(0, 0, 0, 0.45)",
-      accent: DARK_SKETCH_COLORS.accent,
-      accentFill: DARK_SKETCH_COLORS.accentFill,
-      secondaryFill: DARK_SKETCH_COLORS.secondaryFill,
-      info: DARK_SKETCH_COLORS.info,
-      warning: DARK_SKETCH_COLORS.warning,
-      error: DARK_SKETCH_COLORS.error,
-      success: DARK_SKETCH_COLORS.success,
-    };
-  }
+  const palette = paletteFromCss(isDark);
+  const ink = sketchColorOverride ?? palette.stroke;
 
   return {
-    isDark: false,
+    isDark,
     ink,
-    paper: DEFAULT_PAPER,
-    cardBg: DEFAULT_PAPER,
-    shadow: sketchColorOverride ?? DEFAULT_INK,
-    accent: SKETCH_COLORS.accent,
-    accentFill: SKETCH_COLORS.accentFill,
-    secondaryFill: SKETCH_COLORS.secondaryFill,
-    info: SKETCH_COLORS.info,
-    warning: SKETCH_COLORS.warning,
-    error: SKETCH_COLORS.error,
-    success: SKETCH_COLORS.success,
+    paper: palette.paper,
+    cardBg: palette.cardBg,
+    shadow: isDark ? palette.shadow : sketchColorOverride ?? palette.stroke,
+    accent: palette.accent,
+    accentFill: palette.accentFill,
+    secondaryFill: palette.secondaryFill,
+    info: palette.info,
+    warning: palette.warning,
+    error: palette.error,
+    success: palette.success,
   };
 }

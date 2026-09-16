@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   forwardRef,
   useRef,
@@ -73,7 +73,7 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
     const fieldRef = useRef<HTMLSpanElement>(null);
     const shouldAnimate = useAnimate(animate);
     const resolvedSeed = useResolvedSeed(seed);
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
 

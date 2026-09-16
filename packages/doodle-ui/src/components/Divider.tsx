@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   forwardRef,
   useRef,
@@ -63,7 +63,7 @@ export const Divider = forwardRef<HTMLDivElement, DividerProps>(
     ref,
   ) {
     const rootRef = useRef<HTMLDivElement>(null);
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const shouldAnimate = useAnimate(animate);

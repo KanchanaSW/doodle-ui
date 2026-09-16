@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.0
+
+CSS theming: ship `doodleui-react/styles.css` with `:root` defaults, dark overrides (`data-theme`, `.dark`, `prefers-color-scheme`), and semantic color tokens. `useSketchDefaults` respects CSS variables when provider props are unset. `useSketchTheme` reads palette from CSS vars. `DoodleUIProvider` sets scoped `data-theme` for light/dark subtrees.
+
 ## 0.6.2
 
 CLI component installer: `npx doodleui-react init`, `add`, `list`, and `diff` copy sketch component source into your project (shadcn-style). Ships a generated component registry and `doodleui` / `doodleui-react` binaries.

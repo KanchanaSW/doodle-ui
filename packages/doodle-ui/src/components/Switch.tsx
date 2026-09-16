@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import { forwardRef, useRef, useState, type ReactNode } from "react";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 import { motion } from "framer-motion";
@@ -69,7 +69,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
   ) {
     const [uncontrolled, setUncontrolled] = useState(defaultChecked === true);
     const isOn = checked ?? uncontrolled;
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const activeColor = sketchColor ?? theme.accent;

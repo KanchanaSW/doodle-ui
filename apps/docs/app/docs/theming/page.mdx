@@ -1,0 +1,152 @@
+# Theming
+
+Global reskinning uses CSS custom properties. Import the base stylesheet once, override variables on `:root` or a scoped wrapper, and optionally use `DoodleUIProvider` for React-level defaults.
+
+## Quick start
+
+```tsx
+import "doodleui-react/styles.css";
+```
+
+The library does **not** load Google Fonts for you. Set `--doodle-ui-font-family` (or `--doodle-ui-font` via `SketchSeedProvider`) after you add a font yourself.
+
+## Precedence
+
+For sketch parameters (`roughness`, `strokeWidth`, `bowing`, `sketchColor`, `fillStyle`):
+
+1. **Per-component prop**
+2. **`DoodleUIProvider` prop** (also sets scoped CSS vars)
+3. **CSS custom property** on an ancestor
+4. **Built-in constant** in the package
+
+## CSS variable reference
+
+| Variable | Light default | Dark default | Purpose |
+| --- | --- | --- | --- |
+| `--doodle-ui-roughness` | `1.5` | `1.5` | rough.js sketchiness |
+| `--doodle-ui-bowing` | `1` | `1` | Line bowing |
+| `--doodle-ui-stroke-width` | `1.75` | `1.75` | Stroke width (px) |
+| `--doodle-ui-stroke-color` | `#1f1d1a` | `#f3f4f6` | Default ink / strokes |
+| `--doodle-ui-fill-style` | `hachure` | `hachure` | Fill pattern when shapes have fill |
+| `--doodle-ui-font-family` | `"Patrick Hand", cursive` | same | Handwriting stack (no font loaded automatically) |
+| `--doodle-ui-bg-color` | `#f7f6f2` | `#131923` | Paper / surfaces |
+| `--doodle-ui-text-color` | `#1f1d1a` | `#f3f4f6` | Body text |
+| `--doodle-ui-color-info` | `#1d4e89` | `#60a5fa` | Alert / status info |
+| `--doodle-ui-color-warning` | `#c47b17` | `#fbbf24` | Warning |
+| `--doodle-ui-color-error` | `#c0392b` | `#f87171` | Error |
+| `--doodle-ui-color-success` | `#2d6a4f` | `#34d399` | Success |
+
+### Contrast (default palettes)
+
+Measured contrast ratios for shipped defaults (WCAG AA requires ≥ 4.5:1 for normal text and ≥ 3:1 for non-text strokes):
+
+- Light: stroke/text `#1f1d1a` on `#f7f6f2` — **~15.6:1**
+- Dark: stroke/text `#f3f4f6` on `#131923` — **~16.0:1**
+
+Thin hand-drawn strokes can look lighter than solid borders; test your own `--doodle-ui-stroke-width` and colors if you push toward pastel inks.
+
+## Dark mode
+
+With `styles.css` imported:
+
+- **Automatic:** `@media (prefers-color-scheme: dark)` updates tokens when you do not force light.
+- **Explicit:** `data-theme="dark"` or class `dark` on `html` or any ancestor.
+- **Force light on a dark OS:** `data-theme="light"` or class `light` (wins over the media query).
+- **React subtree:** `<DoodleUIProvider theme="dark">` sets `data-theme` and palette resolution for descendants.
+
+```html
+<html data-theme="dark">
+  <!-- or -->
+<html class="dark">
+```
+
+```tsx
+<DoodleUIProvider theme="system">
+  {/* follows OS + html attributes */}
+</DoodleUIProvider>
+```
+
+## Font pairings
+
+Load fonts yourself, then point `--doodle-ui-font-family` (or `--doodle-ui-font` for shuffle palettes) at the family.
+
+### Patrick Hand (default body)
+
+```html
+<link
+  href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap"
+  rel="stylesheet"
+/>
+```
+
+```tsx
+// app/layout.tsx (Next.js)
+import { Patrick_Hand } from "next/font/google";
+
+const patrick = Patrick_Hand({ subsets: ["latin"], weight: "400", variable: "--font-patrick" });
+
+// CSS: --doodle-ui-font-family: var(--font-patrick), cursive;
+```
+
+### Kalam (single-font stack)
+
+```html
+<link
+  href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap"
+  rel="stylesheet"
+/>
+```
+
+```css
+:root {
+  --doodle-ui-font-family: "Kalam", cursive;
+}
+```
+
+### Architects Daughter + Patrick Hand (headings + body)
+
+```html
+<link
+  href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Patrick+Hand&display=swap"
+  rel="stylesheet"
+/>
+```
+
+```css
+:root {
+  --doodle-ui-font-family: "Patrick Hand", cursive;
+}
+h1, h2, h3 {
+  font-family: "Architects Daughter", cursive;
+}
+```
+
+### Caveat (accents / headings only)
+
+Caveat is expressive but less readable at small body sizes — use for titles or badges.
+
+```html
+<link
+  href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap"
+  rel="stylesheet"
+/>
+```
+
+## Provider + CSS together
+
+Provider sketch props mirror onto scoped `--doodle-ui-*` variables. Use CSS for site-wide tokens and the provider when you need a subtree override:
+
+```tsx
+import "doodleui-react/styles.css";
+import { DoodleUIProvider, Button } from "doodleui-react";
+
+export function App() {
+  return (
+    <DoodleUIProvider roughness={2.2} theme="light">
+      <Button>Heavier global sketch</Button>
+    </DoodleUIProvider>
+  );
+}
+```
+
+Try the [theme generator](/customize) for copy-paste `:root` blocks that match these names.

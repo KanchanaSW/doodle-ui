@@ -1,6 +1,6 @@
 "use client";
 
-import { useSketchDefaults } from "../hooks/useSketchDefaults";
+import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -188,7 +188,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
     const sketch = useSelectSketch();
     const [openish, setOpenish] = useState(false);
     const rootRef = useRef<HTMLButtonElement>(null);
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const shouldAnimate = useAnimate(sketch.animate);
     useDrawIn(rootRef, DRAW_IN_DURATION_MS, shouldAnimate);
 
@@ -335,7 +335,7 @@ export interface SelectItemProps
 
 export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
   function SelectItem({ className, style, children, value, ...rest }, ref) {
-    const { roughness: baseRoughness } = useSketchDefaults();
+    const baseRoughness = useBaseRoughness();
     const sketch = useSelectSketch();
     const [highlighted, setHighlighted] = useState(false);
     const selected = sketch.selectedValue === value;

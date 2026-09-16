@@ -66,6 +66,16 @@ export function App() {
 
 Wrap the tree in `SketchSeedProvider` so Shuffle can redraw every unlocked sketch. Wrap in `TooltipProvider` if you use tooltips. Pass `seed={123}` on a component to lock its wobble. Sketch animations are on by default; wrap in `DoodleUIProvider` or pass `animate={false}` to opt out. Pass `theme` on `DoodleUIProvider` (`light` / `dark` / `system`) so sketch colors follow dark mode.
 
+## Theming
+
+Import the base stylesheet once, then override CSS variables globally or on a scoped wrapper:
+
+```tsx
+import "doodleui-react/styles.css";
+```
+
+See [Theming](https://doodle-ui.netlify.app/docs/theming) on the docs site for the full `--doodle-ui-*` reference, dark mode setup, and handwriting font pairings.
+
 ## Shared sketch props
 
 Every component accepts:
