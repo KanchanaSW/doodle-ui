@@ -45,6 +45,13 @@ export const COMPONENT_PAGES = [
   { slug: "menubar", title: "Menubar", blurb: "App-style File/Edit menu bar" },
   { slug: "sheet", title: "Sheet", blurb: "Edge-anchored slide-out panel" },
   { slug: "drawer", title: "Drawer", blurb: "Bottom sheet with drag handle" },
+  { slug: "aspect-ratio", title: "Aspect Ratio", blurb: "Fixed ratio box for media layouts" },
+  { slug: "native-select", title: "Native Select", blurb: "Sketchy native select without popover" },
+  { slug: "empty", title: "Empty", blurb: "Empty-state placeholder with optional frame" },
+  { slug: "field", title: "Field", blurb: "Label, control, helper, and error wiring" },
+  { slug: "typography", title: "Typography", blurb: "Headings and text with sketch accents" },
+  { slug: "sidebar", title: "Sidebar", blurb: "Collapsible app sidebar layout" },
+  { slug: "carousel", title: "Carousel", blurb: "Embla slides with sketch arrows" },
 ] as const;
 
 export type ComponentSlug = (typeof COMPONENT_PAGES)[number]["slug"];

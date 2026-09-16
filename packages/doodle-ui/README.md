@@ -59,11 +59,11 @@ Every component accepts:
 
 ## Components
 
-Button, Input, Textarea, Checkbox, Radio, Select, Switch, Slider, Card, Badge, Alert, Modal, Divider, Progress, Tooltip, Tabs, Accordion, Table, Toast, Avatar, Pagination, Breadcrumb, Skeleton, Stepper, Label, Collapsible, Popover, DropdownMenu, Dialog, AlertDialog, Command, Combobox, Kbd, Spinner, Toggle, ToggleGroup, InputGroup, InputOTP, ScrollArea, Resizable, HoverCard, ContextMenu, NavigationMenu, Menubar, Sheet, Drawer, plus the `RoughSvg` primitive.
+Button, Input, Textarea, Checkbox, Radio, Select, NativeSelect, Switch, Slider, Card, Badge, Alert, Modal, Divider, Progress, Tooltip, Tabs, Accordion, Table, Toast, Avatar, Pagination, Breadcrumb, Skeleton, Stepper, Label, Field, Collapsible, Popover, DropdownMenu, Dialog, AlertDialog, Command, Combobox, Kbd, Spinner, Toggle, ToggleGroup, InputGroup, InputOTP, ScrollArea, Resizable, HoverCard, ContextMenu, NavigationMenu, Menubar, Sheet, Drawer, AspectRatio, Empty, Heading, Text, Blockquote, InlineCode, Highlight, Sidebar, Carousel, plus the `RoughSvg` primitive.
 
 Most of those sketch in on mount (draw-in) and re-ink on interaction. Default on; pass `animate={false}` to skip. Slider, Accordion, Avatar, Pagination, Breadcrumb, Skeleton, and Stepper stay static for now.
 
-Modal, Tooltip, Checkbox, Radio, Select, Switch, Tabs, Accordion, Slider, Toast, Avatar, Popover, DropdownMenu, Dialog, AlertDialog, Collapsible, Label, HoverCard, ContextMenu, NavigationMenu, Menubar, Sheet, and Drawer sit on Radix primitives; Command and Combobox add `cmdk` on top for search/filtering. `InputOTP` uses `input-otp`; `Resizable` uses `react-resizable-panels`.
+Modal, Tooltip, Checkbox, Radio, Select, Switch, Tabs, Accordion, Slider, Toast, Avatar, Popover, DropdownMenu, Dialog, AlertDialog, Collapsible, Label, HoverCard, ContextMenu, NavigationMenu, Menubar, Sheet, Drawer, and AspectRatio sit on Radix primitives; Command and Combobox add `cmdk` on top for search/filtering. `InputOTP` uses `input-otp`; `Resizable` uses `react-resizable-panels`; `Carousel` uses `embla-carousel-react`.
 
 ## Docs
 

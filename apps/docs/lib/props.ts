@@ -790,3 +790,107 @@ export const drawerProps: PropRow[] = [
   animateProp("Bottom slide-up panel with sketch handle and draw-in border."),
   ...sharedSketchProps,
 ];
+
+export const aspectRatioProps: PropRow[] = [
+  {
+    name: "ratio",
+    type: "number",
+    defaultValue: "16 / 9",
+    description: "Width divided by height for the content box.",
+  },
+  {
+    name: "bordered",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Wrap content in a hand-drawn SketchBox frame.",
+  },
+  animateProp("Draw-in the frame when bordered is true."),
+  ...sharedSketchProps,
+];
+
+export const nativeSelectProps: PropRow[] = [
+  {
+    name: "options",
+    type: "NativeSelectOption[]",
+    defaultValue: "undefined",
+    description: "Optional value/label pairs. Omit to use <option> children.",
+  },
+  animateProp("Draw-in the border on mount."),
+  ...sharedSketchProps,
+];
+
+export const emptyProps: PropRow[] = [
+  {
+    name: "bordered",
+    type: "boolean",
+    defaultValue: "true",
+    description: "Sketch frame and hachure fill around the empty state.",
+  },
+  animateProp("Draw-in the frame when bordered."),
+  ...sharedSketchProps,
+];
+
+export const fieldProps: PropRow[] = [
+  {
+    name: "invalid",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Sets aria-invalid on FieldControl and shows FieldError styling.",
+  },
+  {
+    name: "error",
+    type: "ReactNode",
+    defaultValue: "undefined",
+    description: "Error message rendered by FieldError when children omitted.",
+  },
+];
+
+export const typographyProps: PropRow[] = [
+  {
+    name: "level",
+    type: "1 | 2 | 3 | 4 | 5 | 6",
+    defaultValue: "2",
+    description: "Heading renders as h1–h6.",
+  },
+  {
+    name: "accent",
+    type: '"none" | "underline" | "highlight"',
+    defaultValue: '"none"',
+    description: "Optional hand-drawn underline or marker behind Heading text.",
+  },
+  animateProp("Draw-in accent strokes on Heading, Blockquote, InlineCode, Highlight."),
+  ...sharedSketchProps,
+];
+
+export const sidebarProps: PropRow[] = [
+  {
+    name: "defaultCollapsed",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Start in icon-only collapsed width on SidebarProvider.",
+  },
+  {
+    name: "defaultOpen",
+    type: "boolean",
+    defaultValue: "true",
+    description: "Whether Sidebar is visible.",
+  },
+  ...sharedSketchProps,
+];
+
+export const carouselProps: PropRow[] = [
+  {
+    name: "bordered",
+    type: "boolean",
+    defaultValue: "true",
+    description: "Sketch frame around the carousel viewport.",
+  },
+  {
+    name: "orientation",
+    type: '"horizontal" | "vertical"',
+    defaultValue: '"horizontal"',
+    description: "Embla scroll axis.",
+  },
+  animateProp("Draw-in outer frame and nav button borders."),
+  ...sharedSketchProps,
+];

@@ -1,0 +1,27 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { nativeSelectProps } from "@/lib/props";
+
+# Native Select
+
+A native `<select>` with a sketch border and hand-drawn chevron — no custom popover.
+
+<ComponentPlayground name="native-select" />
+
+## Usage
+
+```tsx
+import { NativeSelect } from "doodleui-react";
+
+<NativeSelect
+  defaultValue="draft"
+  options={[
+    { value: "draft", label: "Draft" },
+    { value: "done", label: "Done" },
+  ]}
+/>
+```
+
+## Props
+
+<PropsTable rows={nativeSelectProps} />

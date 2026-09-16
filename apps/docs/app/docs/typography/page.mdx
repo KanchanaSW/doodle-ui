@@ -1,0 +1,24 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { typographyProps } from "@/lib/props";
+
+# Typography
+
+Preset text components with optional hand-drawn underlines, highlights, and rules.
+
+<ComponentPlayground name="typography" />
+
+## Usage
+
+```tsx
+import { Blockquote, Heading, Highlight, InlineCode, Text } from "doodleui-react";
+
+<Heading level={1} accent="underline">Notes</Heading>
+<Text variant="lead">A quick intro.</Text>
+<Text>Marked <Highlight>important</Highlight> and <InlineCode>npm i</InlineCode>.</Text>
+<Blockquote>Sketch borders optional.</Blockquote>
+```
+
+## Props
+
+<PropsTable rows={typographyProps} />

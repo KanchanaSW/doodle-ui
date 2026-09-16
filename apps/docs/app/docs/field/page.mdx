@@ -1,0 +1,35 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { fieldProps } from "@/lib/props";
+
+# Field
+
+Wires label, control, helper text, and errors with shared ids and ARIA attributes.
+
+<ComponentPlayground name="field" />
+
+## Usage
+
+```tsx
+import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+  Input,
+} from "doodleui-react";
+
+<Field invalid error="Required">
+  <FieldLabel required>Name</FieldLabel>
+  <FieldControl>
+    <Input placeholder="Ada Lovelace" />
+  </FieldControl>
+  <FieldDescription>Public display name.</FieldDescription>
+  <FieldError />
+</Field>
+```
+
+## Props
+
+<PropsTable rows={fieldProps} />

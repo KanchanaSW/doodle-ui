@@ -1,0 +1,39 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { sidebarProps } from "@/lib/props";
+
+# Sidebar
+
+Collapsible app sidebar with sketch divider and toggle. Compose with `SidebarLayout` and `SidebarInset`.
+
+<ComponentPlayground name="sidebar" />
+
+## Usage
+
+```tsx
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarInset,
+  SidebarItem,
+  SidebarLayout,
+  SidebarProvider,
+  SidebarTrigger,
+} from "doodleui-react";
+
+<SidebarProvider>
+  <SidebarLayout>
+    <Sidebar>
+      <SidebarTrigger />
+      <SidebarContent>
+        <SidebarItem active>Home</SidebarItem>
+      </SidebarContent>
+    </Sidebar>
+    <SidebarInset>Main</SidebarInset>
+  </SidebarLayout>
+</SidebarProvider>
+```
+
+## Props
+
+<PropsTable rows={sidebarProps} />

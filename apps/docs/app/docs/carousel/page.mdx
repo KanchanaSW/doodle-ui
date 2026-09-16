@@ -1,0 +1,34 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { carouselProps } from "@/lib/props";
+
+# Carousel
+
+Embla-powered slides with sketch frame and hand-drawn previous/next controls.
+
+<ComponentPlayground name="carousel" />
+
+## Usage
+
+```tsx
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "doodleui-react";
+
+<Carousel>
+  <CarouselContent>
+    <CarouselItem>One</CarouselItem>
+    <CarouselItem>Two</CarouselItem>
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>
+```
+
+## Props
+
+<PropsTable rows={carouselProps} />

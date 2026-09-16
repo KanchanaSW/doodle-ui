@@ -1,0 +1,27 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { emptyProps } from "@/lib/props";
+
+# Empty
+
+Composable empty-state layout: media, title, description, and optional actions.
+
+<ComponentPlayground name="empty" />
+
+## Usage
+
+```tsx
+import { Button, Empty, EmptyAction, EmptyDescription, EmptyTitle } from "doodleui-react";
+
+<Empty>
+  <EmptyTitle>No results</EmptyTitle>
+  <EmptyDescription>Try a different search.</EmptyDescription>
+  <EmptyAction>
+    <Button size="sm">Clear filters</Button>
+  </EmptyAction>
+</Empty>
+```
+
+## Props
+
+<PropsTable rows={emptyProps} />

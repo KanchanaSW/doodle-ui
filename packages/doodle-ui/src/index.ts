@@ -382,3 +382,70 @@ export {
   type DrawerProps,
   type DrawerContentProps,
 } from "./components/Drawer";
+export { AspectRatio, type AspectRatioProps } from "./components/AspectRatio";
+export {
+  NativeSelect,
+  type NativeSelectProps,
+  type NativeSelectOption,
+} from "./components/NativeSelect";
+export {
+  Empty,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyAction,
+  type EmptyProps,
+} from "./components/Empty";
+export {
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+  FieldControl,
+  type FieldProps,
+  type FieldLabelProps,
+  type FieldControlProps,
+} from "./components/Field";
+export {
+  Heading,
+  Text,
+  Paragraph,
+  Blockquote,
+  InlineCode,
+  Highlight,
+  type HeadingProps,
+  type TextProps,
+  type BlockquoteProps,
+  type InlineCodeProps,
+  type HighlightProps,
+} from "./components/Typography";
+export {
+  SidebarProvider,
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarItem,
+  SidebarTrigger,
+  SidebarLayout,
+  SidebarInset,
+  useSidebar,
+  type SidebarProviderProps,
+  type SidebarProps,
+  type SidebarItemProps,
+  type SidebarLayoutProps,
+} from "./components/Sidebar";
+export {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  useCarousel,
+  type CarouselProps,
+  type CarouselContentProps,
+  type CarouselItemProps,
+  type CarouselArrowProps,
+  type CarouselOptions,
+} from "./components/Carousel";

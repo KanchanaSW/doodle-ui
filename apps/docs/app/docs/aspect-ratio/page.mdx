@@ -1,0 +1,23 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { aspectRatioProps } from "@/lib/props";
+
+# Aspect Ratio
+
+Keeps media at a fixed width-to-height ratio. Optionally wrap content in a sketch frame.
+
+<ComponentPlayground name="aspect-ratio" />
+
+## Usage
+
+```tsx
+import { AspectRatio } from "doodleui-react";
+
+<AspectRatio ratio={16 / 9} bordered>
+  <img src="/photo.jpg" alt="Studio" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+</AspectRatio>
+```
+
+## Props
+
+<PropsTable rows={aspectRatioProps} />

@@ -6,6 +6,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  AspectRatio,
   Alert,
   AlertDialog,
   AlertDialogAction,
@@ -20,8 +21,14 @@ import {
   Badge,
   Breadcrumb,
   BreadcrumbItem,
+  Blockquote,
   Button,
   Card,
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
   Checkbox,
   Collapsible,
   CollapsibleContent,
@@ -38,6 +45,11 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
   Drawer,
+  Empty,
+  EmptyAction,
+  EmptyDescription,
+  EmptyMedia,
+  EmptyTitle,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
@@ -59,9 +71,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Heading,
+  Highlight,
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
+  InlineCode,
   Input,
   InputGroup,
   InputGroupAddon,
@@ -70,9 +85,15 @@ import {
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
   Kbd,
   Label,
   Modal,
+  NativeSelect,
   Menubar,
   MenubarContent,
   MenubarItem,
@@ -97,6 +118,16 @@ import {
   ScrollAreaViewport,
   ScrollBar,
   Select,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarInset,
+  SidebarItem,
+  SidebarLayout,
+  SidebarProvider,
+  SidebarTrigger,
   Sheet,
   SheetContent,
   SheetDescription,
@@ -118,6 +149,7 @@ import {
   TabList,
   TabPanel,
   Tabs,
+  Text,
   Textarea,
   Toast,
   ToastProvider,
@@ -251,6 +283,20 @@ export function ComponentPlayground({ name }: { name: ComponentSlug }) {
       return <SheetPlayground />;
     case "drawer":
       return <DrawerPlayground />;
+    case "aspect-ratio":
+      return <AspectRatioPlayground />;
+    case "native-select":
+      return <NativeSelectPlayground />;
+    case "empty":
+      return <EmptyPlayground />;
+    case "field":
+      return <FieldPlayground />;
+    case "typography":
+      return <TypographyPlayground />;
+    case "sidebar":
+      return <SidebarPlayground />;
+    case "carousel":
+      return <CarouselPlayground />;
     default:
       return null;
   }
@@ -1998,6 +2044,294 @@ function DrawerPlayground() {
   </DrawerTrigger>
   <DrawerContent>...</DrawerContent>
 </Drawer>`
+      }
+    />
+  );
+}
+
+function AspectRatioPlayground() {
+  const controls: Control[] = withAnimate([
+    ...sketchControls,
+    { type: "toggle", key: "bordered", label: "Bordered", defaultValue: true },
+    {
+      type: "select",
+      key: "ratio",
+      label: "Ratio",
+      defaultValue: "16/9",
+      options: ["16/9", "4/3", "1"],
+    },
+  ]);
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => {
+        const ratio =
+          v.ratio === "4/3" ? 4 / 3 : v.ratio === "1" ? 1 : 16 / 9;
+        return (
+          <AspectRatio
+            key={`${v.animate}-${v.bordered}-${v.ratio}`}
+            ratio={ratio}
+            bordered={Boolean(v.bordered)}
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
+            style={{ maxWidth: 420 }}
+          >
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "#d7e3d4",
+                fontFamily: "inherit",
+              }}
+            >
+              Media slot
+            </div>
+          </AspectRatio>
+        );
+      }}
+      snippet={(v) =>
+        `<AspectRatio ratio={16 / 9} bordered ${snippetExtras(v)}>
+  <img src="..." alt="" />
+</AspectRatio>`
+      }
+    />
+  );
+}
+
+function NativeSelectPlayground() {
+  const options = [
+    { value: "draft", label: "Draft" },
+    { value: "review", label: "In review" },
+    { value: "done", label: "Done" },
+  ];
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <NativeSelect
+          key={String(v.animate)}
+          defaultValue="draft"
+          options={options}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+          style={{ maxWidth: 280 }}
+        />
+      )}
+      snippet={(v) =>
+        `<NativeSelect options={options} defaultValue="draft" ${snippetExtras(v)} />`
+      }
+    />
+  );
+}
+
+function EmptyPlayground() {
+  const controls: Control[] = withAnimate([
+    ...sketchControls,
+    { type: "toggle", key: "bordered", label: "Bordered", defaultValue: true },
+  ]);
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <Empty
+          key={String(v.animate)}
+          bordered={Boolean(v.bordered)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        >
+          <EmptyMedia>
+            <span style={{ fontSize: 36 }}>✎</span>
+          </EmptyMedia>
+          <EmptyTitle>No sketches yet</EmptyTitle>
+          <EmptyDescription>
+            Start a new drawing or import from your notebook.
+          </EmptyDescription>
+          <EmptyAction>
+            <Button size="sm">Create</Button>
+          </EmptyAction>
+        </Empty>
+      )}
+      snippet={(v) =>
+        `<Empty ${snippetExtras(v)}>
+  <EmptyTitle>No sketches yet</EmptyTitle>
+  <EmptyDescription>...</EmptyDescription>
+</Empty>`
+      }
+    />
+  );
+}
+
+function FieldPlayground() {
+  const controls: Control[] = withAnimate([
+    ...sketchControls,
+    { type: "toggle", key: "invalid", label: "Invalid", defaultValue: false },
+  ]);
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <Field
+          invalid={Boolean(v.invalid)}
+          error={v.invalid ? "Enter a valid email." : undefined}
+          style={{ maxWidth: 320 }}
+        >
+          <FieldLabel required>Email</FieldLabel>
+          <FieldControl>
+            <Input placeholder="you@studio.dev" />
+          </FieldControl>
+          <FieldDescription>We will never share your address.</FieldDescription>
+          <FieldError />
+        </Field>
+      )}
+      snippet={() =>
+        `<Field invalid error="Enter a valid email.">
+  <FieldLabel required>Email</FieldLabel>
+  <FieldControl>
+    <Input placeholder="you@studio.dev" />
+  </FieldControl>
+  <FieldDescription>Helper text</FieldDescription>
+  <FieldError />
+</Field>`
+      }
+    />
+  );
+}
+
+function TypographyPlayground() {
+  const controls: Control[] = withAnimate([
+    ...sketchControls,
+    {
+      type: "select",
+      key: "accent",
+      label: "Heading accent",
+      defaultValue: "underline",
+      options: ["none", "underline", "highlight"],
+    },
+  ]);
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <div className="flex flex-col gap-4 max-w-md">
+          <Heading
+            key={String(v.animate)}
+            level={2}
+            accent={v.accent as "none" | "underline" | "highlight"}
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
+          >
+            Sketch journal
+          </Heading>
+          <Text variant="lead">Lead paragraph with doodle typography.</Text>
+          <Text>
+            Body copy with an <Highlight seed={seedFrom(v)}>inline highlight</Highlight> and{" "}
+            <InlineCode>inline code</InlineCode>.
+          </Text>
+          <Blockquote roughness={Number(v.roughness)} seed={seedFrom(v)} animate={Boolean(v.animate)}>
+            Ideas look better when the border wobbles.
+          </Blockquote>
+        </div>
+      )}
+      snippet={(v) =>
+        `<Heading level={2} accent="underline" ${snippetExtras(v)}>
+  Sketch journal
+</Heading>
+<Text variant="lead">...</Text>`
+      }
+    />
+  );
+}
+
+function SidebarPlayground() {
+  return (
+    <Playground
+      controls={withAnimate(sketchControls)}
+      render={(v) => (
+        <SidebarProvider
+          key={String(v.animate)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+        >
+          <SidebarLayout style={{ border: "1px solid #1f1d1a22", borderRadius: 8 }}>
+            <Sidebar>
+              <SidebarHeader>
+                <SidebarTrigger />
+              </SidebarHeader>
+              <SidebarContent>
+                <SidebarGroup title="Workspace">
+                  <SidebarItem active>Home</SidebarItem>
+                  <SidebarItem>Projects</SidebarItem>
+                  <SidebarItem>Archive</SidebarItem>
+                </SidebarGroup>
+              </SidebarContent>
+              <SidebarFooter>
+                <SidebarItem>Settings</SidebarItem>
+              </SidebarFooter>
+            </Sidebar>
+            <SidebarInset>
+              <Text>Main content beside the sketch sidebar.</Text>
+            </SidebarInset>
+          </SidebarLayout>
+        </SidebarProvider>
+      )}
+      snippet={(v) =>
+        `<SidebarProvider ${snippetExtras(v)}>
+  <SidebarLayout>
+    <Sidebar>...</Sidebar>
+    <SidebarInset>...</SidebarInset>
+  </SidebarLayout>
+</SidebarProvider>`
+      }
+    />
+  );
+}
+
+function CarouselPlayground() {
+  const slides = ["Slide one", "Slide two", "Slide three"];
+  const controls: Control[] = withAnimate([
+    ...sketchControls,
+    { type: "toggle", key: "bordered", label: "Bordered", defaultValue: true },
+  ]);
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <Carousel
+          key={String(v.animate)}
+          bordered={Boolean(v.bordered)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+          style={{ maxWidth: 420 }}
+        >
+          <CarouselContent>
+            {slides.map((label) => (
+              <CarouselItem key={label}>
+                <Card title={label}>
+                  <Text>Swipe or use the sketch arrows.</Text>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      )}
+      snippet={(v) =>
+        `<Carousel ${snippetExtras(v)}>
+  <CarouselContent>
+    <CarouselItem>...</CarouselItem>
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+</Carousel>`
       }
     />
   );
