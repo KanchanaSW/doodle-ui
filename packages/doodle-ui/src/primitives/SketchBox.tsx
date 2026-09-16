@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   forwardRef,
   useRef,
@@ -18,27 +19,74 @@ import type { FillStyle, RoughShape, SketchProps } from "../types";
 import { assignRef, cn, doodleUiFontFamily } from "../utils";
 import { RoughSvg } from "./RoughSvg";
 
+/**
+ * Props for {@link SketchBox}.
+ */
 export interface SketchBoxProps
   extends SketchProps, Omit<HTMLAttributes<HTMLDivElement>, "color"> {
+  /** Child content rendered above the sketch layer. */
   children?: ReactNode;
+  /**
+   * rough.js shape for the border.
+   * @default "rectangle"
+   */
   shape?: RoughShape;
+  /**
+   * Fill color inside the sketch shape.
+   * @default undefined
+   */
   fill?: string;
+  /**
+   * Pattern when `fill` is set. Defaults to solid when shadow/fill implied.
+   * @default "solid" when fill is implied
+   */
   fillStyle?: FillStyle;
+  /**
+   * Draws an offset duplicate shape as a drop shadow.
+   * @default false
+   */
   shadow?: boolean;
+  /** Class name on the inner content wrapper. */
   contentClassName?: string;
+  /** Inline styles on the inner content wrapper. */
   contentStyle?: CSSProperties;
+  /**
+   * Inset passed to {@link RoughSvg}.
+   * @default undefined ({@link DEFAULT_INSET} on RoughSvg)
+   */
   inset?: number;
+  /**
+   * SVG path when `shape` is `"path"`.
+   * @default undefined
+   */
   path?: string;
   /**
    * Sketch-in the border on mount. Defaults to the DoodleUIProvider value.
+   * @default undefined (follow provider)
    */
   animate?: boolean;
-  /** Override the default 400ms draw-in duration. */
+  /**
+   * Override the default 400ms draw-in duration.
+   * @default 400 ({@link DRAW_IN_DURATION_MS})
+   */
   drawInDuration?: number;
-  /** Replay draw-in when this value changes. */
+  /**
+   * Replay draw-in when this value changes.
+   * @default undefined
+   */
   drawInKey?: unknown;
 }
 
+/**
+ * Relative container that draws a {@link RoughSvg} border behind children.
+ *
+ * @example
+ * <SketchBox roughness={2} shadow>
+ *   <p>Notes</p>
+ * </SketchBox>
+ *
+ * @see Card
+ */
 export const SketchBox = forwardRef<HTMLDivElement, SketchBoxProps>(
   function SketchBox(
     {
@@ -68,15 +116,13 @@ export const SketchBox = forwardRef<HTMLDivElement, SketchBoxProps>(
     },
     ref,
   ) {
+    const { roughness: baseRoughness } = useSketchDefaults();
     const rootRef = useRef<HTMLDivElement>(null);
     const theme = useSketchTheme(sketchColor);
     const resolvedInk = sketchColor ?? theme.ink;
     const shouldAnimate = useAnimate(animate);
     useDrawIn(rootRef, drawInDuration, shouldAnimate, drawInKey);
 
-    // Resolve fill & fillStyle:
-    // When fill is passed (or when shadow is true), default to "solid" fill.
-    // If developer explicitly passed fillStyle ("hachure", "dots", etc.), respect it.
     const hasExplicitFill = fill !== undefined;
     const resolvedFill = hasExplicitFill ? fill : (shadow ? theme.cardBg : undefined);
     const resolvedFillStyle: FillStyle = fillStyle ?? (resolvedFill ? "solid" : "solid");
@@ -95,7 +141,7 @@ export const SketchBox = forwardRef<HTMLDivElement, SketchBoxProps>(
         {shadow ? (
           <RoughSvg
             shape={shape}
-            roughness={(roughness ?? 1.5) + 0.35}
+            roughness={(roughness ?? baseRoughness) + 0.35}
             seed={seed}
             sketchColor={theme.isDark ? "rgba(0, 0, 0, 0.45)" : resolvedInk}
             bowing={bowing}
@@ -111,8 +157,6 @@ export const SketchBox = forwardRef<HTMLDivElement, SketchBoxProps>(
           />
         ) : null}
 
-        {/* If a patterned fill (e.g. hachure) is requested, draw an underlying solid
-            card surface first so text remains 100% legible and high-contrast */}
         {isPatternedFill ? (
           <RoughSvg
             shape={shape}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -21,6 +22,10 @@ interface ContextMenuSketchContextValue extends SketchProps {
   ink: string;
   paper: string;
   accent: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -37,6 +42,9 @@ function useContextMenuSketch(): ContextMenuSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link ContextMenu}.
+ */
 export interface ContextMenuProps
   extends Omit<ContextMenuPrimitive.ContextMenuProps, "children">,
     SketchProps {
@@ -46,9 +54,19 @@ export interface ContextMenuProps
    * Draw-in the panel border when the menu opens.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Right-click context menu with sketch chrome.
+ *
+ * @example
+ * <ContextMenu />
+ */
 export function ContextMenu({
   children,
   fill,
@@ -99,6 +117,9 @@ export const ContextMenuGroup = ContextMenuPrimitive.Group;
 export const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup;
 export const ContextMenuSub = ContextMenuPrimitive.Sub;
 
+/**
+ * Props for {@link ContextMenuContent}.
+ */
 export interface ContextMenuContentProps
   extends Omit<ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Content>, "asChild"> {
   children?: ReactNode;
@@ -149,6 +170,9 @@ function useMark(highlighted: boolean) {
   return { sketch, mark: highlighted };
 }
 
+/**
+ * Props for {@link ContextMenuItem}.
+ */
 export interface ContextMenuItemProps
   extends Omit<ContextMenuPrimitive.ContextMenuItemProps, "asChild"> {
   children?: ReactNode;
@@ -162,6 +186,7 @@ export const ContextMenuItem = forwardRef<
   { className, style, children, inset, ...rest },
   ref,
 ) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const [highlighted, setHighlighted] = useState(false);
   const { sketch, mark } = useMark(highlighted);
 
@@ -192,7 +217,7 @@ export const ContextMenuItem = forwardRef<
       {mark ? (
         <RoughSvg
           shape="line"
-          roughness={(sketch.roughness ?? 1.5) + 0.4}
+          roughness={(sketch.roughness ?? baseRoughness) + 0.4}
           seed={sketch.resolvedSeed}
           sketchColor={sketch.ink}
           bowing={sketch.bowing ?? 1.6}
@@ -206,6 +231,9 @@ export const ContextMenuItem = forwardRef<
   );
 });
 
+/**
+ * Props for {@link ContextMenuCheckboxItem}.
+ */
 export interface ContextMenuCheckboxItemProps
   extends Omit<
     ContextMenuPrimitive.ContextMenuCheckboxItemProps,
@@ -223,6 +251,7 @@ export const ContextMenuCheckboxItem = forwardRef<
   { className, style, children, checked, ...rest },
   ref,
 ) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const [highlighted, setHighlighted] = useState(false);
   const { sketch, mark } = useMark(highlighted);
 
@@ -252,7 +281,7 @@ export const ContextMenuCheckboxItem = forwardRef<
       {mark ? (
         <RoughSvg
           shape="line"
-          roughness={(sketch.roughness ?? 1.5) + 0.4}
+          roughness={(sketch.roughness ?? baseRoughness) + 0.4}
           seed={sketch.resolvedSeed}
           sketchColor={sketch.ink}
           bowing={sketch.bowing ?? 1.6}
@@ -274,7 +303,7 @@ export const ContextMenuCheckboxItem = forwardRef<
           <RoughSvg
             shape="path"
             path={CHECK_PATH}
-            roughness={(sketch.roughness ?? 1.5) * 0.7}
+            roughness={(sketch.roughness ?? baseRoughness) * 0.7}
             seed={deriveSeed(sketch.resolvedSeed, "checkbox-mark")}
             sketchColor={sketch.accent}
             bowing={sketch.bowing}
@@ -288,6 +317,9 @@ export const ContextMenuCheckboxItem = forwardRef<
   );
 });
 
+/**
+ * Props for {@link ContextMenuRadioItem}.
+ */
 export interface ContextMenuRadioItemProps
   extends Omit<ContextMenuPrimitive.ContextMenuRadioItemProps, "asChild"> {
   children?: ReactNode;
@@ -300,6 +332,7 @@ export const ContextMenuRadioItem = forwardRef<
   { className, style, children, ...rest },
   ref,
 ) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const [highlighted, setHighlighted] = useState(false);
   const { sketch, mark } = useMark(highlighted);
 
@@ -328,7 +361,7 @@ export const ContextMenuRadioItem = forwardRef<
       {mark ? (
         <RoughSvg
           shape="line"
-          roughness={(sketch.roughness ?? 1.5) + 0.4}
+          roughness={(sketch.roughness ?? baseRoughness) + 0.4}
           seed={sketch.resolvedSeed}
           sketchColor={sketch.ink}
           bowing={sketch.bowing ?? 1.6}
@@ -349,7 +382,7 @@ export const ContextMenuRadioItem = forwardRef<
         <ContextMenuPrimitive.ItemIndicator>
           <RoughSvg
             shape="ellipse"
-            roughness={(sketch.roughness ?? 1.5) * 0.8}
+            roughness={(sketch.roughness ?? baseRoughness) * 0.8}
             seed={deriveSeed(sketch.resolvedSeed, "radio-mark")}
             sketchColor={sketch.accent}
             bowing={sketch.bowing}
@@ -365,6 +398,9 @@ export const ContextMenuRadioItem = forwardRef<
   );
 });
 
+/**
+ * Props for {@link ContextMenuLabel}.
+ */
 export interface ContextMenuLabelProps
   extends Omit<ContextMenuPrimitive.ContextMenuLabelProps, "asChild"> {
   children?: ReactNode;
@@ -397,6 +433,9 @@ export const ContextMenuLabel = forwardRef<
   );
 });
 
+/**
+ * Props for {@link ContextMenuSeparator}.
+ */
 export interface ContextMenuSeparatorProps
   extends Omit<ContextMenuPrimitive.ContextMenuSeparatorProps, "asChild"> {}
 
@@ -404,6 +443,7 @@ export const ContextMenuSeparator = forwardRef<
   HTMLDivElement,
   ContextMenuSeparatorProps
 >(function ContextMenuSeparator({ className, style, ...rest }, ref) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const sketch = useContextMenuSketch();
   return (
     <ContextMenuPrimitive.Separator
@@ -414,7 +454,7 @@ export const ContextMenuSeparator = forwardRef<
     >
       <RoughSvg
         shape="line"
-        roughness={(sketch.roughness ?? 1.5) + 0.2}
+        roughness={(sketch.roughness ?? baseRoughness) + 0.2}
         seed={deriveSeed(sketch.resolvedSeed, "separator")}
         sketchColor={sketch.ink}
         bowing={sketch.bowing ?? 1.8}

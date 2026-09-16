@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import {
+  Architects_Daughter,
   Caveat,
   Gochi_Hand,
   IBM_Plex_Mono,
@@ -46,6 +47,13 @@ const gochiHand = Gochi_Hand({
   display: "swap",
 });
 
+const architectsDaughter = Architects_Daughter({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-architects-daughter",
+  display: "swap",
+});
+
 const ibm = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -72,7 +80,7 @@ export default function RootLayout({
       lang="en"
       data-component-theme="light"
       suppressHydrationWarning
-      className={`${outfit.variable} ${caveat.variable} ${patrickHand.variable} ${kalam.variable} ${gochiHand.variable} ${ibm.variable}`}
+      className={`${outfit.variable} ${caveat.variable} ${patrickHand.variable} ${kalam.variable} ${gochiHand.variable} ${architectsDaughter.variable} ${ibm.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: componentThemeBootstrap }} />

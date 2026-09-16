@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import { forwardRef } from "react";
 import { RoughSvg } from "../primitives/RoughSvg";
 import {
@@ -19,6 +20,12 @@ import { deriveSeed } from "../utils";
 
 export type DrawerProps = Omit<SlidingPanelRootProps, "side">;
 
+/**
+ * Bottom sheet drawer with drag handle.
+ *
+ * @example
+ * <Drawer />
+ */
 export function Drawer(props: DrawerProps) {
   return <SlidingPanelRoot side="bottom" {...props} />;
 }
@@ -28,6 +35,7 @@ export const DrawerClose = SlidingPanelClose;
 
 export const DrawerHandle = forwardRef<HTMLDivElement, { className?: string }>(
   function DrawerHandle({ className }, ref) {
+    const { roughness: baseRoughness } = useSketchDefaults();
     const sketch = useSlidingPanelSketch();
     return (
       <div
@@ -43,7 +51,7 @@ export const DrawerHandle = forwardRef<HTMLDivElement, { className?: string }>(
       >
         <RoughSvg
           shape="line"
-          roughness={(sketch.roughness ?? 1.5) + 0.3}
+          roughness={(sketch.roughness ?? baseRoughness) + 0.3}
           seed={deriveSeed(sketch.resolvedSeed, "drawer-handle")}
           sketchColor={sketch.sketchColor ?? sketch.ink}
           bowing={sketch.bowing ?? 1.6}

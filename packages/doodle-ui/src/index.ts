@@ -28,6 +28,10 @@ export {
   type SketchSeedProviderProps,
 } from "./hooks/useSketchSeed";
 export { useResolvedSeed } from "./hooks/useResolvedSeed";
+export {
+  useSketchDefaults,
+  type SketchDefaults,
+} from "./hooks/useSketchDefaults";
 export { useSketchTheme, type SketchTheme } from "./hooks/useSketchTheme";
 
 export {

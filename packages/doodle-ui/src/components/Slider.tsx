@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
@@ -10,6 +11,9 @@ import { cn, deriveSeed } from "../utils";
 
 export type SliderThumbShape = "circle" | "square";
 
+/**
+ * Props for {@link Slider}.
+ */
 export interface SliderProps
   extends Omit<
       ComponentPropsWithoutRef<typeof SliderPrimitive.Root>,
@@ -20,6 +24,12 @@ export interface SliderProps
   fill?: string;
 }
 
+/**
+ * Range slider with sketch track and thumb.
+ *
+ * @example
+ * <Slider />
+ */
 export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
   {
     className,
@@ -39,6 +49,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
   },
   ref,
 ) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const theme = useSketchTheme(sketchColor);
   const ink = sketchColor ?? theme.ink;
   const accent = sketchColor ?? theme.accent;
@@ -71,7 +82,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
       >
         <RoughSvg
           shape="line"
-          roughness={roughness ?? 1.8}
+          roughness={roughness ?? baseRoughness}
           seed={resolvedSeed}
           sketchColor={trackInk}
           bowing={bowing ?? 2}
@@ -87,7 +98,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
         >
           <RoughSvg
             shape="line"
-            roughness={(roughness ?? 1.5) + 0.4}
+            roughness={(roughness ?? baseRoughness) + 0.4}
             seed={deriveSeed(resolvedSeed, "range")}
             sketchColor={accent}
             bowing={bowing ?? 1.6}
@@ -108,7 +119,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
       >
         <RoughSvg
           shape={thumbShape === "square" ? "rectangle" : "ellipse"}
-          roughness={(roughness ?? 1.5) * 0.85}
+          roughness={(roughness ?? baseRoughness) * 0.85}
           seed={deriveSeed(resolvedSeed, "thumb")}
           sketchColor={accent}
           fill={fill ?? theme.paper}

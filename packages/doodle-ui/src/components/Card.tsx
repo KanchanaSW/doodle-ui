@@ -6,6 +6,9 @@ import { useSketchTheme } from "../hooks/useSketchTheme";
 import type { SketchProps } from "../types";
 import { cn, doodleUiFontWeight } from "../utils";
 
+/**
+ * Props for {@link Card}.
+ */
 export interface CardProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color" | "title">,
     SketchProps {
@@ -16,9 +19,19 @@ export interface CardProps
   /**
    * Draw-in the border on mount. Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Content container with optional offset shadow.
+ *
+ * @example
+ * <Card />
+ */
 export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
   {
     children,

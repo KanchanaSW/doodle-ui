@@ -9,6 +9,9 @@ import { cn, doodleUiFontWeight } from "../utils";
 
 export type AlertVariant = "info" | "warning" | "error" | "success";
 
+/**
+ * Props for {@link Alert}.
+ */
 export interface AlertProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color" | "title">,
     SketchProps {
@@ -17,6 +20,10 @@ export interface AlertProps
   fill?: string;
   /**
    * Draw-in the border on mount (~200ms). Defaults to the DoodleUIProvider value (true).
+   */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
    */
   animate?: boolean;
 }
@@ -35,6 +42,12 @@ const DARK_VARIANT_FILL: Record<AlertVariant, string> = {
   success: "rgba(52, 211, 153, 0.16)",
 };
 
+/**
+ * Color-coded callout with sketch framing.
+ *
+ * @example
+ * <Alert />
+ */
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   {
     children,

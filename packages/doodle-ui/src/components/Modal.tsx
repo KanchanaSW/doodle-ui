@@ -10,6 +10,9 @@ import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 import { Button } from "./Button";
 
+/**
+ * Props for {@link Modal}.
+ */
 export interface ModalProps extends SketchProps {
   open?: boolean;
   defaultOpen?: boolean;
@@ -24,9 +27,19 @@ export interface ModalProps extends SketchProps {
    * Backdrop fade, panel enter/exit, and border draw-in on open.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Modal dialog with sketch chrome on Radix Dialog.
+ *
+ * @example
+ * <Modal />
+ */
 export function Modal({
   open,
   defaultOpen,

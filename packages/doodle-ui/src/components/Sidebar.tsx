@@ -33,6 +33,15 @@ interface SidebarContextValue {
 
 const SidebarContext = createContext<SidebarContextValue | null>(null);
 
+/**
+ * Sidebar layout state from {@link SidebarProvider}.
+ *
+ * @returns Open/collapse flags, palette tokens, and shared sketch props.
+ * @throws When used outside `<SidebarProvider>`.
+ *
+ * @example
+ * const { collapsed, toggleCollapsed } = useSidebar();
+ */
 export function useSidebar(): SidebarContextValue {
   const ctx = useContext(SidebarContext);
   if (!ctx) {
@@ -41,6 +50,9 @@ export function useSidebar(): SidebarContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link SidebarProvider}.
+ */
 export interface SidebarProviderProps extends SketchProps {
   defaultOpen?: boolean;
   open?: boolean;
@@ -108,11 +120,20 @@ export function SidebarProvider({
   );
 }
 
+/**
+ * Props for {@link Sidebar}.
+ */
 export interface SidebarProps extends HTMLAttributes<HTMLElement> {
   side?: "left" | "right";
   fill?: string;
 }
 
+/**
+ * Collapsible application sidebar layout.
+ *
+ * @example
+ * <Sidebar />
+ */
 export const Sidebar = forwardRef<HTMLElement, SidebarProps>(function Sidebar(
   { className, style, children, fill, side = "left", ...rest },
   ref,
@@ -270,6 +291,9 @@ export function SidebarGroup({
   );
 }
 
+/**
+ * Props for {@link SidebarItem}.
+ */
 export interface SidebarItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   active?: boolean;
 }
@@ -332,6 +356,9 @@ export function SidebarTrigger({
   );
 }
 
+/**
+ * Props for {@link SidebarLayout}.
+ */
 export interface SidebarLayoutProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }

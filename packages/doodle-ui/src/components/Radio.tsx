@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   forwardRef,
   useId,
@@ -20,6 +21,9 @@ import { RoughSvg } from "../primitives/RoughSvg";
 import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily } from "../utils";
 
+/**
+ * Props for {@link RadioGroup}.
+ */
 export interface RadioGroupProps
   extends ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {}
 
@@ -43,17 +47,25 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
   },
 );
 
+/**
+ * Props for {@link Radio}.
+ */
 export interface RadioProps
   extends Omit<
       ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>,
       "asChild"
     >,
     SketchProps {
+  /** Visible label beside the control. */
   label?: ReactNode;
   fill?: string;
   /**
    * Draw-in the ring on mount and scale/draw the dot on select.
    * Defaults to the DoodleUIProvider value (true).
+   */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
    */
   animate?: boolean;
 }
@@ -73,6 +85,7 @@ function RadioDot({
   bowing?: number;
   shouldAnimate: boolean;
 }) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const ref = useRef<HTMLSpanElement>(null);
   useDrawIn(ref, DRAW_IN_MARK_MS, shouldAnimate);
 
@@ -101,7 +114,7 @@ function RadioDot({
     >
       <RoughSvg
         shape="ellipse"
-        roughness={(roughness ?? 1.5) + 0.2}
+        roughness={(roughness ?? baseRoughness) + 0.2}
         seed={seed}
         sketchColor={sketchColor}
         fill={sketchColor}
@@ -114,6 +127,12 @@ function RadioDot({
   );
 }
 
+/**
+ * Circular radio option with a filled dot when selected.
+ *
+ * @example
+ * <Radio />
+ */
 export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
   {
     className,

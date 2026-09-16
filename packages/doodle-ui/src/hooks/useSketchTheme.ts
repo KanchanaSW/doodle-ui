@@ -43,6 +43,16 @@ function checkIsDark(): boolean {
   return false;
 }
 
+/**
+ * Resolves ink, paper, accent, and status colors from {@link DoodleUIProvider}
+ * theme mode and optional stroke override.
+ *
+ * @param sketchColorOverride - Same as component `sketchColor` prop
+ * @returns Palette tokens for the current light/dark mode
+ *
+ * @example
+ * const { ink, paper, accent } = useSketchTheme(sketchColor);
+ */
 export function useSketchTheme(sketchColorOverride?: string): ResolvedSketchTheme {
   const doodleContext = useDoodleUI();
   const contextTheme = doodleContext?.theme;

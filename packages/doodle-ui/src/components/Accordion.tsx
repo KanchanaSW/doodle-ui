@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -38,6 +39,9 @@ function useAccordionSketch(): AccordionSketchContextValue {
 
 const AccordionItemContext = createContext<string>("");
 
+/**
+ * Props for {@link Accordion}.
+ */
 export interface AccordionProps extends SketchProps {
   type?: "single" | "multiple";
   collapsible?: boolean;
@@ -50,6 +54,12 @@ export interface AccordionProps extends SketchProps {
   children?: ReactNode;
 }
 
+/**
+ * Expandable sections with chevron sketch.
+ *
+ * @example
+ * <Accordion />
+ */
 export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
   function Accordion(
     {
@@ -140,6 +150,9 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
   },
 );
 
+/**
+ * Props for {@link AccordionItem}.
+ */
 export interface AccordionItemProps
   extends Omit<
     ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>,
@@ -148,6 +161,7 @@ export interface AccordionItemProps
 
 export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
   function AccordionItem({ className, style, children, value, ...rest }, ref) {
+    const { roughness: baseRoughness } = useSketchDefaults();
     const sketch = useAccordionSketch();
 
     return (
@@ -171,7 +185,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
           >
             <RoughSvg
               shape="line"
-              roughness={(sketch.roughness ?? 1.5) + 0.25}
+              roughness={(sketch.roughness ?? baseRoughness) + 0.25}
               seed={deriveSeed(sketch.resolvedSeed, `div-${value}`)}
               sketchColor={sketch.ink}
               bowing={sketch.bowing ?? 1.8}
@@ -186,6 +200,9 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
   },
 );
 
+/**
+ * Props for {@link AccordionTrigger}.
+ */
 export interface AccordionTriggerProps
   extends Omit<
     ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>,
@@ -198,6 +215,7 @@ export const AccordionTrigger = forwardRef<
   HTMLButtonElement,
   AccordionTriggerProps
 >(function AccordionTrigger({ className, style, children, ...rest }, ref) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const sketch = useAccordionSketch();
   const itemValue = useContext(AccordionItemContext);
   const open = Array.isArray(sketch.openValue)
@@ -244,7 +262,7 @@ export const AccordionTrigger = forwardRef<
             <RoughSvg
               shape="path"
               path={CHEVRON_PATH}
-              roughness={(sketch.roughness ?? 1.5) * 0.7}
+              roughness={(sketch.roughness ?? baseRoughness) * 0.7}
               seed={deriveSeed(sketch.resolvedSeed, `chevron-${itemValue}`)}
               sketchColor={sketch.ink}
               bowing={sketch.bowing}
@@ -258,6 +276,9 @@ export const AccordionTrigger = forwardRef<
   );
 });
 
+/**
+ * Props for {@link AccordionContent}.
+ */
 export interface AccordionContentProps
   extends Omit<
     ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>,

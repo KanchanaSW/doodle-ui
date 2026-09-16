@@ -34,6 +34,9 @@ function useField(): FieldContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link Field}.
+ */
 export interface FieldProps extends HTMLAttributes<HTMLDivElement> {
   invalid?: boolean;
   error?: ReactNode;
@@ -80,6 +83,9 @@ export function Field({
   );
 }
 
+/**
+ * Props for {@link FieldLabel}.
+ */
 export interface FieldLabelProps
   extends Omit<React.ComponentProps<typeof Label>, "htmlFor"> {}
 
@@ -147,6 +153,9 @@ export function FieldError({
   );
 }
 
+/**
+ * Props for {@link FieldControl}.
+ */
 export interface FieldControlProps {
   children: ReactElement;
 }

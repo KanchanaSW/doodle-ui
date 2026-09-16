@@ -36,14 +36,27 @@ const emptyContentStyle: CSSProperties = {
   width: "100%",
 };
 
+/**
+ * Props for {@link Empty}.
+ */
 export interface EmptyProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color">,
     SketchProps {
   bordered?: boolean;
   fill?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Empty state placeholder.
+ *
+ * @example
+ * <Empty />
+ */
 export const Empty = forwardRef<HTMLDivElement, EmptyProps>(function Empty(
   {
     className,

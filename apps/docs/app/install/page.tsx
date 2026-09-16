@@ -63,6 +63,15 @@ export function App() {
   );
 }`}</pre>
 
+      <p className="text-mute mb-6 max-w-[65ch] leading-relaxed">
+        Global sketch defaults: pass <code className="font-mono">roughness</code>,{" "}
+        <code className="font-mono">strokeWidth</code>, <code className="font-mono">sketchColor</code>,{" "}
+        <code className="font-mono">bowing</code>, and <code className="font-mono">fillStyle</code> on{" "}
+        <code className="font-mono">DoodleUIProvider</code>, or set matching{" "}
+        <code className="font-mono">--doodle-ui-*</code> CSS variables. Try the{" "}
+        <Link href="/customize" className="text-accent hover:underline">theme generator</Link>.
+      </p>
+
       <Card title="Lock a sketch" className="mb-10">
         <p className="text-sm leading-relaxed m-0">
           Pass <code className="font-mono">seed={"{123}"}</code> to freeze the wobble for visual tests. Omit it to follow the provider seed, which Shuffle increments.

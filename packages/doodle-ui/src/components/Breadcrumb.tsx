@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   Children,
   cloneElement,
@@ -40,6 +41,9 @@ function useBreadcrumbSketch(): BreadcrumbSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link Breadcrumb}.
+ */
 export interface BreadcrumbProps
   extends Omit<HTMLAttributes<HTMLElement>, "color">,
     SketchProps {
@@ -47,6 +51,12 @@ export interface BreadcrumbProps
   children?: ReactNode;
 }
 
+/**
+ * Navigation trail with sketch separators.
+ *
+ * @example
+ * <Breadcrumb />
+ */
 export const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
   function Breadcrumb(
     {
@@ -153,6 +163,7 @@ function SeparatorMark({
   bowing?: number;
   strokeWidth?: number;
 }) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   return (
     <span
       aria-hidden="true"
@@ -161,7 +172,7 @@ function SeparatorMark({
       <RoughSvg
         shape="path"
         path={separator === "chevron" ? CHEVRON_PATH : SLASH_PATH}
-        roughness={(roughness ?? 1.5) * 0.85}
+        roughness={(roughness ?? baseRoughness) * 0.85}
         seed={deriveSeed(resolvedSeed, `sep-${index}`)}
         sketchColor={ink}
         bowing={bowing ?? 1.6}
@@ -172,6 +183,9 @@ function SeparatorMark({
   );
 }
 
+/**
+ * Props for {@link BreadcrumbItem}.
+ */
 export interface BreadcrumbItemProps
   extends Omit<HTMLAttributes<HTMLSpanElement>, "color"> {
   href?: string;

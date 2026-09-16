@@ -39,6 +39,17 @@ export function DocsNav() {
       >
         Animation
       </Link>
+      <Link
+        href="/customize"
+        className={`block mb-4 font-medium ${
+          pathMatches(pathname, "/customize")
+            ? "text-accent"
+            : "hover:text-accent"
+        }`}
+        aria-current={pathMatches(pathname, "/customize") ? "page" : undefined}
+      >
+        Theme generator
+      </Link>
       <p className="font-semibold mb-2">Components</p>
       <ul className="space-y-1">
         {COMPONENT_PAGES.map((item) => {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   forwardRef,
   useRef,
@@ -18,6 +19,9 @@ import { RoughSvg } from "../primitives/RoughSvg";
 import type { SketchProps } from "../types";
 import { assignRef, cn, deriveSeed } from "../utils";
 
+/**
+ * Props for {@link Progress}.
+ */
 export interface ProgressProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color">,
     SketchProps {
@@ -27,9 +31,19 @@ export interface ProgressProps
    * Draw-in the track on mount and redraw the fill as value changes.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Progress bar with rough fill.
+ *
+ * @example
+ * <Progress />
+ */
 export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
   function Progress(
     {
@@ -52,6 +66,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
   ) {
     const rootRef = useRef<HTMLDivElement>(null);
     const trackRef = useRef<HTMLSpanElement>(null);
+    const { roughness: baseRoughness } = useSketchDefaults();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.accent;
     const trackInk = sketchColor ?? (theme.isDark ? "rgba(243, 244, 246, 0.45)" : theme.ink);
@@ -64,7 +79,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       ? deriveSeed(resolvedSeed, `fill-${Math.round(displayed / 6)}`)
       : resolvedSeed;
     const fillRoughness =
-      (roughness ?? 1.5) + 0.4 + (displayed / 100) * 0.7;
+      (roughness ?? baseRoughness) + 0.4 + (displayed / 100) * 0.7;
 
     useDrawIn(trackRef, DRAW_IN_DURATION_MS, shouldAnimate);
 

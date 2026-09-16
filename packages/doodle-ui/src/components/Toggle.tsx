@@ -27,17 +27,34 @@ const SIZE_STYLES: Record<ToggleSize, { fontSize: number; padding: string; minHe
     lg: { fontSize: 17, padding: "10px 18px", minHeight: 46 },
   };
 
+/**
+ * Props for {@link Toggle}.
+ */
 export interface ToggleProps
   extends Omit<TogglePrimitive.ToggleProps, "asChild">,
     SketchProps {
+  /**
+   * Control size preset.
+   * @default "md"
+   */
   size?: ToggleSize;
   /**
    * Draw-in on mount and seed morph on press.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Pressed/unpressed sketch toggle button.
+ *
+ * @example
+ * <Toggle />
+ */
 export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
   function Toggle(
     {

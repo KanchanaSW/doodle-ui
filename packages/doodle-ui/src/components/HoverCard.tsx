@@ -18,6 +18,10 @@ interface HoverCardSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
   paper: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -33,14 +37,27 @@ function useHoverCardSketch(): HoverCardSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link HoverCard}.
+ */
 export interface HoverCardProps
   extends Omit<ComponentPropsWithoutRef<typeof HoverCardPrimitive.Root>, "children">,
     SketchProps {
   children?: ReactNode;
   fill?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Hover-triggered sketch card.
+ *
+ * @example
+ * <HoverCard />
+ */
 export function HoverCard({
   children,
   fill,
@@ -85,6 +102,9 @@ export function HoverCard({
 
 export const HoverCardTrigger = HoverCardPrimitive.Trigger;
 
+/**
+ * Props for {@link HoverCardContent}.
+ */
 export interface HoverCardContentProps
   extends ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content> {
   children?: ReactNode;

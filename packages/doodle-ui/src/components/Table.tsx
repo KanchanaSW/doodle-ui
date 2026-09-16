@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -41,6 +42,9 @@ function useTableSketch(): TableSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link Table}.
+ */
 export interface TableProps
   extends Omit<TableHTMLAttributes<HTMLTableElement>, "color">,
     SketchProps {
@@ -49,6 +53,10 @@ export interface TableProps
   /**
    * Draw-in row rules on mount, staggered slightly. Defaults to the
    * DoodleUIProvider value (true).
+   */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
    */
   animate?: boolean;
 }
@@ -80,6 +88,7 @@ function TableRule({
   strokeWidth?: number;
   shouldAnimate: boolean;
 }) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const ref = useRef<HTMLDivElement>(null);
   const delay = shouldAnimate
     ? Math.min(line.index, 6) * TABLE_STAGGER_MS
@@ -102,7 +111,7 @@ function TableRule({
       <RoughSvg
         shape="line"
         roughness={
-          line.header ? (roughness ?? 1.5) + 0.2 : roughness ?? 1.7
+          line.header ? (roughness ?? baseRoughness) + 0.2 : roughness ?? baseRoughness
         }
         seed={deriveSeed(resolvedSeed, line.key)}
         sketchColor={ink}
@@ -118,6 +127,12 @@ function TableRule({
   );
 }
 
+/**
+ * Data table with hand-drawn row rules.
+ *
+ * @example
+ * <Table />
+ */
 export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   {
     className,
@@ -280,6 +295,9 @@ export const TableRow = forwardRef<
   );
 });
 
+/**
+ * Props for {@link TableHeaderCell}.
+ */
 export interface TableHeaderCellProps
   extends Omit<ThHTMLAttributes<HTMLTableCellElement>, "color"> {}
 
@@ -306,6 +324,9 @@ export const TableHeaderCell = forwardRef<
   );
 });
 
+/**
+ * Props for {@link TableCell}.
+ */
 export interface TableCellProps
   extends Omit<TdHTMLAttributes<HTMLTableCellElement>, "color"> {}
 

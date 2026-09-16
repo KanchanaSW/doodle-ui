@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import { forwardRef, type CSSProperties, type HTMLAttributes } from "react";
 import { motion } from "framer-motion";
 import { useAnimate } from "../animations";
@@ -20,17 +21,34 @@ const SIZE_PX: Record<SpinnerSize, number> = {
   lg: 32,
 };
 
+/**
+ * Props for {@link Spinner}.
+ */
 export interface SpinnerProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color">,
     SketchProps {
+  /**
+   * Control size preset.
+   * @default "md"
+   */
   size?: SpinnerSize;
   /**
    * Continuous rotation. Defaults to the DoodleUIProvider value (true).
    * Reduced motion shows a static arc.
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Animated hand-drawn loading arc.
+ *
+ * @example
+ * <Spinner />
+ */
 export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
   function Spinner(
     {
@@ -50,6 +68,7 @@ export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
   ) {
     const px = SIZE_PX[size];
     const resolvedSeed = useResolvedSeed(seed);
+    const { roughness: baseRoughness } = useSketchDefaults();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const shouldSpin = useAnimate(animate);
@@ -69,7 +88,7 @@ export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(
         path={SPINNER_ARC}
         width={px}
         height={px}
-        roughness={roughness ?? 1.6}
+        roughness={roughness ?? baseRoughness}
         seed={resolvedSeed}
         sketchColor={ink}
         bowing={bowing ?? 1.2}

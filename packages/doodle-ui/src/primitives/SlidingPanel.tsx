@@ -24,6 +24,10 @@ interface SlidingPanelSketchContextValue extends SketchProps {
   ink: string;
   paper: string;
   isDark: boolean;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
   open: boolean;
   side: SlidingPanelSide;
@@ -40,12 +44,19 @@ export function useSlidingPanelSketch(): SlidingPanelSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link SlidingPanelRoot}.
+ */
 export interface SlidingPanelRootProps
   extends Omit<DialogPrimitive.DialogProps, "children">,
     SketchProps {
   children?: ReactNode;
   side?: SlidingPanelSide;
   fill?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -165,6 +176,9 @@ function panelPosition(side: SlidingPanelSide): CSSProperties {
   }
 }
 
+/**
+ * Props for {@link SlidingPanelOverlay}.
+ */
 export interface SlidingPanelOverlayProps
   extends Omit<DialogPrimitive.DialogOverlayProps, "asChild" | "forceMount"> {}
 
@@ -196,6 +210,9 @@ export const SlidingPanelOverlay = forwardRef<
   );
 });
 
+/**
+ * Props for {@link SlidingPanelContent}.
+ */
 export interface SlidingPanelContentProps
   extends Omit<DialogPrimitive.DialogContentProps, "asChild" | "forceMount"> {
   children?: ReactNode;
@@ -276,6 +293,9 @@ export const SlidingPanelContent = forwardRef<
   );
 });
 
+/**
+ * Props for {@link SlidingPanelHeader}.
+ */
 export interface SlidingPanelHeaderProps {
   children?: ReactNode;
   className?: string;
@@ -303,6 +323,9 @@ export function SlidingPanelHeader({
   );
 }
 
+/**
+ * Props for {@link SlidingPanelFooter}.
+ */
 export interface SlidingPanelFooterProps {
   children?: ReactNode;
   className?: string;

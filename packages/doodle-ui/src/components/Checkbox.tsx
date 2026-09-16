@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import { forwardRef, useId, useRef, type ReactNode } from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import {
@@ -13,14 +14,22 @@ import { RoughSvg } from "../primitives/RoughSvg";
 import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily } from "../utils";
 
+/**
+ * Props for {@link Checkbox}.
+ */
 export interface CheckboxProps
   extends Omit<CheckboxPrimitive.CheckboxProps, "asChild">,
     SketchProps {
+  /** Visible label beside the control. */
   label?: ReactNode;
   fill?: string;
   /**
    * Draw-in the box on mount and the checkmark when checked.
    * Defaults to the DoodleUIProvider value (true).
+   */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
    */
   animate?: boolean;
 }
@@ -43,6 +52,7 @@ function CheckMark({
   strokeWidth?: number;
   shouldAnimate: boolean;
 }) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const ref = useRef<HTMLSpanElement>(null);
   useDrawIn(ref, DRAW_IN_MARK_MS, shouldAnimate);
 
@@ -54,7 +64,7 @@ function CheckMark({
       <RoughSvg
         shape="path"
         path={CHECK_PATH}
-        roughness={(roughness ?? 1.5) * 0.7}
+        roughness={(roughness ?? baseRoughness) * 0.7}
         seed={seed}
         sketchColor={sketchColor}
         bowing={bowing}
@@ -65,6 +75,12 @@ function CheckMark({
   );
 }
 
+/**
+ * Square checkbox with a drawn checkmark.
+ *
+ * @example
+ * <Checkbox />
+ */
 export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
   function Checkbox(
     {

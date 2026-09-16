@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import { forwardRef, type CSSProperties, type ReactNode } from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
@@ -11,18 +12,31 @@ import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils
 export type AvatarStatus = "online" | "offline" | "busy";
 export type AvatarShape = "circle" | "square";
 
+/**
+ * Props for {@link Avatar}.
+ */
 export interface AvatarProps
   extends Omit<AvatarPrimitive.AvatarProps, "asChild">,
     SketchProps {
   src?: string;
   alt?: string;
   fallback?: ReactNode;
+  /**
+   * Control size preset.
+   * @default "md"
+   */
   size?: number;
   shape?: AvatarShape;
   status?: AvatarStatus;
   fill?: string;
 }
 
+/**
+ * Profile image or initials in a sketch frame.
+ *
+ * @example
+ * <Avatar />
+ */
 export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
   function Avatar(
     {
@@ -48,6 +62,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
     },
     ref,
   ) {
+    const { roughness: baseRoughness } = useSketchDefaults();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const resolvedSeed = useResolvedSeed(seed);
@@ -145,7 +160,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
           >
             <RoughSvg
               shape="ellipse"
-              roughness={(roughness ?? 1.5) * 0.8}
+              roughness={(roughness ?? baseRoughness) * 0.8}
               seed={deriveSeed(resolvedSeed, "status")}
               sketchColor={statusColors[status]}
               fill={statusColors[status]}

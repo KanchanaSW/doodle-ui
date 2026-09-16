@@ -20,6 +20,10 @@ interface InputGroupSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
   accent: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
   focused: boolean;
   setFocused: (next: boolean) => void;
@@ -36,13 +40,26 @@ function useInputGroupSketch(): InputGroupSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link InputGroup}.
+ */
 export interface InputGroupProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color">,
     SketchProps {
   children?: ReactNode;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Single sketch frame around input and addons.
+ *
+ * @example
+ * <InputGroup />
+ */
 export function InputGroup({
   children,
   className,
@@ -133,6 +150,9 @@ export function InputGroup({
   );
 }
 
+/**
+ * Props for {@link InputGroupAddon}.
+ */
 export interface InputGroupAddonProps extends HTMLAttributes<HTMLSpanElement> {
   align?: "inline-start" | "inline-end";
 }
@@ -165,6 +185,9 @@ export const InputGroupAddon = forwardRef<HTMLSpanElement, InputGroupAddonProps>
   },
 );
 
+/**
+ * Props for {@link InputGroupInput}.
+ */
 export interface InputGroupInputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "color" | "size"> {}
 
@@ -194,6 +217,9 @@ export const InputGroupInput = forwardRef<
   );
 });
 
+/**
+ * Props for {@link InputGroupButton}.
+ */
 export interface InputGroupButtonProps extends HTMLAttributes<HTMLSpanElement> {}
 
 export const InputGroupButton = forwardRef<

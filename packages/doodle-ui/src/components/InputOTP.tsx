@@ -29,6 +29,10 @@ interface InputOTPSketchContextValue extends SketchProps {
   accent: string;
   paper: string;
   fill?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -44,13 +48,26 @@ function useInputOTPSketch(): InputOTPSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link InputOTP}.
+ */
 export interface InputOTPProps
   extends Omit<ComponentPropsWithoutRef<typeof OTPInput>, "render">,
     SketchProps {
   fill?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Segmented one-time-code input boxes.
+ *
+ * @example
+ * <InputOTP />
+ */
 export const InputOTP = forwardRef<HTMLInputElement, InputOTPProps>(
   function InputOTP(
     {
@@ -108,6 +125,9 @@ export const InputOTP = forwardRef<HTMLInputElement, InputOTPProps>(
   },
 );
 
+/**
+ * Props for {@link InputOTPGroup}.
+ */
 export interface InputOTPGroupProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
@@ -127,6 +147,9 @@ export const InputOTPGroup = forwardRef<HTMLDivElement, InputOTPGroupProps>(
   },
 );
 
+/**
+ * Props for {@link InputOTPSlot}.
+ */
 export interface InputOTPSlotProps extends HTMLAttributes<HTMLDivElement> {
   index: number;
 }
@@ -217,6 +240,9 @@ export const InputOTPSlot = forwardRef<HTMLDivElement, InputOTPSlotProps>(
   },
 );
 
+/**
+ * Props for {@link InputOTPSeparator}.
+ */
 export interface InputOTPSeparatorProps extends HTMLAttributes<HTMLSpanElement> {}
 
 export const InputOTPSeparator = forwardRef<

@@ -18,17 +18,31 @@ import { RoughSvg } from "../primitives/RoughSvg";
 import type { SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
+/**
+ * Props for {@link Textarea}.
+ */
 export interface TextareaProps
   extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "color">,
     SketchProps {
+  /** Visible label beside the control. */
   label?: ReactNode;
   /**
    * Draw-in the border on mount and seed-morph on focus.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Multi-line text field inside a sketch box.
+ *
+ * @example
+ * <Textarea />
+ */
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   function Textarea(
     {

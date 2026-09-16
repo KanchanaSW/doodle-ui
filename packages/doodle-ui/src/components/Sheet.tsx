@@ -19,6 +19,12 @@ export type SheetProps = SlidingPanelRootProps & {
   side?: SlidingPanelSide;
 };
 
+/**
+ * Edge-anchored slide-out panel.
+ *
+ * @example
+ * <Sheet />
+ */
 export function Sheet({ side = "right", ...rest }: SheetProps) {
   return <SlidingPanelRoot side={side} {...rest} />;
 }

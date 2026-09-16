@@ -8,16 +8,33 @@ import { cn, doodleUiFontWeight } from "../utils";
 
 export type BadgeVariant = "default" | "accent" | "outline";
 
+/**
+ * Props for {@link Badge}.
+ */
 export interface BadgeProps
   extends Omit<HTMLAttributes<HTMLSpanElement>, "color">,
     SketchProps {
+  /**
+   * Visual style preset.
+   * @default "primary"
+   */
   variant?: BadgeVariant;
   /**
    * Draw-in the border on mount. Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Small sketch label for counts and tags.
+ *
+ * @example
+ * <Badge />
+ */
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   {
     children,

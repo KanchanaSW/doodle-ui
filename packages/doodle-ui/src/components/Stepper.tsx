@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
@@ -14,6 +15,9 @@ export interface StepperStep {
   description?: ReactNode;
 }
 
+/**
+ * Props for {@link Stepper}.
+ */
 export interface StepperProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color">,
     SketchProps {
@@ -31,6 +35,12 @@ function normalizeSteps(steps: Array<StepperStep | ReactNode>): StepperStep[] {
   );
 }
 
+/**
+ * Step indicator with numbered circles.
+ *
+ * @example
+ * <Stepper />
+ */
 export const Stepper = forwardRef<HTMLDivElement, StepperProps>(
   function Stepper(
     {
@@ -53,6 +63,7 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(
     },
     ref,
   ) {
+    const { roughness: baseRoughness } = useSketchDefaults();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const accent = sketchColor ?? theme.accent;
@@ -161,7 +172,7 @@ export const Stepper = forwardRef<HTMLDivElement, StepperProps>(
                   >
                     <RoughSvg
                       shape={horizontal ? "line" : "line-vertical"}
-                      roughness={(roughness ?? 1.5) + 0.3}
+                      roughness={(roughness ?? baseRoughness) + 0.3}
                       seed={deriveSeed(resolvedSeed, `connector-${index}`)}
                       sketchColor={
                         complete

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   forwardRef,
   useRef,
@@ -26,6 +27,9 @@ export interface NativeSelectOption {
   disabled?: boolean;
 }
 
+/**
+ * Props for {@link NativeSelect}.
+ */
 export interface NativeSelectProps
   extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "color" | "size">,
     SketchProps {
@@ -37,6 +41,12 @@ export interface NativeSelectProps
   style?: CSSProperties;
 }
 
+/**
+ * Native HTML select with sketch border.
+ *
+ * @example
+ * <NativeSelect />
+ */
 export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
   function NativeSelect(
     {
@@ -63,6 +73,7 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
     const fieldRef = useRef<HTMLSpanElement>(null);
     const shouldAnimate = useAnimate(animate);
     const resolvedSeed = useResolvedSeed(seed);
+    const { roughness: baseRoughness } = useSketchDefaults();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
 
@@ -144,7 +155,7 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
             <RoughSvg
               shape="path"
               path={CHEVRON_PATH}
-              roughness={(roughness ?? 1.5) * 0.85}
+              roughness={(roughness ?? baseRoughness) * 0.85}
               seed={resolvedSeed}
               sketchColor={ink}
               bowing={bowing}

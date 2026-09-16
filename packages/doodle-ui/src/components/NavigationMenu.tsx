@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -20,6 +21,10 @@ interface NavigationMenuSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
   paper: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -34,6 +39,9 @@ function useNavigationMenuSketch(): NavigationMenuSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link NavigationMenu}.
+ */
 export interface NavigationMenuProps
   extends Omit<
       ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Root>,
@@ -42,9 +50,19 @@ export interface NavigationMenuProps
     SketchProps {
   children?: ReactNode;
   fill?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Horizontal navigation with dropdown panels.
+ *
+ * @example
+ * <NavigationMenu />
+ */
 export function NavigationMenu({
   children,
   fill,
@@ -203,6 +221,7 @@ export const NavigationMenuIndicator = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Indicator>
 >(function NavigationMenuIndicator({ className, style, ...rest }, ref) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const sketch = useNavigationMenuSketch();
   return (
     <NavigationMenuPrimitive.Indicator
@@ -213,7 +232,7 @@ export const NavigationMenuIndicator = forwardRef<
     >
       <RoughSvg
         shape="line"
-        roughness={(sketch.roughness ?? 1.5) + 0.2}
+        roughness={(sketch.roughness ?? baseRoughness) + 0.2}
         seed={deriveSeed(sketch.resolvedSeed, "nav-indicator")}
         sketchColor={sketch.ink}
         strokeWidth={2}
@@ -223,6 +242,9 @@ export const NavigationMenuIndicator = forwardRef<
   );
 });
 
+/**
+ * Props for {@link NavigationMenuItemLink}.
+ */
 export interface NavigationMenuItemLinkProps
   extends ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Link> {
   active?: boolean;
@@ -235,6 +257,7 @@ export const NavigationMenuItemLink = forwardRef<
   { className, style, active, children, ...rest },
   ref,
 ) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const sketch = useNavigationMenuSketch();
   const [hovered, setHovered] = useState(false);
   const showMark = active || hovered;
@@ -261,7 +284,7 @@ export const NavigationMenuItemLink = forwardRef<
       {showMark ? (
         <RoughSvg
           shape="line"
-          roughness={(sketch.roughness ?? 1.5) + 0.3}
+          roughness={(sketch.roughness ?? baseRoughness) + 0.3}
           seed={deriveSeed(sketch.resolvedSeed, "nav-link")}
           sketchColor={sketch.ink}
           strokeWidth={1.4}

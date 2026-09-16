@@ -45,6 +45,9 @@ const POSITION_STYLE: Record<ToastPosition, CSSProperties> = {
 
 const ToastPositionContext = createContext<ToastPosition>("bottom-right");
 
+/**
+ * Props for {@link ToastProvider}.
+ */
 export interface ToastProviderProps {
   children?: ReactNode;
   position?: ToastPosition;
@@ -88,12 +91,19 @@ export function ToastProvider({
   );
 }
 
+/**
+ * Props for {@link Toast}.
+ */
 export interface ToastProps extends SketchProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   title?: ReactNode;
   children?: ReactNode;
+  /**
+   * Visual style preset.
+   * @default "primary"
+   */
   variant?: ToastVariant;
   fill?: string;
   duration?: number;
@@ -103,9 +113,19 @@ export interface ToastProps extends SketchProps {
    * Slide-in with a sketchy settle wobble, reversed on exit.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Transient notification card.
+ *
+ * @example
+ * <Toast />
+ */
 export function Toast({
   open,
   defaultOpen,

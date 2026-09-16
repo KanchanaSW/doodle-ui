@@ -18,17 +18,31 @@ import { RoughSvg } from "../primitives/RoughSvg";
 import type { SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
+/**
+ * Props for {@link Input}.
+ */
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "color" | "size">,
     SketchProps {
+  /** Visible label beside the control. */
   label?: ReactNode;
   /**
    * Draw-in the border on mount and seed-morph on focus.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Single-line text field with a hand-drawn border.
+ *
+ * @example
+ * <Input />
+ */
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
     className,

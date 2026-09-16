@@ -3,6 +3,11 @@
 import { useLayoutEffect, useRef, type CSSProperties } from "react";
 import rough from "roughjs";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
+import {
+  mergeSketchProps,
+  readSketchCssVars,
+  useSketchDefaults,
+} from "../hooks/useSketchDefaults";
 import { useElementSize } from "../hooks/useElementSize";
 import {
   DEFAULT_INSET,
@@ -13,6 +18,20 @@ import {
 /**
  * Absolutely-positioned SVG layer that draws a rough.js shape behind HTML content.
  * Parent must be `position: relative`.
+ *
+ * @example
+ * <div style={{ position: "relative" }}>
+ *   <RoughSvg roughness={2} sketchColor="#1f1d1a" />
+ *   <span>Content</span>
+ * </div>
+ *
+ * @see SketchBox
+ */
+/**
+ * Low-level rough.js SVG overlay.
+ *
+ * @example
+ * <RoughSvg />
  */
 export function RoughSvg({
   shape = "rectangle",
@@ -37,24 +56,43 @@ export function RoughSvg({
   const svgRef = useRef<SVGSVGElement>(null);
   const measured = useElementSize(containerRef);
   const seed = useResolvedSeed(seedProp);
+  const sketchDefaults = useSketchDefaults();
 
   const width = widthProp ?? measured.width;
   const height = heightProp ?? measured.height;
 
   useLayoutEffect(() => {
     const svg = svgRef.current;
+    const container = containerRef.current;
     if (!svg || width < 2 || height < 2) return;
 
     while (svg.firstChild) svg.removeChild(svg.firstChild);
 
+    const cssVars = readSketchCssVars(container);
+    const merged = mergeSketchProps(
+      {
+        roughness,
+        seed,
+        sketchColor,
+        bowing,
+        fillStyle,
+        strokeWidth,
+        hachureGap,
+        hachureAngle,
+        fillWeight,
+      },
+      sketchDefaults,
+      cssVars,
+    );
+
     const rc = rough.svg(svg);
     const options = toRoughOptions({
-      roughness,
+      roughness: merged.roughness,
       seed,
-      sketchColor,
-      bowing,
-      fillStyle,
-      strokeWidth,
+      sketchColor: merged.sketchColor,
+      bowing: merged.bowing,
+      fillStyle: merged.fillStyle,
+      strokeWidth: merged.strokeWidth,
       fill,
       hachureGap,
       hachureAngle,
@@ -102,6 +140,7 @@ export function RoughSvg({
     fillWeight,
     inset,
     path,
+    sketchDefaults,
   ]);
 
   const overlayStyle: CSSProperties = {

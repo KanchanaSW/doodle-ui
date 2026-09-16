@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   type ComponentPropsWithoutRef,
   type CSSProperties,
@@ -32,6 +33,9 @@ export function ResizablePanelGroup({
 
 export const ResizablePanel = ResizablePrimitive.Panel;
 
+/**
+ * Props for {@link ResizableHandle}.
+ */
 export interface ResizableHandleProps
   extends ComponentPropsWithoutRef<typeof ResizablePrimitive.PanelResizeHandle>,
     SketchProps {
@@ -49,6 +53,7 @@ export function ResizableHandle({
   strokeWidth,
   ...rest
 }: ResizableHandleProps) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const resolvedSeed = useResolvedSeed(seed);
   const theme = useSketchTheme(sketchColor);
   const ink = sketchColor ?? theme.ink;
@@ -82,7 +87,7 @@ export function ResizableHandle({
         >
           <RoughSvg
             shape="line-vertical"
-            roughness={roughness ?? 1.8}
+            roughness={roughness ?? baseRoughness}
             seed={handleSeed}
             sketchColor={ink}
             bowing={bowing ?? 1.5}
@@ -93,7 +98,7 @@ export function ResizableHandle({
           />
           <RoughSvg
             shape="ellipse"
-            roughness={(roughness ?? 1.5) + 0.2}
+            roughness={(roughness ?? baseRoughness) + 0.2}
             seed={deriveSeed(handleSeed, "dot-a")}
             sketchColor={ink}
             width={14}

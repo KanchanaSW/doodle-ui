@@ -22,6 +22,10 @@ interface DialogSketchContextValue extends SketchProps {
   ink: string;
   paper: string;
   isDark: boolean;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
   open: boolean;
 }
@@ -38,6 +42,9 @@ function useDialogSketch(): DialogSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link Dialog}.
+ */
 export interface DialogProps
   extends Omit<DialogPrimitive.DialogProps, "children">,
     SketchProps {
@@ -46,6 +53,10 @@ export interface DialogProps
   /**
    * Backdrop fade, panel enter/exit, and border draw-in on open.
    * Defaults to the DoodleUIProvider value (true).
+   */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
    */
   animate?: boolean;
 }
@@ -56,6 +67,12 @@ export interface DialogProps
  * `DialogFooter` / `DialogTitle` / `DialogDescription` / `DialogClose`. Unlike
  * `Modal`, `DialogContent` has no forced width or shadow and no built-in
  * close button — compose your own layout inside it.
+ */
+/**
+ * Composable dialog with sketch framing.
+ *
+ * @example
+ * <Dialog />
  */
 export function Dialog({
   children,
@@ -119,6 +136,9 @@ export const DialogTrigger = DialogPrimitive.Trigger;
 export const DialogPortal = DialogPrimitive.Portal;
 export const DialogClose = DialogPrimitive.Close;
 
+/**
+ * Props for {@link DialogOverlay}.
+ */
 export interface DialogOverlayProps
   extends Omit<DialogPrimitive.DialogOverlayProps, "asChild" | "forceMount"> {}
 
@@ -151,6 +171,9 @@ export const DialogOverlay = forwardRef<HTMLDivElement, DialogOverlayProps>(
   },
 );
 
+/**
+ * Props for {@link DialogContent}.
+ */
 export interface DialogContentProps
   extends Omit<DialogPrimitive.DialogContentProps, "asChild" | "forceMount"> {
   children?: ReactNode;
@@ -235,6 +258,9 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
   },
 );
 
+/**
+ * Props for {@link DialogHeader}.
+ */
 export interface DialogHeaderProps {
   children?: ReactNode;
   className?: string;
@@ -258,6 +284,9 @@ export function DialogHeader({ children, className, style }: DialogHeaderProps) 
   );
 }
 
+/**
+ * Props for {@link DialogFooter}.
+ */
 export interface DialogFooterProps {
   children?: ReactNode;
   className?: string;
@@ -281,6 +310,9 @@ export function DialogFooter({ children, className, style }: DialogFooterProps) 
   );
 }
 
+/**
+ * Props for {@link DialogTitle}.
+ */
 export interface DialogTitleProps
   extends Omit<DialogPrimitive.DialogTitleProps, "asChild"> {}
 
@@ -304,6 +336,9 @@ export const DialogTitle = forwardRef<HTMLHeadingElement, DialogTitleProps>(
   },
 );
 
+/**
+ * Props for {@link DialogDescription}.
+ */
 export interface DialogDescriptionProps
   extends Omit<DialogPrimitive.DialogDescriptionProps, "asChild"> {}
 

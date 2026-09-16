@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -21,6 +22,10 @@ interface MenubarSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
   paper: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -36,14 +41,27 @@ function useMenubarSketch(): MenubarSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link Menubar}.
+ */
 export interface MenubarProps
   extends Omit<ComponentPropsWithoutRef<typeof MenubarPrimitive.Root>, "children">,
     SketchProps {
   children?: ReactNode;
   fill?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Application menu bar with sketch items.
+ *
+ * @example
+ * <Menubar />
+ */
 export function Menubar({
   children,
   className,
@@ -178,6 +196,7 @@ export const MenubarItem = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof MenubarPrimitive.Item>
 >(function MenubarItem({ className, style, children, ...rest }, ref) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const [highlighted, setHighlighted] = useState(false);
   const { sketch, mark } = useMark(highlighted);
 
@@ -206,7 +225,7 @@ export const MenubarItem = forwardRef<
       {mark ? (
         <RoughSvg
           shape="line"
-          roughness={(sketch.roughness ?? 1.5) + 0.4}
+          roughness={(sketch.roughness ?? baseRoughness) + 0.4}
           seed={sketch.resolvedSeed}
           sketchColor={sketch.ink}
           bowing={sketch.bowing ?? 1.6}
@@ -224,6 +243,7 @@ export const MenubarSeparator = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof MenubarPrimitive.Separator>
 >(function MenubarSeparator({ className, style, ...rest }, ref) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const sketch = useMenubarSketch();
   return (
     <MenubarPrimitive.Separator
@@ -234,7 +254,7 @@ export const MenubarSeparator = forwardRef<
     >
       <RoughSvg
         shape="line"
-        roughness={(sketch.roughness ?? 1.5) + 0.2}
+        roughness={(sketch.roughness ?? baseRoughness) + 0.2}
         seed={deriveSeed(sketch.resolvedSeed, "separator")}
         sketchColor={sketch.ink}
         bowing={sketch.bowing ?? 1.8}

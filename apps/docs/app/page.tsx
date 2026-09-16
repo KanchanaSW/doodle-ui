@@ -22,6 +22,11 @@ export default function HomePage() {
                 Components
               </Button>
             </Link>
+            <Link href="/customize">
+              <Button size="lg" variant="ghost">
+                Customize
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="component-canvas p-6 md:p-8 border border-ink/10">

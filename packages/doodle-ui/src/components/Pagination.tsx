@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import { forwardRef, type ButtonHTMLAttributes, type HTMLAttributes } from "react";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
@@ -24,6 +25,9 @@ function pageItems(page: number, count: number): Array<number | "ellipsis"> {
   return items;
 }
 
+/**
+ * Props for {@link Pagination}.
+ */
 export interface PaginationProps
   extends Omit<HTMLAttributes<HTMLElement>, "color" | "onChange">,
     SketchProps {
@@ -32,6 +36,12 @@ export interface PaginationProps
   onPageChange?: (page: number) => void;
 }
 
+/**
+ * Page number controls with circled buttons.
+ *
+ * @example
+ * <Pagination />
+ */
 export const Pagination = forwardRef<HTMLElement, PaginationProps>(
   function Pagination(
     {
@@ -49,6 +59,7 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
     },
     ref,
   ) {
+    const { roughness: baseRoughness } = useSketchDefaults();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const accent = sketchColor ?? theme.accent;
@@ -89,7 +100,7 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
             <RoughSvg
               shape="path"
               path={PREV_PATH}
-              roughness={(roughness ?? 1.5) * 0.7}
+              roughness={(roughness ?? baseRoughness) * 0.7}
               seed={deriveSeed(resolvedSeed, "prev-arrow")}
               sketchColor={ink}
               strokeWidth={(strokeWidth ?? 1.5) + 0.2}
@@ -147,7 +158,7 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
             <RoughSvg
               shape="path"
               path={NEXT_PATH}
-              roughness={(roughness ?? 1.5) * 0.7}
+              roughness={(roughness ?? baseRoughness) * 0.7}
               seed={deriveSeed(resolvedSeed, "next-arrow")}
               sketchColor={ink}
               strokeWidth={(strokeWidth ?? 1.5) + 0.2}
@@ -189,6 +200,7 @@ function PageButton({
   strokeWidth,
   ...rest
 }: PageButtonProps) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const activeColor = accent ?? ink;
   const textColor = active ? (isDark ? "#ffffff" : activeColor) : ink;
 
@@ -229,7 +241,7 @@ function PageButton({
       {active ? (
         <RoughSvg
           shape="ellipse"
-          roughness={(roughness ?? 1.5) + 0.45}
+          roughness={(roughness ?? baseRoughness) + 0.45}
           seed={seed}
           sketchColor={activeColor}
           bowing={bowing ?? 1.6}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   forwardRef,
   useRef,
@@ -18,6 +19,9 @@ import { assignRef, cn } from "../utils";
 
 export type DividerOrientation = "horizontal" | "vertical";
 
+/**
+ * Props for {@link Divider}.
+ */
 export interface DividerProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color">,
     SketchProps {
@@ -26,9 +30,19 @@ export interface DividerProps
    * Draw-in so the line extends across its length. Defaults to the
    * DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Horizontal or vertical squiggly rule.
+ *
+ * @example
+ * <Divider />
+ */
 export const Divider = forwardRef<HTMLDivElement, DividerProps>(
   function Divider(
     {
@@ -49,6 +63,7 @@ export const Divider = forwardRef<HTMLDivElement, DividerProps>(
     ref,
   ) {
     const rootRef = useRef<HTMLDivElement>(null);
+    const { roughness: baseRoughness } = useSketchDefaults();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const shouldAnimate = useAnimate(animate);
@@ -75,7 +90,7 @@ export const Divider = forwardRef<HTMLDivElement, DividerProps>(
       >
         <RoughSvg
           shape={horizontal ? "line" : "line-vertical"}
-          roughness={roughness ?? 1.8}
+          roughness={roughness ?? baseRoughness}
           seed={seed}
           sketchColor={ink}
           bowing={bowing ?? 2}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -41,6 +42,9 @@ function useTabsSketch(): TabsSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link Tabs}.
+ */
 export interface TabsProps
   extends Omit<ComponentPropsWithoutRef<typeof TabsPrimitive.Root>, "asChild">,
     SketchProps {
@@ -48,9 +52,19 @@ export interface TabsProps
    * Draw-in the active underline and slide it on tab change.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Tab list with animated sketch underline.
+ *
+ * @example
+ * <Tabs />
+ */
 export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   {
     className,
@@ -112,6 +126,9 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   );
 });
 
+/**
+ * Props for {@link TabList}.
+ */
 export interface TabListProps
   extends Omit<
     ComponentPropsWithoutRef<typeof TabsPrimitive.List>,
@@ -133,6 +150,7 @@ function TabUnderline({
   seed: number;
   sketch: TabsSketchContextValue;
 }) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const ref = useRef<HTMLSpanElement>(null);
   useDrawIn(ref, DRAW_IN_MARK_MS, sketch.shouldAnimate, seed);
 
@@ -154,7 +172,7 @@ function TabUnderline({
     >
       <RoughSvg
         shape="line"
-        roughness={(sketch.roughness ?? 1.5) + 0.35}
+        roughness={(sketch.roughness ?? baseRoughness) + 0.35}
         seed={seed}
         sketchColor={sketch.accent}
         bowing={sketch.bowing ?? 1.8}
@@ -223,6 +241,9 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(
   },
 );
 
+/**
+ * Props for {@link Tab}.
+ */
 export interface TabProps
   extends Omit<
     ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>,
@@ -265,6 +286,9 @@ export const Tab = forwardRef<HTMLButtonElement, TabProps>(function Tab(
   );
 });
 
+/**
+ * Props for {@link TabPanel}.
+ */
 export interface TabPanelProps
   extends Omit<
     ComponentPropsWithoutRef<typeof TabsPrimitive.Content>,

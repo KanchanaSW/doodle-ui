@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -19,6 +20,10 @@ interface ScrollAreaSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
   paper: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -33,14 +38,27 @@ function useScrollAreaSketch(): ScrollAreaSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link ScrollArea}.
+ */
 export interface ScrollAreaProps
   extends Omit<ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>, "children">,
     SketchProps {
   children?: ReactNode;
   fill?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Scrollable region with rough scrollbar.
+ *
+ * @example
+ * <ScrollArea />
+ */
 export const ScrollArea = forwardRef<
   HTMLDivElement,
   ScrollAreaProps
@@ -135,6 +153,9 @@ export const ScrollAreaViewport = forwardRef<
   );
 });
 
+/**
+ * Props for {@link ScrollBar}.
+ */
 export interface ScrollBarProps
   extends ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar> {}
 
@@ -143,6 +164,7 @@ export const ScrollBar = forwardRef<HTMLDivElement, ScrollBarProps>(
     { className, style, orientation = "vertical", ...rest },
     ref,
   ) {
+    const { roughness: baseRoughness } = useSketchDefaults();
     const sketch = useScrollAreaSketch();
 
     return (
@@ -166,7 +188,7 @@ export const ScrollBar = forwardRef<HTMLDivElement, ScrollBarProps>(
           <div style={{ position: "relative", flex: 1 }}>
             <RoughSvg
               shape={orientation === "vertical" ? "line-vertical" : "line"}
-              roughness={(sketch.roughness ?? 1.5) + 0.3}
+              roughness={(sketch.roughness ?? baseRoughness) + 0.3}
               seed={sketch.resolvedSeed}
               sketchColor={sketch.ink}
               bowing={sketch.bowing}

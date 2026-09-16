@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -40,6 +41,10 @@ interface SelectSketchContextValue extends SketchProps {
   selectedValue?: string;
   selectedLabel?: ReactNode;
   placeholder?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -55,6 +60,9 @@ function useSelectSketch(): SelectSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link Select}.
+ */
 export interface SelectProps
   extends Omit<SelectPrimitive.SelectProps, "children">,
     SketchProps {
@@ -68,9 +76,19 @@ export interface SelectProps
    * Draw-in the trigger on mount and the popover border on open.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Dropdown select with sketch trigger and menu.
+ *
+ * @example
+ * <Select />
+ */
 export function Select({
   options,
   placeholder = "Select…",
@@ -154,6 +172,9 @@ export function Select({
   );
 }
 
+/**
+ * Props for {@link SelectTrigger}.
+ */
 export interface SelectTriggerProps
   extends Omit<SelectPrimitive.SelectTriggerProps, "asChild"> {
   placeholder?: string;
@@ -167,6 +188,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
     const sketch = useSelectSketch();
     const [openish, setOpenish] = useState(false);
     const rootRef = useRef<HTMLButtonElement>(null);
+    const { roughness: baseRoughness } = useSketchDefaults();
     const shouldAnimate = useAnimate(sketch.animate);
     useDrawIn(rootRef, DRAW_IN_DURATION_MS, shouldAnimate);
 
@@ -239,7 +261,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
           <RoughSvg
             shape="path"
             path={CHEVRON_PATH}
-            roughness={(sketch.roughness ?? 1.5) * 0.7}
+            roughness={(sketch.roughness ?? baseRoughness) * 0.7}
             seed={sketch.resolvedSeed}
             sketchColor={sketch.ink}
             bowing={sketch.bowing}
@@ -252,6 +274,9 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
   },
 );
 
+/**
+ * Props for {@link SelectContent}.
+ */
 export interface SelectContentProps
   extends Omit<SelectPrimitive.SelectContentProps, "asChild" | "position"> {
   children?: ReactNode;
@@ -300,6 +325,9 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
   },
 );
 
+/**
+ * Props for {@link SelectItem}.
+ */
 export interface SelectItemProps
   extends Omit<SelectPrimitive.SelectItemProps, "asChild"> {
   children?: ReactNode;
@@ -307,6 +335,7 @@ export interface SelectItemProps
 
 export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
   function SelectItem({ className, style, children, value, ...rest }, ref) {
+    const { roughness: baseRoughness } = useSketchDefaults();
     const sketch = useSelectSketch();
     const [highlighted, setHighlighted] = useState(false);
     const selected = sketch.selectedValue === value;
@@ -342,7 +371,7 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
         {mark ? (
           <RoughSvg
             shape="line"
-            roughness={(sketch.roughness ?? 1.5) + 0.4}
+            roughness={(sketch.roughness ?? baseRoughness) + 0.4}
             seed={sketch.resolvedSeed}
             sketchColor={
               selected ? sketch.accent : sketch.ink

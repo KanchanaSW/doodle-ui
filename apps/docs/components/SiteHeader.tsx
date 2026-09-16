@@ -13,6 +13,9 @@ export function SiteHeader() {
           <Link href="/install" className="hover:text-accent">
             Install
           </Link>
+          <Link href="/customize" className="hover:text-accent hidden sm:inline">
+            Customize
+          </Link>
           <Link href="/docs/button" className="hover:text-accent hidden sm:inline">
             Components
           </Link>

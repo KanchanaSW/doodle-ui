@@ -6,6 +6,9 @@ import { SketchBox } from "../primitives/SketchBox";
 import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily } from "../utils";
 
+/**
+ * Props for {@link Kbd}.
+ */
 export interface KbdProps
   extends Omit<HTMLAttributes<HTMLElement>, "color">,
     SketchProps {
@@ -13,9 +16,19 @@ export interface KbdProps
   /**
    * Draw-in the border on mount. Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Keyboard key chip.
+ *
+ * @example
+ * <Kbd />
+ */
 export const Kbd = forwardRef<HTMLElement, KbdProps>(function Kbd(
   {
     children,

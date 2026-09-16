@@ -23,16 +23,31 @@ import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils
 export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
 export type ButtonSize = "sm" | "md" | "lg";
 
+/**
+ * Props for {@link Button}.
+ */
 export interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color">,
     SketchProps {
+  /**
+   * Visual style preset.
+   * @default "primary"
+   */
   variant?: ButtonVariant;
+  /**
+   * Control size preset.
+   * @default "md"
+   */
   size?: ButtonSize;
   /**
    * Play sketch animations (draw-in on mount, seed morph on hover).
    * Defaults to the DoodleUIProvider value (true). Explicit `false`
    * renders a static sketch. `prefers-reduced-motion: reduce` disables
    * animation unless the provider set `forceAnimate`.
+   */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
    */
   animate?: boolean;
 }
@@ -48,6 +63,14 @@ function assignRef<T>(ref: ForwardedRef<T>, value: T | null) {
   else if (ref) (ref as MutableRefObject<T | null>).current = value;
 }
 
+/**
+ * Clickable control with rough.js border and HTML label.
+ *
+ * @example
+ * <Button variant="primary">Save</Button>
+ *
+ * @see Input
+ */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(
     {

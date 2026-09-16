@@ -25,11 +25,18 @@ const HEADING_SIZES: Record<HeadingLevel, number> = {
   6: 14,
 };
 
+/**
+ * Props for {@link Heading}.
+ */
 export interface HeadingProps
   extends Omit<HTMLAttributes<HTMLHeadingElement>, "color">,
     SketchProps {
   level?: HeadingLevel;
   accent?: HeadingAccent;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -139,6 +146,9 @@ export const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
   },
 );
 
+/**
+ * Props for {@link Text}.
+ */
 export interface TextProps extends HTMLAttributes<HTMLParagraphElement> {
   variant?: "body" | "lead" | "muted";
 }
@@ -173,9 +183,16 @@ export const Text = forwardRef<HTMLParagraphElement, TextProps>(function Text(
 
 export const Paragraph = Text;
 
+/**
+ * Props for {@link Blockquote}.
+ */
 export interface BlockquoteProps
   extends Omit<HTMLAttributes<HTMLQuoteElement>, "color">,
     SketchProps {
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -241,10 +258,17 @@ export const Blockquote = forwardRef<HTMLQuoteElement, BlockquoteProps>(
   },
 );
 
+/**
+ * Props for {@link InlineCode}.
+ */
 export interface InlineCodeProps
   extends Omit<HTMLAttributes<HTMLElement>, "color">,
     SketchProps {
   fill?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -312,10 +336,17 @@ export const InlineCode = forwardRef<HTMLElement, InlineCodeProps>(
   },
 );
 
+/**
+ * Props for {@link Highlight}.
+ */
 export interface HighlightProps
   extends Omit<HTMLAttributes<HTMLSpanElement>, "color">,
     SketchProps {
   fill?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 

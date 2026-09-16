@@ -5,10 +5,15 @@ import { useOptionalSketchSeed } from "../context/SketchSeedContext";
 import { randomSeed } from "../utils";
 
 /**
- * Resolves the seed used to draw a sketch:
- * 1. explicit `seed` prop (locked, ignores Shuffle)
- * 2. SketchSeedProvider seed (redraws on Shuffle)
- * 3. a stable random seed generated on mount
+ * Resolves the seed used to draw a sketch.
+ *
+ * Priority: explicit `seed` prop → {@link SketchSeedProvider} → stable mount random.
+ *
+ * @param seed - Optional locked seed from a component prop
+ * @returns Integer seed for rough.js
+ *
+ * @example
+ * const resolved = useResolvedSeed(props.seed);
  */
 export function useResolvedSeed(seed?: number): number {
   const ctx = useOptionalSketchSeed();

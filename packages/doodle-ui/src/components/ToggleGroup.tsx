@@ -29,6 +29,10 @@ interface ToggleGroupSketchContextValue extends SketchProps {
   accent: string;
   accentFill: string;
   isDark: boolean;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
   size: ToggleSize;
 }
@@ -46,7 +50,15 @@ function useToggleGroupSketch(): ToggleGroupSketchContextValue {
 
 export type ToggleGroupProps = SketchProps & {
   children?: ReactNode;
+  /**
+   * Control size preset.
+   * @default "md"
+   */
   size?: ToggleSize;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 } & (
   | ({ type?: "single" } & Omit<
@@ -59,6 +71,12 @@ export type ToggleGroupProps = SketchProps & {
     >)
 );
 
+/**
+ * Group of sketch toggle buttons.
+ *
+ * @example
+ * <ToggleGroup />
+ */
 export function ToggleGroup(props: ToggleGroupProps) {
   const {
     children,
@@ -143,6 +161,9 @@ const ITEM_SIZE: Record<
   lg: { fontSize: 17, padding: "10px 18px", minHeight: 46 },
 };
 
+/**
+ * Props for {@link ToggleGroupItem}.
+ */
 export interface ToggleGroupItemProps
   extends Omit<ToggleGroupPrimitive.ToggleGroupItemProps, "asChild"> {
   children?: ReactNode;

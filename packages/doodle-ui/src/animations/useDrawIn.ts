@@ -101,8 +101,18 @@ export function drawIn(
  * Sketch-in the rough.js stroke path on the first paint, and again when
  * `replayKey` changes (e.g. a hover seed swap).
  *
- * `pathRef` may point at an SVG path, an `<svg>`, or any element that
- * contains one — the hook finds the outline path either way.
+ * @param pathRef - Ref to an SVG path, `<svg>`, or container with sketch paths
+ * @param duration - Animation duration in ms
+ * @default 400 ({@link DRAW_IN_DURATION_MS})
+ * @param enabled - When false, cancels any in-flight draw-in
+ * @default true
+ * @param replayKey - When this value changes, the stroke redraws
+ * @param delay - Delay before the animation starts (ms)
+ * @default 0
+ *
+ * @example
+ * const ref = useRef<HTMLDivElement>(null);
+ * useDrawIn(ref, DRAW_IN_DURATION_MS, shouldAnimate, seed);
  */
 export function useDrawIn(
   pathRef: RefObject<Element | null>,

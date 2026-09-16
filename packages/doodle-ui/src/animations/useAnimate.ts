@@ -6,8 +6,12 @@ import { usePrefersReducedMotion } from "./usePrefersReducedMotion";
 
 /**
  * Whether the calling component should play sketch animations.
- * Per-component `animate` overrides the provider. Reduced motion
- * disables animation unless the provider set `forceAnimate`.
+ *
+ * @param animate - Per-component override; when set, wins over the provider
+ * @returns `true` when draw-in / morph animations should run
+ *
+ * @example
+ * const shouldAnimate = useAnimate(props.animate);
  */
 export function useAnimate(animate?: boolean): boolean {
   const { animate: providerAnimate, forceAnimate } = useDoodleUI();

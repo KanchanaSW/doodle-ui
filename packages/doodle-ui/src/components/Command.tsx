@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -28,6 +29,10 @@ interface CommandSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
   paper: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -43,6 +48,9 @@ function useCommandSketch(): CommandSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link Command}.
+ */
 export interface CommandProps
   extends Omit<ComponentPropsWithoutRef<typeof CmdkCommand>, "asChild">,
     SketchProps {
@@ -51,6 +59,10 @@ export interface CommandProps
    * Draw-in the panel border on mount.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -58,6 +70,12 @@ export interface CommandProps
  * Command palette / cmd+k style searchable list, built on `cmdk` with a
  * `SketchBox` frame. Compose with `CommandInput`, `CommandList`,
  * `CommandEmpty`, `CommandGroup`, `CommandItem`, `CommandSeparator`.
+ */
+/**
+ * Command palette list (cmd+k style).
+ *
+ * @example
+ * <Command />
  */
 export const Command = forwardRef<HTMLDivElement, CommandProps>(
   function Command(
@@ -126,11 +144,15 @@ export const Command = forwardRef<HTMLDivElement, CommandProps>(
   },
 );
 
+/**
+ * Props for {@link CommandInput}.
+ */
 export interface CommandInputProps
   extends Omit<ComponentPropsWithoutRef<typeof CmdkInput>, "asChild"> {}
 
 export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
   function CommandInput({ className, style, ...rest }, ref) {
+    const { roughness: baseRoughness } = useSketchDefaults();
     const sketch = useCommandSketch();
     return (
       <div style={{ position: "relative", padding: "10px 12px 12px" }}>
@@ -153,7 +175,7 @@ export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
         />
         <RoughSvg
           shape="line"
-          roughness={(sketch.roughness ?? 1.5) + 0.2}
+          roughness={(sketch.roughness ?? baseRoughness) + 0.2}
           seed={deriveSeed(sketch.resolvedSeed, "command-divider")}
           sketchColor={sketch.ink}
           bowing={sketch.bowing ?? 1.6}
@@ -166,6 +188,9 @@ export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
   },
 );
 
+/**
+ * Props for {@link CommandList}.
+ */
 export interface CommandListProps
   extends Omit<ComponentPropsWithoutRef<typeof CmdkList>, "asChild"> {}
 
@@ -187,6 +212,9 @@ export const CommandList = forwardRef<HTMLDivElement, CommandListProps>(
   },
 );
 
+/**
+ * Props for {@link CommandEmpty}.
+ */
 export interface CommandEmptyProps
   extends Omit<ComponentPropsWithoutRef<typeof CmdkEmpty>, "asChild"> {}
 
@@ -212,6 +240,9 @@ export const CommandEmpty = forwardRef<HTMLDivElement, CommandEmptyProps>(
   },
 );
 
+/**
+ * Props for {@link CommandGroup}.
+ */
 export interface CommandGroupProps
   extends Omit<ComponentPropsWithoutRef<typeof CmdkGroup>, "asChild"> {}
 
@@ -229,6 +260,9 @@ export const CommandGroup = forwardRef<HTMLDivElement, CommandGroupProps>(
   },
 );
 
+/**
+ * Props for {@link CommandItem}.
+ */
 export interface CommandItemProps
   extends Omit<ComponentPropsWithoutRef<typeof CmdkItem>, "asChild"> {}
 
@@ -237,6 +271,7 @@ export const CommandItem = forwardRef<HTMLDivElement, CommandItemProps>(
     { className, style, children, onMouseEnter, onMouseLeave, ...rest },
     ref,
   ) {
+    const { roughness: baseRoughness } = useSketchDefaults();
     const sketch = useCommandSketch();
     const [highlighted, setHighlighted] = useState(false);
 
@@ -272,7 +307,7 @@ export const CommandItem = forwardRef<HTMLDivElement, CommandItemProps>(
         {highlighted ? (
           <RoughSvg
             shape="line"
-            roughness={(sketch.roughness ?? 1.5) + 0.4}
+            roughness={(sketch.roughness ?? baseRoughness) + 0.4}
             seed={sketch.resolvedSeed}
             sketchColor={sketch.ink}
             bowing={sketch.bowing ?? 1.6}
@@ -289,6 +324,9 @@ export const CommandItem = forwardRef<HTMLDivElement, CommandItemProps>(
   },
 );
 
+/**
+ * Props for {@link CommandSeparator}.
+ */
 export interface CommandSeparatorProps
   extends Omit<ComponentPropsWithoutRef<typeof CmdkSeparator>, "asChild"> {}
 
@@ -296,6 +334,7 @@ export const CommandSeparator = forwardRef<
   HTMLDivElement,
   CommandSeparatorProps
 >(function CommandSeparator({ className, style, ...rest }, ref) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const sketch = useCommandSketch();
   return (
     <CmdkSeparator
@@ -306,7 +345,7 @@ export const CommandSeparator = forwardRef<
     >
       <RoughSvg
         shape="line"
-        roughness={(sketch.roughness ?? 1.5) + 0.2}
+        roughness={(sketch.roughness ?? baseRoughness) + 0.2}
         seed={deriveSeed(sketch.resolvedSeed, "command-separator")}
         sketchColor={sketch.ink}
         bowing={sketch.bowing ?? 1.8}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import { forwardRef, useRef, useState, type ReactNode } from "react";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 import { motion } from "framer-motion";
@@ -20,17 +21,31 @@ const THUMB = 18;
 const THUMB_OFF = 3;
 const THUMB_ON = TRACK_W - THUMB - 3;
 
+/**
+ * Props for {@link Switch}.
+ */
 export interface SwitchProps
   extends Omit<SwitchPrimitive.SwitchProps, "asChild">,
     SketchProps {
+  /** Visible label beside the control. */
   label?: ReactNode;
   /**
    * Slide the thumb and seed-morph the track on toggle.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Toggle switch with sliding thumb.
+ *
+ * @example
+ * <Switch />
+ */
 export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
   function Switch(
     {
@@ -54,6 +69,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
   ) {
     const [uncontrolled, setUncontrolled] = useState(defaultChecked === true);
     const isOn = checked ?? uncontrolled;
+    const { roughness: baseRoughness } = useSketchDefaults();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const activeColor = sketchColor ?? theme.accent;
@@ -141,7 +157,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
             >
               <RoughSvg
                 shape="ellipse"
-                roughness={(roughness ?? 1.5) * 0.85}
+                roughness={(roughness ?? baseRoughness) * 0.85}
                 seed={deriveSeed(resolvedSeed, "thumb")}
                 sketchColor={isOn ? activeColor : ink}
                 fill={theme.paper}

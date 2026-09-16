@@ -7,6 +7,9 @@ import { SketchBox } from "../primitives/SketchBox";
 import type { SketchProps } from "../types";
 import { cn } from "../utils";
 
+/**
+ * Props for {@link AspectRatio}.
+ */
 export interface AspectRatioProps extends SketchProps {
   ratio?: number;
   /** Wrap content in a hand-drawn frame. Default false — ratio box only. */
@@ -15,9 +18,19 @@ export interface AspectRatioProps extends SketchProps {
   style?: CSSProperties;
   children?: ReactNode;
   fill?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Fixed aspect ratio container.
+ *
+ * @example
+ * <AspectRatio />
+ */
 export function AspectRatio({
   ratio = 16 / 9,
   bordered = false,

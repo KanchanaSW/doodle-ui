@@ -11,27 +11,68 @@ import {
 } from "react";
 import { nextFontIndex, randomSeed } from "../utils";
 
+/**
+ * Seed and font shuffle state from {@link SketchSeedProvider}.
+ */
 export interface SketchSeedContextValue {
+  /**
+   * Current sketch seed shared by components without an explicit `seed` prop.
+   * Changes when {@link SketchSeedContextValue.shuffle} runs.
+   */
   seed: number;
+  /**
+   * Index into the provider `fonts` array. `0` means page default font.
+   */
   fontIndex: number;
+  /**
+   * Picks a new random seed and advances the font palette index.
+   */
   shuffle: () => void;
+  /**
+   * Sets the shared seed explicitly (e.g. for reproducible layouts).
+   * @param seed - Integer seed for rough.js
+   */
   setSeed: (seed: number) => void;
 }
 
 const SketchSeedContext = createContext<SketchSeedContextValue | null>(null);
 
+/**
+ * Props for {@link SketchSeedProvider}.
+ */
 export interface SketchSeedProviderProps {
   children: ReactNode;
+  /**
+   * Initial shared sketch seed. Random when omitted.
+   * @default undefined (random on mount)
+   */
   initialSeed?: number;
   /**
-   * CSS font-family values for Shuffle. Index 0 is the page default
-   * (`--doodle-ui-font` is left unset). Later indexes set the variable.
+   * CSS `font-family` values cycled by Shuffle. Index `0` is the page default
+   * (`--doodle-ui-font` left unset).
+   * @default undefined
+   * @example
+   * <SketchSeedProvider fonts={['"Patrick Hand"', '"Kalam"']} />
    */
   fonts?: readonly string[];
-  /** Starting palette index. Defaults to 0 (unset / page default). */
+  /**
+   * Starting index into `fonts`.
+   * @default 0
+   */
   initialFontIndex?: number;
 }
 
+/**
+ * Supplies a shared sketch seed and optional hand-font cycling for Shuffle.
+ * Wrap your app next to {@link DoodleUIProvider}.
+ *
+ * @example
+ * <SketchSeedProvider>
+ *   <Button onClick={() => shuffle()}>Redraw</Button>
+ * </SketchSeedProvider>
+ *
+ * @see useSketchSeed
+ */
 export function SketchSeedProvider({
   children,
   initialSeed,
@@ -55,7 +96,6 @@ export function SketchSeedProvider({
       root.style.setProperty("--doodle-ui-font", activeFamily);
       root.style.setProperty("--doodle-ui-font-weight", "400");
     } else {
-      // Override docs :root defaults so Shuffle can return to Outfit.
       root.style.setProperty("--doodle-ui-font", "initial");
       root.style.setProperty("--doodle-ui-font-weight", "initial");
     }
@@ -77,6 +117,14 @@ export function SketchSeedProvider({
   );
 }
 
+/**
+ * Returns shared seed and shuffle helpers from {@link SketchSeedProvider}.
+ *
+ * @throws When used outside `<SketchSeedProvider>`.
+ *
+ * @example
+ * const { seed, shuffle } = useSketchSeed();
+ */
 export function useSketchSeed(): SketchSeedContextValue {
   const ctx = useContext(SketchSeedContext);
   if (!ctx) {

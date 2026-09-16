@@ -10,6 +10,9 @@ import { cn, doodleUiFontFamily } from "../utils";
 
 export const TooltipProvider = TooltipPrimitive.Provider;
 
+/**
+ * Props for {@link Tooltip}.
+ */
 export interface TooltipProps extends SketchProps {
   content: ReactNode;
   children: ReactNode;
@@ -21,9 +24,19 @@ export interface TooltipProps extends SketchProps {
    * Quick draw-in when the bubble shows (~180ms). Defaults to the
    * DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Hover tooltip in a sketch bubble.
+ *
+ * @example
+ * <Tooltip />
+ */
 export function Tooltip({
   content,
   children,

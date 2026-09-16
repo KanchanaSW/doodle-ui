@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import { forwardRef, useEffect, useState, type HTMLAttributes } from "react";
 import { RoughSvg } from "../primitives/RoughSvg";
 import type { RoughShape, SketchProps } from "../types";
@@ -10,15 +11,28 @@ import { deriveSeed } from "../utils";
 
 export type SkeletonVariant = "text" | "rect" | "circle";
 
+/**
+ * Props for {@link Skeleton}.
+ */
 export interface SkeletonProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "color">,
     SketchProps {
+  /**
+   * Visual style preset.
+   * @default "primary"
+   */
   variant?: SkeletonVariant;
   pulse?: boolean;
   width?: number | string;
   height?: number | string;
 }
 
+/**
+ * Loading placeholder with scribble fill.
+ *
+ * @example
+ * <Skeleton />
+ */
 export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
   function Skeleton(
     {
@@ -43,6 +57,7 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
   ) {
     const base = useResolvedSeed(seed);
     const [tick, setTick] = useState(0);
+    const { roughness: baseRoughness } = useSketchDefaults();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
 
@@ -75,7 +90,7 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
       >
         <RoughSvg
           shape={shape}
-          roughness={(roughness ?? 1.5) + 0.4}
+          roughness={(roughness ?? baseRoughness) + 0.4}
           seed={resolved}
           sketchColor={ink}
           fill={ink}

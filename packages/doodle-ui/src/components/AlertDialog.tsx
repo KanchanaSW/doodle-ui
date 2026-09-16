@@ -23,6 +23,10 @@ interface AlertDialogSketchContextValue extends SketchProps {
   ink: string;
   paper: string;
   isDark: boolean;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
   open: boolean;
 }
@@ -40,6 +44,9 @@ function useAlertDialogSketch(): AlertDialogSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link AlertDialog}.
+ */
 export interface AlertDialogProps
   extends Omit<AlertDialogPrimitive.AlertDialogProps, "children">,
     SketchProps {
@@ -49,6 +56,10 @@ export interface AlertDialogProps
    * Backdrop fade, panel enter/exit, and border draw-in on open.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -57,6 +68,12 @@ export interface AlertDialogProps
  * but Radix's alert dialog primitive requires an explicit action — there is
  * no dismiss-on-outside-click or Escape by default, and `AlertDialogAction`
  * / `AlertDialogCancel` give the confirm button visual emphasis.
+ */
+/**
+ * AlertDialog doodle-ui component.
+ *
+ * @example
+ * <AlertDialog />
  */
 export function AlertDialog({
   children,
@@ -119,6 +136,9 @@ export function AlertDialog({
 export const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
 export const AlertDialogPortal = AlertDialogPrimitive.Portal;
 
+/**
+ * Props for {@link AlertDialogOverlay}.
+ */
 export interface AlertDialogOverlayProps
   extends Omit<
     AlertDialogPrimitive.AlertDialogOverlayProps,
@@ -153,6 +173,9 @@ export const AlertDialogOverlay = forwardRef<
   );
 });
 
+/**
+ * Props for {@link AlertDialogContent}.
+ */
 export interface AlertDialogContentProps
   extends Omit<
     AlertDialogPrimitive.AlertDialogContentProps,
@@ -238,6 +261,9 @@ export const AlertDialogContent = forwardRef<
   );
 });
 
+/**
+ * Props for {@link AlertDialogHeader}.
+ */
 export interface AlertDialogHeaderProps {
   children?: ReactNode;
   className?: string;
@@ -265,6 +291,9 @@ export function AlertDialogHeader({
   );
 }
 
+/**
+ * Props for {@link AlertDialogFooter}.
+ */
 export interface AlertDialogFooterProps {
   children?: ReactNode;
   className?: string;
@@ -292,6 +321,9 @@ export function AlertDialogFooter({
   );
 }
 
+/**
+ * Props for {@link AlertDialogTitle}.
+ */
 export interface AlertDialogTitleProps
   extends Omit<AlertDialogPrimitive.AlertDialogTitleProps, "asChild"> {}
 
@@ -316,6 +348,9 @@ export const AlertDialogTitle = forwardRef<
   );
 });
 
+/**
+ * Props for {@link AlertDialogDescription}.
+ */
 export interface AlertDialogDescriptionProps
   extends Omit<AlertDialogPrimitive.AlertDialogDescriptionProps, "asChild"> {}
 
@@ -341,6 +376,9 @@ export const AlertDialogDescription = forwardRef<
   );
 });
 
+/**
+ * Props for {@link AlertDialogAction}.
+ */
 export interface AlertDialogActionProps
   extends Omit<AlertDialogPrimitive.AlertDialogActionProps, "asChild"> {}
 
@@ -367,6 +405,9 @@ export const AlertDialogAction = forwardRef<
   );
 });
 
+/**
+ * Props for {@link AlertDialogCancel}.
+ */
 export interface AlertDialogCancelProps
   extends Omit<AlertDialogPrimitive.AlertDialogCancelProps, "asChild"> {}
 

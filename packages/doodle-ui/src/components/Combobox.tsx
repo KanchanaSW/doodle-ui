@@ -24,6 +24,9 @@ import type { SelectOption } from "./Select";
 
 const CHEVRON_PATH = "M 4 6 L 10 12 L 16 6";
 
+/**
+ * Props for {@link Combobox}.
+ */
 export interface ComboboxProps extends SketchProps {
   options: SelectOption[];
   placeholder?: string;
@@ -40,6 +43,10 @@ export interface ComboboxProps extends SketchProps {
    * Draw-in the trigger on mount and the popover border on open.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -47,6 +54,12 @@ export interface ComboboxProps extends SketchProps {
  * Searchable select. Composes `Popover` (positioning) + `Command` (cmdk
  * filtering/list) behind a sketchy `Input`-styled trigger button — the same
  * recipe shadcn uses, since Radix has no dedicated Combobox primitive.
+ */
+/**
+ * Searchable select built from Popover and Command.
+ *
+ * @example
+ * <Combobox />
  */
 export function Combobox({
   options,

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -36,12 +37,21 @@ function useCollapsibleSketch(): CollapsibleSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link Collapsible}.
+ */
 export interface CollapsibleProps
   extends Omit<CollapsiblePrimitive.CollapsibleProps, "asChild">,
     SketchProps {
   children?: ReactNode;
 }
 
+/**
+ * Single collapsible section.
+ *
+ * @example
+ * <Collapsible />
+ */
 export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
   function Collapsible(
     {
@@ -107,6 +117,9 @@ export const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
   },
 );
 
+/**
+ * Props for {@link CollapsibleTrigger}.
+ */
 export interface CollapsibleTriggerProps
   extends Omit<
     ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Trigger>,
@@ -119,6 +132,7 @@ export const CollapsibleTrigger = forwardRef<
   HTMLButtonElement,
   CollapsibleTriggerProps
 >(function CollapsibleTrigger({ className, style, children, ...rest }, ref) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const sketch = useCollapsibleSketch();
 
   return (
@@ -159,7 +173,7 @@ export const CollapsibleTrigger = forwardRef<
         <RoughSvg
           shape="path"
           path={CHEVRON_PATH}
-          roughness={(sketch.roughness ?? 1.5) * 0.7}
+          roughness={(sketch.roughness ?? baseRoughness) * 0.7}
           seed={sketch.resolvedSeed}
           sketchColor={sketch.ink}
           bowing={sketch.bowing}
@@ -171,6 +185,9 @@ export const CollapsibleTrigger = forwardRef<
   );
 });
 
+/**
+ * Props for {@link CollapsibleContent}.
+ */
 export interface CollapsibleContentProps
   extends Omit<
     ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Content>,

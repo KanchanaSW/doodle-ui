@@ -46,6 +46,15 @@ interface CarouselContextValue {
 
 const CarouselContext = createContext<CarouselContextValue | null>(null);
 
+/**
+ * Embla carousel API and sketch settings from {@link Carousel}.
+ *
+ * @returns Scroll helpers, sketch props, and `api` for programmatic control.
+ * @throws When used outside `<Carousel>`.
+ *
+ * @example
+ * const { api, scrollNext } = useCarousel();
+ */
 export function useCarousel(): CarouselContextValue {
   const ctx = useContext(CarouselContext);
   if (!ctx) {
@@ -56,6 +65,9 @@ export function useCarousel(): CarouselContextValue {
 
 export type CarouselOptions = Parameters<typeof useEmblaCarousel>[0];
 
+/**
+ * Props for {@link Carousel}.
+ */
 export interface CarouselProps extends SketchProps {
   opts?: CarouselOptions;
   plugins?: Parameters<typeof useEmblaCarousel>[1];
@@ -66,9 +78,19 @@ export interface CarouselProps extends SketchProps {
   children?: ReactNode;
   setApi?: (api: CarouselApi) => void;
   fill?: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Slide carousel with sketch navigation arrows.
+ *
+ * @example
+ * <Carousel />
+ */
 export function Carousel({
   opts,
   plugins,
@@ -193,6 +215,9 @@ export function Carousel({
   );
 }
 
+/**
+ * Props for {@link CarouselContent}.
+ */
 export interface CarouselContentProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const CarouselContent = forwardRef<HTMLDivElement, CarouselContentProps>(
@@ -244,6 +269,9 @@ export const CarouselContent = forwardRef<HTMLDivElement, CarouselContentProps>(
   },
 );
 
+/**
+ * Props for {@link CarouselItem}.
+ */
 export interface CarouselItemProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const CarouselItem = forwardRef<HTMLDivElement, CarouselItemProps>(
@@ -276,6 +304,9 @@ const ARROW_PATH_NEXT = "M 6 4 L 14 12 L 6 20";
 const ARROW_OFFSET = 52;
 const ARROW_SIZE = 40;
 
+/**
+ * Props for {@link CarouselArrow}.
+ */
 export interface CarouselArrowProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {}
 

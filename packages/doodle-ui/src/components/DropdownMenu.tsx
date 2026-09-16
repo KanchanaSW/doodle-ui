@@ -1,5 +1,6 @@
 "use client";
 
+import { useSketchDefaults } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
@@ -20,6 +21,10 @@ interface DropdownMenuSketchContextValue extends SketchProps {
   ink: string;
   paper: string;
   accent: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -36,6 +41,9 @@ function useDropdownMenuSketch(): DropdownMenuSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link DropdownMenu}.
+ */
 export interface DropdownMenuProps
   extends Omit<DropdownMenuPrimitive.DropdownMenuProps, "children">,
     SketchProps {
@@ -45,9 +53,19 @@ export interface DropdownMenuProps
    * Draw-in the panel border when the menu opens.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Sketch-styled dropdown menu.
+ *
+ * @example
+ * <DropdownMenu />
+ */
 export function DropdownMenu({
   children,
   fill,
@@ -98,6 +116,9 @@ export const DropdownMenuGroup = DropdownMenuPrimitive.Group;
 export const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup;
 export const DropdownMenuSub = DropdownMenuPrimitive.Sub;
 
+/**
+ * Props for {@link DropdownMenuContent}.
+ */
 export interface DropdownMenuContentProps
   extends Omit<DropdownMenuPrimitive.DropdownMenuContentProps, "asChild"> {
   children?: ReactNode;
@@ -150,6 +171,9 @@ function useMark(highlighted: boolean) {
   return { sketch, mark: highlighted };
 }
 
+/**
+ * Props for {@link DropdownMenuItem}.
+ */
 export interface DropdownMenuItemProps
   extends Omit<DropdownMenuPrimitive.DropdownMenuItemProps, "asChild"> {
   children?: ReactNode;
@@ -163,6 +187,7 @@ export const DropdownMenuItem = forwardRef<
   { className, style, children, inset, ...rest },
   ref,
 ) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const [highlighted, setHighlighted] = useState(false);
   const { sketch, mark } = useMark(highlighted);
 
@@ -193,7 +218,7 @@ export const DropdownMenuItem = forwardRef<
       {mark ? (
         <RoughSvg
           shape="line"
-          roughness={(sketch.roughness ?? 1.5) + 0.4}
+          roughness={(sketch.roughness ?? baseRoughness) + 0.4}
           seed={sketch.resolvedSeed}
           sketchColor={sketch.ink}
           bowing={sketch.bowing ?? 1.6}
@@ -207,6 +232,9 @@ export const DropdownMenuItem = forwardRef<
   );
 });
 
+/**
+ * Props for {@link DropdownMenuCheckboxItem}.
+ */
 export interface DropdownMenuCheckboxItemProps
   extends Omit<
     DropdownMenuPrimitive.DropdownMenuCheckboxItemProps,
@@ -224,6 +252,7 @@ export const DropdownMenuCheckboxItem = forwardRef<
   { className, style, children, checked, ...rest },
   ref,
 ) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const [highlighted, setHighlighted] = useState(false);
   const { sketch, mark } = useMark(highlighted);
 
@@ -253,7 +282,7 @@ export const DropdownMenuCheckboxItem = forwardRef<
       {mark ? (
         <RoughSvg
           shape="line"
-          roughness={(sketch.roughness ?? 1.5) + 0.4}
+          roughness={(sketch.roughness ?? baseRoughness) + 0.4}
           seed={sketch.resolvedSeed}
           sketchColor={sketch.ink}
           bowing={sketch.bowing ?? 1.6}
@@ -275,7 +304,7 @@ export const DropdownMenuCheckboxItem = forwardRef<
           <RoughSvg
             shape="path"
             path={CHECK_PATH}
-            roughness={(sketch.roughness ?? 1.5) * 0.7}
+            roughness={(sketch.roughness ?? baseRoughness) * 0.7}
             seed={deriveSeed(sketch.resolvedSeed, "checkbox-mark")}
             sketchColor={sketch.accent}
             bowing={sketch.bowing}
@@ -289,6 +318,9 @@ export const DropdownMenuCheckboxItem = forwardRef<
   );
 });
 
+/**
+ * Props for {@link DropdownMenuRadioItem}.
+ */
 export interface DropdownMenuRadioItemProps
   extends Omit<DropdownMenuPrimitive.DropdownMenuRadioItemProps, "asChild"> {
   children?: ReactNode;
@@ -301,6 +333,7 @@ export const DropdownMenuRadioItem = forwardRef<
   { className, style, children, ...rest },
   ref,
 ) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const [highlighted, setHighlighted] = useState(false);
   const { sketch, mark } = useMark(highlighted);
 
@@ -329,7 +362,7 @@ export const DropdownMenuRadioItem = forwardRef<
       {mark ? (
         <RoughSvg
           shape="line"
-          roughness={(sketch.roughness ?? 1.5) + 0.4}
+          roughness={(sketch.roughness ?? baseRoughness) + 0.4}
           seed={sketch.resolvedSeed}
           sketchColor={sketch.ink}
           bowing={sketch.bowing ?? 1.6}
@@ -350,7 +383,7 @@ export const DropdownMenuRadioItem = forwardRef<
         <DropdownMenuPrimitive.ItemIndicator>
           <RoughSvg
             shape="ellipse"
-            roughness={(sketch.roughness ?? 1.5) * 0.8}
+            roughness={(sketch.roughness ?? baseRoughness) * 0.8}
             seed={deriveSeed(sketch.resolvedSeed, "radio-mark")}
             sketchColor={sketch.accent}
             bowing={sketch.bowing}
@@ -366,6 +399,9 @@ export const DropdownMenuRadioItem = forwardRef<
   );
 });
 
+/**
+ * Props for {@link DropdownMenuLabel}.
+ */
 export interface DropdownMenuLabelProps
   extends Omit<DropdownMenuPrimitive.DropdownMenuLabelProps, "asChild"> {
   children?: ReactNode;
@@ -398,6 +434,9 @@ export const DropdownMenuLabel = forwardRef<
   );
 });
 
+/**
+ * Props for {@link DropdownMenuSeparator}.
+ */
 export interface DropdownMenuSeparatorProps
   extends Omit<DropdownMenuPrimitive.DropdownMenuSeparatorProps, "asChild"> {}
 
@@ -405,6 +444,7 @@ export const DropdownMenuSeparator = forwardRef<
   HTMLDivElement,
   DropdownMenuSeparatorProps
 >(function DropdownMenuSeparator({ className, style, ...rest }, ref) {
+  const { roughness: baseRoughness } = useSketchDefaults();
   const sketch = useDropdownMenuSketch();
   return (
     <DropdownMenuPrimitive.Separator
@@ -415,7 +455,7 @@ export const DropdownMenuSeparator = forwardRef<
     >
       <RoughSvg
         shape="line"
-        roughness={(sketch.roughness ?? 1.5) + 0.2}
+        roughness={(sketch.roughness ?? baseRoughness) + 0.2}
         seed={deriveSeed(sketch.resolvedSeed, "separator")}
         sketchColor={sketch.ink}
         bowing={sketch.bowing ?? 1.8}

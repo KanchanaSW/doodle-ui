@@ -18,6 +18,10 @@ interface PopoverSketchContextValue extends SketchProps {
   resolvedSeed: number;
   ink: string;
   paper: string;
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
@@ -33,6 +37,9 @@ function usePopoverSketch(): PopoverSketchContextValue {
   return ctx;
 }
 
+/**
+ * Props for {@link Popover}.
+ */
 export interface PopoverProps
   extends Omit<PopoverPrimitive.PopoverProps, "children">,
     SketchProps {
@@ -42,9 +49,19 @@ export interface PopoverProps
    * Draw-in the panel border when the popover opens.
    * Defaults to the DoodleUIProvider value (true).
    */
+  /**
+   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
+   * @default undefined (follow provider)
+   */
   animate?: boolean;
 }
 
+/**
+ * Floating sketch panel anchored to a trigger.
+ *
+ * @example
+ * <Popover />
+ */
 export function Popover({
   children,
   fill,
@@ -91,6 +108,9 @@ export const PopoverTrigger = PopoverPrimitive.Trigger;
 export const PopoverAnchor = PopoverPrimitive.Anchor;
 export const PopoverClose = PopoverPrimitive.Close;
 
+/**
+ * Props for {@link PopoverContent}.
+ */
 export interface PopoverContentProps
   extends Omit<PopoverPrimitive.PopoverContentProps, "asChild"> {
   children?: ReactNode;
