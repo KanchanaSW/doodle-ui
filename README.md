@@ -46,7 +46,7 @@ export function App() {
 }
 ```
 
-Wrap the tree in `SketchSeedProvider` so Shuffle can redraw every unlocked sketch. Wrap in `TooltipProvider` if you use tooltips. Pass `seed={123}` on a component to lock its wobble. Sketch animations are on by default; wrap in `DoodleUIProvider` or pass `animate={false}` to opt out.
+Wrap the tree in `SketchSeedProvider` so Shuffle can redraw every unlocked sketch. Wrap in `TooltipProvider` if you use tooltips. Pass `seed={123}` on a component to lock its wobble. Sketch animations are on by default; wrap in `DoodleUIProvider` or pass `animate={false}` to opt out. Pass `theme` on `DoodleUIProvider` (`light` / `dark` / `system`) so sketch colors follow dark mode.
 
 ## Shared sketch props
 

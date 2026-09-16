@@ -42,6 +42,7 @@ export {
   TABLE_STAGGER_MS,
   type DoodleUIProviderProps,
   type DoodleUIContextValue,
+  type DoodleUITheme,
 } from "./animations";
 
 export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from "./components/Button";

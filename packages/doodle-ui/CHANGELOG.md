@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.1
+
+Dark mode: components resolve sketch ink, paper, and fills through `useSketchTheme`. `DoodleUIProvider` accepts `theme="light" | "dark" | "system"` (default `system`, following `html.dark`, `data-theme="dark"`, or `prefers-color-scheme`). Dark tokens: `DEFAULT_DARK_INK`, `DEFAULT_DARK_PAPER`, `DEFAULT_DARK_CARD_BG`, `DARK_SKETCH_COLORS`.
+
+## 0.6.0
+
+Layout and content helpers: `AspectRatio`, `NativeSelect`, `Empty`, `Field`, typography (`Heading`, `Text`, `Paragraph`, `Blockquote`, `InlineCode`, `Highlight`), `Sidebar`, and `Carousel`.
+
+New dependencies: `@radix-ui/react-aspect-ratio` and `embla-carousel-react`.
+
 ## 0.5.0
 
 Navigation & layout utilities: `Kbd`, `Spinner`, `Toggle`, `ToggleGroup`, `InputGroup`, `InputOTP`, `ScrollArea`, `Resizable`, `HoverCard`, `ContextMenu`, `NavigationMenu`, `Menubar`, `Sheet`, and `Drawer`.

@@ -44,7 +44,7 @@ export function App() {
 
 Wrap the tree in `SketchSeedProvider` so a Shuffle action can redraw every unlocked sketch. Pass `seed={123}` on a component to lock its wobble.
 
-Sketch strokes draw in on mount. Set `animate={false}` on a component, or wrap the tree in `DoodleUIProvider animate={false}`, to opt out. See the docs for the full animation map.
+Sketch strokes draw in on mount. Set `animate={false}` on a component, or wrap the tree in `DoodleUIProvider animate={false}`, to opt out. Pass `theme="light" | "dark" | "system"` on `DoodleUIProvider` (default `system`) so sketch ink and fills follow dark mode. See the docs for the full animation map.
 
 ## Shared sketch props
 

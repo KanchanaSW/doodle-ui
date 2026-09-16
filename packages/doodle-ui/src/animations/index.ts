@@ -4,6 +4,7 @@ export {
   DoodleUIContext,
   type DoodleUIProviderProps,
   type DoodleUIContextValue,
+  type DoodleUITheme,
 } from "./DoodleUIProvider";
 export { resolveAnimate, type ResolveAnimateInput } from "./resolveAnimate";
 export { useAnimate } from "./useAnimate";
