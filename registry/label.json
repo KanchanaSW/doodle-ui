@@ -1,0 +1,25 @@
+{
+  "name": "label",
+  "displayName": "Label",
+  "description": "A thin, mostly-typographic wrapper around Radix Label. Ties a caption to a form field via `htmlFor`. The only sketch chrome is a small hand-drawn dot after the text when `required` is set.",
+  "files": [
+    {
+      "name": "label.tsx",
+      "path": "components/label.tsx",
+      "type": "component",
+      "content": "\"use client\";\n\nimport { forwardRef, useRef, type ReactNode } from \"react\";\nimport * as LabelPrimitive from \"@radix-ui/react-label\";\nimport { DRAW_IN_MARK_MS, useAnimate, useDrawIn } from \"../animations\";\nimport { useResolvedSeed } from \"../hooks/useResolvedSeed\";\nimport { useSketchTheme } from \"../hooks/useSketchTheme\";\nimport { RoughSvg } from \"../primitives/RoughSvg\";\nimport type { SketchProps } from \"../types\";\nimport { cn, doodleUiFontFamily, doodleUiFontWeight } from \"../utils\";\n\nexport interface LabelProps\n  extends Omit<LabelPrimitive.LabelProps, \"asChild\" | \"color\">,\n    SketchProps {\n  children?: ReactNode;\n  /** Adds a small hand-drawn required mark after the text. */\n  required?: boolean;\n  /**\n   * Draw-in the required mark on mount.\n   * Defaults to the DoodleUIProvider value (true).\n   */\n  animate?: boolean;\n}\n\n/**\n * Thin, mostly-typographic wrapper around Radix Label. Ties a caption to a\n * form field via `htmlFor` for accessibility. The only sketch chrome is a\n * small drawn mark next to the text when `required` is set.\n */\nexport const Label = forwardRef<HTMLLabelElement, LabelProps>(function Label(\n  {\n    className,\n    style,\n    children,\n    required,\n    roughness,\n    seed,\n    sketchColor,\n    bowing,\n    strokeWidth,\n    hachureGap,\n    hachureAngle,\n    fillWeight,\n    animate,\n    ...rest\n  },\n  ref,\n) {\n  const theme = useSketchTheme(sketchColor);\n  const ink = sketchColor ?? theme.ink;\n  const resolvedSeed = useResolvedSeed(seed);\n  const shouldAnimate = useAnimate(animate);\n  const markRef = useRef<HTMLSpanElement>(null);\n  useDrawIn(markRef, DRAW_IN_MARK_MS, shouldAnimate);\n\n  return (\n    <LabelPrimitive.Root\n      ref={ref}\n      className={cn(className)}\n      style={{\n        display: \"inline-flex\",\n        alignItems: \"center\",\n        gap: 4,\n        fontFamily: doodleUiFontFamily,\n        fontSize: 13,\n        fontWeight: doodleUiFontWeight(600),\n        color: ink,\n        cursor: \"default\",\n        ...style,\n      }}\n      {...rest}\n    >\n      {children}\n      {required ? (\n        <span\n          ref={markRef}\n          aria-hidden=\"true\"\n          style={{ position: \"relative\", width: 10, height: 10, flexShrink: 0 }}\n        >\n          <RoughSvg\n            shape=\"ellipse\"\n            roughness={(roughness ?? 1.5) * 0.9}\n            seed={resolvedSeed}\n            sketchColor={theme.accent}\n            bowing={bowing}\n            fillStyle=\"solid\"\n            fill={theme.accent}\n            strokeWidth={strokeWidth ?? 1.2}\n            hachureGap={hachureGap}\n            hachureAngle={hachureAngle}\n            fillWeight={fillWeight}\n            inset={1}\n          />\n        </span>\n      ) : null}\n    </LabelPrimitive.Root>\n  );\n});\n"
+    }
+  ],
+  "dependencies": [
+    "@radix-ui/react-label"
+  ],
+  "internalDependencies": [
+    "animations",
+    "hooks/useResolvedSeed",
+    "hooks/useSketchTheme",
+    "primitives/RoughSvg",
+    "types",
+    "utils"
+  ],
+  "componentDependencies": []
+}

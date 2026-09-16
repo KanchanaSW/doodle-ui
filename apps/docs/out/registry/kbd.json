@@ -1,0 +1,21 @@
+{
+  "name": "kbd",
+  "displayName": "Kbd",
+  "description": "Inline keyboard hint with a hand-drawn border.",
+  "files": [
+    {
+      "name": "kbd.tsx",
+      "path": "components/kbd.tsx",
+      "type": "component",
+      "content": "\"use client\";\n\nimport { forwardRef, type HTMLAttributes } from \"react\";\nimport { useSketchTheme } from \"../hooks/useSketchTheme\";\nimport { SketchBox } from \"../primitives/SketchBox\";\nimport type { SketchProps } from \"../types\";\nimport { cn, doodleUiFontFamily } from \"../utils\";\n\nexport interface KbdProps\n  extends Omit<HTMLAttributes<HTMLElement>, \"color\">,\n    SketchProps {\n  fill?: string;\n  /**\n   * Draw-in the border on mount. Defaults to the DoodleUIProvider value (true).\n   */\n  animate?: boolean;\n}\n\nexport const Kbd = forwardRef<HTMLElement, KbdProps>(function Kbd(\n  {\n    children,\n    className,\n    style,\n    fill,\n    roughness,\n    seed,\n    sketchColor,\n    bowing,\n    fillStyle,\n    strokeWidth,\n    hachureGap,\n    hachureAngle,\n    fillWeight,\n    animate,\n    ...rest\n  },\n  ref,\n) {\n  const theme = useSketchTheme(sketchColor);\n  const ink = sketchColor ?? theme.ink;\n\n  return (\n    <SketchBox\n      className={cn(className)}\n      style={{\n        display: \"inline-flex\",\n        verticalAlign: \"middle\",\n        color: ink,\n        ...style,\n      }}\n      contentStyle={{\n        padding: \"2px 7px\",\n        fontSize: 11,\n        fontFamily: doodleUiFontFamily,\n        lineHeight: 1.35,\n        letterSpacing: \"0.04em\",\n        color: ink,\n      }}\n      fill={fill ?? theme.secondaryFill}\n      fillStyle={fillStyle ?? \"hachure\"}\n      hachureGap={hachureGap ?? 6}\n      hachureAngle={hachureAngle}\n      fillWeight={fillWeight ?? 0.8}\n      roughness={roughness}\n      seed={seed}\n      sketchColor={ink}\n      bowing={bowing}\n      strokeWidth={strokeWidth ?? 1.3}\n      animate={animate}\n      {...rest}\n    >\n      <kbd\n        ref={ref}\n        style={{\n          border: \"none\",\n          background: \"transparent\",\n          padding: 0,\n          font: \"inherit\",\n          color: \"inherit\",\n        }}\n      >\n        {children}\n      </kbd>\n    </SketchBox>\n  );\n});\n"
+    }
+  ],
+  "dependencies": [],
+  "internalDependencies": [
+    "hooks/useSketchTheme",
+    "primitives/SketchBox",
+    "types",
+    "utils"
+  ],
+  "componentDependencies": []
+}

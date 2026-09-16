@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.2
+
+CLI component installer: `npx doodleui-react init`, `add`, `list`, and `diff` copy sketch component source into your project (shadcn-style). Ships a generated component registry and `doodleui` / `doodleui-react` binaries.
+
 ## 0.6.1
 
 Dark mode: components resolve sketch ink, paper, and fills through `useSketchTheme`. `DoodleUIProvider` accepts `theme="light" | "dark" | "system"` (default `system`, following `html.dark`, `data-theme="dark"`, or `prefers-color-scheme`). Dark tokens: `DEFAULT_DARK_INK`, `DEFAULT_DARK_PAPER`, `DEFAULT_DARK_CARD_BG`, `DARK_SKETCH_COLORS`.

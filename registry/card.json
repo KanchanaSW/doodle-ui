@@ -1,0 +1,21 @@
+{
+  "name": "card",
+  "displayName": "Card",
+  "description": "Container with a sketch border. Optional offset rectangle behind it reads as a paper shadow. The border draws in on mount.",
+  "files": [
+    {
+      "name": "card.tsx",
+      "path": "components/card.tsx",
+      "type": "component",
+      "content": "\"use client\";\n\nimport { forwardRef, type HTMLAttributes, type ReactNode } from \"react\";\nimport { SketchBox, type SketchBoxProps } from \"../primitives/SketchBox\";\nimport { useSketchTheme } from \"../hooks/useSketchTheme\";\nimport type { SketchProps } from \"../types\";\nimport { cn, doodleUiFontWeight } from \"../utils\";\n\nexport interface CardProps\n  extends Omit<HTMLAttributes<HTMLDivElement>, \"color\" | \"title\">,\n    SketchProps {\n  shadow?: boolean;\n  fill?: string;\n  title?: ReactNode;\n  footer?: ReactNode;\n  /**\n   * Draw-in the border on mount. Defaults to the DoodleUIProvider value (true).\n   */\n  animate?: boolean;\n}\n\nexport const Card = forwardRef<HTMLDivElement, CardProps>(function Card(\n  {\n    children,\n    className,\n    style,\n    shadow = true,\n    fill,\n    title,\n    footer,\n    roughness,\n    seed,\n    sketchColor,\n    bowing,\n    fillStyle,\n    strokeWidth,\n    hachureGap,\n    hachureAngle,\n    fillWeight,\n    animate,\n    ...rest\n  },\n  ref,\n) {\n  const theme = useSketchTheme(sketchColor);\n  const ink = sketchColor ?? theme.ink;\n\n  const boxProps: SketchBoxProps = {\n    shadow,\n    fill,\n    roughness,\n    seed,\n    sketchColor: ink,\n    bowing,\n    fillStyle,\n    strokeWidth,\n    hachureGap,\n    hachureAngle,\n    fillWeight,\n    animate,\n  };\n\n  return (\n    <SketchBox\n      ref={ref}\n      className={cn(className)}\n      style={{\n        color: ink,\n        ...style,\n      }}\n      contentStyle={{ padding: \"16px 18px\" }}\n      {...boxProps}\n      {...rest}\n    >\n      {title ? (\n        <div\n          style={{\n            fontWeight: doodleUiFontWeight(700),\n            fontSize: 16,\n            marginBottom: 10,\n            color: ink,\n          }}\n        >\n          {title}\n        </div>\n      ) : null}\n      {children}\n      {footer ? (\n        <div style={{ marginTop: 14, fontSize: 13, opacity: 0.8, color: ink }}>\n          {footer}\n        </div>\n      ) : null}\n    </SketchBox>\n  );\n});\n"
+    }
+  ],
+  "dependencies": [],
+  "internalDependencies": [
+    "hooks/useSketchTheme",
+    "primitives/SketchBox",
+    "types",
+    "utils"
+  ],
+  "componentDependencies": []
+}

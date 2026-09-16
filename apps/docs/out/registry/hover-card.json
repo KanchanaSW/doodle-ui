@@ -1,0 +1,24 @@
+{
+  "name": "hover-card",
+  "displayName": "HoverCard",
+  "description": "Popover-like card that opens on hover.",
+  "files": [
+    {
+      "name": "hover-card.tsx",
+      "path": "components/hover-card.tsx",
+      "type": "component",
+      "content": "\"use client\";\n\nimport {\n  createContext,\n  forwardRef,\n  useContext,\n  type ComponentPropsWithoutRef,\n  type ReactNode,\n} from \"react\";\nimport * as HoverCardPrimitive from \"@radix-ui/react-hover-card\";\nimport { useResolvedSeed } from \"../hooks/useResolvedSeed\";\nimport { useSketchTheme } from \"../hooks/useSketchTheme\";\nimport { SketchBox } from \"../primitives/SketchBox\";\nimport type { SketchProps } from \"../types\";\nimport { cn } from \"../utils\";\n\ninterface HoverCardSketchContextValue extends SketchProps {\n  resolvedSeed: number;\n  ink: string;\n  paper: string;\n  animate?: boolean;\n}\n\nconst HoverCardSketchContext = createContext<HoverCardSketchContextValue | null>(\n  null,\n);\n\nfunction useHoverCardSketch(): HoverCardSketchContextValue {\n  const ctx = useContext(HoverCardSketchContext);\n  if (!ctx) {\n    throw new Error(\"HoverCard parts must be used inside <HoverCard>.\");\n  }\n  return ctx;\n}\n\nexport interface HoverCardProps\n  extends Omit<ComponentPropsWithoutRef<typeof HoverCardPrimitive.Root>, \"children\">,\n    SketchProps {\n  children?: ReactNode;\n  fill?: string;\n  animate?: boolean;\n}\n\nexport function HoverCard({\n  children,\n  fill,\n  roughness,\n  seed,\n  sketchColor,\n  bowing,\n  fillStyle,\n  strokeWidth,\n  hachureGap,\n  hachureAngle,\n  fillWeight,\n  animate,\n  ...rest\n}: HoverCardProps) {\n  const resolvedSeed = useResolvedSeed(seed);\n  const theme = useSketchTheme(sketchColor);\n  const ink = sketchColor ?? theme.ink;\n\n  return (\n    <HoverCardSketchContext.Provider\n      value={{\n        roughness,\n        seed: resolvedSeed,\n        sketchColor,\n        bowing,\n        fillStyle,\n        strokeWidth,\n        hachureGap,\n        hachureAngle,\n        fillWeight,\n        resolvedSeed,\n        ink,\n        paper: fill ?? theme.paper,\n        animate,\n      }}\n    >\n      <HoverCardPrimitive.Root {...rest}>{children}</HoverCardPrimitive.Root>\n    </HoverCardSketchContext.Provider>\n  );\n}\n\nexport const HoverCardTrigger = HoverCardPrimitive.Trigger;\n\nexport interface HoverCardContentProps\n  extends ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content> {\n  children?: ReactNode;\n  fill?: string;\n}\n\nexport const HoverCardContent = forwardRef<\n  HTMLDivElement,\n  HoverCardContentProps\n>(function HoverCardContent(\n  { className, style, children, fill, sideOffset = 6, align = \"center\", ...rest },\n  ref,\n) {\n  const sketch = useHoverCardSketch();\n\n  return (\n    <HoverCardPrimitive.Portal>\n      <HoverCardPrimitive.Content\n        ref={ref}\n        sideOffset={sideOffset}\n        align={align}\n        className={cn(className)}\n        style={{ zIndex: 75, outline: \"none\", color: sketch.ink, ...style }}\n        {...rest}\n      >\n        <SketchBox\n          roughness={sketch.roughness}\n          seed={sketch.resolvedSeed}\n          sketchColor={sketch.ink}\n          bowing={sketch.bowing}\n          fillStyle={sketch.fillStyle ?? \"solid\"}\n          fill={fill ?? sketch.paper}\n          strokeWidth={sketch.strokeWidth ?? 1.5}\n          hachureGap={sketch.hachureGap}\n          hachureAngle={sketch.hachureAngle}\n          fillWeight={sketch.fillWeight}\n          shadow\n          animate={sketch.animate}\n          contentStyle={{ padding: 14, maxWidth: 320, fontSize: 14, color: sketch.ink }}\n        >\n          {children}\n        </SketchBox>\n      </HoverCardPrimitive.Content>\n    </HoverCardPrimitive.Portal>\n  );\n});\n\nexport const HoverCardArrow = HoverCardPrimitive.Arrow;\n"
+    }
+  ],
+  "dependencies": [
+    "@radix-ui/react-hover-card"
+  ],
+  "internalDependencies": [
+    "hooks/useResolvedSeed",
+    "hooks/useSketchTheme",
+    "primitives/SketchBox",
+    "types",
+    "utils"
+  ],
+  "componentDependencies": []
+}

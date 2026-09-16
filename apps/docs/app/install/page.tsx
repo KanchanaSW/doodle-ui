@@ -9,7 +9,23 @@ export default function InstallPage() {
         doodle-ui is a React 18+ library. rough.js ships with the package. React stays a peer dependency.
       </p>
 
-      <h2 className="text-2xl font-semibold mb-3">Package</h2>
+      <h2 className="text-2xl font-semibold mb-3">CLI (shadcn-style installer)</h2>
+      <p className="text-mute mb-3 max-w-[65ch]">
+        Copy component source code directly into your project so you own the styling, hooks, and sketch parameters.
+      </p>
+      <pre className="font-mono text-sm bg-ink text-chalkink p-4 mb-3 overflow-x-auto">{`# Initialize project configuration & copy shared utilities
+npx doodleui-react init
+
+# Add components directly into your codebase
+npx doodleui-react add button card badge dialog
+
+# List components and check installation status
+npx doodleui-react list
+
+# Compare local modifications against upstream registry
+npx doodleui-react diff button`}</pre>
+
+      <h2 className="text-2xl font-semibold mt-10 mb-3">Package (npm dependency)</h2>
       <pre className="font-mono text-sm bg-ink text-chalkink p-4 mb-3 overflow-x-auto">{`npm install doodleui-react
 pnpm add doodleui-react
 yarn add doodleui-react`}</pre>

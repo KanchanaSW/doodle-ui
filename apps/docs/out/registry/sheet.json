@@ -1,0 +1,18 @@
+{
+  "name": "sheet",
+  "displayName": "Sheet",
+  "description": "Edge-anchored slide-out panel (default: right).",
+  "files": [
+    {
+      "name": "sheet.tsx",
+      "path": "components/sheet.tsx",
+      "type": "component",
+      "content": "\"use client\";\n\nimport { forwardRef } from \"react\";\nimport {\n  SlidingPanelClose,\n  SlidingPanelContent,\n  SlidingPanelDescription,\n  SlidingPanelFooter,\n  SlidingPanelHeader,\n  SlidingPanelRoot,\n  SlidingPanelTitle,\n  SlidingPanelTrigger,\n  type SlidingPanelContentProps,\n  type SlidingPanelRootProps,\n  type SlidingPanelSide,\n} from \"../primitives/SlidingPanel\";\n\nexport type SheetProps = SlidingPanelRootProps & {\n  side?: SlidingPanelSide;\n};\n\nexport function Sheet({ side = \"right\", ...rest }: SheetProps) {\n  return <SlidingPanelRoot side={side} {...rest} />;\n}\n\nexport const SheetTrigger = SlidingPanelTrigger;\nexport const SheetClose = SlidingPanelClose;\n\nexport type SheetContentProps = SlidingPanelContentProps;\n\nexport const SheetContent = forwardRef<HTMLDivElement, SheetContentProps>(\n  function SheetContent(props, ref) {\n    return <SlidingPanelContent ref={ref} {...props} />;\n  },\n);\n\nexport const SheetHeader = SlidingPanelHeader;\nexport const SheetFooter = SlidingPanelFooter;\nexport const SheetTitle = SlidingPanelTitle;\nexport const SheetDescription = SlidingPanelDescription;\n"
+    }
+  ],
+  "dependencies": [],
+  "internalDependencies": [
+    "primitives/SlidingPanel"
+  ],
+  "componentDependencies": []
+}
