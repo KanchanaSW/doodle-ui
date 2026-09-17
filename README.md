@@ -2,7 +2,11 @@
 
 Hand-drawn React components with an Excalidraw-like sketch aesthetic. Chrome is drawn with [rough.js](https://roughjs.com). Text stays real HTML, so it remains crisp and accessible.
 
-The published package is `[doodleui-react](https://www.npmjs.com/package/doodleui-react)`. Docs live at [doodle-ui.netlify.app](https://doodle-ui.netlify.app).
+The published package is [`doodleui-react`](https://www.npmjs.com/package/doodleui-react). Docs live at [doodle-ui.netlify.app](https://doodle-ui.netlify.app).
+
+[![npm](https://img.shields.io/npm/v/doodleui-react.svg)](https://www.npmjs.com/package/doodleui-react)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/doodleui-react)](https://bundlephobia.com/package/doodleui-react)
+[![CI](https://github.com/KanchanaSW/doodle-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/KanchanaSW/doodle-ui/actions/workflows/ci.yml)
 
 ![image](https://github.com/user-attachments/assets/5ebf0f9f-2ae0-41a6-bba1-66b796d99050)
 

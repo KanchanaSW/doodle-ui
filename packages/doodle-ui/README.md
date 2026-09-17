@@ -2,6 +2,9 @@
 
 Hand-drawn React components with an Excalidraw-like sketch aesthetic. Chrome is drawn with [rough.js](https://roughjs.com). Text stays real HTML, so it remains crisp and accessible.
 
+[![npm](https://img.shields.io/npm/v/doodleui-react.svg)](https://www.npmjs.com/package/doodleui-react)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/doodleui-react)](https://bundlephobia.com/package/doodleui-react)
+
 ## Install
 
 ```bash

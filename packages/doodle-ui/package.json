@@ -43,7 +43,9 @@
     "CHANGELOG.md",
     "LICENSE"
   ],
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
     "build:registry": "tsx scripts/build-registry.ts",
     "audit:contrast": "tsx scripts/audit-contrast.ts",
@@ -51,7 +53,16 @@
     "dev": "tsup --watch",
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "chromatic": "chromatic --exit-zero-on-changes",
+    "size": "size-limit",
+    "size:why": "size-limit --why",
+    "size:check": "tsx scripts/verify-treeshake.ts",
+    "clean": "rm -rf dist storybook-static coverage",
     "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {
@@ -97,15 +108,34 @@
   },
   "devDependencies": {
     "@doodle-ui/tsconfig": "workspace:*",
+    "@size-limit/esbuild-why": "^14.0.0",
+    "@size-limit/preset-small-lib": "^14.0.0",
+    "@storybook/addon-a11y": "8.6.14",
+    "@storybook/addon-essentials": "8.6.14",
+    "@storybook/addon-interactions": "8.6.14",
+    "@storybook/react": "8.6.14",
+    "@storybook/react-vite": "8.6.14",
+    "@storybook/test": "8.6.14",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
     "@types/diff": "^8.0.0",
     "@types/node": "^20.17.10",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
+    "@vitest/coverage-v8": "^5.0.1",
+    "chromatic": "^18.9.2",
+    "jsdom": "^30.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "rollup-plugin-visualizer": "^7.1.1",
+    "size-limit": "^14.0.0",
+    "storybook": "8.6.14",
     "tsup": "^8.3.5",
     "tsx": "^4.23.13",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vite": "^6.4.1",
+    "vitest": "^5.0.1"
   },
   "publishConfig": {
     "access": "public"

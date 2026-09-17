@@ -1,0 +1,22 @@
+[
+  {
+    "name": "full package (ESM)",
+    "path": "dist/index.js",
+    "limit": "175 kB",
+    "gzip": true
+  },
+  {
+    "name": "Button only",
+    "path": "dist/index.js",
+    "import": "{ Button }",
+    "limit": "145 kB",
+    "gzip": true
+  },
+  {
+    "name": "Button + Card + Input + Dialog",
+    "path": "dist/index.js",
+    "import": "{ Button, Card, Input, Dialog }",
+    "limit": "145 kB",
+    "gzip": true
+  }
+]

@@ -8,7 +8,7 @@ export default defineConfig([
     entry: ["src/index.ts"],
     format: ["esm", "cjs"],
     dts: true,
-    splitting: false,
+    splitting: true,
     sourcemap: true,
     clean: true,
     treeshake: true,
@@ -19,6 +19,9 @@ export default defineConfig([
       "react/jsx-runtime",
       "framer-motion",
       "cmdk",
+      "input-otp",
+      "embla-carousel-react",
+      "react-resizable-panels",
       /^@radix-ui\//,
     ],
     async onSuccess() {
