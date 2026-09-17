@@ -19,6 +19,8 @@ export interface ResolvedSketchTheme {
   cardBg: string;
   shadow: string;
   accent: string;
+  /** High-contrast accent for text on accentFill (light mode). */
+  accentInk: string;
   accentFill: string;
   secondaryFill: string;
   info: string;
@@ -66,6 +68,7 @@ function paletteFromCss(isDark: boolean) {
     error: cssColor("--doodle-ui-color-error", js.error),
     success: cssColor("--doodle-ui-color-success", js.success),
     accent: js.accent,
+    accentInk: js.accentInk,
     accentFill: js.accentFill,
     secondaryFill: js.secondaryFill,
     shadow: isDark ? "rgba(0, 0, 0, 0.45)" : inkFallback,
@@ -142,6 +145,7 @@ export function useSketchTheme(sketchColorOverride?: string): ResolvedSketchThem
     cardBg: palette.cardBg,
     shadow: isDark ? palette.shadow : sketchColorOverride ?? palette.stroke,
     accent: palette.accent,
+    accentInk: palette.accentInk,
     accentFill: palette.accentFill,
     secondaryFill: palette.secondaryFill,
     info: palette.info,

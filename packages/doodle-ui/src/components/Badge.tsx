@@ -56,9 +56,10 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   ref,
 ) {
   const theme = useSketchTheme(sketchColor);
+  // Brand accent (#e24b3b) fails 4.5:1 on accentFill — use accentInk for text/stroke.
   const ink =
     variant === "accent"
-      ? sketchColor ?? theme.accent
+      ? sketchColor ?? (theme.isDark ? theme.accent : theme.accentInk)
       : sketchColor ?? theme.ink;
 
   const fill =

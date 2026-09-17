@@ -53,7 +53,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
   const theme = useSketchTheme(sketchColor);
   const ink = sketchColor ?? theme.ink;
   const accent = sketchColor ?? theme.accent;
-  const trackInk = sketchColor ?? (theme.isDark ? "rgba(243, 244, 246, 0.4)" : theme.ink);
+  const trackInk = sketchColor ?? (theme.isDark ? "rgba(243, 244, 246, 0.55)" : theme.ink);
   const resolvedSeed = useResolvedSeed(seed);
 
   return (

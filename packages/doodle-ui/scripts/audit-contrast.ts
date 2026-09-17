@@ -46,15 +46,16 @@ const LIGHT = {
   paper: "#f7f6f2",
   cardPaper: "#eef0ea",
   accent: "#e24b3b",
-  accentFill: "#f4c4bc",
+  accentInk: "#9b2c20",
+  accentFill: "#fce8e4",
   secondaryFill: "#d7e3d4",
   info: "#1d4e89",
-  warning: "#c47b17",
-  error: "#c0392b",
+  warning: "#8a5200",
+  error: "#b91c1c",
   success: "#2d6a4f",
   alertInfoFill: "#d2deec",
-  alertWarningFill: "#f3e2c0",
-  alertErrorFill: "#f3d0cc",
+  alertWarningFill: "#f8ebd0",
+  alertErrorFill: "#f8d4d0",
   alertSuccessFill: "#d3e8dc",
 } as const;
 
@@ -72,7 +73,7 @@ const DARK = {
   alertWarningFill: "rgba(251, 191, 36, 0.16)",
   alertErrorFill: "rgba(248, 113, 113, 0.16)",
   alertSuccessFill: "rgba(52, 211, 153, 0.16)",
-  sliderTrack: "rgba(243, 244, 246, 0.4)",
+  sliderTrack: "rgba(243, 244, 246, 0.55)",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -295,17 +296,17 @@ function buildPairs(): ColorPair[] {
       component: "Badge",
       mode: "light",
       kind: "text",
-      foreground: LIGHT.accent,
+      foreground: LIGHT.accentInk,
       background: LIGHT.accentFill,
-      note: "variant=accent text on accentFill",
+      note: "variant=accent text (accentInk) on accentFill",
     },
     {
       component: "Badge",
       mode: "light",
       kind: "ui-boundary",
-      foreground: LIGHT.accent,
+      foreground: LIGHT.accentInk,
       background: LIGHT.accentFill,
-      note: "variant=accent stroke on accentFill",
+      note: "variant=accent stroke (accentInk) on accentFill",
     },
     {
       component: "Badge",
@@ -396,21 +397,31 @@ function buildPairs(): ColorPair[] {
     }
   }
 
-  // Status colors as text on paper (Alert title uses status color)
-  for (const [name, color] of [
-    ["info", LIGHT.info],
-    ["warning", LIGHT.warning],
-    ["error", LIGHT.error],
-    ["success", LIGHT.success],
+  // Status colors as text on fill (Alert title) and on paper
+  for (const [name, color, fill] of [
+    ["info", LIGHT.info, LIGHT.alertInfoFill],
+    ["warning", LIGHT.warning, LIGHT.alertWarningFill],
+    ["error", LIGHT.error, LIGHT.alertErrorFill],
+    ["success", LIGHT.success, LIGHT.alertSuccessFill],
   ] as const) {
-    pairs.push({
-      component: "Alert",
-      mode: "light",
-      kind: "text",
-      foreground: color,
-      background: LIGHT.paper,
-      note: `${name} title on paper`,
-    });
+    pairs.push(
+      {
+        component: "Alert",
+        mode: "light",
+        kind: "text",
+        foreground: color,
+        background: fill,
+        note: `${name} title on fill`,
+      },
+      {
+        component: "Alert",
+        mode: "light",
+        kind: "text",
+        foreground: color,
+        background: LIGHT.paper,
+        note: `${name} title on paper`,
+      },
+    );
   }
 
   for (const [name, color] of [
@@ -436,7 +447,7 @@ function buildPairs(): ColorPair[] {
     kind: "ui-boundary",
     foreground: DARK.sliderTrack,
     background: DARK.paper,
-    note: "track stroke rgba(ink, 0.4) on paper",
+    note: "track stroke rgba(ink, 0.55) on paper",
   });
   pairs.push({
     component: "Slider",

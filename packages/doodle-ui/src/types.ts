@@ -175,19 +175,28 @@ export const DEFAULT_INSET = 3;
 export const SKETCH_COLORS = {
   ink: DEFAULT_INK,
   accent: "#e24b3b",
-  accentFill: "#f4c4bc",
+  /** Light wash behind accent badges/buttons — keep pale so accent ink stays ≥4.5:1. */
+  accentFill: "#fce8e4",
   secondaryFill: "#d7e3d4",
   paper: "#eef0ea",
   info: "#1d4e89",
-  warning: "#c47b17",
-  error: "#c0392b",
+  /** Darkened for WCAG AA text on paper and alert fills. */
+  warning: "#8a5200",
+  error: "#b91c1c",
   success: "#2d6a4f",
+  /**
+   * Darker accent used for Badge `variant="accent"` text/stroke on accentFill
+   * (brand `#e24b3b` is only ~2.5:1 on the wash).
+   */
+  accentInk: "#9b2c20",
 } as const;
 
 /** Semantic sketch colors for dark mode. */
 export const DARK_SKETCH_COLORS = {
   ink: DEFAULT_DARK_INK,
   accent: "#f87171",
+  /** Same as accent — dark paper already yields ≥4.5:1. */
+  accentInk: "#f87171",
   accentFill: "rgba(248, 113, 113, 0.22)",
   secondaryFill: "rgba(255, 255, 255, 0.08)",
   paper: DEFAULT_DARK_PAPER,

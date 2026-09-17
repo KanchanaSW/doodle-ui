@@ -24,8 +24,8 @@ export type ToastPosition =
 
 const LIGHT_VARIANT_FILL: Record<ToastVariant, string> = {
   info: "#d2deec",
-  warning: "#f3e2c0",
-  error: "#f3d0cc",
+  warning: "#f8ebd0",
+  error: "#f8d4d0",
   success: "#d3e8dc",
 };
 
