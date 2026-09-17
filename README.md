@@ -15,28 +15,44 @@ The published package is [`doodleui-react`](https://www.npmjs.com/package/doodle
 Copy component source code directly into your project to customize sketch styling directly:
 
 ```bash
-# Initialize doodleui config & copy shared utilities
+# npm
 npx doodleui-react init
-
-# Add components directly into your codebase
 npx doodleui-react add button card dialog
 
-# List available components and local install status
-npx doodleui-react list
+# pnpm
+pnpm dlx doodleui-react init
+pnpm dlx doodleui-react add button card dialog
 
-# Compare local modifications against upstream registry
-npx doodleui-react diff button
+# yarn
+yarn dlx doodleui-react init
+yarn dlx doodleui-react add button card dialog
+
+# bun
+bunx doodleui-react init
+bunx doodleui-react add button card dialog
 ```
+
+The CLI detects your package manager from lockfiles (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb` / `bun.lock`) when installing runtime dependencies.
 
 ## Install (npm dependency)
 
 ```bash
 npm install doodleui-react
-# or
+```
+
+```bash
 pnpm add doodleui-react
 ```
 
-Peer dependencies: `react` and `react-dom` >= 18. rough.js ships with the package.
+```bash
+yarn add doodleui-react
+```
+
+```bash
+bun add doodleui-react
+```
+
+Peer dependencies: `react` and `react-dom` >= 18.0.0. rough.js ships with the package.
 
 ## Quickstart
 

@@ -9,11 +9,21 @@ Hand-drawn React components with an Excalidraw-like sketch aesthetic. Chrome is 
 
 ```bash
 npm install doodleui-react
-# or
+```
+
+```bash
 pnpm add doodleui-react
 ```
 
-Peer dependencies: `react` and `react-dom` >= 18.
+```bash
+yarn add doodleui-react
+```
+
+```bash
+bun add doodleui-react
+```
+
+Peer dependencies: `react` and `react-dom` >= 18.0.0.
 
 ## Quickstart
 

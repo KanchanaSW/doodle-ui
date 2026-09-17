@@ -1,5 +1,9 @@
 import Link from "next/link";
 import { Alert, Button, Card } from "doodleui-react";
+import {
+  CliInstallTabs,
+  PackageInstallTabs,
+} from "@/components/InstallCommands";
 
 export default function InstallPage() {
   return (
@@ -12,23 +16,17 @@ export default function InstallPage() {
       <h2 className="text-2xl font-semibold mb-3">CLI (shadcn-style installer)</h2>
       <p className="text-mute mb-3 max-w-[65ch]">
         Copy component source code directly into your project so you own the styling, hooks, and sketch parameters.
+        The CLI detects your package manager from lockfiles (
+        <code className="font-mono">package-lock.json</code>,{" "}
+        <code className="font-mono">pnpm-lock.yaml</code>,{" "}
+        <code className="font-mono">yarn.lock</code>,{" "}
+        <code className="font-mono">bun.lockb</code> / <code className="font-mono">bun.lock</code>
+        ).
       </p>
-      <pre className="font-mono text-sm bg-chalkboard text-chalkink p-4 mb-3 overflow-x-auto">{`# Initialize project configuration & copy shared utilities
-npx doodleui-react init
-
-# Add components directly into your codebase
-npx doodleui-react add button card badge dialog
-
-# List components and check installation status
-npx doodleui-react list
-
-# Compare local modifications against upstream registry
-npx doodleui-react diff button`}</pre>
+      <CliInstallTabs />
 
       <h2 className="text-2xl font-semibold mt-10 mb-3">Package (npm dependency)</h2>
-      <pre className="font-mono text-sm bg-chalkboard text-chalkink p-4 mb-3 overflow-x-auto">{`npm install doodleui-react
-pnpm add doodleui-react
-yarn add doodleui-react`}</pre>
+      <PackageInstallTabs />
       <Alert variant="info" title="Package name" className="mb-10">
         Install <code className="font-mono">doodleui-react</code>. The name doodle-ui is blocked on npm by an unpublished 2023 stub.
       </Alert>

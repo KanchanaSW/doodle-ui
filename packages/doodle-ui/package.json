@@ -35,7 +35,8 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
@@ -44,8 +45,12 @@
     "LICENSE"
   ],
   "sideEffects": [
+    "./dist/styles.css",
     "**/*.css"
   ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build:registry": "tsx scripts/build-registry.ts",
     "audit:contrast": "tsx scripts/audit-contrast.ts",
@@ -66,8 +71,8 @@
     "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18"
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   },
   "dependencies": {
     "@clack/prompts": "^1.8.1",

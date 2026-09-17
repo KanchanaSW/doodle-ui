@@ -85,3 +85,43 @@ jobs:
       - name: Build Storybook (no Chromatic token)
         if: env.CHROMATIC_PROJECT_TOKEN == ''
         run: pnpm --filter doodleui-react build-storybook
+
+  cross-pm-compatibility:
+    name: Cross-PM (${{ matrix.pm }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pm: [npm, pnpm, yarn-classic, yarn-berry, bun]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - name: Enable Corepack (Yarn Berry)
+        if: matrix.pm == 'yarn-berry' || matrix.pm == 'yarn-classic'
+        run: |
+          corepack enable
+          if [ "${{ matrix.pm }}" = "yarn-berry" ]; then
+            corepack prepare yarn@4.6.0 --activate
+          else
+            corepack prepare yarn@1.22.22 --activate
+          fi
+      - uses: oven-sh/setup-bun@v2
+        if: matrix.pm == 'bun'
+        with:
+          bun-version: latest
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter doodleui-react build
+      - name: Pack tarball
+        id: pack
+        run: |
+          TARBALL=$(cd packages/doodle-ui && npm pack --pack-destination ../.. | tail -n 1)
+          echo "tarball=${PWD}/${TARBALL}" >> "$GITHUB_OUTPUT"
+      - name: Run smoke test
+        run: |
+          node scripts/test-pm-consumer.mjs --pm ${{ matrix.pm }} --tarball "${{ steps.pack.outputs.tarball }}"
