@@ -1,7 +1,7 @@
 "use client";
 
 import { useBaseRoughness } from "../hooks/useSketchDefaults";
-import { forwardRef, useRef, useState, type ReactNode } from "react";
+import { forwardRef, useId, useRef, useState, type ReactNode } from "react";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 import { motion } from "framer-motion";
 import {
@@ -69,6 +69,8 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
   ) {
     const [uncontrolled, setUncontrolled] = useState(defaultChecked === true);
     const isOn = checked ?? uncontrolled;
+    const generatedId = useId();
+    const inputId = id ?? generatedId;
     const baseRoughness = useBaseRoughness();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
@@ -100,7 +102,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
       >
         <SwitchPrimitive.Root
           ref={ref}
-          id={id}
+          id={inputId}
           checked={checked}
           defaultChecked={defaultChecked}
           onCheckedChange={(next) => {
@@ -171,7 +173,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
         </SwitchPrimitive.Root>
         {label ? (
           <label
-            htmlFor={id}
+            htmlFor={inputId}
             style={{
               fontSize: 15,
               cursor: "pointer",

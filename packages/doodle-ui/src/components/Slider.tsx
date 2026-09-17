@@ -45,6 +45,8 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
     hachureAngle,
     fillWeight,
     thumbShape = "circle",
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledby,
     ...rest
   },
   ref,
@@ -71,6 +73,8 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
         color: ink,
         ...style,
       }}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledby}
       {...rest}
     >
       <SliderPrimitive.Track
@@ -108,6 +112,8 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
         </SliderPrimitive.Range>
       </SliderPrimitive.Track>
       <SliderPrimitive.Thumb
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledby}
         style={{
           display: "block",
           width: 20,

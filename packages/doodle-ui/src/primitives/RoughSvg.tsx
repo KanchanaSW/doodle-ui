@@ -166,6 +166,8 @@ export function RoughSvg({
         width="100%"
         height="100%"
         overflow="visible"
+        aria-hidden="true"
+        focusable="false"
         style={{ display: "block" }}
       />
     </div>
