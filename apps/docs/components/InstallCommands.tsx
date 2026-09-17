@@ -105,3 +105,29 @@ export function CliInstallTabs() {
     </Tabs>
   );
 }
+
+const COMPONENT_CLI_PREFIX: Record<Manager, string> = {
+  npm: "npx doodleui-react add",
+  pnpm: "pnpm dlx doodleui-react add",
+  yarn: "yarn dlx doodleui-react add",
+  bun: "bunx doodleui-react add",
+};
+
+export function ComponentCliInstallTabs({ name }: { name: string }) {
+  return (
+    <Tabs defaultValue="npm" className="mb-6">
+      <TabList>
+        {MANAGERS.map((pm) => (
+          <Tab key={pm} value={pm}>
+            {pm}
+          </Tab>
+        ))}
+      </TabList>
+      {MANAGERS.map((pm) => (
+        <TabPanel key={pm} value={pm}>
+          <CodeBlock>{`${COMPONENT_CLI_PREFIX[pm]} ${name}`}</CodeBlock>
+        </TabPanel>
+      ))}
+    </Tabs>
+  );
+}
