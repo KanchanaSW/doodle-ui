@@ -44,7 +44,11 @@ export function App() {
 
 Wrap the tree in `SketchSeedProvider` so a Shuffle action can redraw every unlocked sketch. Pass `seed={123}` on a component to lock its wobble.
 
-Sketch strokes draw in on mount. Set `animate={false}` on a component, or wrap the tree in `DoodleUIProvider animate={false}`, to opt out. Pass `theme="light" | "dark" | "system"` on `DoodleUIProvider` (default `system`) so sketch ink and fills follow dark mode. See the docs for the full animation map.
+Sketch strokes draw in on mount. Set `animate={false}` on a component, or wrap the tree in `DoodleUIProvider animate={false}`, to opt out. Pass `theme="light" | "dark" | "system"` on `DoodleUIProvider` (default `system`) so sketch ink and fills follow dark mode. `prefers-reduced-motion: reduce` disables motion unless you set `forceAnimate`. See the [animation docs](https://doodle-ui.netlify.app/docs/animation#reduced-motion-support).
+
+## Accessibility
+
+Default themes meet **WCAG 2.1 AA** contrast for sketch strokes and text. Radix-backed controls keep accessible names and keyboard behavior; RoughSvg chrome is decorative (`aria-hidden`). Details and the audit matrix: [A11Y-AUDIT.md](https://github.com/KanchanaSW/doodle-ui/blob/master/A11Y-AUDIT.md) in the monorepo.
 
 ## Theming
 

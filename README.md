@@ -64,7 +64,17 @@ export function App() {
 }
 ```
 
-Wrap the tree in `SketchSeedProvider` so Shuffle can redraw every unlocked sketch. Wrap in `TooltipProvider` if you use tooltips. Pass `seed={123}` on a component to lock its wobble. Sketch animations are on by default; wrap in `DoodleUIProvider` or pass `animate={false}` to opt out. Pass `theme` on `DoodleUIProvider` (`light` / `dark` / `system`) so sketch colors follow dark mode.
+Wrap the tree in `SketchSeedProvider` so Shuffle can redraw every unlocked sketch. Wrap in `TooltipProvider` if you use tooltips. Pass `seed={123}` on a component to lock its wobble. Sketch animations are on by default; wrap in `DoodleUIProvider` or pass `animate={false}` to opt out. Pass `theme` on `DoodleUIProvider` (`light` / `dark` / `system`) so sketch colors follow dark mode. The library respects `prefers-reduced-motion` automatically — see [Animation docs](https://doodle-ui.netlify.app/docs/animation#reduced-motion-support).
+
+## Accessibility
+
+doodleui-react targets **WCAG 2.1 AA** for default light and dark themes:
+
+- Sketch stroke and text contrast audited programmatically (including an effective ratio for thin rough.js strokes)
+- Interactive roles, names, and keyboard behavior come from Radix (and related) primitives; decorative RoughSvg layers are `aria-hidden`
+- Reduced motion is honored unless you set `forceAnimate` on the provider
+
+Full results, before/after contrast tables, and the screen-reader checklist: **[A11Y-AUDIT.md](A11Y-AUDIT.md)**. Re-run the contrast suite with `pnpm --filter doodleui-react audit:contrast`.
 
 ## Theming
 
