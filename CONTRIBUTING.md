@@ -67,6 +67,23 @@ Every PR should pass:
 3. Bundle size (`size:check`)
 4. Chromatic visual review (when the project token is configured)
 
+## Changesets & Versioning
+
+We use [Changesets](https://github.com/changesets/changesets) for semantic versioning and automated changelog management.
+
+Every PR that modifies `packages/doodle-ui` (new component, feature, bug fix, or style adjustment) must include a changeset file:
+
+1. Run `pnpm changeset` from the repository root.
+2. Select `doodleui-react`.
+3. Select the appropriate semver bump:
+   - **patch**: Bug fixes, styling tweaks, minor docs updates that do not alter public component APIs.
+   - **minor**: New components, new props, new features, or non-breaking theme additions (e.g. Phase vN batches).
+   - **major**: Breaking API changes (prop renames, removed components, breaking behavior changes).
+4. Enter a clear, user-facing summary of the change (this entry is compiled into `CHANGELOG.md` upon release).
+5. Commit the generated `.changeset/*.md` file with your pull request.
+
+When changes are merged into `master`, an automated "Version Packages" PR is opened/updated. Once merged, GitHub Actions publishes the release to npm with cryptographic provenance.
+
 ## Commits
 
 Use conventional commits (`feat`, `fix`, `chore`, `docs`, `test`, `refactor`). Keep messages short.
