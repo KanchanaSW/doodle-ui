@@ -2,6 +2,7 @@
   "name": "doodle-ui-monorepo",
   "private": true,
   "version": "0.1.0",
+  "license": "MIT",
   "description": "Hand-drawn React component library monorepo",
   "scripts": {
     "build": "turbo run build",

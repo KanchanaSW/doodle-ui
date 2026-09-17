@@ -150,4 +150,4 @@ npx pnpm --filter doodleui-react publish --access public --no-git-checks
 
 ## License
 
-MIT
+[MIT](LICENSE) © 2026 KanchanaSW

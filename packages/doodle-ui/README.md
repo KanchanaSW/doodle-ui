@@ -88,4 +88,4 @@ The source for that site is `apps/docs` in the [doodle-ui](https://github.com/Ka
 
 ## License
 
-MIT
+[MIT](LICENSE) © 2026 KanchanaSW
