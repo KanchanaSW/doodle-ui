@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { Button } from "doodleui-react";
+import { Button, usePrefersReducedMotion } from "doodleui-react";
 import type { PropRow } from "@/lib/props";
 
 export interface ControlSlider {
@@ -66,6 +66,7 @@ export function Playground({
     return initial;
   });
   const [copied, setCopied] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const code = snippet(values);
 
   function setKey(key: string, value: unknown) {
@@ -80,8 +81,19 @@ export function Playground({
 
   return (
     <div className="my-8 grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)]">
-      <div className="component-canvas relative min-h-[220px] p-8 flex items-center justify-center border border-ink/10">
-        {render(values)}
+      <div className="component-canvas relative min-h-[220px] p-8 flex flex-col items-center justify-center gap-3 border border-ink/10">
+        {prefersReducedMotion ? (
+          <p
+            role="status"
+            className="absolute top-2 left-2 right-2 text-[12px] leading-snug text-mute border border-ink/15 bg-paper/80 px-2.5 py-1.5"
+          >
+            Reduced motion is on in your browser — sketches render instantly.{" "}
+            <a href="/docs/animation#reduced-motion-support" className="underline underline-offset-2">
+              Learn more
+            </a>
+          </p>
+        ) : null}
+        <div className={prefersReducedMotion ? "mt-8" : undefined}>{render(values)}</div>
       </div>
       <div className="flex flex-col gap-4">
         <div className="space-y-4">

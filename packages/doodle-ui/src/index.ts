@@ -40,6 +40,7 @@ export {
   useDoodleUI,
   useAnimate,
   useDrawIn,
+  usePrefersReducedMotion,
   DRAW_IN_DURATION_MS,
   DRAW_IN_ALERT_MS,
   DRAW_IN_TOOLTIP_MS,

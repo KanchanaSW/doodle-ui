@@ -22,6 +22,55 @@ import { DoodleUIProvider, Button, Card } from "doodleui-react";
 
 Toggle `animate` on any component playground to compare the animated sketch with the instant one.
 
+## Reduced Motion Support
+
+The library **automatically respects** the OS accessibility setting `prefers-reduced-motion: reduce`. When that media query matches, sketch animations are skipped unless you intentionally override them with `forceAnimate`.
+
+### What changes when reduced motion is active
+
+| Behavior | Normal | Reduced motion |
+| --- | --- | --- |
+| Border / fill draw-in | Dash-offset sketch (~180–400ms) | Instant final stroke |
+| Seed morph / wobble (hover, focus, toggle) | Re-inks with a new seed | Skipped — same seed, no transition |
+| Checkbox checkmark / Radio dot | Path draws in | Appears immediately |
+| Switch thumb | Spring slide | Instant position |
+| Modal / Dialog / Sheet / Drawer | Backdrop fade + panel enter/exit | Instant open/close |
+| Toast | Slide-in + settle wobble | Instant appear / disappear |
+| Spinner | Continuous rotate | Static arc |
+
+State changes (checked, open, selected) still update immediately — only the visual motion is removed. Screen readers announce the new state without waiting on animation.
+
+### How to test it
+
+Turn on Reduce Motion in your OS, then reload the docs (or any app using doodleui-react):
+
+- **macOS:** System Settings → Accessibility → Display → **Reduce motion**
+- **Windows:** Settings → Accessibility → Visual effects → **Animation effects** (off)
+- **iOS / iPadOS:** Settings → Accessibility → Motion → **Reduce Motion**
+- **Android:** Settings → Accessibility → **Remove animations** (wording varies by OEM)
+
+You can also emulate it in Chrome DevTools: Rendering → **Emulate CSS media feature prefers-reduced-motion: reduce**.
+
+Component playgrounds show a note when your browser currently has reduced motion enabled, so you can confirm the setting is active without leaving the page.
+
+### `forceAnimate` escape hatch
+
+`forceAnimate` on `DoodleUIProvider` re-enables sketch motion even when the user prefers reduced motion. Use it only for intentional demos or edge cases — **not** as the default for production UIs.
+
+```tsx
+// Prefer the default: honor the user's OS setting
+<DoodleUIProvider>
+  <Button>Respects reduced motion</Button>
+</DoodleUIProvider>
+
+// Escape hatch — only when you explicitly need motion despite the OS setting
+<DoodleUIProvider forceAnimate>
+  <Button>Animates even with Reduce Motion on</Button>
+</DoodleUIProvider>
+```
+
+Per-component `animate={false}` still wins and forces a static sketch. `animate` alone cannot override reduced motion; only `forceAnimate` can.
+
 ## Components
 
 - [Button](/docs/button) — border draw-in on mount; seed-morph on hover
