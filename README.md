@@ -8,7 +8,7 @@ The published package is [`doodleui-react`](https://www.npmjs.com/package/doodle
 [![bundle size](https://img.shields.io/bundlephobia/minzip/doodleui-react)](https://bundlephobia.com/package/doodleui-react)
 [![CI](https://github.com/KanchanaSW/doodle-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/KanchanaSW/doodle-ui/actions/workflows/ci.yml)
 
-![image](https://github.com/user-attachments/assets/5ebf0f9f-2ae0-41a6-bba1-66b796d99050)
+<img width="3186" height="4720" alt="image" src="https://github.com/user-attachments/assets/009a6a79-b002-48dd-b211-a224d10129b4" />
 
 ## CLI Component Installer (shadcn-style)
 
