@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions & Q&A
+    url: https://github.com/KanchanaSW/doodle-ui/discussions
+    about: Ask questions and discuss ideas in GitHub Discussions instead of opening an issue.
+  - name: Documentation
+    url: https://doodle-ui.netlify.app
+    about: Browse the doodleui-react docs, theming guide, and component examples.
