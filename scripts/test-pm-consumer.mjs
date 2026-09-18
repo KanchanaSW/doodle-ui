@@ -190,19 +190,23 @@ export function Demo() {
 }
 
 function yarnClassic(args, opts) {
+  // Version-check from the consumer cwd (not the monorepo root) so Corepack
+  // does not refuse yarn because the repo packageManager is pnpm.
+  const yarnEnv = { ...opts?.env, YARN_IGNORE_PATH: "1" };
   const yarnPath = which("yarn");
   if (yarnPath) {
-    const ver = spawnSync("yarn", ["--version"], { encoding: "utf8" });
+    const ver = spawnSync("yarn", ["--version"], {
+      encoding: "utf8",
+      cwd: opts?.cwd,
+      env: { ...process.env, ...yarnEnv },
+    });
     if (ver.status === 0 && ver.stdout.trim().startsWith("1.")) {
-      return run("yarn", args, {
-        ...opts,
-        env: { ...opts?.env, YARN_IGNORE_PATH: "1" },
-      });
+      return run("yarn", args, { ...opts, env: yarnEnv });
     }
   }
   return run("npm", ["exec", "--yes", "yarn@1.22.22", "--", ...args], {
     ...opts,
-    env: { ...opts?.env, YARN_IGNORE_PATH: "1" },
+    env: yarnEnv,
   });
 }
 
@@ -239,7 +243,10 @@ function installWithPm(pm, dir, tarball) {
       break;
     }
     case "yarn-classic": {
-      yarnClassic(["add", "react@18", "react-dom@18", `file:${absTarball}`], { cwd: dir });
+      // Prefer a cwd-relative file: URL — Yarn Classic is unreliable with
+      // absolute file: paths on some CI runners.
+      const relTarball = `file:./${absTarball.split(/[/\\]/).pop()}`;
+      yarnClassic(["add", "react@18", "react-dom@18", relTarball], { cwd: dir });
       yarnClassic(
         ["add", "-D", "typescript@5", "@types/react@18", "@types/react-dom@18"],
         { cwd: dir },

@@ -3,6 +3,8 @@
  * Run after `pnpm build`.
  */
 import { execFileSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 
 type SizeResult = {
   name: string;
@@ -10,7 +12,10 @@ type SizeResult = {
   passed: boolean;
 };
 
-const raw = execFileSync("npx", ["size-limit", "--json"], {
+const localBin = join(process.cwd(), "node_modules", ".bin", "size-limit");
+const sizeLimitCmd = existsSync(localBin) ? localBin : "size-limit";
+
+const raw = execFileSync(sizeLimitCmd, ["--json"], {
   encoding: "utf8",
   stdio: ["ignore", "pipe", "pipe"],
 });
