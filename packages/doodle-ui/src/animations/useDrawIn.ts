@@ -77,21 +77,35 @@ export function drawIn(
     }
     if (length <= 0) continue;
 
+    // Dasharray alone does not hide the stroke. Never leave an inline
+    // dashoffset if the animation fails to run — that permanently hid borders.
     path.style.strokeDasharray = `${length}`;
-    path.style.strokeDashoffset = `${length}`;
-
-    const animation = path.animate(
-      [{ strokeDashoffset: String(length) }, { strokeDashoffset: "0" }],
-      { duration, delay, easing: DRAW_IN_EASING, fill: "forwards" },
-    );
-    animation.finished
-      .then(() => {
-        clearDash(path);
-      })
-      .catch(() => {
-        /* cancelled */
-      });
-    animations.push(animation);
+    try {
+      const animation = path.animate(
+        [{ strokeDashoffset: length }, { strokeDashoffset: 0 }],
+        {
+          duration,
+          delay,
+          easing: DRAW_IN_EASING,
+          fill: "forwards",
+        },
+      );
+      animation.finished
+        .then(() => {
+          clearDash(path);
+          try {
+            animation.cancel();
+          } catch {
+            /* already finished */
+          }
+        })
+        .catch(() => {
+          clearDash(path);
+        });
+      animations.push(animation);
+    } catch {
+      clearDash(path);
+    }
   }
 
   running.set(target, animations);
@@ -100,6 +114,9 @@ export function drawIn(
 /**
  * Sketch-in the rough.js stroke path on the first paint, and again when
  * `replayKey` changes (e.g. a hover seed swap).
+ *
+ * Keeps watching for RoughSvg path replacements so draw-in still runs after
+ * late size measurement / redraws.
  *
  * @param pathRef - Ref to an SVG path, `<svg>`, or container with sketch paths
  * @param duration - Animation duration in ms
@@ -130,21 +147,34 @@ export function useDrawIn(
       return;
     }
 
-    const apply = () => drawIn(target, duration, delay);
+    let cancelled = false;
+    let lastPathSignature = "";
 
-    if (getStrokePaths(target).length > 0) {
-      apply();
-      return () => cancelDrawIn(target);
-    }
+    const pathSignature = () =>
+      getStrokePaths(target)
+        .map((path) => path.getAttribute("d") ?? "")
+        .join("|");
+
+    const apply = () => {
+      if (cancelled) return;
+      const paths = getStrokePaths(target);
+      if (paths.length === 0) return;
+      const signature = pathSignature();
+      // Avoid restarting the same stroke on unrelated DOM churn.
+      if (signature === lastPathSignature && signature !== "") return;
+      lastPathSignature = signature;
+      drawIn(target, duration, delay);
+    };
+
+    apply();
 
     const observer = new MutationObserver(() => {
-      if (getStrokePaths(target).length === 0) return;
-      observer.disconnect();
       apply();
     });
     observer.observe(target, { childList: true, subtree: true });
 
     return () => {
+      cancelled = true;
       observer.disconnect();
       cancelDrawIn(target);
     };
