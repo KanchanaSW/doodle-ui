@@ -54,6 +54,18 @@ bun add doodleui-react
 
 Peer dependencies: `react` and `react-dom` >= 18.0.0. rough.js ships with the package.
 
+## Online Playgrounds & Starters
+
+Zero-setup templates you can open in the browser:
+
+| Template | StackBlitz | CodeSandbox |
+| --- | --- | --- |
+| Next.js App Router | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/nextjs-starter) | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/nextjs-starter) |
+| Vite + React | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/vite-react-starter) | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/vite-react-starter) |
+| Full showcase | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/showcase) | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/showcase) |
+
+Source lives in [`examples/`](examples/) in this repo.
+
 ## Quickstart
 
 ```tsx
@@ -133,6 +145,7 @@ Modal, Tooltip, Checkbox, Radio, Select, Switch, Tabs, Accordion, Slider, Toast,
 
 - `packages/doodle-ui` — the component library (published as `doodleui-react`)
 - `apps/docs` — Next.js 14 App Router documentation site
+- `examples/` — Vite, Next.js, and kitchen-sink playground starters
 
 ```bash
 pnpm install

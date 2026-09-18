@@ -25,6 +25,14 @@ bun add doodleui-react
 
 Peer dependencies: `react` and `react-dom` >= 18.0.0.
 
+## Online Playgrounds & Starters
+
+| Template | StackBlitz | CodeSandbox |
+| --- | --- | --- |
+| Next.js App Router | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/nextjs-starter) | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/nextjs-starter) |
+| Vite + React | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/vite-react-starter) | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/vite-react-starter) |
+| Full showcase | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/showcase) | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/showcase) |
+
 ## Quickstart
 
 ```tsx

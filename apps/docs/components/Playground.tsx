@@ -1,8 +1,11 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import { Button, usePrefersReducedMotion } from "doodleui-react";
 import type { PropRow } from "@/lib/props";
+import { openStackBlitzProject } from "@/lib/stackblitz";
+
+export const PlaygroundTitleContext = createContext("component");
 
 export interface ControlSlider {
   type: "slider";
@@ -53,11 +56,16 @@ export function Playground({
   render,
   snippet,
   controls,
+  title,
 }: {
   render: (values: Record<string, unknown>) => ReactNode;
   snippet: (values: Record<string, unknown>) => string;
   controls: Control[];
+  /** Used for the StackBlitz project title (e.g. "Button"). Falls back to context. */
+  title?: string;
 }) {
+  const contextTitle = useContext(PlaygroundTitleContext);
+  const resolvedTitle = title ?? contextTitle;
   const [values, setValues] = useState<Record<string, unknown>>(() => {
     const initial: Record<string, unknown> = {};
     for (const control of controls) {
@@ -77,6 +85,10 @@ export function Playground({
     await navigator.clipboard.writeText(code);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1400);
+  }
+
+  function openInStackBlitz() {
+    openStackBlitzProject(resolvedTitle, code);
   }
 
   return (
@@ -157,9 +169,12 @@ export function Playground({
           <pre className="font-mono text-[12px] leading-relaxed bg-chalkboard text-chalkink p-3 overflow-x-auto whitespace-pre-wrap">
             {code}
           </pre>
-          <div className="mt-2">
+          <div className="mt-2 flex flex-wrap gap-2">
             <Button size="sm" variant="outline" onClick={copy}>
               {copied ? "Copied" : "Copy snippet"}
+            </Button>
+            <Button size="sm" variant="ghost" onClick={openInStackBlitz}>
+              Open in StackBlitz
             </Button>
           </div>
         </div>

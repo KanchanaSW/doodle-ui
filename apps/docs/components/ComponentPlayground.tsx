@@ -161,12 +161,20 @@ import {
 import type { ComponentSlug } from "@/lib/nav";
 import {
   Playground,
+  PlaygroundTitleContext,
   sketchControls,
   sketchSnippetProps,
   type Control,
 } from "@/components/Playground";
 
 const LOCKED_SEED = 42;
+
+function slugToTitle(slug: ComponentSlug): string {
+  return slug
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
 
 const animateControl: Control = {
   type: "toggle",
@@ -190,6 +198,15 @@ function seedFrom(values: Record<string, unknown>): number | undefined {
 }
 
 export function ComponentPlayground({ name }: { name: ComponentSlug }) {
+  const title = slugToTitle(name);
+  return (
+    <PlaygroundTitleContext.Provider value={title}>
+      <ComponentPlaygroundInner name={name} />
+    </PlaygroundTitleContext.Provider>
+  );
+}
+
+function ComponentPlaygroundInner({ name }: { name: ComponentSlug }) {
   switch (name) {
     case "button":
       return <ButtonPlayground />;

@@ -21,6 +21,7 @@ import {
   Switch,
   Textarea,
 } from "doodleui-react";
+import { SHOWCASE_STACKBLITZ_URL } from "@/lib/playground-links";
 
 export function KitchenSinkCard() {
   const [checked, setChecked] = useState(true);
@@ -92,6 +93,15 @@ export function KitchenSinkCard() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
+        <a
+          href={SHOWCASE_STACKBLITZ_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="text-sm text-mute hover:text-accent underline underline-offset-2"
+        >
+          Open full playground →
+        </a>
       </div>
     </Card>
   );

@@ -38,6 +38,9 @@ importers:
       '@phosphor-icons/react':
         specifier: ^2.1.7
         version: 2.1.10(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@stackblitz/sdk':
+        specifier: ^1.11.0
+        version: 1.11.1
       '@types/mdx':
         specifier: ^2.0.13
         version: 2.0.14
@@ -2052,6 +2055,9 @@ packages:
     engines: {node: ^22.19.0 || ^24.5.0 || >=26.0.0}
     peerDependencies:
       size-limit: 14.0.0
+
+  '@stackblitz/sdk@1.11.1':
+    resolution: {integrity: sha512-5wl1j3IhtmE7POTl2W9VGQdbQyBQrRsF3jcYBK+0V353AuO8H2GFZkiFNyTRxL+TDY3HIFCHc3G983Osmg76Lg==}
 
   '@storybook/addon-a11y@8.6.14':
     resolution: {integrity: sha512-fozv6enO9IgpWq2U8qqS8MZ21Nt+MVHiRQe3CjnCpBOejTyo/ATm690PeYYRVHVG6M/15TVePb0h3ngKQbrrzQ==}
@@ -6906,6 +6912,8 @@ snapshots:
     dependencies:
       rolldown: 1.2.9
       size-limit: 14.0.0
+
+  '@stackblitz/sdk@1.11.1': {}
 
   '@storybook/addon-a11y@8.6.14(storybook@8.6.14)':
     dependencies:

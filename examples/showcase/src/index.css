@@ -1,0 +1,90 @@
+:root {
+  --paper: #eef0ea;
+  --ink: #1f1d1a;
+  --mute: #5c5852;
+  --accent: #e24b3b;
+  --card: #ffffffb8;
+  --doodle-ui-font: "Patrick Hand", cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: Outfit, system-ui, sans-serif;
+  background:
+    linear-gradient(180deg, rgb(238 240 234 / 0.96), rgb(238 240 234 / 0.96)),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 23px,
+      rgb(31 29 26 / 0.035) 23px,
+      rgb(31 29 26 / 0.035) 24px
+    );
+  color: var(--ink);
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Patrick Hand", cursive;
+  font-weight: 400;
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: rgb(238 240 234 / 0.92);
+  border-bottom: 1px solid rgb(31 29 26 / 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.toolbar-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  padding: 24px 20px 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stack {
+  display: grid;
+  gap: 14px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}

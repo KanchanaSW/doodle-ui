@@ -12,3 +12,6 @@ coverage
 .vercel
 storybook-static
 packages/doodle-ui/storybook-static
+examples/*/node_modules
+examples/*/dist
+examples/*/.next

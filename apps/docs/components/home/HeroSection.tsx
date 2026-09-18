@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Badge, Button } from "doodleui-react";
 import { ShuffleButton } from "@/components/ShuffleButton";
+import { SHOWCASE_STACKBLITZ_URL } from "@/lib/playground-links";
 
 export function HeroSection() {
   return (
@@ -26,6 +27,11 @@ export function HeroSection() {
             View Components
           </Button>
         </Link>
+        <a href={SHOWCASE_STACKBLITZ_URL} target="_blank" rel="noreferrer">
+          <Button size="lg" variant="outline">
+            Open in StackBlitz
+          </Button>
+        </a>
         <ShuffleButton size="lg" variant="ghost" />
       </div>
     </section>
