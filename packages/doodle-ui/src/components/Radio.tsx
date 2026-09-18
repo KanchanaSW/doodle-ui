@@ -4,7 +4,6 @@ import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   forwardRef,
   useId,
-  useLayoutEffect,
   useRef,
   type ComponentPropsWithoutRef,
   type ReactNode,
@@ -16,6 +15,7 @@ import {
   useAnimate,
   useDrawIn,
 } from "../animations";
+import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
 import type { SketchProps } from "../types";
@@ -89,7 +89,7 @@ function RadioDot({
   const ref = useRef<HTMLSpanElement>(null);
   useDrawIn(ref, DRAW_IN_MARK_MS, shouldAnimate);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const node = ref.current;
     if (!node || !shouldAnimate) return;
     const animation = node.animate(

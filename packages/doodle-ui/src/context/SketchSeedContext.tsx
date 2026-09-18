@@ -4,12 +4,13 @@ import {
   createContext,
   useCallback,
   useContext,
-  useLayoutEffect,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
-import { nextFontIndex, randomSeed } from "../utils";
+import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
+import { DEFAULT_SEED, nextFontIndex, randomSeed } from "../utils";
 
 /**
  * Seed and font shuffle state from {@link SketchSeedProvider}.
@@ -43,8 +44,10 @@ const SketchSeedContext = createContext<SketchSeedContextValue | null>(null);
 export interface SketchSeedProviderProps {
   children: ReactNode;
   /**
-   * Initial shared sketch seed. Random when omitted.
-   * @default undefined (random on mount)
+   * Initial shared sketch seed. Random after mount when omitted.
+   * Uses a deterministic default on the server / first client render so SSR
+   * and hydration match; a random seed is applied in `useEffect` when unset.
+   * @default undefined (deterministic then randomize after mount)
    */
   initialSeed?: number;
   /**
@@ -79,9 +82,14 @@ export function SketchSeedProvider({
   fonts,
   initialFontIndex = 0,
 }: SketchSeedProviderProps) {
-  const [seed, setSeed] = useState(() => initialSeed ?? randomSeed());
+  const [seed, setSeed] = useState(() => initialSeed ?? DEFAULT_SEED);
   const [fontIndex, setFontIndex] = useState(initialFontIndex);
   const fontCount = fonts?.length ?? 0;
+
+  useEffect(() => {
+    if (initialSeed !== undefined) return;
+    setSeed(randomSeed());
+  }, [initialSeed]);
 
   const shuffle = useCallback(() => {
     setSeed(randomSeed());
@@ -90,7 +98,7 @@ export function SketchSeedProvider({
 
   const activeFamily = fontIndex > 0 ? fonts?.[fontIndex] : undefined;
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const root = document.documentElement;
     if (activeFamily) {
       root.style.setProperty("--doodle-ui-font", activeFamily);

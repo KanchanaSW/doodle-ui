@@ -5,7 +5,6 @@ import {
   createContext,
   forwardRef,
   useContext,
-  useLayoutEffect,
   useRef,
   useState,
   type HTMLAttributes,
@@ -20,6 +19,7 @@ import {
   useAnimate,
   useDrawIn,
 } from "../animations";
+import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
@@ -158,7 +158,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
   const ink = sketchColor ?? theme.ink;
   const shouldAnimate = useAnimate(animate);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const wrapper = wrapperRef.current;
     const table = tableRef.current;
     if (!wrapper || !table) return;

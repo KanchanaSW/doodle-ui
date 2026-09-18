@@ -27,7 +27,8 @@ export {
   type SketchSeedContextValue,
   type SketchSeedProviderProps,
 } from "./hooks/useSketchSeed";
-export { useResolvedSeed } from "./hooks/useResolvedSeed";
+export { useResolvedSeed, DEFAULT_SEED } from "./hooks/useResolvedSeed";
+export { useIsomorphicLayoutEffect } from "./hooks/useIsomorphicLayoutEffect";
 export {
   useSketchDefaults,
   useBaseRoughness,

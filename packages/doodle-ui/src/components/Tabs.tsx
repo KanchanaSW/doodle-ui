@@ -5,7 +5,6 @@ import {
   createContext,
   forwardRef,
   useContext,
-  useLayoutEffect,
   useRef,
   useState,
   type ComponentPropsWithoutRef,
@@ -18,6 +17,7 @@ import {
   useAnimate,
   useDrawIn,
 } from "../animations";
+import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
@@ -189,7 +189,7 @@ export const TabList = forwardRef<HTMLDivElement, TabListProps>(
     const listRef = useRef<HTMLDivElement>(null);
     const [underline, setUnderline] = useState<UnderlineBox | null>(null);
 
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       const list = listRef.current;
       if (!list) return;
 

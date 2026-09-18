@@ -26,6 +26,18 @@ pnpm --filter doodleui-react test:coverage
 
 When testing animated components, include cases for `animate={false}` and `prefers-reduced-motion` (see `setPrefersReducedMotion` in `packages/doodle-ui/src/test/`).
 
+## SSR & hydration safety
+
+Sketch seeds and theme detection must be **deterministic on the server and on the client's first hydration render**. Randomization belongs in a post-mount `useEffect` only.
+
+Rules for new code:
+
+1. **Never** call `Math.random()` (or `randomSeed()`) during render / `useState` initializers that affect SSR markup. Use `DEFAULT_SEED` (`0`) for the first pass, then randomize in `useEffect` when the value is uncontrolled.
+2. Prefer **`useIsomorphicLayoutEffect`** (`packages/doodle-ui/src/hooks/useIsomorphicLayoutEffect.ts`) instead of `useLayoutEffect`. Plain `useLayoutEffect` logs React warnings under Next.js SSR.
+3. Avoid branching on `typeof window !== "undefined"` for values that paint into HTML/styles on the first render — that creates the same class of hydration bug. Detect DOM / media state after mount.
+4. Explicit `seed={…}` and `<SketchSeedProvider initialSeed={…}>` stay locked; Shuffle (`useSketchSeed().shuffle`) is already post-mount and is unaffected.
+5. Cover SSR with the Vitest suites in `packages/doodle-ui/src/__tests__/ssr.test.tsx` and `ssr-hydrate.test.tsx`. Optionally run `npx tsx scripts/verify-ssr-routers.ts` from `packages/doodle-ui`.
+
 ## Storybook & visual regression
 
 Storybook stories live under `packages/doodle-ui/src/stories/`. **Always pin a fixed `seed` (e.g. `seed={42}`)** on sketch components used for Chromatic — rough.js wobble is otherwise a false-positive visual diff.

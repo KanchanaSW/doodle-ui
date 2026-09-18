@@ -1,6 +1,7 @@
 "use client";
 
-import { useLayoutEffect, useState, type RefObject } from "react";
+import { useState, type RefObject } from "react";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
 function readSize(el: HTMLElement): { width: number; height: number } {
   return {
@@ -20,7 +21,7 @@ export function useElementSize(
 ): { width: number; height: number } {
   const [size, setSize] = useState({ width: 0, height: 0 });
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
 

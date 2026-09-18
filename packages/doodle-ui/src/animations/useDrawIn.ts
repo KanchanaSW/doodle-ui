@@ -1,6 +1,7 @@
 "use client";
 
-import { useLayoutEffect, type RefObject } from "react";
+import { type RefObject } from "react";
+import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 
 /** Default sketch-in duration. Ease-out over ~400ms. */
 export const DRAW_IN_DURATION_MS = 400;
@@ -138,7 +139,7 @@ export function useDrawIn(
   replayKey?: unknown,
   delay: number = 0,
 ): void {
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const target = pathRef.current;
     if (!target) return;
 

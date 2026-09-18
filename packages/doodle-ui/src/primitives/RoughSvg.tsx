@@ -1,7 +1,8 @@
 "use client";
 
-import { useLayoutEffect, useRef, type CSSProperties } from "react";
+import { useRef, type CSSProperties } from "react";
 import rough from "roughjs";
+import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import {
   mergeSketchProps,
@@ -175,7 +176,7 @@ export function RoughSvg({
   const width = widthProp ?? measured.width;
   const height = heightProp ?? measured.height;
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const container = containerRef.current;
     if (!container) return;
     const svg = ensureSvg(container);
@@ -217,7 +218,7 @@ export function RoughSvg({
   ]);
 
   // Late layout / wiped sketch recovery: if the layer is sized but empty, paint.
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const container = containerRef.current;
     if (!container || width < 2 || height < 2) return;
     const svg = ensureSvg(container);

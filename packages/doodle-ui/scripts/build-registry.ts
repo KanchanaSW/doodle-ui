@@ -30,6 +30,7 @@ const SHARED_FILES = [
   "animations/useTweenNumber.ts",
   "context/SketchSeedContext.tsx",
   "hooks/useElementSize.ts",
+  "hooks/useIsomorphicLayoutEffect.ts",
   "hooks/useResolvedSeed.ts",
   "hooks/useSketchSeed.ts",
   "hooks/useSketchTheme.ts",

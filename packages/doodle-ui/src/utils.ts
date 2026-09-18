@@ -10,6 +10,12 @@ export function randomSeed(): number {
   return Math.floor(Math.random() * 2 ** 31);
 }
 
+/**
+ * Deterministic seed for the server render and the client's first hydration
+ * pass when no explicit seed is provided. Randomization happens after mount.
+ */
+export const DEFAULT_SEED = 0;
+
 /** Follows SketchSeedProvider --doodle-ui-font, then styles.css --doodle-ui-font-family. */
 export const doodleUiFontFamily =
   "var(--doodle-ui-font, var(--doodle-ui-font-family, inherit))";

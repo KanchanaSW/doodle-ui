@@ -35,8 +35,9 @@ export interface SketchProps {
   roughness?: number;
   /**
    * Locks the hand-drawn wobble for this instance. When omitted, uses
-   * {@link SketchSeedProvider} seed (Shuffle redraws) or a stable random seed on mount.
-   * @default undefined (follow provider or mount random)
+   * {@link SketchSeedProvider} seed (Shuffle redraws) or {@link DEFAULT_SEED}
+   * on first render, then a random seed after mount.
+   * @default undefined (follow provider or fixed-then-randomize)
    * @example
    * <Card seed={42} title="Stable screenshot" />
    */

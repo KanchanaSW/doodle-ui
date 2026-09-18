@@ -81,6 +81,28 @@ export function App() {
         </p>
       </Card>
 
+      <h2 className="text-2xl font-semibold mt-10 mb-3">SSR / Next.js</h2>
+      <p className="text-mute mb-3 max-w-[65ch] leading-relaxed">
+        doodleui-react is SSR-safe with the Next.js App Router and Pages Router.
+        Uncontrolled sketch seeds use a fixed default on the server and during the
+        first client hydration pass, then pick a random seed after mount. That keeps
+        React hydration quiet — you will not see mismatch warnings from rough.js wobble.
+      </p>
+      <p className="text-mute mb-3 max-w-[65ch] leading-relaxed">
+        Because of that, the hand-drawn &quot;wobble&quot; for components without an explicit{" "}
+        <code className="font-mono">seed</code> may settle only after the page is
+        interactive. Pass <code className="font-mono">seed={"{123}"}</code> or wrap with{" "}
+        <code className="font-mono">{`<SketchSeedProvider initialSeed={123}>`}</code> when
+        you need a stable sketch on first paint (screenshots, Chromatic, marketing pages).
+      </p>
+      <p className="text-mute mb-10 max-w-[65ch] leading-relaxed">
+        Shuffle via <code className="font-mono">useSketchSeed()</code> is user-triggered
+        after mount and is unaffected. Import components from a Client Component (
+        <code className="font-mono">&apos;use client&apos;</code>) or from a Server Component
+        that renders them as children — every public component already ships with the
+        client directive.
+      </p>
+
       <Link href="/docs/button">
         <Button>Open the Button docs</Button>
       </Link>

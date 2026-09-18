@@ -92,7 +92,9 @@ export function useSketchTheme(sketchColorOverride?: string): ResolvedSketchThem
   const [isClientDark, setIsClientDark] = useState<boolean>(() => {
     if (contextTheme === "dark") return true;
     if (contextTheme === "light") return false;
-    return checkIsDark();
+    // Deterministic first render (SSR + hydration). Prefer-color-scheme /
+    // DOM class detection runs in useEffect after mount.
+    return false;
   });
 
   useEffect(() => {

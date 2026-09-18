@@ -4,7 +4,6 @@ import {
   createContext,
   forwardRef,
   useContext,
-  useLayoutEffect,
   useRef,
   useState,
   type MutableRefObject,
@@ -16,6 +15,7 @@ import {
   useAnimate,
   useDrawIn,
 } from "../animations";
+import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
@@ -186,7 +186,7 @@ export const ToggleGroupItem = forwardRef<
   );
   const sketchSeed = shouldAnimate ? pressSeed : sketch.resolvedSeed;
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const el = rootRef.current;
     if (!el) return;
     const sync = () => setPressed(el.getAttribute("data-state") === "on");
