@@ -175,6 +175,13 @@ pnpm --filter doodleui-react publish --access public
 npx pnpm --filter doodleui-react publish --access public --no-git-checks
 ```
 
+## Community & Contributing
+
+- [Contributing Guide](CONTRIBUTING.md) — setup, component conventions, changesets, and PR checklist
+- [Code of Conduct](CODE_OF_CONDUCT.md) — expectations for community participation
+- [Security Policy](SECURITY.md) — how to report vulnerabilities privately
+- [GitHub Discussions](https://github.com/KanchanaSW/doodle-ui/discussions) — questions and ideas
+
 ## License
 
 [MIT](LICENSE) © 2026 KanchanaSW
