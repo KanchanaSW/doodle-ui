@@ -2,6 +2,7 @@
 
 import {
   forwardRef,
+  memo,
   useRef,
   useState,
   type ButtonHTMLAttributes,
@@ -71,8 +72,8 @@ function assignRef<T>(ref: ForwardedRef<T>, value: T | null) {
  *
  * @see Input
  */
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  function Button(
+export const Button = memo(
+  forwardRef<HTMLButtonElement, ButtonProps>(function Button(
     {
       children,
       className,
@@ -188,5 +189,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         <span style={{ position: "relative", zIndex: 1 }}>{children}</span>
       </button>
     );
-  },
+  }),
 );
+Button.displayName = "Button";

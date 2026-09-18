@@ -4,7 +4,9 @@ import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   createContext,
   forwardRef,
+  memo,
   useContext,
+  useMemo,
   useRef,
   useState,
   type HTMLAttributes,
@@ -69,7 +71,7 @@ interface RowLine {
   index: number;
 }
 
-function TableRule({
+const TableRule = memo(function TableRule({
   line,
   headerUnderline,
   roughness,
@@ -125,7 +127,7 @@ function TableRule({
       />
     </div>
   );
-}
+});
 
 /**
  * Data table with hand-drawn row rules.
@@ -133,64 +135,34 @@ function TableRule({
  * @example
  * <Table />
  */
-export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
-  {
-    className,
-    style,
-    children,
-    headerUnderline = true,
-    roughness,
-    seed,
-    sketchColor,
-    bowing,
-    fillStyle,
-    strokeWidth,
-    animate,
-    ...rest
-  },
-  ref,
-) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const tableRef = useRef<HTMLTableElement | null>(null);
-  const [lines, setLines] = useState<RowLine[]>([]);
-  const resolvedSeed = useResolvedSeed(seed);
-  const theme = useSketchTheme(sketchColor);
-  const ink = sketchColor ?? theme.ink;
-  const shouldAnimate = useAnimate(animate);
+export const Table = memo(
+  forwardRef<HTMLTableElement, TableProps>(function Table(
+    {
+      className,
+      style,
+      children,
+      headerUnderline = true,
+      roughness,
+      seed,
+      sketchColor,
+      bowing,
+      fillStyle,
+      strokeWidth,
+      animate,
+      ...rest
+    },
+    ref,
+  ) {
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const tableRef = useRef<HTMLTableElement | null>(null);
+    const [lines, setLines] = useState<RowLine[]>([]);
+    const resolvedSeed = useResolvedSeed(seed);
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
+    const shouldAnimate = useAnimate(animate);
 
-  useIsomorphicLayoutEffect(() => {
-    const wrapper = wrapperRef.current;
-    const table = tableRef.current;
-    if (!wrapper || !table) return;
-
-    const measure = () => {
-      const rows = Array.from(table.querySelectorAll("tr"));
-      const next: RowLine[] = [];
-      rows.forEach((row, index) => {
-        const isLast = index === rows.length - 1;
-        const isHeader = row.parentElement?.tagName === "THEAD";
-        if (isLast && !isHeader) return;
-        next.push({
-          y: row.offsetTop + row.offsetHeight,
-          width: table.offsetWidth,
-          key: isHeader ? `header-${index}` : `row-${index}`,
-          header: Boolean(isHeader),
-          index,
-        });
-      });
-      setLines(next);
-    };
-
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(table);
-    observer.observe(wrapper);
-    return () => observer.disconnect();
-  }, [children]);
-
-  return (
-    <TableSketchContext.Provider
-      value={{
+    const sketchContext = useMemo<TableSketchContextValue>(
+      () => ({
         roughness,
         seed: resolvedSeed,
         sketchColor,
@@ -200,100 +172,148 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
         resolvedSeed,
         ink,
         shouldAnimate,
-      }}
-    >
-      <div
-        ref={wrapperRef}
-        className={cn(className)}
-        style={{ position: "relative", width: "100%", ...style }}
-      >
+      }),
+      [
+        roughness,
+        resolvedSeed,
+        sketchColor,
+        bowing,
+        fillStyle,
+        strokeWidth,
+        ink,
+        shouldAnimate,
+      ],
+    );
+
+    useIsomorphicLayoutEffect(() => {
+      const wrapper = wrapperRef.current;
+      const table = tableRef.current;
+      if (!wrapper || !table) return;
+
+      const measure = () => {
+        const rows = Array.from(table.querySelectorAll("tr"));
+        const next: RowLine[] = [];
+        rows.forEach((row, index) => {
+          const isLast = index === rows.length - 1;
+          const isHeader = row.parentElement?.tagName === "THEAD";
+          if (isLast && !isHeader) return;
+          next.push({
+            y: row.offsetTop + row.offsetHeight,
+            width: table.offsetWidth,
+            key: isHeader ? `header-${index}` : `row-${index}`,
+            header: Boolean(isHeader),
+            index,
+          });
+        });
+        setLines((prev) => {
+          if (
+            prev.length === next.length &&
+            prev.every(
+              (line, i) =>
+                line.y === next[i]!.y &&
+                line.width === next[i]!.width &&
+                line.key === next[i]!.key &&
+                line.header === next[i]!.header,
+            )
+          ) {
+            return prev;
+          }
+          return next;
+        });
+      };
+
+      measure();
+      const observer = new ResizeObserver(measure);
+      observer.observe(table);
+      observer.observe(wrapper);
+      return () => observer.disconnect();
+    }, [children]);
+
+    return (
+      <TableSketchContext.Provider value={sketchContext}>
         <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            pointerEvents: "none",
-            zIndex: 1,
-            overflow: "visible",
-          }}
+          ref={wrapperRef}
+          className={cn(className)}
+          style={{ position: "relative", width: "100%", ...style }}
         >
-          {lines.map((line) => (
-            <TableRule
-              key={line.key}
-              line={line}
-              headerUnderline={headerUnderline}
-              roughness={roughness}
-              resolvedSeed={resolvedSeed}
-              ink={ink}
-              bowing={bowing}
-              strokeWidth={strokeWidth}
-              shouldAnimate={shouldAnimate}
-            />
-          ))}
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              zIndex: 1,
+              overflow: "visible",
+            }}
+          >
+            {lines.map((line) => (
+              <TableRule
+                key={line.key}
+                line={line}
+                headerUnderline={headerUnderline}
+                roughness={roughness}
+                resolvedSeed={resolvedSeed}
+                ink={ink}
+                bowing={bowing}
+                strokeWidth={strokeWidth}
+                shouldAnimate={shouldAnimate}
+              />
+            ))}
+          </div>
+          <table
+            ref={(node) => {
+              tableRef.current = node;
+              assignRef(ref, node);
+            }}
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              position: "relative",
+              zIndex: 0,
+              fontFamily: doodleUiFontFamily,
+              color: ink,
+            }}
+            {...rest}
+          >
+            {children}
+          </table>
         </div>
-        <table
-          ref={(node) => {
-            tableRef.current = node;
-            assignRef(ref, node);
-          }}
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            position: "relative",
-            zIndex: 0,
-            fontFamily: doodleUiFontFamily,
-            color: ink,
-          }}
-          {...rest}
-        >
-          {children}
-        </table>
-      </div>
-    </TableSketchContext.Provider>
-  );
-});
+      </TableSketchContext.Provider>
+    );
+  }),
+);
+Table.displayName = "Table";
 
-export const TableHead = forwardRef<
-  HTMLTableSectionElement,
-  HTMLAttributes<HTMLTableSectionElement>
->(function TableHead({ className, style, ...rest }, ref) {
-  return (
-    <thead
-      ref={ref}
-      className={cn(className)}
-      style={style}
-      {...rest}
-    />
-  );
-});
+export const TableHead = memo(
+  forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
+    function TableHead({ className, style, ...rest }, ref) {
+      return (
+        <thead ref={ref} className={cn(className)} style={style} {...rest} />
+      );
+    },
+  ),
+);
+TableHead.displayName = "TableHead";
 
-export const TableBody = forwardRef<
-  HTMLTableSectionElement,
-  HTMLAttributes<HTMLTableSectionElement>
->(function TableBody({ className, style, ...rest }, ref) {
-  return (
-    <tbody
-      ref={ref}
-      className={cn(className)}
-      style={style}
-      {...rest}
-    />
-  );
-});
+export const TableBody = memo(
+  forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
+    function TableBody({ className, style, ...rest }, ref) {
+      return (
+        <tbody ref={ref} className={cn(className)} style={style} {...rest} />
+      );
+    },
+  ),
+);
+TableBody.displayName = "TableBody";
 
-export const TableRow = forwardRef<
-  HTMLTableRowElement,
-  HTMLAttributes<HTMLTableRowElement>
->(function TableRow({ className, style, ...rest }, ref) {
-  return (
-    <tr
-      ref={ref}
-      className={cn(className)}
-      style={style}
-      {...rest}
-    />
-  );
-});
+export const TableRow = memo(
+  forwardRef<HTMLTableRowElement, HTMLAttributes<HTMLTableRowElement>>(
+    function TableRow({ className, style, ...rest }, ref) {
+      return <tr ref={ref} className={cn(className)} style={style} {...rest} />;
+    },
+  ),
+);
+TableRow.displayName = "TableRow";
 
 /**
  * Props for {@link TableHeaderCell}.
@@ -301,28 +321,30 @@ export const TableRow = forwardRef<
 export interface TableHeaderCellProps
   extends Omit<ThHTMLAttributes<HTMLTableCellElement>, "color"> {}
 
-export const TableHeaderCell = forwardRef<
-  HTMLTableCellElement,
-  TableHeaderCellProps
->(function TableHeaderCell({ className, style, children, ...rest }, ref) {
-  useTableSketch();
-  return (
-    <th
-      ref={ref}
-      className={cn(className)}
-      style={{
-        textAlign: "left",
-        fontWeight: doodleUiFontWeight(650),
-        fontSize: 13,
-        padding: "10px 12px",
-        ...style,
-      }}
-      {...rest}
-    >
-      {children}
-    </th>
-  );
-});
+export const TableHeaderCell = memo(
+  forwardRef<HTMLTableCellElement, TableHeaderCellProps>(
+    function TableHeaderCell({ className, style, children, ...rest }, ref) {
+      useTableSketch();
+      return (
+        <th
+          ref={ref}
+          className={cn(className)}
+          style={{
+            textAlign: "left",
+            fontWeight: doodleUiFontWeight(650),
+            fontSize: 13,
+            padding: "10px 12px",
+            ...style,
+          }}
+          {...rest}
+        >
+          {children}
+        </th>
+      );
+    },
+  ),
+);
+TableHeaderCell.displayName = "TableHeaderCell";
 
 /**
  * Props for {@link TableCell}.
@@ -330,22 +352,25 @@ export const TableHeaderCell = forwardRef<
 export interface TableCellProps
   extends Omit<TdHTMLAttributes<HTMLTableCellElement>, "color"> {}
 
-export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
-  function TableCell({ className, style, children, ...rest }, ref) {
-    useTableSketch();
-    return (
-      <td
-        ref={ref}
-        className={cn(className)}
-        style={{
-          fontSize: 14,
-          padding: "10px 12px",
-          ...style,
-        }}
-        {...rest}
-      >
-        {children}
-      </td>
-    );
-  },
+export const TableCell = memo(
+  forwardRef<HTMLTableCellElement, TableCellProps>(
+    function TableCell({ className, style, children, ...rest }, ref) {
+      useTableSketch();
+      return (
+        <td
+          ref={ref}
+          className={cn(className)}
+          style={{
+            fontSize: 14,
+            padding: "10px 12px",
+            ...style,
+          }}
+          {...rest}
+        >
+          {children}
+        </td>
+      );
+    },
+  ),
 );
+TableCell.displayName = "TableCell";

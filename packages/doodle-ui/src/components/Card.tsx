@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
+import { forwardRef, memo, type HTMLAttributes, type ReactNode } from "react";
 import { SketchBox, type SketchBoxProps } from "../primitives/SketchBox";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import type { SketchProps } from "../types";
@@ -32,77 +32,80 @@ export interface CardProps
  * @example
  * <Card />
  */
-export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
-  {
-    children,
-    className,
-    style,
-    shadow = true,
-    fill,
-    title,
-    footer,
-    roughness,
-    seed,
-    sketchColor,
-    bowing,
-    fillStyle,
-    strokeWidth,
-    hachureGap,
-    hachureAngle,
-    fillWeight,
-    animate,
-    ...rest
-  },
-  ref,
-) {
-  const theme = useSketchTheme(sketchColor);
-  const ink = sketchColor ?? theme.ink;
+export const Card = memo(
+  forwardRef<HTMLDivElement, CardProps>(function Card(
+    {
+      children,
+      className,
+      style,
+      shadow = true,
+      fill,
+      title,
+      footer,
+      roughness,
+      seed,
+      sketchColor,
+      bowing,
+      fillStyle,
+      strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
+      animate,
+      ...rest
+    },
+    ref,
+  ) {
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
 
-  const boxProps: SketchBoxProps = {
-    shadow,
-    fill,
-    roughness,
-    seed,
-    sketchColor: ink,
-    bowing,
-    fillStyle,
-    strokeWidth,
-    hachureGap,
-    hachureAngle,
-    fillWeight,
-    animate,
-  };
+    const boxProps: SketchBoxProps = {
+      shadow,
+      fill,
+      roughness,
+      seed,
+      sketchColor: ink,
+      bowing,
+      fillStyle,
+      strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
+      animate,
+    };
 
-  return (
-    <SketchBox
-      ref={ref}
-      className={cn(className)}
-      style={{
-        color: ink,
-        ...style,
-      }}
-      contentStyle={{ padding: "16px 18px" }}
-      {...boxProps}
-      {...rest}
-    >
-      {title ? (
-        <div
-          style={{
-            fontWeight: doodleUiFontWeight(700),
-            fontSize: 16,
-            marginBottom: 10,
-            color: ink,
-          }}
-        >
-          {title}
-        </div>
-      ) : null}
-      {children}
-      {footer ? (
-        <div style={{ marginTop: 14, fontSize: 13, opacity: 0.8, color: ink }}>
-          {footer}
-        </div>
-      ) : null}
-    </SketchBox>
-  );
-});
+    return (
+      <SketchBox
+        ref={ref}
+        className={cn(className)}
+        style={{
+          color: ink,
+          ...style,
+        }}
+        contentStyle={{ padding: "16px 18px" }}
+        {...boxProps}
+        {...rest}
+      >
+        {title ? (
+          <div
+            style={{
+              fontWeight: doodleUiFontWeight(700),
+              fontSize: 16,
+              marginBottom: 10,
+              color: ink,
+            }}
+          >
+            {title}
+          </div>
+        ) : null}
+        {children}
+        {footer ? (
+          <div style={{ marginTop: 14, fontSize: 13, opacity: 0.8, color: ink }}>
+            {footer}
+          </div>
+        ) : null}
+      </SketchBox>
+    );
+  }),
+);
+Card.displayName = "Card";

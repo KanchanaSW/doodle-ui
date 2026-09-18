@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDoodleUI } from "../animations/DoodleUIProvider";
 import {
   DARK_SKETCH_COLORS,
@@ -53,13 +53,51 @@ function cssColor(name: string, fallback: string): string {
   return value || fallback;
 }
 
-function paletteFromCss(isDark: boolean) {
+type CssPalette = {
+  stroke: string;
+  paper: string;
+  cardBg: string;
+  info: string;
+  warning: string;
+  error: string;
+  success: string;
+  accent: string;
+  accentInk: string;
+  accentFill: string;
+  secondaryFill: string;
+  shadow: string;
+};
+
+/** Cache CSS palette reads — getComputedStyle is sync and expensive at dashboard scale. */
+const paletteCache = new Map<string, CssPalette>();
+
+function paletteCacheKey(isDark: boolean): string {
+  if (typeof document === "undefined") return isDark ? "dark:ssr" : "light:ssr";
+  const root = document.documentElement;
+  return [
+    isDark ? "dark" : "light",
+    root.getAttribute("data-theme") ?? "",
+    root.getAttribute("data-component-theme") ?? "",
+    root.className,
+  ].join("|");
+}
+
+/** Drop cached palettes (theme class / CSS variable changes). */
+export function clearSketchThemePaletteCache(): void {
+  paletteCache.clear();
+}
+
+function paletteFromCss(isDark: boolean): CssPalette {
+  const key = paletteCacheKey(isDark);
+  const cached = paletteCache.get(key);
+  if (cached) return cached;
+
   const js = isDark ? DARK_SKETCH_COLORS : SKETCH_COLORS;
   const paperFallback = isDark ? DEFAULT_DARK_PAPER : DEFAULT_PAPER;
   const cardFallback = isDark ? DEFAULT_DARK_CARD_BG : DEFAULT_PAPER;
   const inkFallback = isDark ? DEFAULT_DARK_INK : DEFAULT_INK;
 
-  return {
+  const palette: CssPalette = {
     stroke: cssColor("--doodle-ui-stroke-color", inkFallback),
     paper: cssColor("--doodle-ui-bg-color", paperFallback),
     cardBg: cssColor("--doodle-ui-bg-color", cardFallback),
@@ -73,6 +111,8 @@ function paletteFromCss(isDark: boolean) {
     secondaryFill: js.secondaryFill,
     shadow: isDark ? "rgba(0, 0, 0, 0.45)" : inkFallback,
   };
+  paletteCache.set(key, palette);
+  return palette;
 }
 
 /**
@@ -108,6 +148,7 @@ export function useSketchTheme(sketchColorOverride?: string): ResolvedSketchThem
     }
 
     const update = () => {
+      clearSketchThemePaletteCache();
       setIsClientDark(checkIsDark());
     };
     update();
@@ -137,32 +178,34 @@ export function useSketchTheme(sketchColorOverride?: string): ResolvedSketchThem
 
   const isDark = contextTheme === "dark" ? true : contextTheme === "light" ? false : isClientDark;
 
-  const palette = paletteFromCss(isDark);
-  const themedInk = isDark ? DEFAULT_DARK_INK : DEFAULT_INK;
-  // Guard against light pages keeping dark-mode SSR/#f3f4f6 ink (or the reverse)
-  // when prefers-color-scheme and provider theme disagree. Custom stroke colors still win.
-  let stroke = palette.stroke;
-  if (
-    (contextTheme === "light" && stroke === DEFAULT_DARK_INK) ||
-    (contextTheme === "dark" && stroke === DEFAULT_INK)
-  ) {
-    stroke = themedInk;
-  }
-  const ink = sketchColorOverride ?? stroke;
+  return useMemo(() => {
+    const palette = paletteFromCss(isDark);
+    const themedInk = isDark ? DEFAULT_DARK_INK : DEFAULT_INK;
+    // Guard against light pages keeping dark-mode SSR/#f3f4f6 ink (or the reverse)
+    // when prefers-color-scheme and provider theme disagree. Custom stroke colors still win.
+    let stroke = palette.stroke;
+    if (
+      (contextTheme === "light" && stroke === DEFAULT_DARK_INK) ||
+      (contextTheme === "dark" && stroke === DEFAULT_INK)
+    ) {
+      stroke = themedInk;
+    }
+    const ink = sketchColorOverride ?? stroke;
 
-  return {
-    isDark,
-    ink,
-    paper: palette.paper,
-    cardBg: palette.cardBg,
-    shadow: isDark ? palette.shadow : sketchColorOverride ?? ink,
-    accent: palette.accent,
-    accentInk: palette.accentInk,
-    accentFill: palette.accentFill,
-    secondaryFill: palette.secondaryFill,
-    info: palette.info,
-    warning: palette.warning,
-    error: palette.error,
-    success: palette.success,
-  };
+    return {
+      isDark,
+      ink,
+      paper: palette.paper,
+      cardBg: palette.cardBg,
+      shadow: isDark ? palette.shadow : sketchColorOverride ?? ink,
+      accent: palette.accent,
+      accentInk: palette.accentInk,
+      accentFill: palette.accentFill,
+      secondaryFill: palette.secondaryFill,
+      info: palette.info,
+      warning: palette.warning,
+      error: palette.error,
+      success: palette.success,
+    };
+  }, [isDark, contextTheme, sketchColorOverride]);
 }

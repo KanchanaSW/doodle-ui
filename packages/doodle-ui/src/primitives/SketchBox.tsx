@@ -3,6 +3,7 @@
 import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
   forwardRef,
+  memo,
   useRef,
   type CSSProperties,
   type HTMLAttributes,
@@ -87,8 +88,8 @@ export interface SketchBoxProps
  *
  * @see Card
  */
-export const SketchBox = forwardRef<HTMLDivElement, SketchBoxProps>(
-  function SketchBox(
+export const SketchBox = memo(
+  forwardRef<HTMLDivElement, SketchBoxProps>(function SketchBox(
     {
       children,
       className,
@@ -200,5 +201,6 @@ export const SketchBox = forwardRef<HTMLDivElement, SketchBoxProps>(
         </div>
       </div>
     );
-  },
+  }),
 );
+SketchBox.displayName = "SketchBox";

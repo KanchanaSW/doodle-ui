@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, type HTMLAttributes } from "react";
+import { forwardRef, memo, type HTMLAttributes } from "react";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { SketchBox } from "../primitives/SketchBox";
 import type { SketchProps } from "../types";
@@ -35,70 +35,73 @@ export interface BadgeProps
  * @example
  * <Badge />
  */
-export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
-  {
-    children,
-    className,
-    style,
-    variant = "default",
-    roughness,
-    seed,
-    sketchColor,
-    bowing,
-    fillStyle,
-    strokeWidth,
-    hachureGap,
-    hachureAngle,
-    fillWeight,
-    animate,
-    ...rest
-  },
-  ref,
-) {
-  const theme = useSketchTheme(sketchColor);
-  // Brand accent (#e24b3b) fails 4.5:1 on accentFill — use accentInk for text/stroke.
-  const ink =
-    variant === "accent"
-      ? sketchColor ?? (theme.isDark ? theme.accent : theme.accentInk)
-      : sketchColor ?? theme.ink;
+export const Badge = memo(
+  forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
+    {
+      children,
+      className,
+      style,
+      variant = "default",
+      roughness,
+      seed,
+      sketchColor,
+      bowing,
+      fillStyle,
+      strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
+      animate,
+      ...rest
+    },
+    ref,
+  ) {
+    const theme = useSketchTheme(sketchColor);
+    // Brand accent (#e24b3b) fails 4.5:1 on accentFill — use accentInk for text/stroke.
+    const ink =
+      variant === "accent"
+        ? sketchColor ?? (theme.isDark ? theme.accent : theme.accentInk)
+        : sketchColor ?? theme.ink;
 
-  const fill =
-    variant === "accent"
-      ? (theme.isDark ? (sketchColor ? `${sketchColor}25` : theme.accentFill) : theme.accentFill)
-      : variant === "outline"
-        ? undefined
-        : theme.secondaryFill;
+    const fill =
+      variant === "accent"
+        ? (theme.isDark ? (sketchColor ? `${sketchColor}25` : theme.accentFill) : theme.accentFill)
+        : variant === "outline"
+          ? undefined
+          : theme.secondaryFill;
 
-  return (
-    <SketchBox
-      className={cn(className)}
-      style={{
-        display: "inline-flex",
-        verticalAlign: "middle",
-        ...style,
-      }}
-      contentStyle={{
-        padding: "2px 10px",
-        fontSize: 12,
-        fontWeight: doodleUiFontWeight(650),
-        lineHeight: 1.4,
-        letterSpacing: "0.01em",
-        color: ink,
-      }}
-      fill={fill}
-      fillStyle={fillStyle ?? (fill ? "hachure" : undefined)}
-      hachureGap={hachureGap ?? 6}
-      hachureAngle={hachureAngle}
-      fillWeight={fillWeight ?? 0.9}
-      roughness={roughness}
-      seed={seed}
-      sketchColor={ink}
-      bowing={bowing}
-      strokeWidth={strokeWidth ?? 1.4}
-      animate={animate}
-      {...rest}
-    >
-      <span ref={ref}>{children}</span>
-    </SketchBox>
-  );
-});
+    return (
+      <SketchBox
+        className={cn(className)}
+        style={{
+          display: "inline-flex",
+          verticalAlign: "middle",
+          ...style,
+        }}
+        contentStyle={{
+          padding: "2px 10px",
+          fontSize: 12,
+          fontWeight: doodleUiFontWeight(650),
+          lineHeight: 1.4,
+          letterSpacing: "0.01em",
+          color: ink,
+        }}
+        fill={fill}
+        fillStyle={fillStyle ?? (fill ? "hachure" : undefined)}
+        hachureGap={hachureGap ?? 6}
+        hachureAngle={hachureAngle}
+        fillWeight={fillWeight ?? 0.9}
+        roughness={roughness}
+        seed={seed}
+        sketchColor={ink}
+        bowing={bowing}
+        strokeWidth={strokeWidth ?? 1.4}
+        animate={animate}
+        {...rest}
+      >
+        <span ref={ref}>{children}</span>
+      </SketchBox>
+    );
+  }),
+);
+Badge.displayName = "Badge";

@@ -67,6 +67,7 @@
     "size": "size-limit",
     "size:why": "size-limit --why",
     "size:check": "tsx scripts/verify-treeshake.ts",
+    "bench:render": "vitest run --config vitest.bench.config.ts",
     "clean": "rm -rf dist storybook-static coverage",
     "prepublishOnly": "pnpm build"
   },

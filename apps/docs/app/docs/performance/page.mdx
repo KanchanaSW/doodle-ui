@@ -1,0 +1,93 @@
+# Performance
+
+doodleui-react draws borders with [rough.js](https://roughjs.com/), which is heavier than a CSS border. On a single button that cost is invisible. On a dashboard with dozens of sketchy rows, badges, and cards, it adds up — especially if components re-render for unrelated state.
+
+This page covers patterns that keep dense UIs responsive.
+
+## Prefer fixed seeds in lists
+
+Path generation is a pure function of size, roughness, seed, bowing, fill, and stroke. The library memoizes that work when those inputs are stable.
+
+If you omit `seed`, each instance picks a random seed after mount. That forces an extra generation and defeats memoization across re-renders.
+
+```tsx
+// Good — stable sketch across re-renders
+{rows.map((row) => (
+  <Badge key={row.id} seed={row.id} roughness={1}>
+    {row.status}
+  </Badge>
+))}
+
+// Also good — shared deterministic seed for a whole panel
+<Card seed={42} title="Summary">…</Card>
+```
+
+Use [`SketchSeedProvider`](/docs/theming) when you want Shuffle-style redraws without scattering seeds.
+
+## Disable animation for dense tables
+
+Draw-in animations are on by default. A 50-row table with staggered rules means many simultaneous `stroke-dashoffset` animations and temporary `MutationObserver`s watching for path paint.
+
+```tsx
+<DoodleUIProvider animate={false}>
+  <Table>{/* dense data */}</Table>
+</DoodleUIProvider>
+
+// Or per component
+<Table animate={false}>…</Table>
+<Badge animate={false}>Queued</Badge>
+```
+
+Keep animation on for sparse chrome (primary buttons, dialogs, alerts). Turn it off for bulk list chrome.
+
+See [Animation](/docs/animation) for reduced-motion behavior.
+
+## Lower roughness for dense UIs
+
+Higher `roughness` (and patterned fills like `hachure` / `cross-hatch`) produce more SVG path data. For tables and badge grids, `0.75`–`1` usually looks sketchy enough and is cheaper than the default `1.5`.
+
+```tsx
+<DoodleUIProvider roughness={0.9} animate={false}>
+  <Table seed={7}>…</Table>
+</DoodleUIProvider>
+```
+
+Solid fills are cheaper than hachure when you do not need the wash.
+
+## Keep list rows memo-friendly
+
+`Badge`, `Button`, `Card`, `Table` row parts, and the underlying `RoughSvg` layer are wrapped in `React.memo`. They skip work when their props are shallow-equal.
+
+That only helps if your list code does not defeat memoization:
+
+```tsx
+// Prefer a stable sketch config
+const sketch = useMemo(
+  () => ({ seed: 42, roughness: 1, animate: false as const }),
+  [],
+);
+
+{rows.map((row) => (
+  <TableRow key={row.id}>
+    <TableCell>
+      <Badge variant="accent" {...sketch}>
+        {row.status}
+      </Badge>
+    </TableCell>
+  </TableRow>
+))}
+```
+
+Avoid putting unrelated state (search text, ticks, unrelated counters) inside the same component that maps hundreds of sketchy children without memoizing the row. Lift filters up, or extract a memoized `OrderRow` that only receives the row’s own data.
+
+## What the library already does
+
+- rough.js drawables are memoized on visual inputs inside `RoughSvg`
+- Unrelated parent re-renders do not regenerate paths when seed/size/roughness/etc. are unchanged
+- Theme palette CSS reads are cached
+- Draw-in observers disconnect after a short settle window
+- Table sketch context values are referentially stable when sketch props are unchanged
+
+## Profiling tip
+
+The docs app ships a heavy dashboard at [`/benchmark`](/benchmark) with React Profiler telemetry, unrelated re-render / single-row update buttons, and toggles for roughness, animation, and fixed vs random seeds. Use it with React DevTools Profiler when investigating a regression.
