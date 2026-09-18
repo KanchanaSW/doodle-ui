@@ -34,6 +34,12 @@ export function HeroSection() {
         </a>
         <ShuffleButton size="lg" variant="ghost" />
       </div>
+      <p className="mt-5 text-sm text-mute">
+        Coming from a conventional kit?{" "}
+        <Link href="/docs/vs-shadcn" className="text-accent hover:underline">
+          doodleui-react vs shadcn/ui
+        </Link>
+      </p>
     </section>
   );
 }

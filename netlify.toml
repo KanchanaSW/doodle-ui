@@ -6,3 +6,15 @@
   NODE_VERSION = "20"
   PNPM_VERSION = "9.15.9"
   NETLIFY_NEXT_PLUGIN_SKIP = "true"
+
+[[redirects]]
+  from = "/docs/comparison"
+  to = "/docs/vs-shadcn/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/docs/comparison/"
+  to = "/docs/vs-shadcn/"
+  status = 301
+  force = true

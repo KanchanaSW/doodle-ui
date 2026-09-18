@@ -53,6 +53,19 @@ export function DocsNav() {
         Animation
       </Link>
       <Link
+        href="/docs/vs-shadcn"
+        className={`block mb-4 font-medium ${
+          pathMatches(pathname, "/docs/vs-shadcn")
+            ? "text-accent"
+            : "hover:text-accent"
+        }`}
+        aria-current={
+          pathMatches(pathname, "/docs/vs-shadcn") ? "page" : undefined
+        }
+      >
+        vs shadcn/ui
+      </Link>
+      <Link
         href="/customize"
         className={`block mb-4 font-medium ${
           pathMatches(pathname, "/customize")

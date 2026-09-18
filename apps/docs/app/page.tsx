@@ -17,6 +17,10 @@ export default function HomePage() {
             Quickstart
           </Link>
           <Divider orientation="vertical" style={{ height: 24, minHeight: 24 }} />
+          <Link href="/docs/vs-shadcn" className="hover:text-accent">
+            vs shadcn/ui
+          </Link>
+          <Divider orientation="vertical" style={{ height: 24, minHeight: 24 }} />
           <a
             href="https://github.com/KanchanaSW/doodle-ui"
             className="hover:text-accent"
