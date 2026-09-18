@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.2
+
+### Patch Changes
+
+- [`844c94b`](https://github.com/KanchanaSW/doodle-ui/commit/844c94bba7e419a1241d6936815360c4d7326841) - Make SSR/hydration safe: deterministic first-render seeds, isomorphic layout effects, and theme sync after mount.
+
 ## 0.7.1
 
 Accessibility hardening for rough SVG isolation and Radix labels, WCAG AA theme stroke/fill token adjustments, Node.js engine requirement raised to `>=22`, and component theme polish. CLI/registry version aligned with the package.
