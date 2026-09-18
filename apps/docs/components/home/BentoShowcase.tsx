@@ -1,6 +1,7 @@
 "use client";
 
 import { AccountAccessCard } from "./AccountAccessCard";
+import { BillingPlanCard } from "./BillingPlanCard";
 import { ClaimableBalanceCard } from "./ClaimableBalanceCard";
 import { ContributionHistoryCard } from "./ContributionHistoryCard";
 import { DividendIncomeCard } from "./DividendIncomeCard";
@@ -12,6 +13,9 @@ import { NewChatCard } from "./NewChatCard";
 import { PayoutThresholdCard } from "./PayoutThresholdCard";
 import { QuickActionsCard } from "./QuickActionsCard";
 import { SavingsTargetsCard } from "./SavingsTargetsCard";
+import { SetupProgressCard } from "./SetupProgressCard";
+import { SupportFaqCard } from "./SupportFaqCard";
+import { TeamActivityCard } from "./TeamActivityCard";
 
 export function BentoShowcase() {
   return (
@@ -21,26 +25,30 @@ export function BentoShowcase() {
     >
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 items-start">
         <div className="grid gap-4">
-          <KitchenSinkCard />
+          <ClaimableBalanceCard />
+          <TeamActivityCard />
           <NavListsCard />
           <SavingsTargetsCard />
         </div>
 
         <div className="grid gap-4">
+          <KitchenSinkCard />
+          <SetupProgressCard />
           <ContributionHistoryCard />
-          <ClaimableBalanceCard />
+        </div>
+
+        <div className="grid gap-4">
+          <BillingPlanCard />
+          <NewChatCard />
+          <PayoutThresholdCard />
           <DividendIncomeCard />
         </div>
 
         <div className="grid gap-4">
           <MilestoneCard />
-          <PayoutThresholdCard />
-          <AccountAccessCard />
-        </div>
-
-        <div className="grid gap-4">
+          <SupportFaqCard />
           <MobileConnectCard />
-          <NewChatCard />
+          <AccountAccessCard />
           <QuickActionsCard />
         </div>
       </div>

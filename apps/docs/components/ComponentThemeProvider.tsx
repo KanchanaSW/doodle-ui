@@ -41,7 +41,11 @@ const ComponentThemeContext = createContext<ComponentThemeContextValue | null>(
 );
 
 export function ComponentThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ComponentTheme>("dark");
+  // Read the bootstrap-applied DOM theme on the client so the first paint
+  // matches light/dark preference. SSR uses the light default (same as :root).
+  const [theme, setThemeState] = useState<ComponentTheme>(
+    () => resolveInitialComponentTheme(),
+  );
 
   useEffect(() => {
     const initial = resolveInitialComponentTheme();

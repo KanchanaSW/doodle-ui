@@ -1,5 +1,6 @@
 export { AccountAccessCard } from "./AccountAccessCard";
 export { BentoShowcase } from "./BentoShowcase";
+export { BillingPlanCard } from "./BillingPlanCard";
 export { ClaimableBalanceCard } from "./ClaimableBalanceCard";
 export { ContributionHistoryCard } from "./ContributionHistoryCard";
 export { DividendIncomeCard } from "./DividendIncomeCard";
@@ -12,3 +13,6 @@ export { NewChatCard } from "./NewChatCard";
 export { PayoutThresholdCard } from "./PayoutThresholdCard";
 export { QuickActionsCard } from "./QuickActionsCard";
 export { SavingsTargetsCard } from "./SavingsTargetsCard";
+export { SetupProgressCard } from "./SetupProgressCard";
+export { SupportFaqCard } from "./SupportFaqCard";
+export { TeamActivityCard } from "./TeamActivityCard";

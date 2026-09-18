@@ -2,6 +2,9 @@ export const COMPONENT_THEME_STORAGE_KEY = "doodle-ui-component-theme";
 
 export type ComponentTheme = "light" | "dark";
 
+/** SSR + first-visit default. Matches `:root` paper/ink in globals.css. */
+export const DEFAULT_COMPONENT_THEME: ComponentTheme = "light";
+
 export function readStoredComponentTheme(): ComponentTheme | null {
   if (typeof window === "undefined") return null;
   try {
@@ -15,8 +18,24 @@ export function readStoredComponentTheme(): ComponentTheme | null {
   return null;
 }
 
+/** Theme already applied by the head bootstrap script (preferred on the client). */
+export function readDomComponentTheme(): ComponentTheme | null {
+  if (typeof document === "undefined") return null;
+  const value = document.documentElement.getAttribute("data-component-theme");
+  if (value === "light" || value === "dark") return value;
+  const dataTheme = document.documentElement.getAttribute("data-theme");
+  if (dataTheme === "light" || dataTheme === "dark") return dataTheme;
+  if (document.documentElement.classList.contains("light")) return "light";
+  if (document.documentElement.classList.contains("dark")) return "dark";
+  return null;
+}
+
 export function resolveInitialComponentTheme(): ComponentTheme {
-  return readStoredComponentTheme() ?? "dark";
+  return (
+    readDomComponentTheme() ??
+    readStoredComponentTheme() ??
+    DEFAULT_COMPONENT_THEME
+  );
 }
 
 export function applyComponentTheme(theme: ComponentTheme) {

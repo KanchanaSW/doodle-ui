@@ -136,14 +136,24 @@ export function useSketchTheme(sketchColorOverride?: string): ResolvedSketchThem
   const isDark = contextTheme === "dark" ? true : contextTheme === "light" ? false : isClientDark;
 
   const palette = paletteFromCss(isDark);
-  const ink = sketchColorOverride ?? palette.stroke;
+  const themedInk = isDark ? DEFAULT_DARK_INK : DEFAULT_INK;
+  // Guard against light pages keeping dark-mode SSR/#f3f4f6 ink (or the reverse)
+  // when prefers-color-scheme and provider theme disagree. Custom stroke colors still win.
+  let stroke = palette.stroke;
+  if (
+    (contextTheme === "light" && stroke === DEFAULT_DARK_INK) ||
+    (contextTheme === "dark" && stroke === DEFAULT_INK)
+  ) {
+    stroke = themedInk;
+  }
+  const ink = sketchColorOverride ?? stroke;
 
   return {
     isDark,
     ink,
     paper: palette.paper,
     cardBg: palette.cardBg,
-    shadow: isDark ? palette.shadow : sketchColorOverride ?? palette.stroke,
+    shadow: isDark ? palette.shadow : sketchColorOverride ?? ink,
     accent: palette.accent,
     accentInk: palette.accentInk,
     accentFill: palette.accentFill,

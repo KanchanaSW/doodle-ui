@@ -13,7 +13,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import "doodleui-react/styles.css";
 import "./globals.css";
 
-const componentThemeBootstrap = `(function(){try{var k="doodle-ui-component-theme";var t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){var l=localStorage.getItem("doodle-ui-site-theme");if(l==="light"||l==="dark")t=l;else t="dark";}var r=document.documentElement;r.setAttribute("data-component-theme",t);r.setAttribute("data-theme",t);r.classList.remove("light","dark");r.classList.add(t);r.style.colorScheme=t;}catch(e){var f=document.documentElement;f.setAttribute("data-component-theme","dark");f.setAttribute("data-theme","dark");f.classList.add("dark");f.style.colorScheme="dark";}})();`;
+const componentThemeBootstrap = `(function(){try{var k="doodle-ui-component-theme";var t=localStorage.getItem(k);if(t!=="light"&&t!=="dark"){var l=localStorage.getItem("doodle-ui-site-theme");if(l==="light"||l==="dark")t=l;else t="light";}var r=document.documentElement;r.setAttribute("data-component-theme",t);r.setAttribute("data-theme",t);r.classList.remove("light","dark");r.classList.add(t);r.style.colorScheme=t;}catch(e){var f=document.documentElement;f.setAttribute("data-component-theme","light");f.setAttribute("data-theme","light");f.classList.add("light");f.style.colorScheme="light";}})();`;
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -79,10 +79,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      data-component-theme="dark"
-      data-theme="dark"
+      data-component-theme="light"
+      data-theme="light"
       suppressHydrationWarning
-      className={`dark ${outfit.variable} ${caveat.variable} ${patrickHand.variable} ${kalam.variable} ${gochiHand.variable} ${architectsDaughter.variable} ${ibm.variable}`}
+      className={`light ${outfit.variable} ${caveat.variable} ${patrickHand.variable} ${kalam.variable} ${gochiHand.variable} ${architectsDaughter.variable} ${ibm.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: componentThemeBootstrap }} />
