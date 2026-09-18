@@ -10,7 +10,7 @@ const program = new Command();
 program
   .name("doodleui-react")
   .description("DoodleUI - shadcn-style component installer for hand-drawn sketch UI")
-  .version("0.6.2")
+  .version("0.7.1")
   .addHelpText("beforeAll", SKETCH_BANNER);
 
 program

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.1
+
+Accessibility hardening for rough SVG isolation and Radix labels, WCAG AA theme stroke/fill token adjustments, Node.js engine requirement raised to `>=22`, and component theme polish. CLI/registry version aligned with the package.
+
 ## 0.7.0
 
 CSS theming: ship `doodleui-react/styles.css` with `:root` defaults, dark overrides (`data-theme`, `.dark`, `prefers-color-scheme`), and semantic color tokens. `useSketchDefaults` respects CSS variables when provider props are unset. `useSketchTheme` reads palette from CSS vars. `DoodleUIProvider` sets scoped `data-theme` for light/dark subtrees.
