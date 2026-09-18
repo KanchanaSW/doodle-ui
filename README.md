@@ -2,13 +2,13 @@
 
 Hand-drawn React components with an Excalidraw-like sketch aesthetic. Chrome is drawn with [rough.js](https://roughjs.com). Text stays real HTML, so it remains crisp and accessible.
 
-The published package is [`doodleui-react`](https://www.npmjs.com/package/doodleui-react). Docs live at [doodle-ui.netlify.app](https://doodle-ui.netlify.app).
+The published package is `[doodleui-react](https://www.npmjs.com/package/doodleui-react)`. Docs live at [doodle-ui.netlify.app](https://doodle-ui.netlify.app).
 
-[![npm](https://img.shields.io/npm/v/doodleui-react.svg)](https://www.npmjs.com/package/doodleui-react)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/doodleui-react)](https://bundlephobia.com/package/doodleui-react)
-[![CI](https://github.com/KanchanaSW/doodle-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/KanchanaSW/doodle-ui/actions/workflows/ci.yml)
+![npm](https://img.shields.io/npm/v/doodleui-react.svg)
+![bundle size](https://img.shields.io/bundlephobia/minzip/doodleui-react)
+![CI](https://github.com/KanchanaSW/doodle-ui/actions/workflows/ci.yml/badge.svg)
 
-<img width="3186" height="4720" alt="image" src="https://github.com/user-attachments/assets/009a6a79-b002-48dd-b211-a224d10129b4" />
+![image](https://github.com/user-attachments/assets/009a6a79-b002-48dd-b211-a224d10129b4)
 
 ## CLI Component Installer (shadcn-style)
 
@@ -161,8 +161,6 @@ pnpm --filter doodleui-react publish --access public
 
 npx pnpm --filter doodleui-react publish --access public --no-git-checks
 ```
-
-`doodle-ui` is blocked on npm by an unpublished stub, so the package name is `doodleui-react`.
 
 ## License
 
