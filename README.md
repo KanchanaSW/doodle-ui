@@ -142,7 +142,7 @@ npx pnpm install
 npx pnpm dev
 ```
 
-Docs run at [http://localhost:3000](http://localhost:3000). The library rebuilds in watch mode through Turborepo.
+Docs run at [http://localhost:3001](http://localhost:3000). The library rebuilds in watch mode through Turborepo.
 
 ```bash
 pnpm build
