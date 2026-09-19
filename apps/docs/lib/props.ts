@@ -315,6 +315,45 @@ export const radialProgressProps: PropRow[] = [
   ...sharedSketchProps,
 ];
 
+export const radialMenuProps: PropRow[] = [
+  {
+    name: "items",
+    type: "RadialMenuItem[]",
+    defaultValue: "—",
+    description: "Actions with id, icon, label, optional onSelect / disabled.",
+  },
+  {
+    name: "open / defaultOpen / onOpenChange",
+    type: "boolean / (open) => void",
+    defaultValue: "uncontrolled false",
+    description: "Controlled or uncontrolled open state. Toggle via trigger only.",
+  },
+  {
+    name: "radius",
+    type: "number",
+    defaultValue: "size preset",
+    description: "Distance in px from trigger center to item centers.",
+  },
+  {
+    name: "size",
+    type: '"sm" | "md" | "lg"',
+    defaultValue: '"md"',
+    description: "Trigger and item diameter preset.",
+  },
+  {
+    name: "aria-label",
+    type: "string",
+    defaultValue: '"Open menu"',
+    description: "Accessible name for the central trigger button.",
+  },
+  {
+    name: "animate / SketchProps",
+    type: "boolean / SketchProps",
+    defaultValue: "provider / theme",
+    description: "Draw-in, roughness, seed, sketchColor, and related sketch props.",
+  },
+];
+
 export const tooltipProps: PropRow[] = [
   {
     name: "content",
