@@ -1,0 +1,30 @@
+# Sizing
+
+All sizeable components share one scale: **`sm` | `md` | `lg`**.
+
+`md` is always the default when `size` is omitted.
+
+## Token scale
+
+| Size | Font | Min height | Icon | Control box |
+| --- | --- | --- | --- | --- |
+| `sm` | 13px | 30px | 14px | 16px |
+| `md` | 15px | 38px | 16px | 20px |
+| `lg` | 17px | 46px | 20px | 24px |
+
+Padding, stroke width, and icon size scale together via shared tokens (`SIZE_TOKENS` in the package).
+
+## Components
+
+Button, Input, Textarea, Badge, Avatar, Switch, Checkbox, Radio, Select, Alert, Toggle, ToggleGroup, Spinner, NativeSelect, Combobox.
+
+### Avatar
+
+`Avatar` accepts `size?: "sm" | "md" | "lg" | number`. Presets map to 32 / 40 / 48px. A numeric value still works for fine control.
+
+```tsx
+<Button size="sm">Small</Button>
+<Input size="lg" label="Large field" />
+<Avatar size="md" fallback="AD" />
+<Avatar size={56} fallback="XL" />
+```

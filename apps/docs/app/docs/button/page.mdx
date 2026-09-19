@@ -24,11 +24,18 @@ import { Button, DoodleUIProvider } from "doodleui-react";
   <Button variant="primary" size="md">
     Draw me
   </Button>
+  <Button asChild>
+    <a href="/docs">Docs link</a>
+  </Button>
+  <Button loading>Saving…</Button>
+  <Button startIcon={<Icon />} aria-label="Add" />
   <Button animate={false}>Static sketch</Button>
 </DoodleUIProvider>
 ```
 
 Primary and secondary use hachure fills. Outline is stroke-only. Ghost hides the stroke until hover.
+
+See [Sizing](/docs/sizing), [Icons](/docs/icons), and [Forms](/docs/forms) for shared conventions.
 
 ## Props
 

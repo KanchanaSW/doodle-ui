@@ -146,6 +146,7 @@ const DOODLE_EXPORTS = new Set([
   "TableBody",
   "TableCell",
   "TableHead",
+  "TableHeader",
   "TableHeaderCell",
   "TableRow",
   "TabList",

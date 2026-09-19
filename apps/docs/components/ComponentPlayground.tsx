@@ -144,7 +144,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableHeaderCell,
+  TableHeader,
   TableRow,
   TabList,
   TabPanel,
@@ -1002,12 +1002,12 @@ function TablePlayground() {
             seed={seedFrom(v)}
             animate={Boolean(v.animate)}
           >
-            <TableHead>
+            <TableHeader>
               <TableRow>
-                <TableHeaderCell>Tool</TableHeaderCell>
-                <TableHeaderCell>Weight</TableHeaderCell>
+                <TableHead>Tool</TableHead>
+                <TableHead>Weight</TableHead>
               </TableRow>
-            </TableHead>
+            </TableHeader>
             <TableBody>
               <TableRow>
                 <TableCell>Pen</TableCell>
@@ -1027,12 +1027,12 @@ function TablePlayground() {
       )}
       snippet={(v) =>
         `<Table headerUnderline={${Boolean(v.headerUnderline)}} ${snippetExtras(v)}>
-  <TableHead>
+  <TableHeader>
     <TableRow>
-      <TableHeaderCell>Tool</TableHeaderCell>
-      <TableHeaderCell>Weight</TableHeaderCell>
+      <TableHead>Tool</TableHead>
+      <TableHead>Weight</TableHead>
     </TableRow>
-  </TableHead>
+  </TableHeader>
   <TableBody>
     <TableRow>
       <TableCell>Pen</TableCell>

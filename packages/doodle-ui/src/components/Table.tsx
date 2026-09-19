@@ -133,9 +133,20 @@ const TableRule = memo(function TableRule({
  * Data table with hand-drawn row rules.
  *
  * @example
- * <Table />
+ * <Table>
+ *   <Table.Header>
+ *     <Table.Row>
+ *       <Table.Head>Column</Table.Head>
+ *     </Table.Row>
+ *   </Table.Header>
+ *   <Table.Body>
+ *     <Table.Row>
+ *       <Table.Cell>Value</Table.Cell>
+ *     </Table.Row>
+ *   </Table.Body>
+ * </Table>
  */
-export const Table = memo(
+const TableRoot = memo(
   forwardRef<HTMLTableElement, TableProps>(function Table(
     {
       className,
@@ -282,18 +293,19 @@ export const Table = memo(
     );
   }),
 );
-Table.displayName = "Table";
+TableRoot.displayName = "Table";
 
-export const TableHead = memo(
+/** Table header section (`<thead>`). Prefer over legacy `TableHead` naming for thead. */
+export const TableHeader = memo(
   forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
-    function TableHead({ className, style, ...rest }, ref) {
+    function TableHeader({ className, style, ...rest }, ref) {
       return (
         <thead ref={ref} className={cn(className)} style={style} {...rest} />
       );
     },
   ),
 );
-TableHead.displayName = "TableHead";
+TableHeader.displayName = "TableHeader";
 
 export const TableBody = memo(
   forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
@@ -316,14 +328,17 @@ export const TableRow = memo(
 TableRow.displayName = "TableRow";
 
 /**
- * Props for {@link TableHeaderCell}.
+ * Props for {@link TableHead} column header cells (`<th>`).
  */
-export interface TableHeaderCellProps
+export interface TableHeadProps
   extends Omit<ThHTMLAttributes<HTMLTableCellElement>, "color"> {}
 
-export const TableHeaderCell = memo(
-  forwardRef<HTMLTableCellElement, TableHeaderCellProps>(
-    function TableHeaderCell({ className, style, children, ...rest }, ref) {
+/** @deprecated Use {@link TableHead} (same component). */
+export type TableHeaderCellProps = TableHeadProps;
+
+export const TableHead = memo(
+  forwardRef<HTMLTableCellElement, TableHeadProps>(
+    function TableHead({ className, style, children, ...rest }, ref) {
       useTableSketch();
       return (
         <th
@@ -344,7 +359,10 @@ export const TableHeaderCell = memo(
     },
   ),
 );
-TableHeaderCell.displayName = "TableHeaderCell";
+TableHead.displayName = "TableHead";
+
+/** @deprecated Prefer {@link TableHead}. */
+export const TableHeaderCell = TableHead;
 
 /**
  * Props for {@link TableCell}.
@@ -374,3 +392,52 @@ export const TableCell = memo(
   ),
 );
 TableCell.displayName = "TableCell";
+
+export const TableFooter = memo(
+  forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
+    function TableFooter({ className, style, ...rest }, ref) {
+      return (
+        <tfoot ref={ref} className={cn(className)} style={style} {...rest} />
+      );
+    },
+  ),
+);
+TableFooter.displayName = "TableFooter";
+
+export const TableCaption = memo(
+  forwardRef<
+    HTMLTableCaptionElement,
+    HTMLAttributes<HTMLTableCaptionElement>
+  >(function TableCaption({ className, style, children, ...rest }, ref) {
+    useTableSketch();
+    return (
+      <caption
+        ref={ref}
+        className={cn(className)}
+        style={{
+          captionSide: "top",
+          textAlign: "left",
+          fontSize: 13,
+          fontWeight: doodleUiFontWeight(650),
+          padding: "0 0 8px",
+          color: "inherit",
+          ...style,
+        }}
+        {...rest}
+      >
+        {children}
+      </caption>
+    );
+  }),
+);
+TableCaption.displayName = "TableCaption";
+
+export const Table = Object.assign(TableRoot, {
+  Header: TableHeader,
+  Head: TableHead,
+  Body: TableBody,
+  Row: TableRow,
+  Cell: TableCell,
+  Footer: TableFooter,
+  Caption: TableCaption,
+});

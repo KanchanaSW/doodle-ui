@@ -12,14 +12,17 @@ import {
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
+import { resolveInteractiveState } from "../primitives/interactive";
+import {
+  SIZE_TOKENS,
+  SWITCH_SIZE,
+  resolveSize,
+  type DoodleSize,
+} from "../primitives/size";
 import type { SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily } from "../utils";
 
-const TRACK_W = 44;
-const TRACK_H = 24;
-const THUMB = 18;
-const THUMB_OFF = 3;
-const THUMB_ON = TRACK_W - THUMB - 3;
+export type SwitchSize = DoodleSize;
 
 /**
  * Props for {@link Switch}.
@@ -30,9 +33,10 @@ export interface SwitchProps
   /** Visible label beside the control. */
   label?: ReactNode;
   /**
-   * Slide the thumb and seed-morph the track on toggle.
-   * Defaults to the DoodleUIProvider value (true).
+   * Control size preset.
+   * @default "md"
    */
+  size?: SwitchSize;
   /**
    * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
    * @default undefined (follow provider)
@@ -43,8 +47,11 @@ export interface SwitchProps
 /**
  * Toggle switch with sliding thumb.
  *
+ * Supports controlled (`checked` + `onCheckedChange`) and uncontrolled
+ * (`defaultChecked`). Pass `name` for native FormData / RHF Controller.
+ *
  * @example
- * <Switch />
+ * <Switch label="Notifications" name="notify" />
  */
 export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
   function Switch(
@@ -52,6 +59,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
       className,
       style,
       label,
+      size: sizeProp = "md",
       roughness,
       seed,
       sketchColor,
@@ -63,10 +71,15 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
       onCheckedChange,
       id,
       animate,
+      disabled,
       ...rest
     },
     ref,
   ) {
+    const size = resolveSize(sizeProp);
+    const { trackW, trackH, thumb } = SWITCH_SIZE[size];
+    const thumbOff = 3;
+    const thumbOn = trackW - thumb - 3;
     const [uncontrolled, setUncontrolled] = useState(defaultChecked === true);
     const isOn = checked ?? uncontrolled;
     const generatedId = useId();
@@ -76,7 +89,9 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
     const ink = sketchColor ?? theme.ink;
     const activeColor = sketchColor ?? theme.accent;
     const activeFill = theme.isDark
-      ? (sketchColor ? `${sketchColor}25` : theme.accentFill)
+      ? sketchColor
+        ? `${sketchColor}25`
+        : theme.accentFill
       : theme.accentFill;
     const resolvedSeed = useResolvedSeed(seed);
     const shouldAnimate = useAnimate(animate);
@@ -84,6 +99,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
     const trackSeed = shouldAnimate
       ? deriveSeed(resolvedSeed, isOn ? "on" : "off")
       : resolvedSeed;
+    const interactive = resolveInteractiveState({ disabled });
 
     useDrawIn(trackRef, DRAW_IN_DURATION_MS, shouldAnimate, trackSeed);
 
@@ -93,10 +109,11 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
         style={{
           display: "inline-flex",
           alignItems: "center",
-          gap: 8,
-          cursor: "pointer",
+          gap: SIZE_TOKENS[size].gap,
+          cursor: interactive.isDisabled ? "not-allowed" : "pointer",
           userSelect: "none",
           color: ink,
+          ...interactive.style,
           ...style,
         }}
       >
@@ -105,19 +122,21 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           id={inputId}
           checked={checked}
           defaultChecked={defaultChecked}
+          disabled={interactive.isDisabled}
+          aria-disabled={interactive.aria["aria-disabled"]}
           onCheckedChange={(next) => {
             setUncontrolled(next);
             onCheckedChange?.(next);
           }}
           style={{
             position: "relative",
-            width: TRACK_W,
-            height: TRACK_H,
+            width: trackW,
+            height: trackH,
             padding: 0,
             border: "none",
             background: "transparent",
             flexShrink: 0,
-            cursor: "pointer",
+            cursor: interactive.isDisabled ? "not-allowed" : "pointer",
             outline: "none",
           }}
           {...rest}
@@ -134,14 +153,14 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
               bowing={bowing ?? 1.4}
               fillStyle={fillStyle ?? (isOn ? "hachure" : undefined)}
               fill={isOn ? activeFill : undefined}
-              strokeWidth={strokeWidth ?? 1.6}
+              strokeWidth={strokeWidth ?? SIZE_TOKENS[size].strokeWidth}
               inset={1.5}
             />
           </span>
           <SwitchPrimitive.Thumb asChild>
             <motion.span
               initial={false}
-              animate={{ x: isOn ? THUMB_ON : THUMB_OFF }}
+              animate={{ x: isOn ? thumbOn : thumbOff }}
               transition={
                 shouldAnimate
                   ? { type: "spring", stiffness: 420, damping: 30 }
@@ -149,10 +168,10 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
               }
               style={{
                 position: "absolute",
-                top: (TRACK_H - THUMB) / 2,
+                top: (trackH - thumb) / 2,
                 left: 0,
-                width: THUMB,
-                height: THUMB,
+                width: thumb,
+                height: thumb,
                 display: "block",
                 zIndex: 1,
               }}
@@ -175,8 +194,8 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(
           <label
             htmlFor={inputId}
             style={{
-              fontSize: 15,
-              cursor: "pointer",
+              fontSize: SIZE_TOKENS[size].fontSize,
+              cursor: interactive.isDisabled ? "not-allowed" : "pointer",
               fontFamily: doodleUiFontFamily,
               color: ink,
             }}

@@ -2,6 +2,7 @@
 
 import { useBaseRoughness } from "../hooks/useSketchDefaults";
 import {
+  Children,
   forwardRef,
   memo,
   useRef,
@@ -10,6 +11,7 @@ import {
   type MutableRefObject,
   type ReactNode,
 } from "react";
+import { Slot, Slottable } from "@radix-ui/react-slot";
 import {
   DRAW_IN_DURATION_MS,
   useAnimate,
@@ -76,6 +78,11 @@ export interface SketchBoxProps
    * @default undefined
    */
   drawInKey?: unknown;
+  /**
+   * Merge props onto the single child instead of rendering a `<div>`.
+   * @default false
+   */
+  asChild?: boolean;
 }
 
 /**
@@ -113,6 +120,7 @@ export const SketchBox = memo(
       animate,
       drawInDuration = DRAW_IN_DURATION_MS,
       drawInKey,
+      asChild = false,
       ...rest
     },
     ref,
@@ -129,16 +137,10 @@ export const SketchBox = memo(
     const resolvedFillStyle: FillStyle = fillStyle ?? (resolvedFill ? "solid" : "solid");
     const isPatternedFill = Boolean(resolvedFill && resolvedFillStyle !== "solid");
 
-    return (
-      <div
-        ref={(node) => {
-          (rootRef as MutableRefObject<HTMLDivElement | null>).current = node;
-          assignRef(ref, node);
-        }}
-        className={cn(className)}
-        style={{ position: "relative", ...style }}
-        {...rest}
-      >
+    const Comp = asChild ? Slot : "div";
+
+    const sketchLayers = (
+      <>
         {shadow ? (
           <RoughSvg
             shape={shape}
@@ -187,19 +189,49 @@ export const SketchBox = memo(
           inset={inset}
           path={path}
         />
-        <div
-          className={contentClassName}
-          style={{
-            position: "relative",
-            zIndex: 1,
-            fontFamily: doodleUiFontFamily,
-            color: resolvedInk,
-            ...contentStyle,
-          }}
-        >
-          {children}
-        </div>
+      </>
+    );
+
+    const content = asChild ? (
+      <Slottable>{Children.only(children)}</Slottable>
+    ) : (
+      <div
+        className={contentClassName}
+        style={{
+          position: "relative",
+          zIndex: 1,
+          fontFamily: doodleUiFontFamily,
+          color: resolvedInk,
+          ...contentStyle,
+        }}
+      >
+        {children}
       </div>
+    );
+
+    return (
+      <Comp
+        ref={(node: HTMLDivElement | null) => {
+          (rootRef as MutableRefObject<HTMLDivElement | null>).current = node;
+          assignRef(ref, node);
+        }}
+        className={cn(className)}
+        style={{
+          position: "relative",
+          ...(asChild
+            ? {
+                fontFamily: doodleUiFontFamily,
+                color: resolvedInk,
+                ...contentStyle,
+              }
+            : null),
+          ...style,
+        }}
+        {...rest}
+      >
+        {sketchLayers}
+        {content}
+      </Comp>
     );
   }),
 );

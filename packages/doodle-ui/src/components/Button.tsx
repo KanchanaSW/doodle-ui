@@ -7,9 +7,11 @@ import {
   useState,
   type ButtonHTMLAttributes,
   type CSSProperties,
-  type ForwardedRef,
+  type MouseEvent,
   type MutableRefObject,
+  type ReactNode,
 } from "react";
+import { Slot, Slottable } from "@radix-ui/react-slot";
 import {
   DRAW_IN_DURATION_MS,
   useAnimate,
@@ -18,11 +20,23 @@ import {
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
+import {
+  DoodleIcon,
+  hasVisibleTextContent,
+  warnIfMissingAriaLabel,
+} from "../primitives/icon";
+import { resolveInteractiveState } from "../primitives/interactive";
+import {
+  CONTROL_SIZE_STYLES,
+  resolveSize,
+  type DoodleSize,
+} from "../primitives/size";
 import type { SketchProps } from "../types";
-import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
+import { assignRef, cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
+import { Spinner } from "./Spinner";
 
 export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
-export type ButtonSize = "sm" | "md" | "lg";
+export type ButtonSize = DoodleSize;
 
 /**
  * Props for {@link Button}.
@@ -41,11 +55,19 @@ export interface ButtonProps
    */
   size?: ButtonSize;
   /**
-   * Play sketch animations (draw-in on mount, seed morph on hover).
-   * Defaults to the DoodleUIProvider value (true). Explicit `false`
-   * renders a static sketch. `prefers-reduced-motion: reduce` disables
-   * animation unless the provider set `forceAnimate`.
+   * Merge props onto the single child instead of rendering a `<button>`.
+   * @default false
    */
+  asChild?: boolean;
+  /** Leading icon (any ReactNode — lucide, SVG, emoji, etc.). */
+  startIcon?: ReactNode;
+  /** Trailing icon. */
+  endIcon?: ReactNode;
+  /**
+   * Show a sketchy spinner and disable interaction.
+   * @default false
+   */
+  loading?: boolean;
   /**
    * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
    * @default undefined (follow provider)
@@ -53,22 +75,12 @@ export interface ButtonProps
   animate?: boolean;
 }
 
-const SIZE_STYLES: Record<ButtonSize, CSSProperties> = {
-  sm: { fontSize: 13, padding: "4px 12px", minHeight: 30 },
-  md: { fontSize: 15, padding: "8px 16px", minHeight: 38 },
-  lg: { fontSize: 17, padding: "11px 22px", minHeight: 46 },
-};
-
-function assignRef<T>(ref: ForwardedRef<T>, value: T | null) {
-  if (typeof ref === "function") ref(value);
-  else if (ref) (ref as MutableRefObject<T | null>).current = value;
-}
-
 /**
  * Clickable control with rough.js border and HTML label.
  *
  * @example
  * <Button variant="primary">Save</Button>
+ * <Button asChild><a href="/docs">Docs</a></Button>
  *
  * @see Input
  */
@@ -79,7 +91,11 @@ export const Button = memo(
       className,
       style,
       variant = "primary",
-      size = "md",
+      size: sizeProp = "md",
+      asChild = false,
+      startIcon,
+      endIcon,
+      loading = false,
       roughness,
       seed,
       sketchColor,
@@ -93,29 +109,39 @@ export const Button = memo(
       animate,
       onMouseEnter,
       onMouseLeave,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledby,
       ...rest
     },
     ref,
   ) {
+    const size = resolveSize(sizeProp);
     const rootRef = useRef<HTMLButtonElement>(null);
     const [hovered, setHovered] = useState(false);
     const theme = useSketchTheme(sketchColor);
     const shouldAnimate = useAnimate(animate);
     const resolvedSeed = useResolvedSeed(seed);
     const hoverSeed = deriveSeed(resolvedSeed, "hover");
+    const interactive = resolveInteractiveState({ disabled, loading });
     const sketchSeed =
-      shouldAnimate && hovered && !disabled ? hoverSeed : resolvedSeed;
+      shouldAnimate && hovered && !interactive.isDisabled
+        ? hoverSeed
+        : resolvedSeed;
     const ink = sketchColor ?? theme.ink;
 
     const fill =
       variant === "primary"
-        ? (theme.isDark
-            ? (sketchColor ? `${sketchColor}28` : theme.accentFill)
-            : theme.accentFill)
+        ? theme.isDark
+          ? sketchColor
+            ? `${sketchColor}28`
+            : theme.accentFill
+          : theme.accentFill
         : variant === "secondary"
           ? theme.secondaryFill
           : hovered && variant === "ghost"
-            ? (theme.isDark ? "rgba(255,255,255,0.06)" : "rgba(31,29,26,0.05)")
+            ? theme.isDark
+              ? "rgba(255,255,255,0.06)"
+              : "rgba(31,29,26,0.05)"
             : undefined;
 
     const stroke =
@@ -132,21 +158,57 @@ export const Button = memo(
 
     useDrawIn(rootRef, DRAW_IN_DURATION_MS, shouldAnimate, sketchSeed);
 
+    const hasIcon = Boolean(startIcon || endIcon || loading);
+    const hasText = hasVisibleTextContent(children);
+    warnIfMissingAriaLabel("Button", {
+      hasTextContent: hasText,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledby,
+      hasIcon,
+    });
+
+    const Comp = asChild ? Slot : "button";
+
+    const leading = loading ? (
+      <Spinner
+        size={size}
+        sketchColor={textColor}
+        animate={shouldAnimate}
+        aria-hidden
+        style={{ position: "relative", zIndex: 1 }}
+      />
+    ) : startIcon ? (
+      <DoodleIcon size={size} style={{ position: "relative", zIndex: 1 }}>
+        {startIcon}
+      </DoodleIcon>
+    ) : null;
+
+    const trailing =
+      !loading && endIcon ? (
+        <DoodleIcon size={size} style={{ position: "relative", zIndex: 1 }}>
+          {endIcon}
+        </DoodleIcon>
+      ) : null;
+
     return (
-      <button
-        ref={(node) => {
+      <Comp
+        ref={(node: HTMLButtonElement | null) => {
           (rootRef as MutableRefObject<HTMLButtonElement | null>).current =
             node;
           assignRef(ref, node);
         }}
-        type="button"
+        type={asChild ? undefined : "button"}
         className={cn(className)}
-        disabled={disabled}
-        onMouseEnter={(event) => {
-          setHovered(true);
+        disabled={asChild ? undefined : interactive.isDisabled}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledby}
+        aria-disabled={interactive.aria["aria-disabled"]}
+        aria-busy={interactive.aria["aria-busy"]}
+        onMouseEnter={(event: MouseEvent<HTMLButtonElement>) => {
+          if (!interactive.isDisabled) setHovered(true);
           onMouseEnter?.(event);
         }}
-        onMouseLeave={(event) => {
+        onMouseLeave={(event: MouseEvent<HTMLButtonElement>) => {
           setHovered(false);
           onMouseLeave?.(event);
         }}
@@ -155,16 +217,17 @@ export const Button = memo(
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 8,
           border: "none",
           background: "transparent",
-          cursor: disabled ? "not-allowed" : "pointer",
           color: textColor,
           fontFamily: doodleUiFontFamily,
           fontWeight: doodleUiFontWeight(600),
           lineHeight: 1.2,
-          opacity: disabled ? 0.45 : 1,
-          ...SIZE_STYLES[size],
+          ...CONTROL_SIZE_STYLES[size],
+          ...interactive.style,
+          cursor: interactive.isDisabled
+            ? "not-allowed"
+            : ((style as CSSProperties | undefined)?.cursor ?? "pointer"),
           ...style,
         }}
         {...rest}
@@ -186,8 +249,14 @@ export const Button = memo(
               : strokeWidth
           }
         />
-        <span style={{ position: "relative", zIndex: 1 }}>{children}</span>
-      </button>
+        {leading}
+        {asChild ? (
+          <Slottable>{children}</Slottable>
+        ) : (
+          <span style={{ position: "relative", zIndex: 1 }}>{children}</span>
+        )}
+        {trailing}
+      </Comp>
     );
   }),
 );

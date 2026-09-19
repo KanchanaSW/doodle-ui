@@ -22,7 +22,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableHeaderCell,
+  TableHeader,
   TableRow,
 } from "doodleui-react";
 
@@ -175,14 +175,14 @@ function Dashboard({
       </Card>
 
       <Table {...sketch}>
-        <TableHead>
+        <TableHeader>
           <TableRow>
-            <TableHeaderCell>Order</TableHeaderCell>
-            <TableHeaderCell>Status</TableHeaderCell>
-            <TableHeaderCell>Amount</TableHeaderCell>
-            <TableHeaderCell>Action</TableHeaderCell>
+            <TableHead>Order</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Amount</TableHead>
+            <TableHead>Action</TableHead>
           </TableRow>
-        </TableHead>
+        </TableHeader>
         <TableBody>
           {filtered.map((row) => (
             <TableRow key={row.id}>

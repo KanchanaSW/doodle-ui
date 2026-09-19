@@ -19,9 +19,11 @@ Single-line text field with a sketchy border. Native focus rings are removed. Fo
 import { Input } from "doodleui-react";
 
 <Input label="Email" placeholder="you@studio.dev" />
+<Input size="lg" startIcon={<Icon />} label="Search" />
+<Input error="Required" label="Email" />
 ```
 
-Pass a `label` instead of using placeholder-as-label. All native input attributes (`type`, `name`, `autoComplete`, `onChange`) forward to the control.
+Pass a `label` instead of using placeholder-as-label. All native input attributes (`type`, `name`, `autoComplete`, `onChange`) forward to the control — compatible with `react-hook-form` `register()`. See [Forms](/docs/forms).
 
 ## Props
 

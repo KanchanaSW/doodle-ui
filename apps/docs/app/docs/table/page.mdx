@@ -16,30 +16,27 @@ A real HTML table with hand-drawn row dividers instead of CSS borders. Optional 
 ## Usage
 
 ```tsx
-import {
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-} from "doodleui-react";
+import { Table } from "doodleui-react";
 
 <Table>
-  <TableHead>
-    <TableRow>
-      <TableHeaderCell>Tool</TableHeaderCell>
-      <TableHeaderCell>Weight</TableHeaderCell>
-    </TableRow>
-  </TableHead>
-  <TableBody>
-    <TableRow>
-      <TableCell>Pen</TableCell>
-      <TableCell>0.5</TableCell>
-    </TableRow>
-  </TableBody>
+  <Table.Header>
+    <Table.Row>
+      <Table.Head>Tool</Table.Head>
+      <Table.Head>Weight</Table.Head>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>Pen</Table.Cell>
+      <Table.Cell>0.5</Table.Cell>
+    </Table.Row>
+  </Table.Body>
 </Table>
 ```
+
+Named exports: `TableHeader` (thead), `TableHead` (th), `TableBody`, `TableRow`, `TableCell`, `TableFooter`, `TableCaption`.
+
+**Migration:** the old `TableHead` export was `<thead>`; it is now `TableHeader`. The new `TableHead` is `<th>` (alias: `TableHeaderCell`).
 
 Semantics stay native `table` markup. doodle-ui measures row edges and draws rough.js lines over them.
 

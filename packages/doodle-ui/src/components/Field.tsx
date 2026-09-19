@@ -42,7 +42,7 @@ export interface FieldProps extends HTMLAttributes<HTMLDivElement> {
   error?: ReactNode;
 }
 
-export function Field({
+export function FieldRoot({
   className,
   style,
   children,
@@ -184,3 +184,10 @@ export function FieldControl({ children }: FieldControlProps) {
     "aria-invalid": invalid ? true : props["aria-invalid"],
   });
 }
+
+export const Field = Object.assign(FieldRoot, {
+  Label: FieldLabel,
+  Description: FieldDescription,
+  Error: FieldError,
+  Control: FieldControl,
+});

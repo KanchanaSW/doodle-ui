@@ -9,7 +9,14 @@ import {
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
+import { resolveInteractiveState } from "../primitives/interactive";
 import { RoughSvg } from "../primitives/RoughSvg";
+import {
+  FIELD_SIZE_STYLES,
+  resolveSize,
+  SIZE_TOKENS,
+  type DoodleSize,
+} from "../primitives/size";
 import type { SketchProps } from "../types";
 import { assignRef, cn, doodleUiFontFamily } from "../utils";
 import {
@@ -35,7 +42,12 @@ export interface ComboboxProps extends SketchProps {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
   disabled?: boolean;
+  /** @default "md" */
+  size?: DoodleSize;
   className?: string;
   style?: CSSProperties;
   "aria-label"?: string;
@@ -69,7 +81,11 @@ export function Combobox({
   value,
   defaultValue,
   onValueChange,
+  open: openProp,
+  defaultOpen,
+  onOpenChange,
   disabled,
+  size: sizeProp = "md",
   className,
   style,
   roughness,
@@ -84,7 +100,10 @@ export function Combobox({
   animate,
   "aria-label": ariaLabel,
 }: ComboboxProps) {
-  const [open, setOpen] = useState(false);
+  const size = resolveSize(sizeProp);
+  const sizeTokens = SIZE_TOKENS[size];
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen ?? false);
+  const open = openProp ?? uncontrolledOpen;
   const [uncontrolled, setUncontrolled] = useState(defaultValue);
   const selectedValue = value ?? uncontrolled;
   const selectedOption = options.find(
@@ -96,16 +115,23 @@ export function Combobox({
   const resolvedSeed = useResolvedSeed(seed);
   const shouldAnimate = useAnimate(animate);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const interactive = resolveInteractiveState({ disabled });
   useDrawIn(triggerRef, DRAW_IN_DURATION_MS, shouldAnimate);
+
+  function handleOpenChange(nextOpen: boolean) {
+    if (interactive.isDisabled && nextOpen) return;
+    setUncontrolledOpen(nextOpen);
+    onOpenChange?.(nextOpen);
+  }
 
   function handleSelect(nextValue: string) {
     setUncontrolled(nextValue);
     onValueChange?.(nextValue);
-    setOpen(false);
+    handleOpenChange(false);
   }
 
   return (
-    <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
+    <PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
       <PopoverPrimitive.Trigger asChild>
         <button
           ref={(node) => assignRef(triggerRef as never, node)}
@@ -113,28 +139,26 @@ export function Combobox({
           role="combobox"
           aria-expanded={open}
           aria-label={ariaLabel}
-          disabled={disabled}
+          disabled={interactive.isDisabled}
+          aria-disabled={interactive.aria["aria-disabled"]}
           className={cn(className)}
           style={{
             position: "relative",
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: 12,
+            gap: sizeTokens.gap + 4,
             width: "100%",
             minWidth: 200,
-            minHeight: 38,
-            padding: "8px 12px",
             border: "none",
             background: "transparent",
-            cursor: disabled ? "not-allowed" : "pointer",
-            opacity: disabled ? 0.5 : 1,
             color: ink,
             fontFamily: doodleUiFontFamily,
-            fontSize: 15,
             lineHeight: 1.2,
             outline: "none",
             textAlign: "left",
+            ...FIELD_SIZE_STYLES[size],
+            ...interactive.style,
             ...style,
           }}
         >
@@ -163,7 +187,13 @@ export function Combobox({
             {selectedOption?.label ?? placeholder}
           </span>
           <span
-            style={{ position: "relative", zIndex: 1, width: 18, height: 18, flexShrink: 0 }}
+            style={{
+              position: "relative",
+              zIndex: 1,
+              width: sizeTokens.iconSize + 2,
+              height: sizeTokens.iconSize + 2,
+              flexShrink: 0,
+            }}
           >
             <RoughSvg
               shape="path"

@@ -1,0 +1,31 @@
+# Icons
+
+Use **`startIcon`** and **`endIcon`** slots — any `ReactNode` (lucide-react, custom SVG, emoji). doodleui-react does not depend on an icon library.
+
+## Usage
+
+```tsx
+import { Search } from "lucide-react";
+
+<Button startIcon={<Search />} endIcon={<Search />}>
+  Search
+</Button>
+
+<Input label="Find" startIcon={<Search />} />
+
+<Alert variant="warning" startIcon={<Search />} title="Heads up">
+  Check settings.
+</Alert>
+```
+
+Icons auto-scale with the component `size` via the shared `DoodleIcon` wrapper.
+
+## Icon-only buttons
+
+Provide an accessible name:
+
+```tsx
+<Button startIcon={<Search />} aria-label="Search" />
+```
+
+In development, an icon-only interactive control without `aria-label` / `aria-labelledby` logs a console warning.

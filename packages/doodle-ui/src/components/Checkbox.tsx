@@ -11,22 +11,33 @@ import {
 } from "../animations";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
+import { resolveInteractiveState } from "../primitives/interactive";
+import { SIZE_TOKENS, resolveSize, type DoodleSize } from "../primitives/size";
+import {
+  useFieldValidation,
+  ValidationMessage,
+  type ValidationProps,
+} from "../primitives/validation";
 import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily } from "../utils";
+
+export type CheckboxSize = DoodleSize;
 
 /**
  * Props for {@link Checkbox}.
  */
 export interface CheckboxProps
   extends Omit<CheckboxPrimitive.CheckboxProps, "asChild">,
-    SketchProps {
+    SketchProps,
+    ValidationProps {
   /** Visible label beside the control. */
   label?: ReactNode;
   fill?: string;
   /**
-   * Draw-in the box on mount and the checkmark when checked.
-   * Defaults to the DoodleUIProvider value (true).
+   * Control size preset.
+   * @default "md"
    */
+  size?: CheckboxSize;
   /**
    * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
    * @default undefined (follow provider)
@@ -34,7 +45,6 @@ export interface CheckboxProps
   animate?: boolean;
 }
 
-const BOX = 20;
 const CHECK_PATH = "M 4.5 10.5 L 8.5 14.5 L 15.5 5.5";
 
 function CheckMark({
@@ -78,8 +88,11 @@ function CheckMark({
 /**
  * Square checkbox with a drawn checkmark.
  *
+ * Supports controlled (`checked` + `onCheckedChange`) and uncontrolled
+ * (`defaultChecked`) modes. Pass `name` for native FormData / RHF Controller.
+ *
  * @example
- * <Checkbox />
+ * <Checkbox label="Accept" name="terms" required />
  */
 export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
   function Checkbox(
@@ -88,6 +101,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
       style,
       label,
       fill,
+      size: sizeProp = "md",
       roughness,
       seed,
       sketchColor,
@@ -102,10 +116,18 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
       onCheckedChange,
       id,
       animate,
+      disabled,
+      invalid,
+      error,
+      errorMessage,
+      "aria-describedby": ariaDescribedBy,
+      "aria-invalid": ariaInvalidProp,
       ...rest
     },
     ref,
   ) {
+    const size = resolveSize(sizeProp);
+    const box = SIZE_TOKENS[size].controlBox;
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const accent = sketchColor ?? theme.accent;
@@ -113,83 +135,111 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
     const inputId = id ?? generatedId;
     const boxRef = useRef<HTMLSpanElement>(null);
     const shouldAnimate = useAnimate(animate);
+    const interactive = resolveInteractiveState({ disabled });
+    const validation = useFieldValidation(
+      { invalid, error, errorMessage },
+      { describedBy: ariaDescribedBy, errorColor: theme.error },
+    );
     useDrawIn(boxRef, DRAW_IN_DURATION_MS, shouldAnimate);
+
+    const strokeColor = validation.strokeOverride ?? ink;
 
     return (
       <span
         className={cn(className)}
         style={{
           display: "inline-flex",
-          alignItems: "center",
-          gap: 8,
-          cursor: "pointer",
-          userSelect: "none",
-          color: ink,
+          flexDirection: "column",
+          gap: 4,
+          ...interactive.style,
           ...style,
         }}
       >
-        <CheckboxPrimitive.Root
-          ref={ref}
-          id={inputId}
-          checked={checked}
-          defaultChecked={defaultChecked}
-          onCheckedChange={onCheckedChange}
+        <span
           style={{
-            position: "relative",
-            width: BOX,
-            height: BOX,
-            padding: 0,
-            border: "none",
-            background: "transparent",
-            flexShrink: 0,
-            cursor: "pointer",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: SIZE_TOKENS[size].gap,
+            cursor: interactive.isDisabled ? "not-allowed" : "pointer",
+            userSelect: "none",
+            color: ink,
           }}
-          {...rest}
         >
-          <span
-            ref={boxRef}
-            style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
-          >
-            <RoughSvg
-              shape="rectangle"
-              roughness={roughness}
-              seed={seed}
-              sketchColor={ink}
-              bowing={bowing}
-              fillStyle={fillStyle ?? (fill ? "solid" : undefined)}
-              fill={fill}
-              strokeWidth={strokeWidth ?? 1.6}
-              hachureGap={hachureGap}
-              hachureAngle={hachureAngle}
-              fillWeight={fillWeight}
-              inset={1.5}
-            />
-          </span>
-          <CheckboxPrimitive.Indicator
+          <CheckboxPrimitive.Root
+            ref={ref}
+            id={inputId}
+            checked={checked}
+            defaultChecked={defaultChecked}
+            onCheckedChange={onCheckedChange}
+            disabled={interactive.isDisabled}
+            aria-invalid={validation.ariaInvalid ?? ariaInvalidProp}
+            aria-describedby={validation.describedBy}
+            aria-disabled={interactive.aria["aria-disabled"]}
             style={{
-              position: "absolute",
-              inset: 0,
-              display: "block",
+              position: "relative",
+              width: box,
+              height: box,
+              padding: 0,
+              border: "none",
+              background: "transparent",
+              flexShrink: 0,
+              cursor: interactive.isDisabled ? "not-allowed" : "pointer",
             }}
+            {...rest}
           >
-            <CheckMark
-              roughness={roughness}
-              seed={seed}
-              sketchColor={accent}
-              bowing={bowing}
-              strokeWidth={strokeWidth}
-              shouldAnimate={shouldAnimate}
-            />
-          </CheckboxPrimitive.Indicator>
-        </CheckboxPrimitive.Root>
-        {label ? (
-          <label
-            htmlFor={inputId}
-            style={{ fontSize: 15, cursor: "pointer", fontFamily: doodleUiFontFamily, color: ink }}
-          >
-            {label}
-          </label>
-        ) : null}
+            <span
+              ref={boxRef}
+              style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+            >
+              <RoughSvg
+                shape="rectangle"
+                roughness={roughness}
+                seed={seed}
+                sketchColor={strokeColor}
+                bowing={bowing}
+                fillStyle={fillStyle ?? (fill ? "solid" : undefined)}
+                fill={fill}
+                strokeWidth={strokeWidth ?? SIZE_TOKENS[size].strokeWidth}
+                hachureGap={hachureGap}
+                hachureAngle={hachureAngle}
+                fillWeight={fillWeight}
+                inset={1.5}
+              />
+            </span>
+            <CheckboxPrimitive.Indicator
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "block",
+              }}
+            >
+              <CheckMark
+                roughness={roughness}
+                seed={seed}
+                sketchColor={accent}
+                bowing={bowing}
+                strokeWidth={strokeWidth}
+                shouldAnimate={shouldAnimate}
+              />
+            </CheckboxPrimitive.Indicator>
+          </CheckboxPrimitive.Root>
+          {label ? (
+            <label
+              htmlFor={inputId}
+              style={{
+                fontSize: SIZE_TOKENS[size].fontSize,
+                cursor: interactive.isDisabled ? "not-allowed" : "pointer",
+                fontFamily: doodleUiFontFamily,
+                color: ink,
+              }}
+            >
+              {label}
+            </label>
+          ) : null}
+        </span>
+        <ValidationMessage id={validation.errorId} style={validation.messageStyle}>
+          {validation.errorMessage}
+        </ValidationMessage>
       </span>
     );
   },

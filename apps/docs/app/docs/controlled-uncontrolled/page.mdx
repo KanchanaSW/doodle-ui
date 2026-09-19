@@ -1,0 +1,34 @@
+# Controlled vs Uncontrolled
+
+Most interactive doodleui-react components support **both** controlled and uncontrolled modes, matching the underlying Radix prop names.
+
+## Patterns
+
+| Kind | Controlled | Uncontrolled |
+| --- | --- | --- |
+| Open state | `open` + `onOpenChange` | `defaultOpen` |
+| Checked | `checked` + `onCheckedChange` | `defaultChecked` |
+| Value | `value` + `onValueChange` | `defaultValue` |
+| Pressed | `pressed` + `onPressedChange` | `defaultPressed` |
+
+## Examples
+
+```tsx
+// Uncontrolled — component owns state
+<Checkbox defaultChecked label="Remember me" />
+<Dialog defaultOpen>{/* … */}</Dialog>
+<Tabs defaultValue="one">{/* … */}</Tabs>
+
+// Controlled — you own state
+const [open, setOpen] = useState(false);
+<Dialog open={open} onOpenChange={setOpen}>{/* … */}</Dialog>
+
+const [checked, setChecked] = useState(false);
+<Switch checked={checked} onCheckedChange={setChecked} label="Notify" />
+```
+
+## Components covered
+
+Checkbox, RadioGroup, Switch, Tabs, Accordion, Select, Combobox (`value` + `open`), Dialog, AlertDialog, Popover, DropdownMenu, Toggle, ToggleGroup, Collapsible, Drawer, Sheet, Slider.
+
+Pass **either** the controlled pair **or** the `default*` prop — not both as active sources of truth. The library mirrors Radix: when `value` / `open` / `checked` is defined, that mode wins.

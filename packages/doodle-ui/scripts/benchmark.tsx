@@ -24,7 +24,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableHeaderCell,
+  TableHeader,
   TableRow,
 } from "../src/index";
 import {
@@ -139,15 +139,15 @@ function HeavyDashboard() {
         Table,
         sketch,
         createElement(
-          TableHead,
+          TableHeader,
           null,
           createElement(
             TableRow,
             null,
-            createElement(TableHeaderCell, null, "Order"),
-            createElement(TableHeaderCell, null, "Status"),
-            createElement(TableHeaderCell, null, "Amount"),
-            createElement(TableHeaderCell, null, "Action"),
+            createElement(TableHead, null, "Order"),
+            createElement(TableHead, null, "Status"),
+            createElement(TableHead, null, "Amount"),
+            createElement(TableHead, null, "Action"),
           ),
         ),
         createElement(

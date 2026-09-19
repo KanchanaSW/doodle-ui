@@ -16,6 +16,17 @@ import {
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
+import { resolveInteractiveState } from "../primitives/interactive";
+import {
+  FIELD_SIZE_STYLES,
+  resolveSize,
+  type DoodleSize,
+} from "../primitives/size";
+import {
+  useFieldValidation,
+  ValidationMessage,
+  type ValidationProps,
+} from "../primitives/validation";
 import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
@@ -27,14 +38,22 @@ export interface NativeSelectOption {
   disabled?: boolean;
 }
 
+export type NativeSelectSize = DoodleSize;
+
 /**
  * Props for {@link NativeSelect}.
  */
 export interface NativeSelectProps
   extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "color" | "size">,
-    SketchProps {
+    SketchProps,
+    ValidationProps {
   options?: NativeSelectOption[];
   fill?: string;
+  /**
+   * Control size preset.
+   * @default "md"
+   */
+  size?: NativeSelectSize;
   /** Draw-in the border on mount. Defaults to DoodleUIProvider (true). */
   animate?: boolean;
   className?: string;
@@ -55,6 +74,7 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
       options,
       children,
       fill,
+      size: sizeProp = "md",
       roughness,
       seed,
       sketchColor,
@@ -66,16 +86,27 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
       fillWeight,
       animate,
       disabled,
+      invalid,
+      error,
+      errorMessage,
+      "aria-describedby": ariaDescribedBy,
+      "aria-invalid": ariaInvalidProp,
       ...rest
     },
     ref,
   ) {
+    const size = resolveSize(sizeProp);
     const fieldRef = useRef<HTMLSpanElement>(null);
     const shouldAnimate = useAnimate(animate);
     const resolvedSeed = useResolvedSeed(seed);
     const baseRoughness = useBaseRoughness();
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
+    const interactive = resolveInteractiveState({ disabled });
+    const validation = useFieldValidation(
+      { invalid, error, errorMessage },
+      { describedBy: ariaDescribedBy, errorColor: theme.error },
+    );
 
     useDrawIn(fieldRef, DRAW_IN_DURATION_MS, shouldAnimate);
 
@@ -84,10 +115,11 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
         className={cn(className)}
         style={{
           position: "relative",
-          display: "block",
+          display: "flex",
+          flexDirection: "column",
           width: "100%",
-          opacity: disabled ? 0.6 : 1,
           color: ink,
+          ...interactive.style,
           ...style,
         }}
       >
@@ -96,7 +128,7 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
             shape="rectangle"
             roughness={roughness}
             seed={resolvedSeed}
-            sketchColor={ink}
+            sketchColor={validation.strokeOverride ?? ink}
             bowing={bowing}
             fillStyle={fillStyle ?? "solid"}
             fill={fill ?? theme.paper}
@@ -107,19 +139,22 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
           />
           <select
             ref={ref}
-            disabled={disabled}
+            disabled={interactive.isDisabled}
+            aria-invalid={validation.ariaInvalid ?? ariaInvalidProp}
+            aria-describedby={validation.describedBy}
+            aria-disabled={interactive.aria["aria-disabled"]}
             style={{
               position: "relative",
               zIndex: 1,
               width: "100%",
               border: "none",
               background: "transparent",
-              padding: "10px 36px 10px 12px",
+              ...FIELD_SIZE_STYLES[size],
+              paddingRight: 36,
               fontFamily: doodleUiFontFamily,
-              fontSize: 14,
               fontWeight: doodleUiFontWeight(500),
               color: ink,
-              cursor: disabled ? "not-allowed" : "pointer",
+              cursor: interactive.isDisabled ? "not-allowed" : "pointer",
               appearance: "none",
               WebkitAppearance: "none",
               MozAppearance: "none",
@@ -157,12 +192,15 @@ export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
               path={CHEVRON_PATH}
               roughness={(roughness ?? baseRoughness) * 0.85}
               seed={resolvedSeed}
-              sketchColor={ink}
+              sketchColor={validation.strokeOverride ?? ink}
               bowing={bowing}
               strokeWidth={strokeWidth ?? 1.5}
             />
           </span>
         </span>
+        <ValidationMessage id={validation.errorId} style={validation.messageStyle}>
+          {validation.errorMessage}
+        </ValidationMessage>
       </span>
     );
   },
