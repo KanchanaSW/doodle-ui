@@ -34,6 +34,8 @@ bunx doodleui-react add button card dialog
 
 The CLI detects your package manager from lockfiles (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb` / `bun.lock`) when installing runtime dependencies.
 
+
+
 ## Install (npm dependency)
 
 ```bash
@@ -54,17 +56,21 @@ bun add doodleui-react
 
 Peer dependencies: `react` and `react-dom` >= 18.0.0. rough.js ships with the package.
 
+
+
 ## Online Playgrounds & Starters
 
 Zero-setup templates you can open in the browser:
 
-| Template | StackBlitz | CodeSandbox |
-| --- | --- | --- |
-| Next.js App Router | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/nextjs-starter) | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/nextjs-starter) |
-| Vite + React | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/vite-react-starter) | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/vite-react-starter) |
-| Full showcase | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/showcase) | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/showcase) |
 
-Source lives in [`examples/`](examples/) in this repo.
+| Template           | StackBlitz                                                                                         | CodeSandbox                                                                                                  |
+| ------------------ | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Next.js App Router | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/nextjs-starter)     | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/nextjs-starter)     |
+| Vite + React       | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/vite-react-starter) | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/vite-react-starter) |
+| Full showcase      | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/showcase)           | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/showcase)           |
+
+
+Source lives in `[examples/](examples/)` in this repo.
 
 ## Quickstart
 
@@ -175,12 +181,16 @@ pnpm --filter doodleui-react publish --access public
 npx pnpm --filter doodleui-react publish --access public --no-git-checks
 ```
 
+
+
 ## Community & Contributing
 
 - [Contributing Guide](CONTRIBUTING.md) — setup, component conventions, changesets, and PR checklist
 - [Code of Conduct](CODE_OF_CONDUCT.md) — expectations for community participation
 - [Security Policy](SECURITY.md) — how to report vulnerabilities privately
 - [GitHub Discussions](https://github.com/KanchanaSW/doodle-ui/discussions) — questions and ideas
+
+
 
 ## License
 
