@@ -152,7 +152,7 @@ function buildRegistry(): Registry {
 
   return {
     name: "doodleui",
-    version: "0.7.1",
+    version: "0.7.2",
     homepage: "https://doodle-ui.netlify.app",
     repository: "https://github.com/KanchanaSW/doodle-ui",
     sharedDependencies: ["roughjs", "framer-motion"],

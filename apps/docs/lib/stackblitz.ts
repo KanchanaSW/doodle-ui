@@ -1,6 +1,6 @@
 import sdk from "@stackblitz/sdk";
 
-const PACKAGE_VERSION = "^0.7.1";
+const PACKAGE_VERSION = "^0.7.2";
 
 /** PascalCase tags that are doodleui-react exports (plus known compound names). */
 const DOODLE_EXPORTS = new Set([
