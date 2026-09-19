@@ -732,6 +732,12 @@ function RadialProgressPlayground() {
       defaultValue: "md",
     },
     {
+      type: "color",
+      key: "activeColor",
+      label: "Color",
+      defaultValue: "#2d6a4f",
+    },
+    {
       type: "toggle",
       key: "indeterminate",
       label: "Indeterminate",
@@ -746,6 +752,7 @@ function RadialProgressPlayground() {
           key={`${String(v.animate)}-${String(v.indeterminate)}`}
           value={v.indeterminate ? undefined : Number(v.value)}
           size={v.size as "sm" | "md" | "lg"}
+          activeColor={String(v.activeColor)}
           roughness={Number(v.roughness)}
           seed={seedFrom(v)}
           animate={Boolean(v.animate)}
@@ -753,8 +760,8 @@ function RadialProgressPlayground() {
       )}
       snippet={(v) =>
         v.indeterminate
-          ? `<RadialProgress size="${v.size}" ${snippetExtras(v)} />`
-          : `<RadialProgress value={${Number(v.value)}} size="${v.size}" ${snippetExtras(v)} />`
+          ? `<RadialProgress size="${v.size}" activeColor="${String(v.activeColor)}" ${snippetExtras(v)} />`
+          : `<RadialProgress value={${Number(v.value)}} size="${v.size}" activeColor="${String(v.activeColor)}" ${snippetExtras(v)} />`
       }
     />
   );
