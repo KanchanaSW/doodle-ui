@@ -19,8 +19,20 @@ import {
 } from "../animations";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
+import { resolveInteractiveState } from "../primitives/interactive";
 import { RoughSvg } from "../primitives/RoughSvg";
 import { SketchBox } from "../primitives/SketchBox";
+import {
+  FIELD_SIZE_STYLES,
+  resolveSize,
+  SIZE_TOKENS,
+  type DoodleSize,
+} from "../primitives/size";
+import {
+  useFieldValidation,
+  ValidationMessage,
+  type ValidationProps,
+} from "../primitives/validation";
 import type { SketchProps } from "../types";
 import { assignRef, cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
@@ -46,6 +58,12 @@ interface SelectSketchContextValue extends SketchProps {
    * @default undefined (follow provider)
    */
   animate?: boolean;
+  size: DoodleSize;
+  validationStroke?: string;
+  validationAria?: {
+    "aria-invalid"?: boolean;
+    "aria-describedby"?: string;
+  };
 }
 
 const SelectSketchContext = createContext<SelectSketchContextValue | null>(
@@ -65,17 +83,18 @@ function useSelectSketch(): SelectSketchContextValue {
  */
 export interface SelectProps
   extends Omit<SelectPrimitive.SelectProps, "children">,
-    SketchProps {
+    SketchProps,
+    ValidationProps {
   options: SelectOption[];
   placeholder?: string;
   className?: string;
   style?: CSSProperties;
   fill?: string;
+  /** @default "md" */
+  size?: DoodleSize;
   "aria-label"?: string;
-  /**
-   * Draw-in the trigger on mount and the popover border on open.
-   * Defaults to the DoodleUIProvider value (true).
-   */
+  "aria-describedby"?: string;
+  "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
   /**
    * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
    * @default undefined (follow provider)
@@ -89,88 +108,143 @@ export interface SelectProps
  * @example
  * <Select />
  */
-export function Select({
-  options,
-  placeholder = "Select…",
-  className,
-  style,
-  fill,
-  roughness,
-  seed,
-  sketchColor,
-  bowing,
-  fillStyle,
-  strokeWidth,
-  hachureGap,
-  hachureAngle,
-  fillWeight,
-  value,
-  defaultValue,
-  onValueChange,
-  animate,
-  "aria-label": ariaLabel,
-  ...rest
-}: SelectProps) {
-  const [uncontrolled, setUncontrolled] = useState(defaultValue);
-  const selectedValue = value ?? uncontrolled;
-  const selectedLabel = options.find((option) => option.value === selectedValue)
-    ?.label;
-  const resolvedSeed = useResolvedSeed(seed);
-  const theme = useSketchTheme(sketchColor);
-  const ink = sketchColor ?? theme.ink;
+export const Select = forwardRef<HTMLButtonElement, SelectProps>(
+  function Select(
+    {
+      options,
+      placeholder = "Select…",
+      className,
+      style,
+      fill,
+      roughness,
+      seed,
+      sketchColor,
+      bowing,
+      fillStyle,
+      strokeWidth,
+      hachureGap,
+      hachureAngle,
+      fillWeight,
+      value,
+      defaultValue,
+      onValueChange,
+      animate,
+      size: sizeProp = "md",
+      disabled,
+      name,
+      required,
+      invalid,
+      error,
+      errorMessage,
+      "aria-label": ariaLabel,
+      "aria-describedby": ariaDescribedBy,
+      "aria-invalid": ariaInvalidProp,
+      ...rest
+    },
+    ref,
+  ) {
+    const size = resolveSize(sizeProp);
+    const [uncontrolled, setUncontrolled] = useState(defaultValue);
+    const selectedValue = value ?? uncontrolled;
+    const selectedLabel = options.find((option) => option.value === selectedValue)
+      ?.label;
+    const resolvedSeed = useResolvedSeed(seed);
+    const theme = useSketchTheme(sketchColor);
+    const ink = sketchColor ?? theme.ink;
+    const interactive = resolveInteractiveState({ disabled });
+    const validation = useFieldValidation(
+      { invalid, error, errorMessage },
+      { describedBy: ariaDescribedBy, errorColor: theme.error },
+    );
+    const isControlled = value !== undefined;
+    const rootValueProps = isControlled
+      ? { value }
+      : { defaultValue };
 
-  return (
-    <SelectSketchContext.Provider
-      value={{
-        roughness,
-        seed: resolvedSeed,
-        sketchColor,
-        bowing,
-        fillStyle,
-        strokeWidth,
-        hachureGap,
-        hachureAngle,
-        fillWeight,
-        resolvedSeed,
-        ink,
-        paper: fill ?? theme.paper,
-        accent: theme.accent,
-        selectedValue,
-        selectedLabel,
-        placeholder,
-        animate,
-      }}
-    >
-      <SelectPrimitive.Root
-        value={value}
-        defaultValue={defaultValue}
-        onValueChange={(next) => {
-          setUncontrolled(next);
-          onValueChange?.(next);
+    return (
+      <div
+        style={{
+          display: "inline-flex",
+          flexDirection: "column",
+          width: "100%",
+          ...interactive.style,
         }}
-        {...rest}
       >
-        <SelectTrigger
-          className={className}
-          style={style}
-          placeholder={placeholder}
-          aria-label={ariaLabel}
-        />
-        <SelectContent>
-          {options.map((option) => (
-            <SelectItem
-              key={option.value}
-              value={option.value}
-              disabled={option.disabled}
-            >
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </SelectPrimitive.Root>
-    </SelectSketchContext.Provider>
-  );
-}
+        <SelectSketchContext.Provider
+          value={{
+            roughness,
+            seed: resolvedSeed,
+            sketchColor,
+            bowing,
+            fillStyle,
+            strokeWidth,
+            hachureGap,
+            hachureAngle,
+            fillWeight,
+            resolvedSeed,
+            ink,
+            paper: fill ?? theme.paper,
+            accent: theme.accent,
+            selectedValue,
+            selectedLabel,
+            placeholder,
+            animate,
+            size,
+            validationStroke: validation.strokeOverride,
+            validationAria: {
+              "aria-invalid":
+                validation.ariaInvalid ??
+                (ariaInvalidProp === true || ariaInvalidProp === "true"
+                  ? true
+                  : ariaInvalidProp === false || ariaInvalidProp === "false"
+                    ? false
+                    : undefined),
+              "aria-describedby": validation.describedBy,
+            },
+          }}
+        >
+          <SelectPrimitive.Root
+            {...rootValueProps}
+            onValueChange={(next) => {
+              setUncontrolled(next);
+              onValueChange?.(next);
+            }}
+            disabled={interactive.isDisabled}
+            name={name}
+            required={required}
+            {...rest}
+          >
+            <SelectTrigger
+              ref={ref}
+              className={className}
+              style={style}
+              placeholder={placeholder}
+              aria-label={ariaLabel}
+              aria-disabled={interactive.aria["aria-disabled"]}
+            />
+            <SelectContent>
+              {options.map((option) => (
+                <SelectItem
+                  key={option.value}
+                  value={option.value}
+                  disabled={option.disabled}
+                >
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectPrimitive.Root>
+        </SelectSketchContext.Provider>
+        <ValidationMessage
+          id={validation.errorId}
+          style={validation.messageStyle}
+        >
+          {validation.errorMessage}
+        </ValidationMessage>
+      </div>
+    );
+  },
+);
 
 /**
  * Props for {@link SelectTrigger}.
@@ -190,7 +264,10 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
     const rootRef = useRef<HTMLButtonElement>(null);
     const baseRoughness = useBaseRoughness();
     const shouldAnimate = useAnimate(sketch.animate);
+    const sizeTokens = SIZE_TOKENS[sketch.size];
     useDrawIn(rootRef, DRAW_IN_DURATION_MS, shouldAnimate);
+    const borderColor =
+      sketch.validationStroke ?? (openish ? sketch.accent : sketch.ink);
 
     return (
       <SelectPrimitive.Trigger
@@ -202,24 +279,24 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
         className={cn(className)}
         onPointerDown={() => setOpenish(true)}
         onBlur={() => setOpenish(false)}
+        aria-invalid={sketch.validationAria?.["aria-invalid"]}
+        aria-describedby={sketch.validationAria?.["aria-describedby"]}
         style={{
           position: "relative",
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: 12,
+          gap: sizeTokens.gap + 4,
           minWidth: 180,
-          minHeight: 38,
-          padding: "8px 12px",
           border: "none",
           background: "transparent",
           cursor: "pointer",
           color: sketch.ink,
           fontFamily: doodleUiFontFamily,
-          fontSize: 15,
           lineHeight: 1.2,
           outline: "none",
           textAlign: "left",
+          ...FIELD_SIZE_STYLES[sketch.size],
           ...style,
         }}
         {...rest}
@@ -228,7 +305,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
           shape="rectangle"
           roughness={sketch.roughness}
           seed={sketch.resolvedSeed}
-          sketchColor={openish ? sketch.accent : sketch.ink}
+          sketchColor={borderColor}
           bowing={sketch.bowing}
           fillStyle={sketch.fillStyle}
           strokeWidth={
@@ -253,8 +330,8 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
           style={{
             position: "relative",
             zIndex: 1,
-            width: 18,
-            height: 18,
+            width: sizeTokens.iconSize + 2,
+            height: sizeTokens.iconSize + 2,
             flexShrink: 0,
           }}
         >

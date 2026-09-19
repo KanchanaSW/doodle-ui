@@ -60,7 +60,7 @@ export interface AccordionProps extends SketchProps {
  * @example
  * <Accordion />
  */
-export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
+const AccordionRoot = forwardRef<HTMLDivElement, AccordionProps>(
   function Accordion(
     {
       className,
@@ -91,6 +91,7 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       string | string[] | undefined
     >(defaultValue ?? (type === "multiple" ? [] : undefined));
     const openValue = value ?? uncontrolled;
+    const isControlled = value !== undefined;
 
     const sketchValue: AccordionSketchContextValue = {
       roughness,
@@ -120,8 +121,9 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
           disabled={disabled}
           className={cn(className)}
           style={style}
-          value={openValue as string[] | undefined}
-          defaultValue={defaultValue as string[] | undefined}
+          {...(isControlled
+            ? { value: openValue as string[] }
+            : { defaultValue: defaultValue as string[] | undefined })}
           onValueChange={handleChange}
         >
           {children}
@@ -134,8 +136,9 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
           disabled={disabled}
           className={cn(className)}
           style={style}
-          value={openValue as string | undefined}
-          defaultValue={defaultValue as string | undefined}
+          {...(isControlled
+            ? { value: openValue as string | undefined }
+            : { defaultValue: defaultValue as string | undefined })}
           onValueChange={handleChange}
         >
           {children}
@@ -307,4 +310,10 @@ export const AccordionContent = forwardRef<
       {children}
     </AccordionPrimitive.Content>
   );
+});
+
+export const Accordion = Object.assign(AccordionRoot, {
+  Item: AccordionItem,
+  Trigger: AccordionTrigger,
+  Content: AccordionContent,
 });

@@ -109,6 +109,8 @@ import {
   PopoverContent,
   PopoverTrigger,
   Progress,
+  RadialMenu,
+  RadialProgress,
   Radio,
   RadioGroup,
   ResizableHandle,
@@ -144,7 +146,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableHeaderCell,
+  TableHeader,
   TableRow,
   TabList,
   TabPanel,
@@ -230,6 +232,10 @@ function ComponentPlaygroundInner({ name }: { name: ComponentSlug }) {
       return <DividerPlayground />;
     case "progress":
       return <ProgressPlayground />;
+    case "radial-progress":
+      return <RadialProgressPlayground />;
+    case "radial-menu":
+      return <RadialMenuPlayground />;
     case "tooltip":
       return <TooltipPlayground />;
     case "select":
@@ -709,6 +715,112 @@ function ProgressPlayground() {
   );
 }
 
+function RadialProgressPlayground() {
+  const controls: Control[] = withAnimate([
+    ...sketchControls,
+    {
+      type: "slider",
+      key: "value",
+      label: "Value",
+      min: 0,
+      max: 100,
+      step: 1,
+      defaultValue: 75,
+    },
+    {
+      type: "select",
+      key: "size",
+      label: "Size",
+      options: ["sm", "md", "lg"],
+      defaultValue: "md",
+    },
+    {
+      type: "color",
+      key: "activeColor",
+      label: "Color",
+      defaultValue: "#2d6a4f",
+    },
+    {
+      type: "toggle",
+      key: "indeterminate",
+      label: "Indeterminate",
+      defaultValue: false,
+    },
+  ]);
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <RadialProgress
+          key={`${String(v.animate)}-${String(v.indeterminate)}`}
+          value={v.indeterminate ? undefined : Number(v.value)}
+          size={v.size as "sm" | "md" | "lg"}
+          activeColor={String(v.activeColor)}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        />
+      )}
+      snippet={(v) =>
+        v.indeterminate
+          ? `<RadialProgress size="${v.size}" activeColor="${String(v.activeColor)}" ${snippetExtras(v)} />`
+          : `<RadialProgress value={${Number(v.value)}} size="${v.size}" activeColor="${String(v.activeColor)}" ${snippetExtras(v)} />`
+      }
+    />
+  );
+}
+
+function RadialMenuPlayground() {
+  const controls: Control[] = withAnimate([
+    ...sketchControls,
+    {
+      type: "select",
+      key: "size",
+      label: "Size",
+      options: ["sm", "md", "lg"],
+      defaultValue: "md",
+    },
+    {
+      type: "slider",
+      key: "radius",
+      label: "Radius",
+      min: 56,
+      max: 140,
+      step: 4,
+      defaultValue: 88,
+    },
+  ]);
+  const demoItems = [
+    { id: "a", icon: <span style={{ fontSize: 14 }}>#</span>, label: "Crop" },
+    { id: "b", icon: <span style={{ fontSize: 14 }}>T</span>, label: "Text" },
+    { id: "c", icon: <span style={{ fontSize: 14 }}>□</span>, label: "Shape" },
+    { id: "d", icon: <span style={{ fontSize: 14 }}>✎</span>, label: "Draw" },
+    { id: "e", icon: <span style={{ fontSize: 14 }}>☆</span>, label: "Star" },
+  ];
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <div style={{ minHeight: 260, display: "grid", placeItems: "end center", paddingBottom: 24 }}>
+          <RadialMenu
+            key={String(v.animate)}
+            items={demoItems}
+            size={v.size as "sm" | "md" | "lg"}
+            radius={Number(v.radius)}
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
+            aria-label="Tools"
+          />
+        </div>
+      )}
+      snippet={(v) =>
+        `<RadialMenu size="${v.size}" radius={${Number(v.radius)}} items={[/* ... */]} ${snippetExtras(v)} />`
+      }
+    />
+  );
+}
+
 function TooltipPlayground() {
   return (
     <Playground
@@ -1002,12 +1114,12 @@ function TablePlayground() {
             seed={seedFrom(v)}
             animate={Boolean(v.animate)}
           >
-            <TableHead>
+            <TableHeader>
               <TableRow>
-                <TableHeaderCell>Tool</TableHeaderCell>
-                <TableHeaderCell>Weight</TableHeaderCell>
+                <TableHead>Tool</TableHead>
+                <TableHead>Weight</TableHead>
               </TableRow>
-            </TableHead>
+            </TableHeader>
             <TableBody>
               <TableRow>
                 <TableCell>Pen</TableCell>
@@ -1027,12 +1139,12 @@ function TablePlayground() {
       )}
       snippet={(v) =>
         `<Table headerUnderline={${Boolean(v.headerUnderline)}} ${snippetExtras(v)}>
-  <TableHead>
+  <TableHeader>
     <TableRow>
-      <TableHeaderCell>Tool</TableHeaderCell>
-      <TableHeaderCell>Weight</TableHeaderCell>
+      <TableHead>Tool</TableHead>
+      <TableHead>Weight</TableHead>
     </TableRow>
-  </TableHead>
+  </TableHeader>
   <TableBody>
     <TableRow>
       <TableCell>Pen</TableCell>

@@ -1,0 +1,68 @@
+# Forms
+
+doodleui-react form controls work with native HTML forms, `FormData`, and [react-hook-form](https://react-hook-form.com/).
+
+## Native attributes
+
+`Input`, `Textarea`, `NativeSelect`, and Radix-backed controls forward `name`, `required`, `disabled`, `pattern`, `minLength`, `maxLength`, `min`, and `max` where applicable.
+
+```tsx
+<form
+  onSubmit={(e) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    console.log(Object.fromEntries(data));
+  }}
+>
+  <Input name="email" label="Email" required type="email" />
+  <Checkbox name="terms" value="yes" label="Accept" />
+  <RadioGroup name="plan" defaultValue="pro">
+    <Radio value="free" label="Free" />
+    <Radio value="pro" label="Pro" />
+  </RadioGroup>
+  <Select name="fruit" options={OPTIONS} aria-label="Fruit" />
+  <button type="submit">Save</button>
+</form>
+```
+
+## react-hook-form: `register()`
+
+Use `register()` for native elements — **Input** and **Textarea** (and **NativeSelect**).
+
+```tsx
+const { register, handleSubmit } = useForm();
+
+<form onSubmit={handleSubmit(onSubmit)}>
+  <Input label="Email" {...register("email", { required: true })} />
+  <Textarea label="Notes" {...register("notes")} />
+</form>
+```
+
+## react-hook-form: `Controller`
+
+Use `Controller` for Radix button-based controls — **Checkbox**, **Switch**, **RadioGroup**, **Select**.
+
+```tsx
+<Controller
+  name="accept"
+  control={control}
+  render={({ field }) => (
+    <Checkbox
+      label="Accept"
+      checked={field.value}
+      onCheckedChange={field.onChange}
+      name={field.name}
+    />
+  )}
+/>
+```
+
+## Validation styling
+
+Set `invalid` / `error` / `errorMessage` on form controls. When invalid, the sketch stroke uses `--doodle-ui-color-error` and `aria-invalid="true"` is set automatically. Messages are linked with `aria-describedby`.
+
+```tsx
+<Input label="Email" error="Required" />
+```
+
+Prefer composing with [Field](/docs/field) for label + description + error wiring across a control.

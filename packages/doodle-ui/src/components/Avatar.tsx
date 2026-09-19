@@ -6,6 +6,7 @@ import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
+import { resolveAvatarPx, type DoodleSize } from "../primitives/size";
 import type { RoughShape, SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
@@ -22,10 +23,10 @@ export interface AvatarProps
   alt?: string;
   fallback?: ReactNode;
   /**
-   * Control size preset.
+   * Avatar size preset or exact pixel dimension.
    * @default "md"
    */
-  size?: number;
+  size?: DoodleSize | number;
   shape?: AvatarShape;
   status?: AvatarStatus;
   fill?: string;
@@ -45,7 +46,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
       src,
       alt,
       fallback,
-      size = 40,
+      size: sizeProp = "md",
       shape = "circle",
       status,
       fill,
@@ -63,6 +64,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
     ref,
   ) {
     const baseRoughness = useBaseRoughness();
+    const sizePx = resolveAvatarPx(sizeProp);
     const theme = useSketchTheme(sketchColor);
     const ink = sketchColor ?? theme.ink;
     const resolvedSeed = useResolvedSeed(seed);
@@ -78,8 +80,8 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
     const rootStyle: CSSProperties = {
       position: "relative",
       display: "inline-flex",
-      width: size,
-      height: size,
+      width: sizePx,
+      height: sizePx,
       flexShrink: 0,
       verticalAlign: "middle",
       ...style,
@@ -139,7 +141,7 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(
               justifyContent: "center",
               fontFamily: doodleUiFontFamily,
               fontWeight: doodleUiFontWeight(650),
-              fontSize: Math.max(12, size * 0.36),
+              fontSize: Math.max(12, sizePx * 0.36),
               color: ink,
               background: theme.secondaryFill,
             }}

@@ -265,6 +265,95 @@ export const progressProps: PropRow[] = [
   ...sharedSketchProps,
 ];
 
+export const radialProgressProps: PropRow[] = [
+  {
+    name: "value",
+    type: "number | undefined",
+    defaultValue: "undefined",
+    description:
+      "Determinate progress. Omit for indeterminate loading mode.",
+  },
+  {
+    name: "max",
+    type: "number",
+    defaultValue: "100",
+    description: "Maximum value. Sets aria-valuemax.",
+  },
+  {
+    name: "size",
+    type: '"sm" | "md" | "lg" | number',
+    defaultValue: '"md"',
+    description: "Gauge diameter preset or pixel size.",
+  },
+  {
+    name: "tickCount",
+    type: "number",
+    defaultValue: "48",
+    description: "Number of radial tick bars along the arc.",
+  },
+  {
+    name: "activeColor / trackColor",
+    type: "string",
+    defaultValue: "theme",
+    description: "Active and inactive tick colors.",
+  },
+  {
+    name: "showValue",
+    type: "boolean",
+    defaultValue: "true",
+    description: "Show center percentage or children.",
+  },
+  {
+    name: "waveSpeed",
+    type: "number",
+    defaultValue: "2",
+    description: "Seconds per full wave cycle.",
+  },
+  animateProp(
+    "Traveling height/brightness wave on ticks. Reduced motion freezes the wave.",
+  ),
+  ...sharedSketchProps,
+];
+
+export const radialMenuProps: PropRow[] = [
+  {
+    name: "items",
+    type: "RadialMenuItem[]",
+    defaultValue: "—",
+    description: "Actions with id, icon, label, optional onSelect / disabled.",
+  },
+  {
+    name: "open / defaultOpen / onOpenChange",
+    type: "boolean / (open) => void",
+    defaultValue: "uncontrolled false",
+    description: "Controlled or uncontrolled open state. Toggle via trigger only.",
+  },
+  {
+    name: "radius",
+    type: "number",
+    defaultValue: "size preset",
+    description: "Distance in px from trigger center to item centers.",
+  },
+  {
+    name: "size",
+    type: '"sm" | "md" | "lg"',
+    defaultValue: '"md"',
+    description: "Trigger and item diameter preset.",
+  },
+  {
+    name: "aria-label",
+    type: "string",
+    defaultValue: '"Open menu"',
+    description: "Accessible name for the central trigger button.",
+  },
+  {
+    name: "animate / SketchProps",
+    type: "boolean / SketchProps",
+    defaultValue: "provider / theme",
+    description: "Draw-in, roughness, seed, sketchColor, and related sketch props.",
+  },
+];
+
 export const tooltipProps: PropRow[] = [
   {
     name: "content",

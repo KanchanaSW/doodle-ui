@@ -1,0 +1,34 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { radialMenuProps } from "@/lib/props";
+import { ComponentCliInstallTabs } from "@/components/InstallCommands";
+
+# Radial Menu
+
+Plus trigger fans sketch actions in an arc.
+
+<ComponentPlayground name="radial-menu" />
+
+## CLI install
+
+<ComponentCliInstallTabs name="radial-menu" />
+
+## Usage
+
+```tsx
+import { RadialMenu } from "doodleui-react";
+
+<RadialMenu
+  aria-label="Tools"
+  items={[
+    { id: "crop", icon: <span>#</span>, label: "Crop" },
+    { id: "text", icon: <span>T</span>, label: "Text" },
+  ]}
+/>
+```
+
+Click the central trigger to open and close the menu. Item `onSelect` runs your handler but leaves the menu open until you toggle the trigger again.
+
+## Props
+
+<PropsTable rows={radialMenuProps} />

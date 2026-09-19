@@ -15,17 +15,16 @@ import {
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
+import { resolveInteractiveState } from "../primitives/interactive";
+import {
+  CONTROL_SIZE_STYLES,
+  resolveSize,
+  type DoodleSize,
+} from "../primitives/size";
 import type { SketchProps } from "../types";
 import { assignRef, cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
 
-export type ToggleSize = "sm" | "md" | "lg";
-
-const SIZE_STYLES: Record<ToggleSize, { fontSize: number; padding: string; minHeight: number }> =
-  {
-    sm: { fontSize: 13, padding: "4px 10px", minHeight: 30 },
-    md: { fontSize: 15, padding: "7px 14px", minHeight: 38 },
-    lg: { fontSize: 17, padding: "10px 18px", minHeight: 46 },
-  };
+export type ToggleSize = DoodleSize;
 
 /**
  * Props for {@link Toggle}.
@@ -60,7 +59,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
     {
       className,
       style,
-      size = "md",
+      size: sizeProp = "md",
       roughness,
       seed,
       sketchColor,
@@ -80,6 +79,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
     },
     ref,
   ) {
+    const size = resolveSize(sizeProp);
     const rootRef = useRef<HTMLButtonElement>(null);
     const [uncontrolled, setUncontrolled] = useState(defaultPressed === true);
     const isPressed = pressed ?? uncontrolled;
@@ -93,6 +93,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
     const shouldAnimate = useAnimate(animate);
     const pressSeed = deriveSeed(resolvedSeed, isPressed ? "on" : "off");
     const sketchSeed = shouldAnimate ? pressSeed : resolvedSeed;
+    const interactive = resolveInteractiveState({ disabled });
 
     useDrawIn(rootRef, DRAW_IN_DURATION_MS, shouldAnimate, sketchSeed);
 
@@ -108,7 +109,8 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
           setUncontrolled(next);
           onPressedChange?.(next);
         }}
-        disabled={disabled}
+        disabled={interactive.isDisabled}
+        aria-disabled={interactive.aria["aria-disabled"]}
         className={cn(className)}
         style={{
           position: "relative",
@@ -117,13 +119,13 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
           justifyContent: "center",
           border: "none",
           background: "transparent",
-          cursor: disabled ? "not-allowed" : "pointer",
           color: isPressed ? (theme.isDark ? "#ffffff" : accent) : ink,
           fontFamily: doodleUiFontFamily,
           fontWeight: doodleUiFontWeight(600),
-          opacity: disabled ? 0.45 : 1,
           outline: "none",
-          ...SIZE_STYLES[size],
+          ...CONTROL_SIZE_STYLES[size],
+          ...interactive.style,
+          cursor: interactive.isDisabled ? "not-allowed" : "pointer",
           ...style,
         }}
         {...rest}

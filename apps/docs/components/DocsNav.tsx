@@ -53,6 +53,73 @@ export function DocsNav() {
         Animation
       </Link>
       <Link
+        href="/docs/sizing"
+        className={`block mb-4 font-medium ${
+          pathMatches(pathname, "/docs/sizing")
+            ? "text-accent"
+            : "hover:text-accent"
+        }`}
+        aria-current={
+          pathMatches(pathname, "/docs/sizing") ? "page" : undefined
+        }
+      >
+        Sizing
+      </Link>
+      <Link
+        href="/docs/icons"
+        className={`block mb-4 font-medium ${
+          pathMatches(pathname, "/docs/icons")
+            ? "text-accent"
+            : "hover:text-accent"
+        }`}
+        aria-current={
+          pathMatches(pathname, "/docs/icons") ? "page" : undefined
+        }
+      >
+        Icons
+      </Link>
+      <Link
+        href="/docs/forms"
+        className={`block mb-4 font-medium ${
+          pathMatches(pathname, "/docs/forms")
+            ? "text-accent"
+            : "hover:text-accent"
+        }`}
+        aria-current={
+          pathMatches(pathname, "/docs/forms") ? "page" : undefined
+        }
+      >
+        Forms
+      </Link>
+      <Link
+        href="/docs/controlled-uncontrolled"
+        className={`block mb-4 font-medium ${
+          pathMatches(pathname, "/docs/controlled-uncontrolled")
+            ? "text-accent"
+            : "hover:text-accent"
+        }`}
+        aria-current={
+          pathMatches(pathname, "/docs/controlled-uncontrolled")
+            ? "page"
+            : undefined
+        }
+      >
+        Controlled state
+      </Link>
+      <Link
+        href="/docs/performance"
+        className={`block mb-4 font-medium ${
+          pathMatches(pathname, "/docs/performance")
+            ? "text-accent"
+            : "hover:text-accent"
+        }`}
+        aria-current={
+          pathMatches(pathname, "/docs/performance") ? "page" : undefined
+        }
+      >
+        Performance
+      </Link>
+      <Link
         href="/docs/vs-shadcn"
         className={`block mb-4 font-medium ${
           pathMatches(pathname, "/docs/vs-shadcn")

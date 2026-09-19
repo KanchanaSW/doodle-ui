@@ -33,6 +33,8 @@ export const COMPONENT_PAGES = [
   { slug: "pagination", title: "Pagination", blurb: "Circled page buttons" },
   { slug: "popover", title: "Popover", blurb: "Sketchy floating panel anchored to a trigger" },
   { slug: "progress", title: "Progress", blurb: "Outer bar plus a rougher fill" },
+  { slug: "radial-progress", title: "Radial Progress", blurb: "Tick-gauge loader with a height wave" },
+  { slug: "radial-menu", title: "Radial Menu", blurb: "Plus trigger fans sketch actions in an arc" },
   { slug: "radio", title: "Radio", blurb: "Circle with a hand-filled dot" },
   { slug: "resizable", title: "Resizable", blurb: "Draggable panels with sketch handle" },
   { slug: "scroll-area", title: "Scroll Area", blurb: "Sketch border + rough scrollbar" },

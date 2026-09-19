@@ -18,31 +18,72 @@ import {
 import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
+import { resolveInteractiveState } from "../primitives/interactive";
+import { SIZE_TOKENS, resolveSize, type DoodleSize } from "../primitives/size";
+import {
+  useFieldValidation,
+  ValidationMessage,
+  type ValidationProps,
+} from "../primitives/validation";
 import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily } from "../utils";
+
+export type RadioSize = DoodleSize;
 
 /**
  * Props for {@link RadioGroup}.
  */
 export interface RadioGroupProps
-  extends ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {}
+  extends ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>,
+    ValidationProps {}
 
 export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
-  function RadioGroup({ className, style, children, ...rest }, ref) {
+  function RadioGroup(
+    {
+      className,
+      style,
+      children,
+      invalid,
+      error,
+      errorMessage,
+      "aria-describedby": ariaDescribedBy,
+      "aria-invalid": ariaInvalidProp,
+      disabled,
+      ...rest
+    },
+    ref,
+  ) {
+    const theme = useSketchTheme();
+    const interactive = resolveInteractiveState({ disabled });
+    const validation = useFieldValidation(
+      { invalid, error, errorMessage },
+      { describedBy: ariaDescribedBy, errorColor: theme.error },
+    );
+
     return (
-      <RadioGroupPrimitive.Root
-        ref={ref}
-        className={cn(className)}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 10,
-          ...style,
-        }}
-        {...rest}
-      >
-        {children}
-      </RadioGroupPrimitive.Root>
+      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <RadioGroupPrimitive.Root
+          ref={ref}
+          className={cn(className)}
+          disabled={interactive.isDisabled}
+          aria-invalid={validation.ariaInvalid ?? ariaInvalidProp}
+          aria-describedby={validation.describedBy}
+          aria-disabled={interactive.aria["aria-disabled"]}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 10,
+            ...interactive.style,
+            ...style,
+          }}
+          {...rest}
+        >
+          {children}
+        </RadioGroupPrimitive.Root>
+        <ValidationMessage id={validation.errorId} style={validation.messageStyle}>
+          {validation.errorMessage}
+        </ValidationMessage>
+      </div>
     );
   },
 );
@@ -60,9 +101,10 @@ export interface RadioProps
   label?: ReactNode;
   fill?: string;
   /**
-   * Draw-in the ring on mount and scale/draw the dot on select.
-   * Defaults to the DoodleUIProvider value (true).
+   * Control size preset.
+   * @default "md"
    */
+  size?: RadioSize;
   /**
    * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
    * @default undefined (follow provider)
@@ -70,20 +112,20 @@ export interface RadioProps
   animate?: boolean;
 }
 
-const SIZE = 20;
-
 function RadioDot({
   roughness,
   seed,
   sketchColor,
   bowing,
   shouldAnimate,
+  inset,
 }: {
   roughness?: number;
   seed?: number;
   sketchColor?: string;
   bowing?: number;
   shouldAnimate: boolean;
+  inset: number;
 }) {
   const baseRoughness = useBaseRoughness();
   const ref = useRef<HTMLSpanElement>(null);
@@ -121,7 +163,7 @@ function RadioDot({
         fillStyle="solid"
         bowing={bowing}
         strokeWidth={1}
-        inset={6}
+        inset={inset}
       />
     </span>
   );
@@ -131,7 +173,9 @@ function RadioDot({
  * Circular radio option with a filled dot when selected.
  *
  * @example
- * <Radio />
+ * <RadioGroup name="plan" defaultValue="pro">
+ *   <Radio value="pro" label="Pro" />
+ * </RadioGroup>
  */
 export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
   {
@@ -139,6 +183,7 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
     style,
     label,
     fill,
+    size: sizeProp = "md",
     roughness,
     seed,
     sketchColor,
@@ -150,10 +195,13 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
     fillWeight,
     id,
     animate,
+    disabled,
     ...rest
   },
   ref,
 ) {
+  const size = resolveSize(sizeProp);
+  const box = SIZE_TOKENS[size].controlBox;
   const theme = useSketchTheme(sketchColor);
   const ink = sketchColor ?? theme.ink;
   const accent = sketchColor ?? theme.accent;
@@ -161,6 +209,7 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
   const inputId = id ?? generatedId;
   const ringRef = useRef<HTMLSpanElement>(null);
   const shouldAnimate = useAnimate(animate);
+  const interactive = resolveInteractiveState({ disabled });
   useDrawIn(ringRef, DRAW_IN_DURATION_MS, shouldAnimate);
 
   return (
@@ -169,25 +218,28 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 8,
-        cursor: "pointer",
+        gap: SIZE_TOKENS[size].gap,
+        cursor: interactive.isDisabled ? "not-allowed" : "pointer",
         userSelect: "none",
         color: ink,
+        ...interactive.style,
         ...style,
       }}
     >
       <RadioGroupPrimitive.Item
         ref={ref}
         id={inputId}
+        disabled={interactive.isDisabled}
+        aria-disabled={interactive.aria["aria-disabled"]}
         style={{
           position: "relative",
-          width: SIZE,
-          height: SIZE,
+          width: box,
+          height: box,
           padding: 0,
           border: "none",
           background: "transparent",
           flexShrink: 0,
-          cursor: "pointer",
+          cursor: interactive.isDisabled ? "not-allowed" : "pointer",
           borderRadius: "50%",
         }}
         {...rest}
@@ -204,7 +256,7 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
             bowing={bowing}
             fillStyle={fillStyle ?? (fill ? "solid" : undefined)}
             fill={fill}
-            strokeWidth={strokeWidth ?? 1.6}
+            strokeWidth={strokeWidth ?? SIZE_TOKENS[size].strokeWidth}
             hachureGap={hachureGap}
             hachureAngle={hachureAngle}
             fillWeight={fillWeight}
@@ -224,13 +276,19 @@ export const Radio = forwardRef<HTMLButtonElement, RadioProps>(function Radio(
             sketchColor={accent}
             bowing={bowing}
             shouldAnimate={shouldAnimate}
+            inset={Math.round(box * 0.3)}
           />
         </RadioGroupPrimitive.Indicator>
       </RadioGroupPrimitive.Item>
       {label ? (
         <label
           htmlFor={inputId}
-          style={{ fontSize: 15, cursor: "pointer", fontFamily: doodleUiFontFamily, color: ink }}
+          style={{
+            fontSize: SIZE_TOKENS[size].fontSize,
+            cursor: interactive.isDisabled ? "not-allowed" : "pointer",
+            fontFamily: doodleUiFontFamily,
+            color: ink,
+          }}
         >
           {label}
         </label>

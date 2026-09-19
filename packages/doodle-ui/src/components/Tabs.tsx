@@ -91,6 +91,10 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   const ink = sketchColor ?? theme.ink;
   const accent = sketchColor ?? theme.accent;
   const shouldAnimate = useAnimate(animate);
+  const isControlled = value !== undefined;
+  const rootValueProps = isControlled
+    ? { value: current }
+    : { defaultValue };
 
   return (
     <TabsSketchContext.Provider
@@ -112,8 +116,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
         ref={ref}
         className={cn(className)}
         style={style}
-        value={current}
-        defaultValue={defaultValue}
+        {...rootValueProps}
         onValueChange={(next) => {
           setUncontrolled(next);
           onValueChange?.(next);

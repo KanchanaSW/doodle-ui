@@ -15,21 +15,36 @@ import {
 import { useResolvedSeed } from "../hooks/useResolvedSeed";
 import { useSketchTheme } from "../hooks/useSketchTheme";
 import { RoughSvg } from "../primitives/RoughSvg";
+import { resolveInteractiveState } from "../primitives/interactive";
+import {
+  FIELD_SIZE_STYLES,
+  resolveSize,
+  type DoodleSize,
+} from "../primitives/size";
+import {
+  useFieldValidation,
+  ValidationMessage,
+  type ValidationProps,
+} from "../primitives/validation";
 import type { SketchProps } from "../types";
 import { cn, deriveSeed, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
+
+export type TextareaSize = DoodleSize;
 
 /**
  * Props for {@link Textarea}.
  */
 export interface TextareaProps
   extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "color">,
-    SketchProps {
-  /** Visible label beside the control. */
+    SketchProps,
+    ValidationProps {
+  /** Visible label above the control. */
   label?: ReactNode;
   /**
-   * Draw-in the border on mount and seed-morph on focus.
-   * Defaults to the DoodleUIProvider value (true).
+   * Control size preset.
+   * @default "md"
    */
+  size?: TextareaSize;
   /**
    * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).
    * @default undefined (follow provider)
@@ -41,7 +56,7 @@ export interface TextareaProps
  * Multi-line text field inside a sketch box.
  *
  * @example
- * <Textarea />
+ * <Textarea label="Notes" name="notes" />
  */
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   function Textarea(
@@ -49,6 +64,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       className,
       style,
       label,
+      size: sizeProp = "md",
       roughness,
       seed,
       sketchColor,
@@ -63,21 +79,35 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       onFocus,
       onBlur,
       animate,
+      disabled,
+      invalid,
+      error,
+      errorMessage,
+      "aria-describedby": ariaDescribedBy,
+      "aria-invalid": ariaInvalidProp,
       ...rest
     },
     ref,
   ) {
+    const size = resolveSize(sizeProp);
     const [focused, setFocused] = useState(false);
     const fieldRef = useRef<HTMLSpanElement>(null);
     const theme = useSketchTheme(sketchColor);
     const shouldAnimate = useAnimate(animate);
     const resolvedSeed = useResolvedSeed(seed);
     const focusSeed = deriveSeed(resolvedSeed, "focus");
-    const sketchSeed =
-      shouldAnimate && focused ? focusSeed : resolvedSeed;
+    const sketchSeed = shouldAnimate && focused ? focusSeed : resolvedSeed;
     const ink = sketchColor ?? theme.ink;
+    const interactive = resolveInteractiveState({ disabled });
+    const validation = useFieldValidation(
+      { invalid, error, errorMessage },
+      { describedBy: ariaDescribedBy, errorColor: theme.error },
+    );
 
     useDrawIn(fieldRef, DRAW_IN_DURATION_MS, shouldAnimate, sketchSeed);
+
+    const strokeColor = validation.strokeOverride
+      ?? (focused ? (sketchColor ?? theme.accent) : ink);
 
     return (
       <label
@@ -87,6 +117,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           flexDirection: "column",
           gap: 6,
           width: "100%",
+          ...interactive.style,
         }}
       >
         {label ? (
@@ -106,7 +137,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             shape="rectangle"
             roughness={roughness}
             seed={sketchSeed}
-            sketchColor={focused ? (sketchColor ?? theme.accent) : ink}
+            sketchColor={strokeColor}
             bowing={bowing}
             fillStyle={fillStyle}
             hachureGap={hachureGap}
@@ -125,6 +156,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             id={id}
             rows={rows}
             className={cn(className)}
+            disabled={interactive.isDisabled}
+            aria-invalid={validation.ariaInvalid ?? ariaInvalidProp}
+            aria-describedby={validation.describedBy}
+            aria-disabled={interactive.aria["aria-disabled"]}
             onFocus={(event) => {
               setFocused(true);
               onFocus?.(event);
@@ -143,14 +178,16 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               background: "transparent",
               color: ink,
               fontFamily: doodleUiFontFamily,
-              fontSize: 15,
-              padding: "8px 12px",
+              ...FIELD_SIZE_STYLES[size],
               resize: "vertical",
               ...style,
             }}
             {...rest}
           />
         </span>
+        <ValidationMessage id={validation.errorId} style={validation.messageStyle}>
+          {validation.errorMessage}
+        </ValidationMessage>
       </label>
     );
   },

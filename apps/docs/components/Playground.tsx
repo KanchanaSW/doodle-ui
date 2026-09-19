@@ -32,7 +32,14 @@ export interface ControlToggle {
   defaultValue: boolean;
 }
 
-export type Control = ControlSlider | ControlSelect | ControlToggle;
+export interface ControlColor {
+  type: "color";
+  key: string;
+  label: string;
+  defaultValue: string;
+}
+
+export type Control = ControlSlider | ControlSelect | ControlToggle | ControlColor;
 
 export const sketchControls: Control[] = [
   {
@@ -149,6 +156,23 @@ export function Playground({
                       </option>
                     ))}
                   </select>
+                </label>
+              );
+            }
+            if (control.type === "color") {
+              const value = String(values[control.key]);
+              return (
+                <label key={control.key} className="block">
+                  <span className="flex justify-between text-[13px] font-medium mb-1">
+                    {control.label}
+                    <span className="font-mono text-mute uppercase">{value}</span>
+                  </span>
+                  <input
+                    type="color"
+                    value={value}
+                    onChange={(event) => setKey(control.key, event.target.value)}
+                    className="h-9 w-full cursor-pointer border border-ink/20 bg-transparent"
+                  />
                 </label>
               );
             }

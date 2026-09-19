@@ -20,6 +20,25 @@ export {
 
 export { RoughSvg } from "./primitives/RoughSvg";
 export { SketchBox, type SketchBoxProps } from "./primitives/SketchBox";
+export {
+  type DoodleSize,
+  SIZE_TOKENS,
+  DOODLE_SIZES,
+  resolveSize,
+  resolveAvatarPx,
+  AVATAR_SIZE_PX,
+  BADGE_SIZE_STYLES,
+} from "./primitives/size";
+export { DoodleIcon, type DoodleIconProps } from "./primitives/icon";
+export {
+  useFieldValidation,
+  ValidationMessage,
+  type ValidationProps,
+} from "./primitives/validation";
+export {
+  resolveInteractiveState,
+  type InteractiveStateProps,
+} from "./primitives/interactive";
 
 export {
   SketchSeedProvider,
@@ -57,7 +76,15 @@ export { Input, type InputProps } from "./components/Input";
 export { Textarea, type TextareaProps } from "./components/Textarea";
 export { Checkbox, type CheckboxProps } from "./components/Checkbox";
 export { RadioGroup, Radio, type RadioGroupProps, type RadioProps } from "./components/Radio";
-export { Card, type CardProps } from "./components/Card";
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  type CardProps,
+} from "./components/Card";
 export { Badge, type BadgeProps, type BadgeVariant } from "./components/Badge";
 export { Alert, type AlertProps, type AlertVariant } from "./components/Alert";
 export {
@@ -71,6 +98,17 @@ export {
 } from "./components/Modal";
 export { Divider, type DividerProps, type DividerOrientation } from "./components/Divider";
 export { Progress, type ProgressProps } from "./components/Progress";
+export {
+  RadialProgress,
+  type RadialProgressProps,
+  type RadialProgressSize,
+} from "./components/RadialProgress";
+export {
+  RadialMenu,
+  type RadialMenuProps,
+  type RadialMenuItem,
+  type RadialMenuSize,
+} from "./components/RadialMenu";
 export {
   Tooltip,
   TooltipProvider,
@@ -106,12 +144,16 @@ export {
 } from "./components/Tabs";
 export {
   Table,
+  TableHeader,
   TableHead,
   TableBody,
   TableRow,
   TableHeaderCell,
   TableCell,
+  TableFooter,
+  TableCaption,
   type TableProps,
+  type TableHeadProps,
   type TableHeaderCellProps,
   type TableCellProps,
 } from "./components/Table";

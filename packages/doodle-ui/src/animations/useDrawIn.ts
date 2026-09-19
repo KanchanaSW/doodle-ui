@@ -50,6 +50,7 @@ export function getStrokePaths(target: Element): SVGPathElement[] {
 function clearDash(path: SVGPathElement) {
   path.style.strokeDasharray = "";
   path.style.strokeDashoffset = "";
+  path.style.willChange = "";
 }
 
 export function cancelDrawIn(target: Element | null): void {
@@ -80,6 +81,8 @@ export function drawIn(
 
     // Dasharray alone does not hide the stroke. Never leave an inline
     // dashoffset if the animation fails to run — that permanently hid borders.
+    // Hint the compositor for stroke-dashoffset (does not affect layout).
+    path.style.willChange = "stroke-dashoffset";
     path.style.strokeDasharray = `${length}`;
     try {
       const animation = path.animate(
@@ -116,8 +119,9 @@ export function drawIn(
  * Sketch-in the rough.js stroke path on the first paint, and again when
  * `replayKey` changes (e.g. a hover seed swap).
  *
- * Keeps watching for RoughSvg path replacements so draw-in still runs after
- * late size measurement / redraws.
+ * Watches briefly for RoughSvg path replacements so draw-in still runs after
+ * late size measurement / redraws, then disconnects the observer to avoid
+ * ongoing MutationObserver cost on large tables.
  *
  * @param pathRef - Ref to an SVG path, `<svg>`, or container with sketch paths
  * @param duration - Animation duration in ms
@@ -150,6 +154,7 @@ export function useDrawIn(
 
     let cancelled = false;
     let lastPathSignature = "";
+    let drewOnce = false;
 
     const pathSignature = () =>
       getStrokePaths(target)
@@ -165,6 +170,7 @@ export function useDrawIn(
       if (signature === lastPathSignature && signature !== "") return;
       lastPathSignature = signature;
       drawIn(target, duration, delay);
+      drewOnce = true;
     };
 
     apply();
@@ -174,8 +180,18 @@ export function useDrawIn(
     });
     observer.observe(target, { childList: true, subtree: true });
 
+    // Keep watching through late RoughSvg size/paint, then stop.
+    // Large dashboards otherwise retain dozens of live MutationObservers.
+    const settleMs = Math.max(duration + delay + 120, 520);
+    const settleTimer = window.setTimeout(() => {
+      observer.disconnect();
+      // If paths never appeared, one last attempt is enough.
+      if (!drewOnce && !cancelled) apply();
+    }, settleMs);
+
     return () => {
       cancelled = true;
+      window.clearTimeout(settleTimer);
       observer.disconnect();
       cancelDrawIn(target);
     };

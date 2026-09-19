@@ -72,7 +72,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableHeaderCell,
+  TableHeader,
   TableRow,
   TabList,
   TabPanel,
@@ -400,12 +400,12 @@ function DisplayCard() {
         </p>
 
         <Table headerUnderline roughness={roughness} animate={animate}>
-          <TableHead>
+          <TableHeader>
             <TableRow>
-              <TableHeaderCell>Tool</TableHeaderCell>
-              <TableHeaderCell>Weight</TableHeaderCell>
+              <TableHead>Tool</TableHead>
+              <TableHead>Weight</TableHead>
             </TableRow>
-          </TableHead>
+          </TableHeader>
           <TableBody>
             <TableRow>
               <TableCell>Pen</TableCell>

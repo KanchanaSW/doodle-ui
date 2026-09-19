@@ -18,12 +18,28 @@ Container with a sketch border. Optional offset rectangle behind it reads as a p
 ```tsx
 import { Card } from "doodleui-react";
 
-<Card title="Field notes" shadow>
-  A container with a sketch border.
+// Compound (preferred)
+<Card>
+  <Card.Header>
+    <Card.Title>Field notes</Card.Title>
+    <Card.Description>Optional subtitle</Card.Description>
+  </Card.Header>
+  <Card.Content>A container with a sketch border.</Card.Content>
+  <Card.Footer>Actions</Card.Footer>
+</Card>
+
+// Legacy props still work
+<Card title="Field notes" footer="Actions" shadow>
+  Body
+</Card>
+
+// Polymorphic root
+<Card asChild>
+  <article>…</article>
 </Card>
 ```
 
-Cards do not bundle drop-shadow CSS. The shadow is another rough.js rectangle, translated a few pixels.
+Named exports (`CardHeader`, `CardTitle`, …) are also available. Cards do not bundle drop-shadow CSS — the shadow is another rough.js rectangle.
 
 ## Props
 

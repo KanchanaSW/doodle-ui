@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.2
+
+SSR/hydration safety (deterministic first-render seeds, isomorphic layout effects, theme sync after mount) and component API hardening: shared sizing, icons, form validation props, compound Card/Table/Accordion/Field, and `asChild` on Button/Card/Badge.
+
 ## 0.7.1
 
 Accessibility hardening for rough SVG isolation and Radix labels, WCAG AA theme stroke/fill token adjustments, Node.js engine requirement raised to `>=22`, and component theme polish. CLI/registry version aligned with the package.

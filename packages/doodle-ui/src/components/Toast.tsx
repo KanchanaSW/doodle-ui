@@ -11,6 +11,7 @@ import * as ToastPrimitive from "@radix-ui/react-toast";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAnimate } from "../animations";
 import { useSketchTheme } from "../hooks/useSketchTheme";
+import { SIZE_TOKENS, resolveSize, type DoodleSize } from "../primitives/size";
 import { SketchBox } from "../primitives/SketchBox";
 import type { SketchProps } from "../types";
 import { cn, doodleUiFontFamily, doodleUiFontWeight } from "../utils";
@@ -106,6 +107,11 @@ export interface ToastProps extends SketchProps {
    */
   variant?: ToastVariant;
   fill?: string;
+  /**
+   * Toast density preset.
+   * @default "md"
+   */
+  size?: DoodleSize;
   duration?: number;
   className?: string;
   style?: CSSProperties;
@@ -134,6 +140,7 @@ export function Toast({
   children,
   variant = "info",
   fill,
+  size: sizeProp = "md",
   duration,
   className,
   style,
@@ -153,6 +160,8 @@ export function Toast({
   const [uncontrolled, setUncontrolled] = useState(defaultOpen ?? false);
   const isOpen = open ?? uncontrolled;
   const shouldAnimate = useAnimate(animate);
+  const size = resolveSize(sizeProp);
+  const tokens = SIZE_TOKENS[size];
   const theme = useSketchTheme(sketchColor);
   const color = sketchColor ?? theme[variant];
   const defaultFill = theme.isDark ? DARK_VARIANT_FILL[variant] : LIGHT_VARIANT_FILL[variant];
@@ -215,14 +224,17 @@ export function Toast({
               fillWeight={fillWeight ?? 0.85}
               shadow
               animate={animate}
-              contentStyle={{ padding: "12px 16px", color: theme.ink }}
+              contentStyle={{
+                padding: `${tokens.paddingY + 4}px ${tokens.paddingX}px`,
+                color: theme.ink,
+              }}
             >
               {title ? (
                 <ToastPrimitive.Title
                   style={{
                     margin: 0,
                     fontWeight: doodleUiFontWeight(700),
-                    fontSize: 15,
+                    fontSize: tokens.fontSize,
                     fontFamily: doodleUiFontFamily,
                     color,
                     marginBottom: children ? 4 : 0,
@@ -235,7 +247,7 @@ export function Toast({
                 <ToastPrimitive.Description
                   style={{
                     margin: 0,
-                    fontSize: 14,
+                    fontSize: Math.max(13, tokens.fontSize - 1),
                     lineHeight: 1.5,
                     fontFamily: doodleUiFontFamily,
                     color: theme.ink,
