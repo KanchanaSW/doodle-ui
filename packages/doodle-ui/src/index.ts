@@ -104,6 +104,12 @@ export {
   type RadialProgressSize,
 } from "./components/RadialProgress";
 export {
+  RadialMenu,
+  type RadialMenuProps,
+  type RadialMenuItem,
+  type RadialMenuSize,
+} from "./components/RadialMenu";
+export {
   Tooltip,
   TooltipProvider,
   type TooltipProps,
