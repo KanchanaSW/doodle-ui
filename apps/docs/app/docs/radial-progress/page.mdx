@@ -1,0 +1,32 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { radialProgressProps } from "@/lib/props";
+import { ComponentCliInstallTabs } from "@/components/InstallCommands";
+
+# Radial Progress
+
+Radial tick-gauge progress and loading indicator with a traveling height wave.
+
+<ComponentPlayground name="radial-progress" />
+
+## CLI install
+
+<ComponentCliInstallTabs name="radial-progress" />
+
+## Usage
+
+```tsx
+import { RadialProgress } from "doodleui-react";
+
+{/* Determinate */}
+<RadialProgress value={75} />
+
+{/* Indeterminate loader */}
+<RadialProgress />
+```
+
+Exposes `role="progressbar"` with `aria-valuenow` when determinate. Indeterminate mode sets `aria-busy` and defaults `aria-label` to `"Loading"`.
+
+## Props
+
+<PropsTable rows={radialProgressProps} />

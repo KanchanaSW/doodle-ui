@@ -99,6 +99,11 @@ export {
 export { Divider, type DividerProps, type DividerOrientation } from "./components/Divider";
 export { Progress, type ProgressProps } from "./components/Progress";
 export {
+  RadialProgress,
+  type RadialProgressProps,
+  type RadialProgressSize,
+} from "./components/RadialProgress";
+export {
   Tooltip,
   TooltipProvider,
   type TooltipProps,

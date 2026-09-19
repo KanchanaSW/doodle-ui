@@ -109,6 +109,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Progress,
+  RadialProgress,
   Radio,
   RadioGroup,
   ResizableHandle,
@@ -230,6 +231,8 @@ function ComponentPlaygroundInner({ name }: { name: ComponentSlug }) {
       return <DividerPlayground />;
     case "progress":
       return <ProgressPlayground />;
+    case "radial-progress":
+      return <RadialProgressPlayground />;
     case "tooltip":
       return <TooltipPlayground />;
     case "select":
@@ -704,6 +707,54 @@ function ProgressPlayground() {
       )}
       snippet={(v) =>
         `<Progress value={${Number(v.value)}} ${snippetExtras(v)} />`
+      }
+    />
+  );
+}
+
+function RadialProgressPlayground() {
+  const controls: Control[] = withAnimate([
+    ...sketchControls,
+    {
+      type: "slider",
+      key: "value",
+      label: "Value",
+      min: 0,
+      max: 100,
+      step: 1,
+      defaultValue: 75,
+    },
+    {
+      type: "select",
+      key: "size",
+      label: "Size",
+      options: ["sm", "md", "lg"],
+      defaultValue: "md",
+    },
+    {
+      type: "toggle",
+      key: "indeterminate",
+      label: "Indeterminate",
+      defaultValue: false,
+    },
+  ]);
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <RadialProgress
+          key={`${String(v.animate)}-${String(v.indeterminate)}`}
+          value={v.indeterminate ? undefined : Number(v.value)}
+          size={v.size as "sm" | "md" | "lg"}
+          roughness={Number(v.roughness)}
+          seed={seedFrom(v)}
+          animate={Boolean(v.animate)}
+        />
+      )}
+      snippet={(v) =>
+        v.indeterminate
+          ? `<RadialProgress size="${v.size}" ${snippetExtras(v)} />`
+          : `<RadialProgress value={${Number(v.value)}} size="${v.size}" ${snippetExtras(v)} />`
       }
     />
   );
