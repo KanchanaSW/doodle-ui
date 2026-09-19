@@ -168,11 +168,11 @@ export const RadialMenu = forwardRef<HTMLDivElement, RadialMenuProps>(
                 style={{
                   position: "absolute",
                   left: "50%",
-                  top: "50%",
+                  bottom: triggerPx / 2,
                   width: itemPx,
                   height: itemPx,
                   marginLeft: -itemPx / 2,
-                  marginTop: -itemPx / 2,
+                  marginBottom: -itemPx / 2,
                   zIndex: 1,
                 }}
               >
@@ -227,11 +227,10 @@ export const RadialMenu = forwardRef<HTMLDivElement, RadialMenuProps>(
           style={{
             position: "absolute",
             left: "50%",
-            top: "50%",
+            bottom: 0,
             width: triggerPx,
             height: triggerPx,
             marginLeft: -triggerPx / 2,
-            marginTop: -triggerPx / 2,
             padding: 0,
             border: "none",
             background: "transparent",
@@ -291,3 +290,5 @@ export const RadialMenu = forwardRef<HTMLDivElement, RadialMenuProps>(
     );
   },
 );
+
+RadialMenu.displayName = "RadialMenu";
