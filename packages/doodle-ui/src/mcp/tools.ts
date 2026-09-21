@@ -107,23 +107,22 @@ export function levenshteinDistance(a: string, b: string): number {
   if (s.length === 0) return t.length;
   if (t.length === 0) return s.length;
 
-  const prev = new Array<number>(t.length + 1);
-  const curr = new Array<number>(t.length + 1);
-  for (let j = 0; j <= t.length; j++) prev[j] = j;
+  const prev: number[] = Array.from({ length: t.length + 1 }, (_, j) => j);
+  const curr: number[] = Array.from({ length: t.length + 1 }, () => 0);
 
   for (let i = 1; i <= s.length; i++) {
     curr[0] = i;
     for (let j = 1; j <= t.length; j++) {
       const cost = s[i - 1] === t[j - 1] ? 0 : 1;
       curr[j] = Math.min(
-        prev[j] + 1,
-        curr[j - 1] + 1,
-        prev[j - 1] + cost,
+        (prev[j] ?? 0) + 1,
+        (curr[j - 1] ?? 0) + 1,
+        (prev[j - 1] ?? 0) + cost,
       );
     }
-    for (let j = 0; j <= t.length; j++) prev[j] = curr[j];
+    for (let j = 0; j <= t.length; j++) prev[j] = curr[j] ?? 0;
   }
-  return prev[t.length];
+  return prev[t.length] ?? 0;
 }
 
 /**
