@@ -3,7 +3,7 @@ import type { Registry } from "./types";
 
 export const REGISTRY_DATA: Registry = {
   "name": "doodleui",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "homepage": "https://doodle-ui.netlify.app",
   "repository": "https://github.com/KanchanaSW/doodle-ui",
   "sharedDependencies": [
