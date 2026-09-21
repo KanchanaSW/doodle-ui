@@ -1,0 +1,90 @@
+{
+  "summary": "Cross-cutting conventions for doodleui-react. Apply these patterns consistently rather than treating each component in isolation.",
+  "topics": {
+    "animation": {
+      "title": "Animation (`animate` prop)",
+      "summary": "Sketch strokes draw in on mount and re-ink on interaction. Animation is on by default and opt-out.",
+      "rules": [
+        "Wrap the tree in <DoodleUIProvider> once. Per-component `animate` wins when set.",
+        "`animate` defaults to true via the provider; pass `animate={false}` for a static sketch.",
+        "prefers-reduced-motion: reduce disables animation unless the provider sets `forceAnimate`.",
+        "Per-component `animate={false}` still wins and forces a static sketch even with forceAnimate.",
+        "`animate` alone cannot override reduced motion; only `forceAnimate` on the provider can."
+      ],
+      "example": "import { DoodleUIProvider, Button, Card } from \"doodleui-react\";\n\n<DoodleUIProvider>\n  <Button>Draws in</Button>\n  <Card animate={false}>Static sketch</Card>\n</DoodleUIProvider>"
+    },
+    "controlled-uncontrolled": {
+      "title": "Controlled vs Uncontrolled",
+      "summary": "Most interactive components support both modes, matching Radix prop names. Pass either the controlled pair or the default* prop — not both as active sources of truth.",
+      "patterns": [
+        { "kind": "Open state", "controlled": "open + onOpenChange", "uncontrolled": "defaultOpen" },
+        { "kind": "Checked", "controlled": "checked + onCheckedChange", "uncontrolled": "defaultChecked" },
+        { "kind": "Value", "controlled": "value + onValueChange", "uncontrolled": "defaultValue" },
+        { "kind": "Pressed", "controlled": "pressed + onPressedChange", "uncontrolled": "defaultPressed" }
+      ],
+      "components": [
+        "Checkbox", "RadioGroup", "Switch", "Tabs", "Accordion", "Select", "Combobox",
+        "Dialog", "AlertDialog", "Popover", "DropdownMenu", "Toggle", "ToggleGroup",
+        "Collapsible", "Drawer", "Sheet", "Slider"
+      ],
+      "example": "// Uncontrolled\n<Checkbox defaultChecked label=\"Remember me\" />\n\n// Controlled\nconst [open, setOpen] = useState(false);\n<Dialog open={open} onOpenChange={setOpen}>{/* … */}</Dialog>"
+    },
+    "asChild": {
+      "title": "asChild composition",
+      "summary": "Many components accept `asChild` to merge props onto a single child via Radix Slot instead of rendering their default element.",
+      "rules": [
+        "`asChild` defaults to false.",
+        "Pass a single React element child when using asChild.",
+        "Useful for rendering a Button as a Link, or Card as a section."
+      ],
+      "example": "<Button asChild>\n  <a href=\"/docs\">Docs</a>\n</Button>"
+    },
+    "compound": {
+      "title": "Compound components",
+      "summary": "Compound components expose sub-parts via both Object.assign dot notation and named exports.",
+      "rules": [
+        "Prefer compound parts over deprecated flat props (e.g. Card.Header over Card title=).",
+        "Dot notation: <Card.Header>, <Card.Title>, <Card.Content>, <Card.Footer>.",
+        "Named exports also work: CardHeader, CardTitle, CardContent, CardFooter.",
+        "Parts must be used inside their root (e.g. Dialog parts inside <Dialog>)."
+      ],
+      "example": "<Card>\n  <Card.Header><Card.Title>Notes</Card.Title></Card.Header>\n  <Card.Content>Body</Card.Content>\n  <Card.Footer><Button>Save</Button></Card.Footer>\n</Card>"
+    },
+    "forms": {
+      "title": "Form integration",
+      "summary": "Form controls work with native HTML forms, FormData, and react-hook-form.",
+      "rules": [
+        "Input, Textarea, NativeSelect, and Radix-backed controls forward name, required, disabled, pattern, minLength, maxLength, min, max where applicable.",
+        "Use react-hook-form register() for native elements: Input, Textarea, NativeSelect.",
+        "Use Controller for Radix button-based controls: Checkbox, Switch, RadioGroup, Select.",
+        "Set invalid / error / errorMessage for validation styling; stroke uses --doodle-ui-color-error and aria-invalid is set.",
+        "Prefer composing with Field for label + description + error wiring across a control.",
+        "Refs are forwarded on form controls for register() and focus management."
+      ],
+      "example": "// register() for native\n<Input label=\"Email\" {...register(\"email\", { required: true })} />\n\n// Controller for Radix\n<Controller\n  name=\"accept\"\n  control={control}\n  render={({ field }) => (\n    <Checkbox\n      label=\"Accept\"\n      checked={field.value}\n      onCheckedChange={field.onChange}\n      name={field.name}\n    />\n  )}\n/>"
+    },
+    "ssr": {
+      "title": "SSR & seed locking",
+      "summary": "Sketch seeds and theme detection must be deterministic on the server and on the client's first hydration render.",
+      "rules": [
+        "Never call Math.random() during render or useState initializers that affect SSR markup.",
+        "Use DEFAULT_SEED (0) for the first pass, then randomize in useEffect when uncontrolled.",
+        "Pass seed={42} (or any fixed number) to lock wobble for screenshots / Chromatic.",
+        "SketchSeedProvider initialSeed locks seeds; Shuffle (useSketchSeed().shuffle) is post-mount.",
+        "Prefer useIsomorphicLayoutEffect over useLayoutEffect under Next.js SSR."
+      ],
+      "example": "<Card seed={42} title=\"Stable screenshot\" />\n<SketchSeedProvider initialSeed={100}>\n  <Button>Locked seed tree</Button>\n</SketchSeedProvider>"
+    },
+    "theming": {
+      "title": "Theming",
+      "summary": "Reskin via CSS custom properties and/or DoodleUIProvider. Do not invent prop names for global sketchiness — use --doodle-ui-roughness.",
+      "rules": [
+        "Import \"doodleui-react/styles.css\" once at the app root.",
+        "Override --doodle-ui-* variables on :root or a scoped wrapper.",
+        "Per-component sketch props (roughness, sketchColor, …) override provider and CSS for that instance.",
+        "Library does not load Google Fonts — set --doodle-ui-font-family after adding a font."
+      ],
+      "example": "import \"doodleui-react/styles.css\";\n\n:root {\n  --doodle-ui-roughness: 2.5;\n  --doodle-ui-stroke-color: #1d4e89;\n}"
+    }
+  }
+}

@@ -2,6 +2,108 @@
   "name": "skeleton",
   "displayName": "Skeleton",
   "description": "A scribble-fill placeholder. Pulse reseeds the hatch on an interval so the doodle redraws instead of shimmering.",
+  "category": "feedback",
+  "isRadix": false,
+  "radixPrimitive": null,
+  "subparts": [],
+  "props": [
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+    },
+    {
+      "name": "bowing",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1",
+      "description": "How much straight lines bow/curve in rough.js."
+    },
+    {
+      "name": "fillStyle",
+      "type": "FillStyle",
+      "required": false,
+      "defaultValue": "\"hachure\"",
+      "description": "Fill pattern when the shape has a fill color."
+    },
+    {
+      "name": "fillWeight",
+      "type": "number",
+      "required": false,
+      "description": "Weight/thickness of individual hatch lines inside patterned fills."
+    },
+    {
+      "name": "hachureAngle",
+      "type": "number",
+      "required": false,
+      "description": "Angle in degrees of hatch lines for patterned fills."
+    },
+    {
+      "name": "hachureGap",
+      "type": "number",
+      "required": false,
+      "description": "Spacing between hatch lines for patterned fills."
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "pulse",
+      "type": "boolean",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.5",
+      "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "required": false,
+      "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+    },
+    {
+      "name": "sketchColor",
+      "type": "string",
+      "required": false,
+      "description": "Stroke (outline) color override. Falls back to theme ink."
+    },
+    {
+      "name": "strokeWidth",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.75",
+      "description": "Width of sketch strokes in pixels."
+    },
+    {
+      "name": "variant",
+      "type": "SkeletonVariant",
+      "required": false,
+      "defaultValue": "\"primary\"",
+      "description": "Visual style preset."
+    },
+    {
+      "name": "width",
+      "type": "number | string",
+      "required": false,
+      "description": ""
+    }
+  ],
+  "example": "<Skeleton />",
+  "keywords": [
+    "loading",
+    "placeholder",
+    "shimmer",
+    "scribble"
+  ],
   "files": [
     {
       "name": "skeleton.tsx",

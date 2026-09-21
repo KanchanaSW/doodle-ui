@@ -44,5 +44,16 @@ export default defineConfig([
     banner: {
       js: "#!/usr/bin/env node",
     },
+    external: [
+      "@modelcontextprotocol/sdk",
+      "@modelcontextprotocol/sdk/*",
+      "zod",
+      // Keep CLI deps that are already package dependencies
+      "@clack/prompts",
+      "commander",
+      "diff",
+      "execa",
+      "picocolors",
+    ],
   },
 ]);

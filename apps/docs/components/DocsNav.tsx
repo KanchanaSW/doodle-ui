@@ -133,6 +133,19 @@ export function DocsNav() {
         vs shadcn/ui
       </Link>
       <Link
+        href="/docs/mcp"
+        className={`block mb-4 font-medium ${
+          pathMatches(pathname, "/docs/mcp")
+            ? "text-accent"
+            : "hover:text-accent"
+        }`}
+        aria-current={
+          pathMatches(pathname, "/docs/mcp") ? "page" : undefined
+        }
+      >
+        MCP / AI agents
+      </Link>
+      <Link
         href="/customize"
         className={`block mb-4 font-medium ${
           pathMatches(pathname, "/customize")

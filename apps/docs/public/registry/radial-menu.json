@@ -2,6 +2,127 @@
   "name": "radial-menu",
   "displayName": "RadialMenu",
   "description": "Plus trigger fans sketch actions in an arc.",
+  "category": "navigation",
+  "isRadix": false,
+  "radixPrimitive": null,
+  "subparts": [],
+  "props": [
+    {
+      "name": "\"aria-label\"",
+      "type": "string",
+      "required": false,
+      "defaultValue": "\"Open menu\"",
+      "description": "Accessible name for the trigger button."
+    },
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "bowing",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1",
+      "description": "How much straight lines bow/curve in rough.js."
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "fillStyle",
+      "type": "FillStyle",
+      "required": false,
+      "defaultValue": "\"hachure\"",
+      "description": "Fill pattern when the shape has a fill color."
+    },
+    {
+      "name": "fillWeight",
+      "type": "number",
+      "required": false,
+      "description": "Weight/thickness of individual hatch lines inside patterned fills."
+    },
+    {
+      "name": "hachureAngle",
+      "type": "number",
+      "required": false,
+      "description": "Angle in degrees of hatch lines for patterned fills."
+    },
+    {
+      "name": "hachureGap",
+      "type": "number",
+      "required": false,
+      "description": "Spacing between hatch lines for patterned fills."
+    },
+    {
+      "name": "items",
+      "type": "RadialMenuItem[]",
+      "required": true,
+      "description": ""
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "radius",
+      "type": "number",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.5",
+      "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "required": false,
+      "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+    },
+    {
+      "name": "size",
+      "type": "RadialMenuSize",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "sketchColor",
+      "type": "string",
+      "required": false,
+      "description": "Stroke (outline) color override. Falls back to theme ink."
+    },
+    {
+      "name": "strokeWidth",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.75",
+      "description": "Width of sketch strokes in pixels."
+    }
+  ],
+  "example": "import { RadialMenu } from \"doodleui-react\";\n\n<RadialMenu\n  aria-label=\"Tools\"\n  items={[\n    { id: \"crop\", icon: <span>#</span>, label: \"Crop\" },\n    { id: \"text\", icon: <span>T</span>, label: \"Text\" },\n  ]}\n/>",
+  "keywords": [
+    "pie",
+    "arc",
+    "fan",
+    "actions",
+    "fab"
+  ],
   "files": [
     {
       "name": "radial-menu.tsx",

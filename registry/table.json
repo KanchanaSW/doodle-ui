@@ -2,6 +2,98 @@
   "name": "table",
   "displayName": "Table",
   "description": "A real HTML table with hand-drawn row dividers instead of CSS borders. Optional heavier underline under the header. Rules draw in on mount, staggered a little row by row.",
+  "category": "data-display",
+  "isRadix": false,
+  "radixPrimitive": null,
+  "subparts": [
+    "Body",
+    "Caption",
+    "Cell",
+    "Footer",
+    "Head",
+    "Header",
+    "HeaderCell",
+    "Row"
+  ],
+  "props": [
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "description": "Draw-in row rules on mount, staggered slightly. Defaults to the\nDoodleUIProvider value (true)."
+    },
+    {
+      "name": "bowing",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1",
+      "description": "How much straight lines bow/curve in rough.js."
+    },
+    {
+      "name": "fillStyle",
+      "type": "FillStyle",
+      "required": false,
+      "defaultValue": "\"hachure\"",
+      "description": "Fill pattern when the shape has a fill color."
+    },
+    {
+      "name": "fillWeight",
+      "type": "number",
+      "required": false,
+      "description": "Weight/thickness of individual hatch lines inside patterned fills."
+    },
+    {
+      "name": "hachureAngle",
+      "type": "number",
+      "required": false,
+      "description": "Angle in degrees of hatch lines for patterned fills."
+    },
+    {
+      "name": "hachureGap",
+      "type": "number",
+      "required": false,
+      "description": "Spacing between hatch lines for patterned fills."
+    },
+    {
+      "name": "headerUnderline",
+      "type": "boolean",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.5",
+      "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "required": false,
+      "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+    },
+    {
+      "name": "sketchColor",
+      "type": "string",
+      "required": false,
+      "description": "Stroke (outline) color override. Falls back to theme ink."
+    },
+    {
+      "name": "strokeWidth",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.75",
+      "description": "Width of sketch strokes in pixels."
+    }
+  ],
+  "example": "<Table>\n  <Table.Header>\n    <Table.Row>\n      <Table.Head>Column</Table.Head>\n    </Table.Row>\n  </Table.Header>\n  <Table.Body>\n    <Table.Row>\n      <Table.Cell>Value</Table.Cell>\n    </Table.Row>\n  </Table.Body>\n</Table>",
+  "keywords": [
+    "grid",
+    "rows",
+    "columns",
+    "data"
+  ],
   "files": [
     {
       "name": "table.tsx",

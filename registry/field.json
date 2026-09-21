@@ -2,6 +2,38 @@
   "name": "field",
   "displayName": "Field",
   "description": "Wires label, control, helper text, and errors with shared ids and ARIA attributes.",
+  "category": "form",
+  "isRadix": false,
+  "radixPrimitive": null,
+  "subparts": [
+    "Control",
+    "Description",
+    "Error",
+    "Label",
+    "Root"
+  ],
+  "props": [
+    {
+      "name": "error",
+      "type": "ReactNode",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "required": false,
+      "description": ""
+    }
+  ],
+  "example": "import {\n  Field,\n  FieldControl,\n  FieldDescription,\n  FieldError,\n  FieldLabel,\n  Input,\n} from \"doodleui-react\";\n\n<Field invalid error=\"Required\">\n  <FieldLabel required>Name</FieldLabel>\n  <FieldControl>\n    <Input placeholder=\"Ada Lovelace\" />\n  </FieldControl>\n  <FieldDescription>Public display name.</FieldDescription>\n  <FieldError />\n</Field>",
+  "keywords": [
+    "label",
+    "error",
+    "helper",
+    "form",
+    "validation"
+  ],
   "files": [
     {
       "name": "field.tsx",

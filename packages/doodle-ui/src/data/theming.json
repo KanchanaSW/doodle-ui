@@ -1,0 +1,96 @@
+{
+  "summary": "Global reskinning uses CSS custom properties. Import doodleui-react/styles.css once, override variables on :root or a scoped wrapper, and optionally use DoodleUIProvider for React-level defaults.",
+  "precedence": [
+    "Per-component prop (roughness, strokeWidth, bowing, sketchColor, fillStyle)",
+    "DoodleUIProvider prop (also sets scoped CSS vars)",
+    "CSS custom property on an ancestor",
+    "Built-in constant in the package"
+  ],
+  "variables": [
+    {
+      "name": "--doodle-ui-roughness",
+      "lightDefault": "1.5",
+      "darkDefault": "1.5",
+      "purpose": "rough.js sketchiness intensity — higher looks messier"
+    },
+    {
+      "name": "--doodle-ui-bowing",
+      "lightDefault": "1",
+      "darkDefault": "1",
+      "purpose": "How much straight lines bow/curve"
+    },
+    {
+      "name": "--doodle-ui-stroke-width",
+      "lightDefault": "1.75",
+      "darkDefault": "1.75",
+      "purpose": "Stroke width in pixels"
+    },
+    {
+      "name": "--doodle-ui-stroke-color",
+      "lightDefault": "#1f1d1a",
+      "darkDefault": "#f3f4f6",
+      "purpose": "Default ink / stroke color"
+    },
+    {
+      "name": "--doodle-ui-fill-style",
+      "lightDefault": "hachure",
+      "darkDefault": "hachure",
+      "purpose": "Fill pattern when shapes have fill (hachure, solid, zigzag, cross-hatch, dots, dashed, zigzag-line)"
+    },
+    {
+      "name": "--doodle-ui-font-family",
+      "lightDefault": "\"Patrick Hand\", cursive",
+      "darkDefault": "\"Patrick Hand\", cursive",
+      "purpose": "Handwriting font stack — library does not load Google Fonts; set this after adding a font yourself"
+    },
+    {
+      "name": "--doodle-ui-bg-color",
+      "lightDefault": "#f7f6f2",
+      "darkDefault": "#131923",
+      "purpose": "Paper / surface background"
+    },
+    {
+      "name": "--doodle-ui-text-color",
+      "lightDefault": "#1f1d1a",
+      "darkDefault": "#f3f4f6",
+      "purpose": "Body text color"
+    },
+    {
+      "name": "--doodle-ui-color-info",
+      "lightDefault": "#1d4e89",
+      "darkDefault": "#60a5fa",
+      "purpose": "Alert / status info color"
+    },
+    {
+      "name": "--doodle-ui-color-warning",
+      "lightDefault": "#8a5200",
+      "darkDefault": "#fbbf24",
+      "purpose": "Warning status color"
+    },
+    {
+      "name": "--doodle-ui-color-error",
+      "lightDefault": "#b91c1c",
+      "darkDefault": "#f87171",
+      "purpose": "Error status color (also used for invalid form strokes)"
+    },
+    {
+      "name": "--doodle-ui-color-success",
+      "lightDefault": "#2d6a4f",
+      "darkDefault": "#34d399",
+      "purpose": "Success status color"
+    }
+  ],
+  "darkMode": {
+    "automatic": "@media (prefers-color-scheme: dark) updates tokens when light is not forced",
+    "explicit": "data-theme=\"dark\" or class \"dark\" on html or any ancestor",
+    "forceLight": "data-theme=\"light\" or class \"light\" (wins over the media query)",
+    "reactSubtree": "<DoodleUIProvider theme=\"dark|light|system\"> sets data-theme and palette for descendants"
+  },
+  "contrastNotes": [
+    "Light: stroke/text #1f1d1a on #f7f6f2 — ~15.6:1",
+    "Dark: stroke/text #f3f4f6 on #131923 — ~16.0:1",
+    "WCAG AA requires ≥4.5:1 for normal text and ≥3:1 for non-text strokes",
+    "Thin hand-drawn strokes can look lighter than solid borders — test custom stroke-width and pastel inks"
+  ],
+  "exampleOverride": "/* Make buttons more roughly sketched */\n:root {\n  --doodle-ui-roughness: 2.5;\n}"
+}

@@ -1,3 +1,20 @@
+export type ComponentCategory =
+  | "form"
+  | "overlay"
+  | "layout"
+  | "navigation"
+  | "data-display"
+  | "feedback"
+  | "chat";
+
+export interface PropDoc {
+  name: string;
+  type: string;
+  required: boolean;
+  defaultValue?: string;
+  description: string;
+}
+
 export interface RegistryFile {
   name: string;
   path: string;
@@ -9,6 +26,13 @@ export interface RegistryComponent {
   name: string;
   displayName: string;
   description: string;
+  category: ComponentCategory;
+  isRadix: boolean;
+  radixPrimitive: string | null;
+  subparts: string[];
+  props: PropDoc[];
+  example: string;
+  keywords: string[];
   files: RegistryFile[];
   dependencies: string[];
   devDependencies?: string[];

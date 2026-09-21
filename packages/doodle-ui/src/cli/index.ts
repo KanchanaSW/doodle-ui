@@ -3,6 +3,7 @@ import { addCommand } from "./commands/add";
 import { diffCommand } from "./commands/diff";
 import { initCommand } from "./commands/init";
 import { listCommand } from "./commands/list";
+import { mcpCommand } from "./commands/mcp";
 import { SKETCH_BANNER } from "./utils";
 
 const program = new Command();
@@ -70,6 +71,20 @@ program
       await diffCommand(component, options);
     } catch (err: any) {
       console.error("\nDiff error:", err?.message || err);
+      process.exit(1);
+    }
+  });
+
+program
+  .command("mcp")
+  .description("Start the DoodleUI MCP server for AI coding agents (stdio)")
+  .action(async () => {
+    try {
+      await mcpCommand();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      // stderr only — stdout is reserved for MCP JSON-RPC
+      process.stderr.write(`\nMCP error: ${message}\n`);
       process.exit(1);
     }
   });

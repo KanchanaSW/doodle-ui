@@ -2,6 +2,159 @@
   "name": "toast",
   "displayName": "Toast",
   "description": "Radix toast with Alert-like sketch chrome. Wrap the tree in `ToastProvider` for stacking, auto-dismiss, and the live region.",
+  "category": "feedback",
+  "isRadix": true,
+  "radixPrimitive": "@radix-ui/react-toast",
+  "subparts": [
+    "Action",
+    "Close",
+    "Description",
+    "Provider",
+    "Root",
+    "Title",
+    "Viewport"
+  ],
+  "props": [
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "description": "Slide-in with a sketchy settle wobble, reversed on exit.\nDefaults to the DoodleUIProvider value (true)."
+    },
+    {
+      "name": "bowing",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1",
+      "description": "How much straight lines bow/curve in rough.js."
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "duration",
+      "type": "number",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "fill",
+      "type": "string",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "fillStyle",
+      "type": "FillStyle",
+      "required": false,
+      "defaultValue": "\"hachure\"",
+      "description": "Fill pattern when the shape has a fill color."
+    },
+    {
+      "name": "fillWeight",
+      "type": "number",
+      "required": false,
+      "description": "Weight/thickness of individual hatch lines inside patterned fills."
+    },
+    {
+      "name": "hachureAngle",
+      "type": "number",
+      "required": false,
+      "description": "Angle in degrees of hatch lines for patterned fills."
+    },
+    {
+      "name": "hachureGap",
+      "type": "number",
+      "required": false,
+      "description": "Spacing between hatch lines for patterned fills."
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "position",
+      "type": "ToastPosition",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.5",
+      "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "required": false,
+      "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+    },
+    {
+      "name": "size",
+      "type": "DoodleSize",
+      "required": false,
+      "defaultValue": "\"md\"",
+      "description": "Toast density preset."
+    },
+    {
+      "name": "sketchColor",
+      "type": "string",
+      "required": false,
+      "description": "Stroke (outline) color override. Falls back to theme ink."
+    },
+    {
+      "name": "strokeWidth",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.75",
+      "description": "Width of sketch strokes in pixels."
+    },
+    {
+      "name": "swipeDirection",
+      "type": "ToastPrimitive.ToastProviderProps[\"swipeDirection\"]",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "variant",
+      "type": "ToastVariant",
+      "required": false,
+      "defaultValue": "\"primary\"",
+      "description": "Visual style preset."
+    }
+  ],
+  "example": "<Toast />",
+  "keywords": [
+    "notification",
+    "snackbar",
+    "alert",
+    "message"
+  ],
   "files": [
     {
       "name": "toast.tsx",

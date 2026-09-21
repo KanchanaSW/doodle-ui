@@ -2,6 +2,27 @@
   "name": "sheet",
   "displayName": "Sheet",
   "description": "Edge-anchored slide-out panel (default: right).",
+  "category": "overlay",
+  "isRadix": false,
+  "radixPrimitive": null,
+  "subparts": [
+    "Close",
+    "Content",
+    "Description",
+    "Footer",
+    "Header",
+    "Title",
+    "Trigger"
+  ],
+  "props": [],
+  "example": "<Sheet />",
+  "keywords": [
+    "side",
+    "panel",
+    "slide",
+    "drawer",
+    "edge"
+  ],
   "files": [
     {
       "name": "sheet.tsx",

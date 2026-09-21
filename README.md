@@ -34,6 +34,35 @@ bunx doodleui-react add button card dialog
 
 The CLI detects your package manager from lockfiles (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb` / `bun.lock`) when installing runtime dependencies.
 
+## MCP / AI Agent Support
+
+AI coding agents (Cursor, Claude Code, Windsurf, …) can use the built-in [MCP](https://modelcontextprotocol.io) server to discover components, read prop docs, and install doodleui-react correctly instead of guessing APIs.
+
+```bash
+npx doodleui-react mcp
+```
+
+**Cursor** (`.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "doodleui": {
+      "command": "npx",
+      "args": ["-y", "doodleui-react", "mcp"]
+    }
+  }
+}
+```
+
+**Claude Code:**
+
+```bash
+claude mcp add doodleui -- npx -y doodleui-react mcp
+```
+
+Tools: `list_components`, `get_component_docs`, `get_installation_command`, `get_theming_reference`, `search_components`, `get_conventions`. Full setup: [docs → MCP](https://doodle-ui.netlify.app/docs/mcp).
+
 
 
 ## Install (npm dependency)

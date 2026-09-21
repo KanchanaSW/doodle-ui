@@ -25,6 +25,14 @@ bun add doodleui-react
 
 Peer dependencies: `react` and `react-dom` >= 18.0.0.
 
+## MCP for AI agents
+
+```bash
+npx doodleui-react mcp
+```
+
+Exposes tools for component discovery, docs, install commands, theming, and conventions. See the [MCP docs](https://doodle-ui.netlify.app/docs/mcp).
+
 ## Online Playgrounds & Starters
 
 | Template | StackBlitz | CodeSandbox |

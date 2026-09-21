@@ -2,6 +2,158 @@
   "name": "radial-progress",
   "displayName": "RadialProgress",
   "description": "Radial tick-gauge progress and loading indicator with a traveling height wave.",
+  "category": "feedback",
+  "isRadix": false,
+  "radixPrimitive": null,
+  "subparts": [],
+  "props": [
+    {
+      "name": "activeColor",
+      "type": "string",
+      "required": false,
+      "description": "Active tick color. Defaults to theme success green."
+    },
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "defaultValue": "undefined (follow provider)",
+      "description": "Play wave animations. Defaults to  `animate` (true)."
+    },
+    {
+      "name": "bowing",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1",
+      "description": "How much straight lines bow/curve in rough.js."
+    },
+    {
+      "name": "fillStyle",
+      "type": "FillStyle",
+      "required": false,
+      "defaultValue": "\"hachure\"",
+      "description": "Fill pattern when the shape has a fill color."
+    },
+    {
+      "name": "fillWeight",
+      "type": "number",
+      "required": false,
+      "description": "Weight/thickness of individual hatch lines inside patterned fills."
+    },
+    {
+      "name": "formatValue",
+      "type": "(value: number, max: number) => ReactNode",
+      "required": false,
+      "description": "Custom formatter for center text when `children` is omitted."
+    },
+    {
+      "name": "hachureAngle",
+      "type": "number",
+      "required": false,
+      "description": "Angle in degrees of hatch lines for patterned fills."
+    },
+    {
+      "name": "hachureGap",
+      "type": "number",
+      "required": false,
+      "description": "Spacing between hatch lines for patterned fills."
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "required": false,
+      "defaultValue": "100",
+      "description": "Maximum value for progress calculation."
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.5",
+      "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "required": false,
+      "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+    },
+    {
+      "name": "showValue",
+      "type": "boolean",
+      "required": false,
+      "defaultValue": "true",
+      "description": "Whether to display the center value / children."
+    },
+    {
+      "name": "size",
+      "type": "RadialProgressSize | number",
+      "required": false,
+      "defaultValue": "\"md\"",
+      "description": "Overall diameter size preset or custom pixel number."
+    },
+    {
+      "name": "sketchColor",
+      "type": "string",
+      "required": false,
+      "description": "Stroke (outline) color override. Falls back to theme ink."
+    },
+    {
+      "name": "startAngle",
+      "type": "number",
+      "required": false,
+      "defaultValue": "225",
+      "description": "Start angle in degrees (0° = top / 12 o'clock, clockwise).\nDefault `225` starts at bottom-left so the open gap sits at the bottom."
+    },
+    {
+      "name": "strokeWidth",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.75",
+      "description": "Width of sketch strokes in pixels."
+    },
+    {
+      "name": "sweepAngle",
+      "type": "number",
+      "required": false,
+      "defaultValue": "270",
+      "description": "Sweep angle in degrees of the open arc."
+    },
+    {
+      "name": "tickCount",
+      "type": "number",
+      "required": false,
+      "defaultValue": "48",
+      "description": "Total number of radial tick bars along the arc."
+    },
+    {
+      "name": "trackColor",
+      "type": "string",
+      "required": false,
+      "description": "Inactive tick color. Defaults to muted track ink."
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "required": false,
+      "defaultValue": "undefined",
+      "description": "Current progress value (determinate mode).\nWhen undefined, operates in indeterminate loading wave mode."
+    },
+    {
+      "name": "waveSpeed",
+      "type": "number",
+      "required": false,
+      "defaultValue": "2",
+      "description": "Wave animation speed in seconds per full cycle."
+    }
+  ],
+  "example": "<RadialProgress value={75} />\n<RadialProgress />",
+  "keywords": [
+    "circular",
+    "gauge",
+    "loader",
+    "percent"
+  ],
   "files": [
     {
       "name": "radial-progress.tsx",

@@ -31,6 +31,7 @@ For any change that affects sketch rendering, attach a **screenshot or GIF** (be
 - [ ] Changeset added for `packages/doodle-ui` changes (`pnpm changeset`)
 - [ ] Storybook stories added/updated with a pinned `seed` (e.g. `seed={42}`) for Chromatic stability
 - [ ] Docs updated in `apps/docs` if adding a component or changing public props
+- [ ] Registry rebuilt / MCP data in sync (`pnpm --filter doodleui-react build:registry`) when components, props, theming, or conventions change
 - [ ] SSR hydration safety and reduced-motion behavior considered
 - [ ] Bundle size check passes (`pnpm --filter doodleui-react size:check`) when relevant
 - [ ] PR title follows conventional commits (`feat`, `fix`, `docs`, …)

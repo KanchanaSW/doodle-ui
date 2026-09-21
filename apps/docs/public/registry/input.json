@@ -2,6 +2,110 @@
   "name": "input",
   "displayName": "Input",
   "description": "Single-line text field with a sketchy border. Native focus rings are removed. Focus re-inks the border with a second seed (and still shifts the stroke toward the accent color).",
+  "category": "form",
+  "isRadix": false,
+  "radixPrimitive": null,
+  "subparts": [],
+  "props": [
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "defaultValue": "undefined (follow provider)",
+      "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+    },
+    {
+      "name": "bowing",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1",
+      "description": "How much straight lines bow/curve in rough.js."
+    },
+    {
+      "name": "endIcon",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Trailing icon inside the field."
+    },
+    {
+      "name": "fillStyle",
+      "type": "FillStyle",
+      "required": false,
+      "defaultValue": "\"hachure\"",
+      "description": "Fill pattern when the shape has a fill color."
+    },
+    {
+      "name": "fillWeight",
+      "type": "number",
+      "required": false,
+      "description": "Weight/thickness of individual hatch lines inside patterned fills."
+    },
+    {
+      "name": "hachureAngle",
+      "type": "number",
+      "required": false,
+      "description": "Angle in degrees of hatch lines for patterned fills."
+    },
+    {
+      "name": "hachureGap",
+      "type": "number",
+      "required": false,
+      "description": "Spacing between hatch lines for patterned fills."
+    },
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Visible label above the control."
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.5",
+      "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "required": false,
+      "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+    },
+    {
+      "name": "size",
+      "type": "InputSize",
+      "required": false,
+      "defaultValue": "\"md\"",
+      "description": "Control size preset."
+    },
+    {
+      "name": "sketchColor",
+      "type": "string",
+      "required": false,
+      "description": "Stroke (outline) color override. Falls back to theme ink."
+    },
+    {
+      "name": "startIcon",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Leading icon inside the field."
+    },
+    {
+      "name": "strokeWidth",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.75",
+      "description": "Width of sketch strokes in pixels."
+    }
+  ],
+  "example": "<Input label=\"Email\" name=\"email\" required />\n<Input invalid errorMessage=\"Required\" />",
+  "keywords": [
+    "text",
+    "field",
+    "email",
+    "password",
+    "login"
+  ],
   "files": [
     {
       "name": "input.tsx",

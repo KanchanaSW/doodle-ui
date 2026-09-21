@@ -2,6 +2,125 @@
   "name": "button",
   "displayName": "Button",
   "description": "A clickable control. The label is real HTML. The border and fill are a rough.js rectangle sitting behind it.",
+  "category": "form",
+  "isRadix": true,
+  "radixPrimitive": "@radix-ui/react-slot",
+  "subparts": [],
+  "props": [
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "defaultValue": "undefined (follow provider)",
+      "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+    },
+    {
+      "name": "asChild",
+      "type": "boolean",
+      "required": false,
+      "defaultValue": "false",
+      "description": "Merge props onto the single child instead of rendering a `<button>`."
+    },
+    {
+      "name": "bowing",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1",
+      "description": "How much straight lines bow/curve in rough.js."
+    },
+    {
+      "name": "endIcon",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Trailing icon."
+    },
+    {
+      "name": "fillStyle",
+      "type": "FillStyle",
+      "required": false,
+      "defaultValue": "\"hachure\"",
+      "description": "Fill pattern when the shape has a fill color."
+    },
+    {
+      "name": "fillWeight",
+      "type": "number",
+      "required": false,
+      "description": "Weight/thickness of individual hatch lines inside patterned fills."
+    },
+    {
+      "name": "hachureAngle",
+      "type": "number",
+      "required": false,
+      "description": "Angle in degrees of hatch lines for patterned fills."
+    },
+    {
+      "name": "hachureGap",
+      "type": "number",
+      "required": false,
+      "description": "Spacing between hatch lines for patterned fills."
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "required": false,
+      "defaultValue": "false",
+      "description": "Show a sketchy spinner and disable interaction."
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.5",
+      "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "required": false,
+      "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+    },
+    {
+      "name": "size",
+      "type": "ButtonSize",
+      "required": false,
+      "defaultValue": "\"md\"",
+      "description": "Control size preset."
+    },
+    {
+      "name": "sketchColor",
+      "type": "string",
+      "required": false,
+      "description": "Stroke (outline) color override. Falls back to theme ink."
+    },
+    {
+      "name": "startIcon",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Leading icon (any ReactNode — lucide, SVG, emoji, etc.)."
+    },
+    {
+      "name": "strokeWidth",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.75",
+      "description": "Width of sketch strokes in pixels."
+    },
+    {
+      "name": "variant",
+      "type": "ButtonVariant",
+      "required": false,
+      "defaultValue": "\"primary\"",
+      "description": "Visual style preset."
+    }
+  ],
+  "example": "<Button variant=\"primary\">Save</Button>\n<Button asChild><a href=\"/docs\">Docs</a></Button>",
+  "keywords": [
+    "click",
+    "action",
+    "submit",
+    "cta",
+    "press"
+  ],
   "files": [
     {
       "name": "button.tsx",

@@ -101,7 +101,17 @@ Cover interactive behavior with Vitest + Testing Library. Prefer querying by rol
 
 If the component is public, add or update docs in `apps/docs` so the docs site stays the source of truth for usage examples.
 
-### 10. Changeset
+### 10. Registry / MCP data sync
+
+`pnpm --filter doodleui-react build:registry` (also run as part of `build`) regenerates:
+
+- `packages/doodle-ui/src/registry/data.ts` (CLI + MCP embedded registry)
+- `/registry.json` and `/registry/*.json`
+- `apps/docs/public/registry.json`
+
+Prop docs for the MCP `get_component_docs` tool are extracted from TypeScript JSDoc. Theming and conventions live in `packages/doodle-ui/src/data/{theming,conventions}.json`. Keep these updated whenever you change public props, CSS variables, or cross-cutting patterns — MCP and the CLI both read this data.
+
+### 11. Changeset
 
 Run `pnpm changeset` and select the appropriate semver bump (see [Changesets & Versioning](#changesets--versioning) below).
 

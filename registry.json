@@ -131,6 +131,124 @@
       "name": "accordion",
       "displayName": "Accordion",
       "description": "Radix accordion with sketch dividers between items and a hand-drawn chevron that rotates on expand.",
+      "category": "layout",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-accordion",
+      "subparts": [
+        "Content",
+        "Item",
+        "Trigger"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "collapsible",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultValue",
+          "type": "string | string[]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string | string[]) => void",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "type",
+          "type": "\"single\" | \"multiple\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string | string[]",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "example": "<Accordion />",
+      "keywords": [
+        "expand",
+        "collapse",
+        "sections",
+        "faq",
+        "chevron"
+      ],
       "files": [
         {
           "name": "accordion.tsx",
@@ -156,6 +274,118 @@
       "name": "alert",
       "displayName": "Alert",
       "description": "Callout with a color-coded stroke: info, warning, error, success. Body copy stays ink-colored so it stays readable. The frame draws in quickly (~200ms) so dynamic alerts still feel sketched.",
+      "category": "feedback",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "AlertSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Control size preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "startIcon",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Leading icon beside the title/body."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "AlertVariant",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "example": "<Alert variant=\"warning\" title=\"Heads up\" startIcon={<Icon />}>\n  Check your settings.\n</Alert>",
+      "keywords": [
+        "callout",
+        "banner",
+        "status",
+        "info",
+        "warning",
+        "error",
+        "success"
+      ],
       "files": [
         {
           "name": "alert.tsx",
@@ -180,6 +410,103 @@
       "name": "alert-dialog",
       "displayName": "AlertDialog",
       "description": "The confirm / destructive-action variant of `Dialog`, built on Radix Alert Dialog. Unlike `Dialog`, there is no dismiss-on-outside-click or Escape by default — the user must pick an action.",
+      "category": "overlay",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-alert-dialog",
+      "subparts": [
+        "Action",
+        "Cancel",
+        "Content",
+        "Description",
+        "Footer",
+        "Header",
+        "Overlay",
+        "Portal",
+        "Title",
+        "Trigger"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Backdrop fade, panel enter/exit, and border draw-in on open.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "import {\n  AlertDialog,\n  AlertDialogTrigger,\n  AlertDialogContent,\n  AlertDialogHeader,\n  AlertDialogTitle,\n  AlertDialogDescription,\n  AlertDialogFooter,\n  AlertDialogCancel,\n  AlertDialogAction,\n  Button,\n} from \"doodleui-react\";\n\n<AlertDialog>\n  <AlertDialogTrigger asChild>\n    <Button variant=\"outline\">Delete sketch</Button>\n  </AlertDialogTrigger>\n  <AlertDialogContent>\n    <AlertDialogHeader>\n      <AlertDialogTitle>Delete this sketch?</AlertDialogTitle>\n      <AlertDialogDescription>This can't be undone.</AlertDialogDescription>\n    </AlertDialogHeader>\n    <AlertDialogFooter>\n      <AlertDialogCancel>Cancel</AlertDialogCancel>\n      <AlertDialogAction>Delete</AlertDialogAction>\n    </AlertDialogFooter>\n  </AlertDialogContent>\n</AlertDialog>",
+      "keywords": [
+        "confirm",
+        "confirmation",
+        "destructive",
+        "delete",
+        "prompt",
+        "modal",
+        "danger"
+      ],
       "files": [
         {
           "name": "alert-dialog.tsx",
@@ -208,6 +535,103 @@
       "name": "aspect-ratio",
       "displayName": "AspectRatio",
       "description": "Keeps media at a fixed width-to-height ratio. Optionally wrap content in a sketch frame.",
+      "category": "layout",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-aspect-ratio",
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bordered",
+          "type": "boolean",
+          "required": false,
+          "description": "Wrap content in a hand-drawn frame. Default false — ratio box only."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "ratio",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<AspectRatio />",
+      "keywords": [
+        "ratio",
+        "media",
+        "image",
+        "video",
+        "16:9"
+      ],
       "files": [
         {
           "name": "aspect-ratio.tsx",
@@ -231,6 +655,127 @@
       "name": "avatar",
       "displayName": "Avatar",
       "description": "Radix avatar with a sketch circular or square frame. Falls back to initials, with an optional status dot.",
+      "category": "data-display",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-avatar",
+      "subparts": [],
+      "props": [
+        {
+          "name": "alt",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fallback",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "shape",
+          "type": "AvatarShape",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "DoodleSize | number",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Avatar size preset or exact pixel dimension."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "status",
+          "type": "AvatarStatus",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Avatar />",
+      "keywords": [
+        "profile",
+        "image",
+        "initials",
+        "user",
+        "photo"
+      ],
       "files": [
         {
           "name": "avatar.tsx",
@@ -257,6 +802,117 @@
       "name": "badge",
       "displayName": "Badge",
       "description": "Compact label with a sketch rectangle. Use it for status, counts, or a one-word tag. The border draws in on mount.",
+      "category": "data-display",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Merge props onto the single child instead of rendering a wrapper span."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "endIcon",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Trailing icon."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "BadgeSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Control size preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "startIcon",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Leading icon."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "variant",
+          "type": "BadgeVariant",
+          "required": false,
+          "defaultValue": "\"default\"",
+          "description": "Visual style preset."
+        }
+      ],
+      "example": "<Badge>New</Badge>\n<Badge asChild><a href=\"/tags/art\">Art</a></Badge>",
+      "keywords": [
+        "tag",
+        "label",
+        "chip",
+        "status"
+      ],
       "files": [
         {
           "name": "badge.tsx",
@@ -280,6 +936,91 @@
       "name": "breadcrumb",
       "displayName": "Breadcrumb",
       "description": "A nav trail with hand-drawn slash or chevron separators between crumbs.",
+      "category": "navigation",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Item"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "separator",
+          "type": "BreadcrumbSeparator",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Breadcrumb />",
+      "keywords": [
+        "path",
+        "trail",
+        "hierarchy",
+        "links"
+      ],
       "files": [
         {
           "name": "breadcrumb.tsx",
@@ -303,6 +1044,125 @@
       "name": "button",
       "displayName": "Button",
       "description": "A clickable control. The label is real HTML. The border and fill are a rough.js rectangle sitting behind it.",
+      "category": "form",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-slot",
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Merge props onto the single child instead of rendering a `<button>`."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "endIcon",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Trailing icon."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Show a sketchy spinner and disable interaction."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "ButtonSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Control size preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "startIcon",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Leading icon (any ReactNode — lucide, SVG, emoji, etc.)."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "variant",
+          "type": "ButtonVariant",
+          "required": false,
+          "defaultValue": "\"primary\"",
+          "description": "Visual style preset."
+        }
+      ],
+      "example": "<Button variant=\"primary\">Save</Button>\n<Button asChild><a href=\"/docs\">Docs</a></Button>",
+      "keywords": [
+        "click",
+        "action",
+        "submit",
+        "cta",
+        "press"
+      ],
       "files": [
         {
           "name": "button.tsx",
@@ -333,6 +1193,121 @@
       "name": "card",
       "displayName": "Card",
       "description": "Container with a sketch border. Optional offset rectangle behind it reads as a paper shadow. The border draws in on mount.",
+      "category": "layout",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Content",
+        "Description",
+        "Footer",
+        "Header",
+        "Title"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Merge props onto the single child instead of rendering a `<div>`."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "shadow",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "example": "<Card>\n  <Card.Header><Card.Title>Notes</Card.Title></Card.Header>\n  <Card.Content>Body</Card.Content>\n</Card>",
+      "keywords": [
+        "container",
+        "panel",
+        "box",
+        "surface"
+      ],
       "files": [
         {
           "name": "card.tsx",
@@ -354,6 +1329,125 @@
       "name": "carousel",
       "displayName": "Carousel",
       "description": "Embla-powered slides with circular sketch arrows outside the viewport, matching the usual carousel layout.",
+      "category": "data-display",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Content",
+        "Item",
+        "Next",
+        "Previous"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bordered",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "opts",
+          "type": "CarouselOptions",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "orientation",
+          "type": "\"horizontal\" | \"vertical\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "plugins",
+          "type": "Parameters<typeof useEmblaCarousel>[1]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "setApi",
+          "type": "(api: CarouselApi) => void",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "const { api, scrollNext } = useCarousel();",
+      "keywords": [
+        "slider",
+        "slides",
+        "gallery",
+        "embla"
+      ],
       "files": [
         {
           "name": "carousel.tsx",
@@ -380,6 +1474,104 @@
       "name": "checkbox",
       "displayName": "Checkbox",
       "description": "Radix checkbox with a sketch square. The checkmark is a rough.js path, not a font glyph. The box draws in on mount; the checkmark path draws in when checked.",
+      "category": "form",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-checkbox",
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Visible label beside the control."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "CheckboxSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Control size preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Checkbox label=\"Accept\" name=\"terms\" required />",
+      "keywords": [
+        "check",
+        "toggle",
+        "boolean",
+        "agree",
+        "terms"
+      ],
       "files": [
         {
           "name": "checkbox.tsx",
@@ -408,6 +1600,86 @@
       "name": "collapsible",
       "displayName": "Collapsible",
       "description": "A single expand/collapse section — the simpler primitive behind `Accordion`. The chevron rotates open with the same hand-drawn path.",
+      "category": "layout",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-collapsible",
+      "subparts": [
+        "Content",
+        "Trigger"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Collapsible />",
+      "keywords": [
+        "expand",
+        "collapse",
+        "show",
+        "hide"
+      ],
       "files": [
         {
           "name": "collapsible.tsx",
@@ -433,6 +1705,163 @@
       "name": "combobox",
       "displayName": "Combobox",
       "description": "A searchable select. Radix has no dedicated Combobox primitive, so this composes `Popover` (positioning) and `Command` (search/filter) behind a sketchy, `Select`-styled trigger — the same recipe shadcn uses.",
+      "category": "form",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-popover",
+      "subparts": [],
+      "props": [
+        {
+          "name": "\"aria-label\"",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in the trigger on mount and the popover border on open.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "emptyMessage",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "SelectOption[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "DoodleSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": ""
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "example": "import { Combobox } from \"doodleui-react\";\n\n<Combobox\n  options={[\n    { value: \"pen\", label: \"Pen\" },\n    { value: \"pencil\", label: \"Pencil\" },\n    { value: \"brush\", label: \"Brush\" },\n  ]}\n  placeholder=\"Select a tool…\"\n/>",
+      "keywords": [
+        "searchable",
+        "select",
+        "autocomplete",
+        "filter",
+        "dropdown"
+      ],
       "files": [
         {
           "name": "combobox.tsx",
@@ -463,6 +1892,92 @@
       "name": "command",
       "displayName": "Command",
       "description": "A command palette / cmd+k style searchable list, powered by [cmdk](https://cmdk.paco.me) inside a sketch-bordered panel.",
+      "category": "overlay",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Empty",
+        "Group",
+        "Input",
+        "Item",
+        "List",
+        "Separator",
+        "Shortcut"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in the panel border on mount.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "import {\n  Command,\n  CommandInput,\n  CommandList,\n  CommandEmpty,\n  CommandGroup,\n  CommandItem,\n} from \"doodleui-react\";\n\n<Command>\n  <CommandInput placeholder=\"Search tools…\" />\n  <CommandList>\n    <CommandEmpty>No results.</CommandEmpty>\n    <CommandGroup>\n      <CommandItem value=\"Pen\">Pen</CommandItem>\n      <CommandItem value=\"Pencil\">Pencil</CommandItem>\n    </CommandGroup>\n  </CommandList>\n</Command>",
+      "keywords": [
+        "cmdk",
+        "palette",
+        "search",
+        "shortcut",
+        "cmd+k"
+      ],
       "files": [
         {
           "name": "command.tsx",
@@ -489,6 +2004,99 @@
       "name": "context-menu",
       "displayName": "ContextMenu",
       "description": "Right-click menu with sketch panel and dividers.",
+      "category": "overlay",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-context-menu",
+      "subparts": [
+        "CheckboxItem",
+        "Content",
+        "Group",
+        "Item",
+        "Label",
+        "RadioGroup",
+        "RadioItem",
+        "Separator",
+        "Sub",
+        "Trigger"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in the panel border when the menu opens.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<ContextMenu />",
+      "keywords": [
+        "right-click",
+        "menu",
+        "context"
+      ],
       "files": [
         {
           "name": "context-menu.tsx",
@@ -515,6 +2123,99 @@
       "name": "dialog",
       "displayName": "Dialog",
       "description": "A lighter, fully composable sibling to `Modal`. `Modal` is a single-prop, fixed-width, always-shadowed dialog with a forced close button. `Dialog` is the shadcn-style compound API — no forced width or shadow, and you build the header/footer yourself.",
+      "category": "overlay",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-dialog",
+      "subparts": [
+        "Close",
+        "Content",
+        "Description",
+        "Footer",
+        "Header",
+        "Overlay",
+        "Portal",
+        "Title",
+        "Trigger"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Backdrop fade, panel enter/exit, and border draw-in on open.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "import {\n  Dialog,\n  DialogTrigger,\n  DialogContent,\n  DialogHeader,\n  DialogTitle,\n  DialogDescription,\n  DialogFooter,\n  DialogClose,\n  Button,\n  Input,\n} from \"doodleui-react\";\n\n<Dialog>\n  <DialogTrigger asChild>\n    <Button variant=\"outline\">Open dialog</Button>\n  </DialogTrigger>\n  <DialogContent>\n    <DialogHeader>\n      <DialogTitle>Rename sketch</DialogTitle>\n      <DialogDescription>Give this notebook page a new title.</DialogDescription>\n    </DialogHeader>\n    <Input defaultValue=\"Field notes\" />\n    <DialogFooter>\n      <DialogClose asChild><Button variant=\"ghost\">Cancel</Button></DialogClose>\n      <DialogClose asChild><Button variant=\"primary\">Save</Button></DialogClose>\n    </DialogFooter>\n  </DialogContent>\n</Dialog>",
+      "keywords": [
+        "modal",
+        "popup",
+        "overlay",
+        "panel"
+      ],
       "files": [
         {
           "name": "dialog.tsx",
@@ -541,6 +2242,89 @@
       "name": "divider",
       "displayName": "Divider",
       "description": "A squiggly rule. Horizontal fills the width. Vertical fills the height. On mount the stroke extends across its length.",
+      "category": "layout",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in so the line extends across its length. Defaults to the\nDoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "orientation",
+          "type": "DividerOrientation",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Divider />",
+      "keywords": [
+        "separator",
+        "rule",
+        "hr",
+        "squiggle"
+      ],
       "files": [
         {
           "name": "divider.tsx",
@@ -564,6 +2348,28 @@
       "name": "drawer",
       "displayName": "Drawer",
       "description": "Bottom drawer with sketch pull handle.",
+      "category": "overlay",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Close",
+        "Content",
+        "Description",
+        "Footer",
+        "Handle",
+        "Header",
+        "Title",
+        "Trigger"
+      ],
+      "props": [],
+      "example": "<Drawer />",
+      "keywords": [
+        "bottom",
+        "sheet",
+        "mobile",
+        "panel",
+        "slide"
+      ],
       "files": [
         {
           "name": "drawer.tsx",
@@ -585,6 +2391,100 @@
       "name": "dropdown-menu",
       "displayName": "DropdownMenu",
       "description": "A sketchy-bordered menu panel with hand-drawn item separators, built on Radix Dropdown Menu. Includes items, checkbox items, radio items, labels, and separators.",
+      "category": "overlay",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-dropdown-menu",
+      "subparts": [
+        "CheckboxItem",
+        "Content",
+        "Group",
+        "Item",
+        "Label",
+        "RadioGroup",
+        "RadioItem",
+        "Separator",
+        "Sub",
+        "Trigger"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in the panel border when the menu opens.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<DropdownMenu />",
+      "keywords": [
+        "menu",
+        "dropdown",
+        "actions",
+        "options"
+      ],
       "files": [
         {
           "name": "dropdown-menu.tsx",
@@ -611,6 +2511,101 @@
       "name": "empty",
       "displayName": "Empty",
       "description": "Composable empty-state layout: media, title, description, and optional actions.",
+      "category": "feedback",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Action",
+        "Description",
+        "Media",
+        "Title"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bordered",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Empty />",
+      "keywords": [
+        "empty-state",
+        "placeholder",
+        "no-data",
+        "zero"
+      ],
       "files": [
         {
           "name": "empty.tsx",
@@ -632,6 +2627,38 @@
       "name": "field",
       "displayName": "Field",
       "description": "Wires label, control, helper text, and errors with shared ids and ARIA attributes.",
+      "category": "form",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Control",
+        "Description",
+        "Error",
+        "Label",
+        "Root"
+      ],
+      "props": [
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "example": "import {\n  Field,\n  FieldControl,\n  FieldDescription,\n  FieldError,\n  FieldLabel,\n  Input,\n} from \"doodleui-react\";\n\n<Field invalid error=\"Required\">\n  <FieldLabel required>Name</FieldLabel>\n  <FieldControl>\n    <Input placeholder=\"Ada Lovelace\" />\n  </FieldControl>\n  <FieldDescription>Public display name.</FieldDescription>\n  <FieldError />\n</Field>",
+      "keywords": [
+        "label",
+        "error",
+        "helper",
+        "form",
+        "validation"
+      ],
       "files": [
         {
           "name": "field.tsx",
@@ -653,6 +2680,94 @@
       "name": "hover-card",
       "displayName": "HoverCard",
       "description": "Popover-like card that opens on hover.",
+      "category": "overlay",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-hover-card",
+      "subparts": [
+        "Arrow",
+        "Content",
+        "Trigger"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<HoverCard />",
+      "keywords": [
+        "hover",
+        "preview",
+        "card",
+        "popover"
+      ],
       "files": [
         {
           "name": "hover-card.tsx",
@@ -677,6 +2792,110 @@
       "name": "input",
       "displayName": "Input",
       "description": "Single-line text field with a sketchy border. Native focus rings are removed. Focus re-inks the border with a second seed (and still shifts the stroke toward the accent color).",
+      "category": "form",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "endIcon",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Trailing icon inside the field."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Visible label above the control."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "InputSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Control size preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "startIcon",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Leading icon inside the field."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Input label=\"Email\" name=\"email\" required />\n<Input invalid errorMessage=\"Required\" />",
+      "keywords": [
+        "text",
+        "field",
+        "email",
+        "password",
+        "login"
+      ],
       "files": [
         {
           "name": "input.tsx",
@@ -704,6 +2923,88 @@
       "name": "input-group",
       "displayName": "InputGroup",
       "description": "One sketch frame wrapping an input and addons.",
+      "category": "form",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Addon",
+        "Button",
+        "Input"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<InputGroup />",
+      "keywords": [
+        "addon",
+        "prefix",
+        "suffix",
+        "group"
+      ],
       "files": [
         {
           "name": "input-group.tsx",
@@ -727,6 +3028,95 @@
       "name": "input-otp",
       "displayName": "InputOTP",
       "description": "Segmented PIN input with sketch slots.",
+      "category": "form",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Group",
+        "Separator",
+        "Slot"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<InputOTP />",
+      "keywords": [
+        "otp",
+        "pin",
+        "code",
+        "verification",
+        "2fa"
+      ],
       "files": [
         {
           "name": "input-otp.tsx",
@@ -753,6 +3143,88 @@
       "name": "kbd",
       "displayName": "Kbd",
       "description": "Inline keyboard hint with a hand-drawn border.",
+      "category": "data-display",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in the border on mount. Defaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Kbd />",
+      "keywords": [
+        "keyboard",
+        "shortcut",
+        "key"
+      ],
       "files": [
         {
           "name": "kbd.tsx",
@@ -774,6 +3246,88 @@
       "name": "label",
       "displayName": "Label",
       "description": "A thin, mostly-typographic wrapper around Radix Label. Ties a caption to a form field via `htmlFor`. The only sketch chrome is a small hand-drawn dot after the text when `required` is set.",
+      "category": "form",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-label",
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in the required mark on mount.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "description": "Adds a small hand-drawn required mark after the text."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "import { Label, Input } from \"doodleui-react\";\n\n<Label htmlFor=\"email\" required>\n  Email\n</Label>\n<Input id=\"email\" placeholder=\"you@studio.dev\" />",
+      "keywords": [
+        "caption",
+        "form",
+        "accessibility"
+      ],
       "files": [
         {
           "name": "label.tsx",
@@ -800,6 +3354,105 @@
       "name": "menubar",
       "displayName": "Menubar",
       "description": "Desktop-style menu bar (File, Edit, View).",
+      "category": "navigation",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-menubar",
+      "subparts": [
+        "CheckboxItem",
+        "Content",
+        "Item",
+        "Label",
+        "Menu",
+        "RadioGroup",
+        "RadioItem",
+        "Separator",
+        "Shortcut",
+        "Sub",
+        "SubContent",
+        "SubTrigger",
+        "Trigger"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Menubar />",
+      "keywords": [
+        "menu",
+        "app",
+        "file",
+        "edit",
+        "bar"
+      ],
       "files": [
         {
           "name": "menubar.tsx",
@@ -826,6 +3479,131 @@
       "name": "modal",
       "displayName": "Modal",
       "description": "Radix Dialog with a sketch frame and a dimmed backdrop. Focus trap, Escape to close, and ARIA labelling are inherited. Opening fades the backdrop, eases the panel in, and draws the frame.",
+      "category": "overlay",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-dialog",
+      "subparts": [
+        "Close",
+        "Description",
+        "Root",
+        "Title",
+        "Trigger"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Backdrop fade, panel enter/exit, and border draw-in on open.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "trigger",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "example": "<Modal />",
+      "keywords": [
+        "dialog",
+        "popup",
+        "overlay",
+        "confirm"
+      ],
       "files": [
         {
           "name": "modal.tsx",
@@ -853,6 +3631,102 @@
       "name": "native-select",
       "displayName": "NativeSelect",
       "description": "A native `<select>` with a sketch border and hand-drawn chevron — no custom popover.",
+      "category": "form",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in the border on mount. Defaults to DoodleUIProvider (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "options",
+          "type": "NativeSelectOption[]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "NativeSelectSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Control size preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<NativeSelect />",
+      "keywords": [
+        "select",
+        "native",
+        "dropdown",
+        "options"
+      ],
       "files": [
         {
           "name": "native-select.tsx",
@@ -880,6 +3754,99 @@
       "name": "navigation-menu",
       "displayName": "NavigationMenu",
       "description": "Horizontal navigation with sketch dropdown panels.",
+      "category": "navigation",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-navigation-menu",
+      "subparts": [
+        "Content",
+        "Indicator",
+        "Item",
+        "ItemLink",
+        "Link",
+        "List",
+        "Trigger",
+        "Viewport"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<NavigationMenu />",
+      "keywords": [
+        "nav",
+        "horizontal",
+        "links",
+        "dropdown"
+      ],
       "files": [
         {
           "name": "navigation-menu.tsx",
@@ -906,6 +3873,101 @@
       "name": "pagination",
       "displayName": "Pagination",
       "description": "Sketch-circled page buttons with a heavier active ring. Prev/next use hand-drawn arrows.",
+      "category": "navigation",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "onPageChange",
+          "type": "(page: number) => void",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "page",
+          "type": "number",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Pagination />",
+      "keywords": [
+        "pages",
+        "pager",
+        "next",
+        "previous"
+      ],
       "files": [
         {
           "name": "pagination.tsx",
@@ -929,6 +3991,95 @@
       "name": "popover",
       "displayName": "Popover",
       "description": "A sketchy-bordered floating panel anchored to a trigger, built on Radix Popover. The panel border draws in on open, same recipe as the Select menu.",
+      "category": "overlay",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-popover",
+      "subparts": [
+        "Anchor",
+        "Arrow",
+        "Close",
+        "Content",
+        "Trigger"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in the panel border when the popover opens.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Popover />",
+      "keywords": [
+        "floating",
+        "panel",
+        "anchor",
+        "popup"
+      ],
       "files": [
         {
           "name": "popover.tsx",
@@ -953,6 +4104,95 @@
       "name": "progress",
       "displayName": "Progress",
       "description": "Outer sketch bar plus an inner fill drawn with slightly higher roughness, so it looks hand-filled. The track draws in on mount. Changing `value` animates the fill width and redraws the hatch a little rougher as it fills.",
+      "category": "feedback",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in the track on mount and redraw the fill as value changes.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "example": "<Progress />",
+      "keywords": [
+        "bar",
+        "loading",
+        "percent",
+        "completion"
+      ],
       "files": [
         {
           "name": "progress.tsx",
@@ -977,6 +4217,127 @@
       "name": "radial-menu",
       "displayName": "RadialMenu",
       "description": "Plus trigger fans sketch actions in an arc.",
+      "category": "navigation",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "\"aria-label\"",
+          "type": "string",
+          "required": false,
+          "defaultValue": "\"Open menu\"",
+          "description": "Accessible name for the trigger button."
+        },
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "items",
+          "type": "RadialMenuItem[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "radius",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "RadialMenuSize",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "import { RadialMenu } from \"doodleui-react\";\n\n<RadialMenu\n  aria-label=\"Tools\"\n  items={[\n    { id: \"crop\", icon: <span>#</span>, label: \"Crop\" },\n    { id: \"text\", icon: <span>T</span>, label: \"Text\" },\n  ]}\n/>",
+      "keywords": [
+        "pie",
+        "arc",
+        "fan",
+        "actions",
+        "fab"
+      ],
       "files": [
         {
           "name": "radial-menu.tsx",
@@ -1003,6 +4364,158 @@
       "name": "radial-progress",
       "displayName": "RadialProgress",
       "description": "Radial tick-gauge progress and loading indicator with a traveling height wave.",
+      "category": "feedback",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "activeColor",
+          "type": "string",
+          "required": false,
+          "description": "Active tick color. Defaults to theme success green."
+        },
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play wave animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "formatValue",
+          "type": "(value: number, max: number) => ReactNode",
+          "required": false,
+          "description": "Custom formatter for center text when `children` is omitted."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "defaultValue": "100",
+          "description": "Maximum value for progress calculation."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "showValue",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "Whether to display the center value / children."
+        },
+        {
+          "name": "size",
+          "type": "RadialProgressSize | number",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Overall diameter size preset or custom pixel number."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "startAngle",
+          "type": "number",
+          "required": false,
+          "defaultValue": "225",
+          "description": "Start angle in degrees (0° = top / 12 o'clock, clockwise).\nDefault `225` starts at bottom-left so the open gap sits at the bottom."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "sweepAngle",
+          "type": "number",
+          "required": false,
+          "defaultValue": "270",
+          "description": "Sweep angle in degrees of the open arc."
+        },
+        {
+          "name": "tickCount",
+          "type": "number",
+          "required": false,
+          "defaultValue": "48",
+          "description": "Total number of radial tick bars along the arc."
+        },
+        {
+          "name": "trackColor",
+          "type": "string",
+          "required": false,
+          "description": "Inactive tick color. Defaults to muted track ink."
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "required": false,
+          "defaultValue": "undefined",
+          "description": "Current progress value (determinate mode).\nWhen undefined, operates in indeterminate loading wave mode."
+        },
+        {
+          "name": "waveSpeed",
+          "type": "number",
+          "required": false,
+          "defaultValue": "2",
+          "description": "Wave animation speed in seconds per full cycle."
+        }
+      ],
+      "example": "<RadialProgress value={75} />\n<RadialProgress />",
+      "keywords": [
+        "circular",
+        "gauge",
+        "loader",
+        "percent"
+      ],
       "files": [
         {
           "name": "radial-progress.tsx",
@@ -1026,6 +4539,106 @@
       "name": "radio",
       "displayName": "Radio",
       "description": "Sketch circle with a solid inner dot when selected. Must live inside `RadioGroup`. The ring draws in on mount; the dot scales and draws in on select.",
+      "category": "form",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-radio-group",
+      "subparts": [
+        "Group"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Visible label beside the control."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "RadioSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Control size preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<RadioGroup name=\"plan\" defaultValue=\"pro\">\n  <Radio value=\"pro\" label=\"Pro\" />\n</RadioGroup>",
+      "keywords": [
+        "radio",
+        "choice",
+        "option",
+        "group",
+        "select-one"
+      ],
       "files": [
         {
           "name": "radio.tsx",
@@ -1055,6 +4668,93 @@
       "name": "resizable",
       "displayName": "Resizable",
       "description": "Drag to resize panels; sketch handle on the divider.",
+      "category": "layout",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Handle",
+        "Panel",
+        "PanelGroup"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "withHandle",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "example": "import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from \"doodleui-react\";\n\n<ResizablePanelGroup direction=\"horizontal\">\\n  <ResizablePanel defaultSize={50} />\\n  <ResizableHandle />\\n  <ResizablePanel defaultSize={50} />\\n</ResizablePanelGroup>",
+      "keywords": [
+        "panels",
+        "drag",
+        "split",
+        "resize"
+      ],
       "files": [
         {
           "name": "resizable.tsx",
@@ -1080,6 +4780,92 @@
       "name": "scroll-area",
       "displayName": "ScrollArea",
       "description": "Scrollable region with sketch border and rough scrollbar.",
+      "category": "layout",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-scroll-area",
+      "subparts": [
+        "Corner",
+        "Viewport"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<ScrollArea />",
+      "keywords": [
+        "scroll",
+        "overflow",
+        "scrollbar"
+      ],
       "files": [
         {
           "name": "scroll-area.tsx",
@@ -1106,6 +4892,136 @@
       "name": "select",
       "displayName": "Select",
       "description": "Radix select with a sketch trigger and a framed popover. Highlighted and selected items get a hand-drawn underline. The trigger draws in on mount; the menu frame draws in when it opens.",
+      "category": "form",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-select",
+      "subparts": [
+        "Content",
+        "Group",
+        "Item",
+        "Label",
+        "Root",
+        "Separator",
+        "Trigger",
+        "Value"
+      ],
+      "props": [
+        {
+          "name": "\"aria-describedby\"",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "\"aria-invalid\"",
+          "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "\"aria-label\"",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "options",
+          "type": "SelectOption[]",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "DoodleSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": ""
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Select />",
+      "keywords": [
+        "dropdown",
+        "options",
+        "choose",
+        "picker"
+      ],
       "files": [
         {
           "name": "select.tsx",
@@ -1136,6 +5052,27 @@
       "name": "sheet",
       "displayName": "Sheet",
       "description": "Edge-anchored slide-out panel (default: right).",
+      "category": "overlay",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Close",
+        "Content",
+        "Description",
+        "Footer",
+        "Header",
+        "Title",
+        "Trigger"
+      ],
+      "props": [],
+      "example": "<Sheet />",
+      "keywords": [
+        "side",
+        "panel",
+        "slide",
+        "drawer",
+        "edge"
+      ],
       "files": [
         {
           "name": "sheet.tsx",
@@ -1154,6 +5091,129 @@
       "name": "sidebar",
       "displayName": "Sidebar",
       "description": "Collapsible app sidebar with sketch divider and toggle. Compose with `SidebarLayout` and `SidebarInset`.",
+      "category": "navigation",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Content",
+        "Footer",
+        "Group",
+        "Header",
+        "Inset",
+        "Item",
+        "Layout",
+        "Provider",
+        "Trigger"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "defaultCollapsed",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "side",
+          "type": "\"left\" | \"right\"",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "const { collapsed, toggleCollapsed } = useSidebar();",
+      "keywords": [
+        "nav",
+        "app",
+        "layout",
+        "collapsible"
+      ],
       "files": [
         {
           "name": "sidebar.tsx",
@@ -1178,6 +5238,108 @@
       "name": "skeleton",
       "displayName": "Skeleton",
       "description": "A scribble-fill placeholder. Pulse reseeds the hatch on an interval so the doodle redraws instead of shimmering.",
+      "category": "feedback",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "height",
+          "type": "number | string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "pulse",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "variant",
+          "type": "SkeletonVariant",
+          "required": false,
+          "defaultValue": "\"primary\"",
+          "description": "Visual style preset."
+        },
+        {
+          "name": "width",
+          "type": "number | string",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "example": "<Skeleton />",
+      "keywords": [
+        "loading",
+        "placeholder",
+        "shimmer",
+        "scribble"
+      ],
       "files": [
         {
           "name": "skeleton.tsx",
@@ -1201,6 +5363,95 @@
       "name": "slider",
       "displayName": "Slider",
       "description": "Radix slider with a wobbly track line and a sketch thumb. The filled range is a second, rougher stroke.",
+      "category": "form",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-slider",
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "thumbShape",
+          "type": "SliderThumbShape",
+          "required": false,
+          "description": ""
+        }
+      ],
+      "example": "<Slider />",
+      "keywords": [
+        "range",
+        "track",
+        "thumb",
+        "volume"
+      ],
       "files": [
         {
           "name": "slider.tsx",
@@ -1226,6 +5477,90 @@
       "name": "spinner",
       "displayName": "Spinner",
       "description": "Rotating sketch arc for loading states.",
+      "category": "feedback",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Continuous rotation. Defaults to the DoodleUIProvider value (true).\nReduced motion shows a static arc."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "SpinnerSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Control size preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Spinner />",
+      "keywords": [
+        "loading",
+        "busy",
+        "wait",
+        "arc"
+      ],
       "files": [
         {
           "name": "spinner.tsx",
@@ -1252,6 +5587,107 @@
       "name": "stepper",
       "displayName": "Stepper",
       "description": "Numbered sketch circles joined by hand-drawn connectors. Completed steps fill in; the current step keeps a heavier ring.",
+      "category": "navigation",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "current",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "orientation",
+          "type": "StepperOrientation",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "steps",
+          "type": "Array<StepperStep | ReactNode>",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Stepper />",
+      "keywords": [
+        "steps",
+        "wizard",
+        "progress",
+        "multi-step"
+      ],
       "files": [
         {
           "name": "stepper.tsx",
@@ -1275,6 +5711,97 @@
       "name": "switch",
       "displayName": "Switch",
       "description": "Radix switch with a sketch pill track and a circular thumb that slides. Toggling springs the thumb and re-inks the track with a second seed.",
+      "category": "form",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-switch",
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Visible label beside the control."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "SwitchSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Control size preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Switch label=\"Notifications\" name=\"notify\" />",
+      "keywords": [
+        "toggle",
+        "on",
+        "off",
+        "boolean"
+      ],
       "files": [
         {
           "name": "switch.tsx",
@@ -1304,6 +5831,98 @@
       "name": "table",
       "displayName": "Table",
       "description": "A real HTML table with hand-drawn row dividers instead of CSS borders. Optional heavier underline under the header. Rules draw in on mount, staggered a little row by row.",
+      "category": "data-display",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [
+        "Body",
+        "Caption",
+        "Cell",
+        "Footer",
+        "Head",
+        "Header",
+        "HeaderCell",
+        "Row"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in row rules on mount, staggered slightly. Defaults to the\nDoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "headerUnderline",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Table>\n  <Table.Header>\n    <Table.Row>\n      <Table.Head>Column</Table.Head>\n    </Table.Row>\n  </Table.Header>\n  <Table.Body>\n    <Table.Row>\n      <Table.Cell>Value</Table.Cell>\n    </Table.Row>\n  </Table.Body>\n</Table>",
+      "keywords": [
+        "grid",
+        "rows",
+        "columns",
+        "data"
+      ],
       "files": [
         {
           "name": "table.tsx",
@@ -1329,6 +5948,83 @@
       "name": "tabs",
       "displayName": "Tabs",
       "description": "Radix tabs with a sketch underline under the active trigger. Switching tabs slides the rule and redraws it with a derived seed.",
+      "category": "navigation",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-tabs",
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in the active underline and slide it on tab change.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Tabs />",
+      "keywords": [
+        "tab",
+        "panel",
+        "sections",
+        "switch"
+      ],
       "files": [
         {
           "name": "tabs.tsx",
@@ -1356,6 +6052,98 @@
       "name": "textarea",
       "displayName": "Textarea",
       "description": "Same treatment as Input, sized for longer notes. The sketch rectangle resizes with the element. Focus re-inks the border with a second seed.",
+      "category": "form",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Visible label above the control."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "TextareaSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Control size preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Textarea label=\"Notes\" name=\"notes\" />",
+      "keywords": [
+        "multiline",
+        "text",
+        "notes",
+        "message",
+        "comment"
+      ],
       "files": [
         {
           "name": "textarea.tsx",
@@ -1382,6 +6170,159 @@
       "name": "toast",
       "displayName": "Toast",
       "description": "Radix toast with Alert-like sketch chrome. Wrap the tree in `ToastProvider` for stacking, auto-dismiss, and the live region.",
+      "category": "feedback",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-toast",
+      "subparts": [
+        "Action",
+        "Close",
+        "Description",
+        "Provider",
+        "Root",
+        "Title",
+        "Viewport"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Slide-in with a sketchy settle wobble, reversed on exit.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "position",
+          "type": "ToastPosition",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "DoodleSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Toast density preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "swipeDirection",
+          "type": "ToastPrimitive.ToastProviderProps[\"swipeDirection\"]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "ToastVariant",
+          "required": false,
+          "defaultValue": "\"primary\"",
+          "description": "Visual style preset."
+        }
+      ],
+      "example": "<Toast />",
+      "keywords": [
+        "notification",
+        "snackbar",
+        "alert",
+        "message"
+      ],
       "files": [
         {
           "name": "toast.tsx",
@@ -1408,6 +6349,90 @@
       "name": "toggle",
       "displayName": "Toggle",
       "description": "Single on/off control with sketch fill when pressed.",
+      "category": "form",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-toggle",
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Draw-in on mount and seed morph on press.\nDefaults to the DoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "size",
+          "type": "ToggleSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Control size preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Toggle />",
+      "keywords": [
+        "pressed",
+        "button",
+        "on",
+        "off"
+      ],
       "files": [
         {
           "name": "toggle.tsx",
@@ -1435,6 +6460,84 @@
       "name": "toggle-group",
       "displayName": "ToggleGroup",
       "description": "Grouped toggles with single or multiple selection.",
+      "category": "form",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-toggle-group",
+      "subparts": [
+        "Item"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<ToggleGroup />",
+      "keywords": [
+        "multi-select",
+        "single-select",
+        "toolbar"
+      ],
       "files": [
         {
           "name": "toggle-group.tsx",
@@ -1463,6 +6566,109 @@
       "name": "tooltip",
       "displayName": "Tooltip",
       "description": "Radix Tooltip with a small sketch bubble. Wrap the app in `TooltipProvider` once (the docs site already does). The bubble draws in quickly when it shows.",
+      "category": "overlay",
+      "isRadix": true,
+      "radixPrimitive": "@radix-ui/react-tooltip",
+      "subparts": [
+        "Provider"
+      ],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "description": "Quick draw-in when the bubble shows (~180ms). Defaults to the\nDoodleUIProvider value (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "content",
+          "type": "ReactNode",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "delayDuration",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fill",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "side",
+          "type": "ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>[\"side\"]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "<Tooltip />",
+      "keywords": [
+        "hint",
+        "hover",
+        "help",
+        "bubble"
+      ],
       "files": [
         {
           "name": "tooltip.tsx",
@@ -1487,6 +6693,97 @@
       "name": "typography",
       "displayName": "Typography",
       "description": "Preset text components with optional hand-drawn underlines, highlights, and rules.",
+      "category": "data-display",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "accent",
+          "type": "HeadingAccent",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "level",
+          "type": "HeadingLevel",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        }
+      ],
+      "example": "import { Blockquote, Heading, Highlight, InlineCode, Text } from \"doodleui-react\";\n\n<Heading level={1} accent=\"underline\">Notes</Heading>\n<Text variant=\"lead\">A quick intro.</Text>\n<Text>Marked <Highlight>important</Highlight> and <InlineCode>npm i</InlineCode>.</Text>\n<Blockquote>Sketch borders optional.</Blockquote>",
+      "keywords": [
+        "heading",
+        "text",
+        "paragraph",
+        "blockquote",
+        "code"
+      ],
       "files": [
         {
           "name": "typography.tsx",

@@ -1,0 +1,79 @@
+# MCP / AI Agent Support
+
+[Model Context Protocol](https://modelcontextprotocol.io) (MCP) lets AI coding agents call structured tools instead of guessing from training data. doodleui-react ships an MCP server so agents can discover components, read prop docs, get install commands, and apply library conventions correctly on the first try.
+
+## What it enables
+
+Ask your agent to **build a sketchy contact form** and it can:
+
+1. `search_components` / `list_components` — pick Input, Textarea, Button, Field
+2. `get_component_docs` — use the real prop table (`label`, `animate`, `asChild`, …)
+3. `get_conventions` — use `register()` for Input/Textarea and `Controller` for Checkbox
+4. `get_installation_command` — run `npx doodleui-react add input textarea button field`
+5. `get_theming_reference` — tweak `--doodle-ui-roughness` instead of inventing CSS
+
+## Start the server
+
+```bash
+npx doodleui-react mcp
+```
+
+The process speaks MCP JSON-RPC on **stdio** (diagnostics go to stderr).
+
+## Configure your agent
+
+### Cursor
+
+Add to `.cursor/mcp.json` in your project (or Cursor user MCP settings):
+
+```json
+{
+  "mcpServers": {
+    "doodleui": {
+      "command": "npx",
+      "args": ["-y", "doodleui-react", "mcp"]
+    }
+  }
+}
+```
+
+### Claude Code
+
+```bash
+claude mcp add doodleui -- npx -y doodleui-react mcp
+```
+
+### Windsurf / other MCP clients
+
+```json
+{
+  "mcpServers": {
+    "doodleui": {
+      "command": "npx",
+      "args": ["-y", "doodleui-react", "mcp"]
+    }
+  }
+}
+```
+
+## Tools
+
+| Tool | Purpose |
+| --- | --- |
+| `list_components` | Full registry: name, description, category, Radix flag |
+| `get_component_docs` | Prop table, example, deps, compound sub-parts |
+| `get_installation_command` | Exact `npx` / `pnpm dlx` / `yarn dlx` / `bunx` add command |
+| `get_theming_reference` | CSS custom properties (roughness, colors, dark mode) |
+| `search_components` | Natural-language → ranked component matches |
+| `get_conventions` | `animate`, controlled/uncontrolled, `asChild`, forms, SSR, theming |
+
+## Example prompts
+
+- “Add a doodleui-react login form with email, password, and submit.”
+- “Which component should I use for a destructive delete confirmation?”
+- “Make the sketch borders rougher globally.”
+- “How do I wire Checkbox with react-hook-form?”
+
+## Keeping data in sync
+
+Registry, prop docs, theming, and conventions are generated from the same sources as the CLI and docs site (`pnpm build:registry`). When you add a component or change public props, rebuild the registry before release so MCP stays accurate.
