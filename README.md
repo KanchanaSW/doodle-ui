@@ -2,17 +2,17 @@
 
 Hand-drawn React components with an Excalidraw-like sketch aesthetic. Chrome is drawn with [rough.js](https://roughjs.com). Text stays real HTML, so it remains crisp and accessible.
 
-The published package is `[doodleui-react](https://www.npmjs.com/package/doodleui-react)`. Docs live at [doodle-ui.netlify.app](https://doodle-ui.netlify.app).
+The published package is [`doodleui-react`](https://www.npmjs.com/package/doodleui-react). Docs live at [doodle-ui.netlify.app](https://doodle-ui.netlify.app).
 
-![npm](https://img.shields.io/npm/v/doodleui-react.svg)
-![bundle size](https://img.shields.io/bundlephobia/minzip/doodleui-react)
-![CI](https://github.com/KanchanaSW/doodle-ui/actions/workflows/ci.yml/badge.svg)
+[![npm](https://img.shields.io/npm/v/doodleui-react.svg)](https://www.npmjs.com/package/doodleui-react)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/doodleui-react)](https://bundlephobia.com/package/doodleui-react)
+[![CI](https://github.com/KanchanaSW/doodle-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/KanchanaSW/doodle-ui/actions/workflows/ci.yml)
 
 ![image](https://github.com/user-attachments/assets/009a6a79-b002-48dd-b211-a224d10129b4)
 
 ## CLI Component Installer (shadcn-style)
 
-Copy component source code directly into your project to customize sketch styling directly:
+Copy component source into your project so you can customize sketch styling directly:
 
 ```bash
 # npm
@@ -61,9 +61,18 @@ npx doodleui-react mcp
 claude mcp add doodleui -- npx -y doodleui-react mcp
 ```
 
-Tools: `list_components`, `get_component_docs`, `get_installation_command`, `get_theming_reference`, `search_components`, `get_conventions`. Full setup: [docs → MCP](https://doodle-ui.netlify.app/docs/mcp).
+| Tool | Purpose |
+| --- | --- |
+| `list_components` | Catalog (optional category filter) |
+| `search_components` | Natural-language → ranked matches |
+| `get_component_docs` | Prop table, example, deps, sub-parts |
+| `get_installation_command` | Exact `npx` / `pnpm dlx` / `yarn dlx` / `bunx` add command |
+| `get_theming_reference` | CSS custom properties (roughness, colors, dark mode) |
+| `get_conventions` | Cross-cutting patterns: `animate`, forms, SSR, `asChild`, … |
 
+Successful tool responses include `version` (package) and `registrySchemaVersion` (response shape; semver — major means parsers need an update). Unknown or malformed input returns application-level JSON errors with `suggestions` (and optionally `invalidComponents`) so agents can retry the corrected name in the same turn. Protocol `isError` is reserved for genuine server failures.
 
+Full setup, error codes, and an orchestration transcript: [docs → MCP](https://doodle-ui.netlify.app/docs/mcp).
 
 ## Install (npm dependency)
 
@@ -85,12 +94,9 @@ bun add doodleui-react
 
 Peer dependencies: `react` and `react-dom` >= 18.0.0. rough.js ships with the package.
 
-
-
 ## Online Playgrounds & Starters
 
 Zero-setup templates you can open in the browser:
-
 
 | Template           | StackBlitz                                                                                         | CodeSandbox                                                                                                  |
 | ------------------ | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
@@ -98,8 +104,7 @@ Zero-setup templates you can open in the browser:
 | Vite + React       | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/vite-react-starter) | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/vite-react-starter) |
 | Full showcase      | [Open](https://stackblitz.com/github/KanchanaSW/doodle-ui/tree/master/examples/showcase)           | [Open](https://codesandbox.io/p/sandbox/github/KanchanaSW/doodle-ui/tree/master/examples/showcase)           |
 
-
-Source lives in `[examples/](examples/)` in this repo.
+Source lives in [`examples/`](examples/) in this repo.
 
 ## Quickstart
 
@@ -157,7 +162,6 @@ See [Theming](https://doodle-ui.netlify.app/docs/theming) on the docs site for t
 
 Every component accepts:
 
-
 | Prop                  | Type     | Default           | Notes                                    |
 | --------------------- | -------- | ----------------- | ---------------------------------------- |
 | `roughness`           | `number` | `1.5`             | Sketchiness intensity                    |
@@ -165,12 +169,9 @@ Every component accepts:
 | `sketchColor`         | `string` | `#1f1d1a`         | Stroke color                             |
 | `className` / `style` | standard |                   | Layout only. No bundled visual CSS       |
 
-
-
-
 ## Components
 
-Button, Input, Textarea, Checkbox, Radio, Select, NativeSelect, Switch, Slider, Card, Badge, Alert, Modal, Divider, Progress, Tooltip, Tabs, Accordion, Table, Toast, Avatar, Pagination, Breadcrumb, Skeleton, Stepper, Label, Field, Collapsible, Popover, DropdownMenu, Dialog, AlertDialog, Command, Combobox, Kbd, Spinner, Toggle, ToggleGroup, InputGroup, InputOTP, ScrollArea, Resizable, HoverCard, ContextMenu, NavigationMenu, Menubar, Sheet, Drawer, AspectRatio, Empty, Heading, Text, Blockquote, InlineCode, Highlight, Sidebar, Carousel, plus the `RoughSvg` primitive.
+Button, Input, Textarea, Checkbox, Radio, Select, NativeSelect, Switch, Slider, Card, Badge, Alert, Modal, Divider, Progress, RadialProgress, Tooltip, Tabs, Accordion, Table, Toast, Avatar, Pagination, Breadcrumb, Skeleton, Stepper, Label, Field, Collapsible, Popover, DropdownMenu, Dialog, AlertDialog, Command, Combobox, Kbd, Spinner, Toggle, ToggleGroup, InputGroup, InputOTP, ScrollArea, Resizable, HoverCard, ContextMenu, NavigationMenu, Menubar, Sheet, Drawer, AspectRatio, Empty, Heading, Text, Blockquote, InlineCode, Highlight, Sidebar, Carousel, RadialMenu, plus the `RoughSvg` primitive.
 
 Most components draw in on mount and re-ink on interaction (default on, opt out with `animate={false}` or `DoodleUIProvider`).
 
@@ -186,18 +187,17 @@ Modal, Tooltip, Checkbox, Radio, Select, Switch, Tabs, Accordion, Slider, Toast,
 pnpm install
 pnpm dev
 
+# without a global pnpm install:
 npx pnpm install
 npx pnpm dev
 ```
 
-Docs run at [http://localhost:3001](http://localhost:3000). The library rebuilds in watch mode through Turborepo.
+Docs run at [http://localhost:3000](http://localhost:3000). The library rebuilds in watch mode through Turborepo.
 
 ```bash
 pnpm build
 pnpm typecheck
 ```
-
-
 
 ## Publish (library)
 
@@ -210,16 +210,12 @@ pnpm --filter doodleui-react publish --access public
 npx pnpm --filter doodleui-react publish --access public --no-git-checks
 ```
 
-
-
 ## Community & Contributing
 
 - [Contributing Guide](CONTRIBUTING.md) — setup, component conventions, changesets, and PR checklist
 - [Code of Conduct](CODE_OF_CONDUCT.md) — expectations for community participation
 - [Security Policy](SECURITY.md) — how to report vulnerabilities privately
 - [GitHub Discussions](https://github.com/KanchanaSW/doodle-ui/discussions) — questions and ideas
-
-
 
 ## License
 

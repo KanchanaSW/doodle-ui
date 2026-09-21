@@ -31,7 +31,7 @@ Peer dependencies: `react` and `react-dom` >= 18.0.0.
 npx doodleui-react mcp
 ```
 
-Exposes tools for component discovery, docs, install commands, theming, and conventions. See the [MCP docs](https://doodle-ui.netlify.app/docs/mcp).
+Exposes tools for component discovery, docs, install commands, theming, and conventions. Responses are versioned (`version` + `registrySchemaVersion`); unknown inputs return structured errors with `suggestions`. See the [MCP docs](https://doodle-ui.netlify.app/docs/mcp).
 
 ## Online Playgrounds & Starters
 
@@ -100,7 +100,7 @@ Every component accepts:
 
 ## Components
 
-Button, Input, Textarea, Checkbox, Radio, Select, NativeSelect, Switch, Slider, Card, Badge, Alert, Modal, Divider, Progress, Tooltip, Tabs, Accordion, Table, Toast, Avatar, Pagination, Breadcrumb, Skeleton, Stepper, Label, Field, Collapsible, Popover, DropdownMenu, Dialog, AlertDialog, Command, Combobox, Kbd, Spinner, Toggle, ToggleGroup, InputGroup, InputOTP, ScrollArea, Resizable, HoverCard, ContextMenu, NavigationMenu, Menubar, Sheet, Drawer, AspectRatio, Empty, Heading, Text, Blockquote, InlineCode, Highlight, Sidebar, Carousel, plus the `RoughSvg` primitive.
+Button, Input, Textarea, Checkbox, Radio, Select, NativeSelect, Switch, Slider, Card, Badge, Alert, Modal, Divider, Progress, RadialProgress, Tooltip, Tabs, Accordion, Table, Toast, Avatar, Pagination, Breadcrumb, Skeleton, Stepper, Label, Field, Collapsible, Popover, DropdownMenu, Dialog, AlertDialog, Command, Combobox, Kbd, Spinner, Toggle, ToggleGroup, InputGroup, InputOTP, ScrollArea, Resizable, HoverCard, ContextMenu, NavigationMenu, Menubar, Sheet, Drawer, AspectRatio, Empty, Heading, Text, Blockquote, InlineCode, Highlight, Sidebar, Carousel, RadialMenu, plus the `RoughSvg` primitive.
 
 Most of those sketch in on mount (draw-in) and re-ink on interaction. Default on; pass `animate={false}` to skip. Slider, Accordion, Avatar, Pagination, Breadcrumb, Skeleton, and Stepper stay static for now.
 
