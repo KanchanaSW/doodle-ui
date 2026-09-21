@@ -60,12 +60,199 @@ claude mcp add doodleui -- npx -y doodleui-react mcp
 
 | Tool | Purpose |
 | --- | --- |
-| `list_components` | Full registry: name, description, category, Radix flag |
-| `get_component_docs` | Prop table, example, deps, compound sub-parts |
+| `list_components` | Exhaustive catalog (use when browsing / unsure what exists) |
+| `search_components` | Natural-language → ranked matches (use when translating a UI need) |
+| `get_component_docs` | Per-component prop table, example, deps, sub-parts |
 | `get_installation_command` | Exact `npx` / `pnpm dlx` / `yarn dlx` / `bunx` add command |
 | `get_theming_reference` | CSS custom properties (roughness, colors, dark mode) |
-| `search_components` | Natural-language → ranked component matches |
-| `get_conventions` | `animate`, controlled/uncontrolled, `asChild`, forms, SSR, theming |
+| `get_conventions` | Cross-cutting patterns: `animate`, forms, SSR, `asChild`, … |
+
+## Versioning & schema compatibility
+
+Successful tool responses include two version fields:
+
+| Field | Meaning |
+| --- | --- |
+| `version` | The doodleui-react package version the bundled registry was built from (also exposed in the MCP initialize / serverInfo handshake) |
+| `registrySchemaVersion` | Semver for the **shape** of MCP tool JSON responses |
+
+**Compatibility policy:** `registrySchemaVersion` follows semver.
+
+- **Minor / patch** — additive-only changes (new optional fields, new components). Existing parsers remain safe.
+- **Major** — response shape changed. Cached or hardcoded parsing logic should be revisited.
+
+Content changes (new components, updated prop docs) bump `version` when the package is published. Shape changes bump `registrySchemaVersion`. Caching layers can invalidate on either, but only major schema bumps require parser updates.
+
+## Structured errors
+
+Unknown or malformed input returns an **application-level** JSON payload (still as MCP text content). It does **not** set the MCP protocol `isError` flag — that is reserved for genuine server failures (e.g. bundled data failed to load).
+
+```json
+{
+  "ok": false,
+  "error": {
+    "code": "UNKNOWN_COMPONENT",
+    "message": "Unknown component \"buton\"."
+  },
+  "suggestions": ["button"]
+}
+```
+
+Common codes: `INVALID_INPUT`, `UNKNOWN_COMPONENT`, `UNKNOWN_TOKEN`, `UNKNOWN_TOPIC`.
+
+When `suggestions` is present, agents should retry the same turn with a corrected name instead of asking the user or making another discovery round-trip. `get_installation_command` may also include `invalidComponents` listing which requested names failed.
+
+`search_components` with zero matches returns `{ ok: true, count: 0, results: [], message: "No components matched the query." }` — an empty array with an explicit message, not a silent failure.
+
+## Example: Multi-Step Tool Orchestration
+
+Task: **build a sketchy contact form** (name, email, message, submit).
+
+Below is a literal request/response transcript. The same sequence is covered by the automated test `mcp-orchestration.test.ts`.
+
+### 1. Search for form building blocks
+
+**Request**
+
+```json
+{
+  "method": "tools/call",
+  "params": {
+    "name": "search_components",
+    "arguments": {
+      "query": "form input fields and a submit action",
+      "limit": 8
+    }
+  }
+}
+```
+
+**Response** (abbreviated)
+
+```json
+{
+  "ok": true,
+  "version": "0.8.0",
+  "registrySchemaVersion": "1.0.0",
+  "query": "form input fields and a submit action",
+  "count": 8,
+  "results": [
+    {
+      "name": "button",
+      "score": 75,
+      "description": "A clickable control. The label is real HTML. The border and fill are a rough.js rectangle sitting behind it."
+    },
+    {
+      "name": "input",
+      "score": 55,
+      "description": "Single-line text field with a sketchy border."
+    },
+    {
+      "name": "field",
+      "score": 45,
+      "description": "Wires label, control, helper text, and errors with shared ids and ARIA attributes."
+    }
+  ]
+}
+```
+
+The agent selects `input` and `button` from the ranked results, and adds `textarea` for the multi-line message field (common contact-form knowledge).
+
+### 2. Load prop docs for each chosen component
+
+**Request** (repeated per name: `input`, `textarea`, `button`)
+
+```json
+{
+  "method": "tools/call",
+  "params": {
+    "name": "get_component_docs",
+    "arguments": { "name": "input" }
+  }
+}
+```
+
+**Response** (abbreviated — Input)
+
+```json
+{
+  "ok": true,
+  "version": "0.8.0",
+  "registrySchemaVersion": "1.0.0",
+  "name": "input",
+  "displayName": "Input",
+  "category": "form",
+  "props": [
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Visible label above the control."
+    },
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "description": "Play sketch draw-in animations."
+    }
+  ],
+  "example": "<Input label=\"Email\" name=\"email\" required />\n<Input invalid errorMessage=\"Required\" />"
+}
+```
+
+Same call for `textarea` and `button` returns their prop tables and examples (e.g. `Button` `variant`, `asChild`).
+
+### 3. Get the install command
+
+**Request**
+
+```json
+{
+  "method": "tools/call",
+  "params": {
+    "name": "get_installation_command",
+    "arguments": {
+      "components": ["input", "textarea", "button"],
+      "packageManager": "pnpm"
+    }
+  }
+}
+```
+
+**Response** (abbreviated)
+
+```json
+{
+  "ok": true,
+  "version": "0.8.0",
+  "registrySchemaVersion": "1.0.0",
+  "command": "pnpm dlx doodleui-react add input textarea button",
+  "packageManager": "pnpm",
+  "components": [
+    { "name": "input", "displayName": "Input" },
+    { "name": "textarea", "displayName": "Textarea" },
+    { "name": "button", "displayName": "Button" }
+  ],
+  "note": "Run `npx doodleui-react init` first if doodleui.config.json is missing."
+}
+```
+
+### 4. Write the component code
+
+With props and examples from step 2, the agent can emit real usage instead of inventing APIs:
+
+```tsx
+<form>
+  <Input label="Name" name="name" required />
+  <Input label="Email" name="email" type="email" required />
+  <Textarea label="Message" name="message" required />
+  <Button type="submit" variant="primary">
+    Send
+  </Button>
+</form>
+```
+
+Optional follow-ups: `get_conventions` with `topic: "forms"` for react-hook-form wiring, or `get_theming_reference` to tune `--doodle-ui-roughness`.
 
 ## Example prompts
 
