@@ -22,6 +22,21 @@ export type ConventionTopic =
   | "theming"
   | "all";
 
+/** Semver for MCP tool response shapes (independent of package version). */
+export const REGISTRY_SCHEMA_VERSION = "1.0.0";
+
+export interface McpErrorPayload {
+  code: string;
+  message: string;
+}
+
+export interface McpErrorResult {
+  ok: false;
+  error: McpErrorPayload;
+  suggestions?: string[];
+  invalidComponents?: string[];
+}
+
 interface ThemingData {
   summary: string;
   precedence: string[];
@@ -70,11 +85,79 @@ function textResult(data: unknown) {
   };
 }
 
-function errorResult(message: string) {
-  return {
-    content: [{ type: "text" as const, text: message }],
-    isError: true as const,
+/** Application-level error — JSON content, no MCP protocol isError flag. */
+export function structuredErrorResult(
+  code: string,
+  message: string,
+  extra?: { suggestions?: string[]; invalidComponents?: string[] },
+) {
+  const payload: McpErrorResult = {
+    ok: false,
+    error: { code, message },
+    ...extra,
   };
+  return textResult(payload);
+}
+
+/** Wagner–Fischer edit distance between two strings. */
+export function levenshteinDistance(a: string, b: string): number {
+  const s = a.toLowerCase();
+  const t = b.toLowerCase();
+  if (s === t) return 0;
+  if (s.length === 0) return t.length;
+  if (t.length === 0) return s.length;
+
+  const prev = new Array<number>(t.length + 1);
+  const curr = new Array<number>(t.length + 1);
+  for (let j = 0; j <= t.length; j++) prev[j] = j;
+
+  for (let i = 1; i <= s.length; i++) {
+    curr[0] = i;
+    for (let j = 1; j <= t.length; j++) {
+      const cost = s[i - 1] === t[j - 1] ? 0 : 1;
+      curr[j] = Math.min(
+        prev[j] + 1,
+        curr[j - 1] + 1,
+        prev[j - 1] + cost,
+      );
+    }
+    for (let j = 0; j <= t.length; j++) prev[j] = curr[j];
+  }
+  return prev[t.length];
+}
+
+/**
+ * Rank candidate names by edit distance to `target`.
+ * Also treats hyphen-stripped equality as distance 0 (e.g. alertdialog → alert-dialog).
+ */
+export function findSuggestions(
+  target: string,
+  candidates: string[],
+  maxDistance = 3,
+  limit = 5,
+): string[] {
+  const needle = target.trim().toLowerCase();
+  if (!needle) return [];
+
+  const scored = candidates
+    .map((name) => {
+      const lower = name.toLowerCase();
+      const stripped = lower.replace(/-/g, "");
+      const needleStripped = needle.replace(/-/g, "");
+      let distance = levenshteinDistance(needle, lower);
+      if (needleStripped === stripped) distance = Math.min(distance, 0);
+      else if (stripped.includes(needleStripped) || needleStripped.includes(stripped)) {
+        distance = Math.min(distance, 1);
+      }
+      return { name, distance };
+    })
+    .filter((s) => s.distance <= maxDistance)
+    .sort(
+      (a, b) =>
+        a.distance - b.distance || a.name.localeCompare(b.name),
+    );
+
+  return scored.slice(0, limit).map((s) => s.name);
 }
 
 function summarizeComponent(comp: RegistryComponent) {
@@ -92,6 +175,10 @@ function summarizeComponent(comp: RegistryComponent) {
   };
 }
 
+function componentNames(): string[] {
+  return Object.keys(REGISTRY_DATA.components).sort();
+}
+
 /** List registry components, optionally filtered by category. */
 export function listComponents(category?: ComponentCategory) {
   const all = Object.values(REGISTRY_DATA.components);
@@ -100,7 +187,9 @@ export function listComponents(category?: ComponentCategory) {
     : all;
 
   return textResult({
+    ok: true,
     version: REGISTRY_DATA.version,
+    registrySchemaVersion: REGISTRY_SCHEMA_VERSION,
     count: filtered.length,
     components: filtered
       .map(summarizeComponent)
@@ -110,15 +199,28 @@ export function listComponents(category?: ComponentCategory) {
 
 /** Full docs for one component (props, example, deps, subparts). */
 export function getComponentDocs(name: string) {
-  const comp = findComponentInRegistry(REGISTRY_DATA, name);
+  const trimmed = typeof name === "string" ? name.trim() : "";
+  if (!trimmed) {
+    return structuredErrorResult(
+      "INVALID_INPUT",
+      "Provide a non-empty component name (e.g. \"button\", \"alert-dialog\").",
+    );
+  }
+
+  const comp = findComponentInRegistry(REGISTRY_DATA, trimmed);
   if (!comp) {
-    const available = Object.keys(REGISTRY_DATA.components).sort().join(", ");
-    return errorResult(
-      `Unknown component "${name}". Available: ${available}`,
+    const suggestions = findSuggestions(trimmed, componentNames());
+    return structuredErrorResult(
+      "UNKNOWN_COMPONENT",
+      `Unknown component "${trimmed}".`,
+      { suggestions },
     );
   }
 
   return textResult({
+    ok: true,
+    version: REGISTRY_DATA.version,
+    registrySchemaVersion: REGISTRY_SCHEMA_VERSION,
     name: comp.name,
     displayName: comp.displayName,
     description: comp.description,
@@ -163,20 +265,44 @@ export function getInstallationCommand(
   components: string[],
   packageManager: PackageManager = "npm",
 ) {
-  if (!components.length) {
-    return errorResult("Provide at least one component name.");
+  if (!Array.isArray(components) || components.length === 0) {
+    return structuredErrorResult(
+      "INVALID_INPUT",
+      "Provide at least one component name (e.g. [\"button\", \"input\"]).",
+    );
   }
 
-  const resolved = resolveComponentDependencies(REGISTRY_DATA, components);
+  const trimmed = components
+    .map((c) => (typeof c === "string" ? c.trim() : ""))
+    .filter(Boolean);
+  if (trimmed.length === 0) {
+    return structuredErrorResult(
+      "INVALID_INPUT",
+      "Provide at least one non-empty component name (e.g. [\"button\", \"input\"]).",
+    );
+  }
+
+  const resolved = resolveComponentDependencies(REGISTRY_DATA, trimmed);
   if (resolved.missingNames.length > 0) {
-    return errorResult(
-      `Unknown component(s): ${resolved.missingNames.join(", ")}. ` +
-        `Available: ${Object.keys(REGISTRY_DATA.components).sort().join(", ")}`,
+    const names = componentNames();
+    const suggestionSet = new Set<string>();
+    for (const missing of resolved.missingNames) {
+      for (const s of findSuggestions(missing, names)) {
+        suggestionSet.add(s);
+      }
+    }
+    return structuredErrorResult(
+      "UNKNOWN_COMPONENT",
+      `Unknown component(s): ${resolved.missingNames.join(", ")}.`,
+      {
+        invalidComponents: resolved.missingNames,
+        suggestions: Array.from(suggestionSet).sort(),
+      },
     );
   }
 
   const command = buildAddCommand(
-    components.map((c) => {
+    trimmed.map((c) => {
       const found = findComponentInRegistry(REGISTRY_DATA, c);
       return found?.name ?? c.trim().toLowerCase();
     }),
@@ -191,6 +317,9 @@ export function getInstallationCommand(
   }
 
   return textResult({
+    ok: true,
+    version: REGISTRY_DATA.version,
+    registrySchemaVersion: REGISTRY_SCHEMA_VERSION,
     command,
     packageManager,
     components: resolved.components.map((c) => ({
@@ -206,36 +335,62 @@ export function getInstallationCommand(
 /** CSS custom property / theming reference. */
 export function getThemingReference(token?: string) {
   const data = loadTheming();
-  if (token) {
-    const normalized = token.startsWith("--") ? token : `--doodle-ui-${token}`;
+  if (token !== undefined && token !== null) {
+    const trimmed = typeof token === "string" ? token.trim() : "";
+    if (!trimmed) {
+      return structuredErrorResult(
+        "INVALID_INPUT",
+        "Provide a non-empty token name (e.g. \"roughness\" or \"--doodle-ui-roughness\"), or omit the token for the full reference.",
+      );
+    }
+    const normalized = trimmed.startsWith("--")
+      ? trimmed
+      : `--doodle-ui-${trimmed}`;
     const match = data.variables.find(
       (v) =>
         v.name === normalized ||
-        v.name === token ||
-        v.name.endsWith(token.replace(/^--doodle-ui-/, "")),
+        v.name === trimmed ||
+        v.name.endsWith(trimmed.replace(/^--doodle-ui-/, "")),
     );
     if (!match) {
-      return errorResult(
-        `Unknown token "${token}". Available: ${data.variables.map((v) => v.name).join(", ")}`,
+      const suggestions = findSuggestions(
+        trimmed.replace(/^--doodle-ui-/, ""),
+        data.variables.map((v) => v.name.replace(/^--doodle-ui-/, "")),
+      ).map((s) => `--doodle-ui-${s}`);
+      return structuredErrorResult(
+        "UNKNOWN_TOKEN",
+        `Unknown token "${trimmed}".`,
+        { suggestions },
       );
     }
     return textResult({
+      ok: true,
+      version: REGISTRY_DATA.version,
+      registrySchemaVersion: REGISTRY_SCHEMA_VERSION,
       variable: match,
       precedence: data.precedence,
       exampleOverride: data.exampleOverride,
     });
   }
 
-  return textResult(data);
+  return textResult({
+    ok: true,
+    version: REGISTRY_DATA.version,
+    registrySchemaVersion: REGISTRY_SCHEMA_VERSION,
+    ...data,
+  });
 }
 
 /** Ranked component search from a natural-language query. */
 export function searchComponents(query: string, limit = 8) {
-  const q = query.trim().toLowerCase();
-  if (!q) {
-    return errorResult("Provide a non-empty search query.");
+  if (typeof query !== "string" || !query.trim()) {
+    return structuredErrorResult(
+      "INVALID_INPUT",
+      "Provide a non-empty search query (e.g. \"confirmation before a destructive action\").",
+    );
   }
 
+  const q = query.trim().toLowerCase();
   const terms = q.split(/[\s,./|_-]+/).filter((t) => t.length > 1);
 
   const scored = Object.values(REGISTRY_DATA.components).map((comp) => {
@@ -278,7 +433,22 @@ export function searchComponents(query: string, limit = 8) {
       ...summarizeComponent(comp),
     }));
 
+  if (ranked.length === 0) {
+    return textResult({
+      ok: true,
+      version: REGISTRY_DATA.version,
+      registrySchemaVersion: REGISTRY_SCHEMA_VERSION,
+      query,
+      count: 0,
+      results: [],
+      message: "No components matched the query.",
+    });
+  }
+
   return textResult({
+    ok: true,
+    version: REGISTRY_DATA.version,
+    registrySchemaVersion: REGISTRY_SCHEMA_VERSION,
     query,
     count: ranked.length,
     results: ranked,
@@ -289,17 +459,28 @@ export function searchComponents(query: string, limit = 8) {
 export function getConventions(topic: ConventionTopic = "all") {
   const data = loadConventions();
   if (topic === "all") {
-    return textResult(data);
+    return textResult({
+      ok: true,
+      version: REGISTRY_DATA.version,
+      registrySchemaVersion: REGISTRY_SCHEMA_VERSION,
+      ...data,
+    });
   }
 
   const entry = data.topics[topic];
   if (!entry) {
-    return errorResult(
-      `Unknown topic "${topic}". Available: ${Object.keys(data.topics).join(", ")}, all`,
+    const available = [...Object.keys(data.topics), "all"];
+    return structuredErrorResult(
+      "UNKNOWN_TOPIC",
+      `Unknown topic "${topic}".`,
+      { suggestions: findSuggestions(String(topic), available) },
     );
   }
 
   return textResult({
+    ok: true,
+    version: REGISTRY_DATA.version,
+    registrySchemaVersion: REGISTRY_SCHEMA_VERSION,
     summary: data.summary,
     topic: entry,
   });
