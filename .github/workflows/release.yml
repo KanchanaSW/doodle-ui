@@ -32,6 +32,7 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -44,6 +45,8 @@ jobs:
           pnpm --filter doodleui-react build
           pnpm --filter doodleui-react size:check
 
+      # Token publish; keep provenance off (matches publishConfig). For OIDC later:
+      # Trusted Publisher on npmjs.com → drop NPM_TOKEN → NPM_CONFIG_PROVENANCE: true.
       - name: Create Release PR or Publish
         id: changesets
         uses: changesets/action@v1
@@ -55,4 +58,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: false

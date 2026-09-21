@@ -183,7 +183,7 @@ Every PR that modifies `packages/doodle-ui` (new component, feature, bug fix, or
 4. Enter a clear, user-facing summary of the change (this entry is compiled into `CHANGELOG.md` upon release).
 5. Commit the generated `.changeset/*.md` file with your pull request.
 
-When changes are merged into `master`, an automated "Version Packages" PR is opened/updated. Once merged, GitHub Actions publishes the release to npm with cryptographic provenance.
+When changes are merged into `master`, an automated "Version Packages" PR is opened/updated. Once merged, GitHub Actions publishes the release to npm using the `NPM_TOKEN` repository secret (must be a granular automation token with publish access to `doodleui-react`). Provenance is currently off (`publishConfig.provenance: false`) so token-based CI publish works; enable [trusted publishing](https://docs.npmjs.com/trusted-publishers/) on npmjs.com if you want OIDC provenance later.
 
 ## Commits
 
