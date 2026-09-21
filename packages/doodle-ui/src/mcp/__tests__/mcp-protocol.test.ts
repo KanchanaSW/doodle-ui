@@ -2,6 +2,7 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { REGISTRY_DATA } from "../../registry/data";
 import { createMcpServer } from "../server";
 
 const EXPECTED_TOOLS = [
@@ -34,10 +35,24 @@ describe("MCP protocol integration", () => {
     await closeServer();
   });
 
+  it("exposes server version matching the bundled registry", () => {
+    const info = client.getServerVersion();
+    expect(info?.name).toBe("doodleui-react");
+    expect(info?.version).toBe(REGISTRY_DATA.version);
+  });
+
   it("lists all six tools", async () => {
     const { tools } = await client.listTools();
     const names = tools.map((t) => t.name).sort();
     expect(names).toEqual([...EXPECTED_TOOLS].sort());
+  });
+
+  it("includes Use this when / Do NOT use disambiguation in every tool description", async () => {
+    const { tools } = await client.listTools();
+    for (const tool of tools) {
+      expect(tool.description, tool.name).toMatch(/Use this when/i);
+      expect(tool.description, tool.name).toMatch(/Do NOT use/i);
+    }
   });
 
   it("calls list_components over the protocol", async () => {
@@ -48,8 +63,14 @@ describe("MCP protocol integration", () => {
     expect(result.isError).not.toBe(true);
     const text = (result.content as Array<{ type: string; text: string }>)[0]
       .text;
-    const data = JSON.parse(text) as { count: number };
+    const data = JSON.parse(text) as {
+      ok: boolean;
+      count: number;
+      registrySchemaVersion: string;
+    };
+    expect(data.ok).toBe(true);
     expect(data.count).toBeGreaterThanOrEqual(55);
+    expect(data.registrySchemaVersion).toBe("1.0.0");
   });
 
   it("calls get_component_docs for card", async () => {
@@ -59,9 +80,32 @@ describe("MCP protocol integration", () => {
     });
     const text = (result.content as Array<{ type: string; text: string }>)[0]
       .text;
-    const data = JSON.parse(text) as { name: string; subparts: string[] };
+    const data = JSON.parse(text) as {
+      ok: boolean;
+      name: string;
+      subparts: string[];
+    };
+    expect(data.ok).toBe(true);
     expect(data.name).toBe("card");
     expect(data.subparts).toContain("Header");
+  });
+
+  it("returns structured app-level error (not protocol isError) for unknown component", async () => {
+    const result = await client.callTool({
+      name: "get_component_docs",
+      arguments: { name: "buton" },
+    });
+    expect(result.isError).not.toBe(true);
+    const text = (result.content as Array<{ type: string; text: string }>)[0]
+      .text;
+    const data = JSON.parse(text) as {
+      ok: boolean;
+      error: { code: string };
+      suggestions: string[];
+    };
+    expect(data.ok).toBe(false);
+    expect(data.error.code).toBe("UNKNOWN_COMPONENT");
+    expect(data.suggestions).toContain("button");
   });
 
   it("calls get_installation_command", async () => {
@@ -74,7 +118,8 @@ describe("MCP protocol integration", () => {
     });
     const text = (result.content as Array<{ type: string; text: string }>)[0]
       .text;
-    const data = JSON.parse(text) as { command: string };
+    const data = JSON.parse(text) as { command: string; ok: boolean };
+    expect(data.ok).toBe(true);
     expect(data.command).toBe("pnpm dlx doodleui-react add button input");
   });
 

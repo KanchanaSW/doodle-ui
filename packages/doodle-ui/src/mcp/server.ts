@@ -48,13 +48,13 @@ export function createMcpServer(): McpServer {
     {
       title: "List components",
       description:
-        "List all doodleui-react components with name, description, category, and whether each is built on a Radix primitive. Optionally filter by category.",
+        "Return an exhaustive catalog of doodleui-react components (name, description, category, Radix flag). Use this when you need the full inventory or are unsure what exists and want to browse by category. Do NOT use this for natural-language discovery of a UI need — use search_components instead.",
       inputSchema: {
         category: z
           .enum(CATEGORIES)
           .optional()
           .describe(
-            "Optional category filter: form, overlay, layout, navigation, data-display, feedback, chat",
+            'Optional category filter. Examples: "form", "overlay", "layout", "navigation", "data-display", "feedback", "chat".',
           ),
       },
     },
@@ -66,12 +66,12 @@ export function createMcpServer(): McpServer {
     {
       title: "Get component docs",
       description:
-        "Return the full prop table, usage example, dependencies, and compound sub-parts for a doodleui-react component (e.g. card, button, alert-dialog).",
+        "Return PER-COMPONENT documentation: prop table, usage example, dependencies, and compound sub-parts for a single doodleui-react component. Use this when you already know the component name and need its props/API. Do NOT use this for cross-cutting library-wide patterns (forms, animation defaults, SSR, controlled/uncontrolled) — use get_conventions instead.",
       inputSchema: {
         name: z
           .string()
           .describe(
-            "Component name in kebab-case or PascalCase (e.g. \"button\", \"AlertDialog\", \"alert-dialog\")",
+            'Component name in kebab-case (preferred) or PascalCase. Examples: "button", "alert-dialog", "input".',
           ),
       },
     },
@@ -83,16 +83,20 @@ export function createMcpServer(): McpServer {
     {
       title: "Get installation command",
       description:
-        "Return the exact CLI command to add one or more doodleui-react components to a project (npx/pnpm dlx/yarn dlx/bunx doodleui-react add …), plus resolved npm and shared-file dependencies.",
+        "Return the exact CLI command to add one or more doodleui-react components (npx / pnpm dlx / yarn dlx / bunx doodleui-react add …), plus resolved npm and shared-file dependencies. Use this when you are ready to install components into a project. Do NOT use this for prop docs or usage examples — use get_component_docs instead.",
       inputSchema: {
         components: z
           .array(z.string())
           .min(1)
-          .describe("One or more component names to install"),
+          .describe(
+            'One or more kebab-case component names to install. Examples: ["button"], ["input", "textarea", "button"].',
+          ),
         packageManager: z
           .enum(PACKAGE_MANAGERS)
           .optional()
-          .describe("Target package manager (default: npm)"),
+          .describe(
+            'Target package manager. Examples: "npm" (default), "pnpm", "yarn", "bun".',
+          ),
       },
     },
     async ({ components, packageManager }) =>
@@ -107,13 +111,13 @@ export function createMcpServer(): McpServer {
     {
       title: "Get theming reference",
       description:
-        "Return the full CSS custom property reference for doodleui-react (roughness, stroke color, fonts, dark mode). Use this instead of inventing prop names when asked to tweak sketchiness or colors.",
+        "Return the CSS custom property reference for doodleui-react (roughness, stroke color, fonts, dark mode). Use this when asked to tweak sketchiness or global colors via CSS variables. Do NOT use this for per-component props like variant or size — use get_component_docs instead.",
       inputSchema: {
         token: z
           .string()
           .optional()
           .describe(
-            "Optional token filter, e.g. \"roughness\" or \"--doodle-ui-roughness\"",
+            'Optional token filter. Examples: "roughness", "--doodle-ui-roughness", "stroke-color".',
           ),
       },
     },
@@ -125,18 +129,20 @@ export function createMcpServer(): McpServer {
     {
       title: "Search components",
       description:
-        "Find doodleui-react components from a natural-language description (e.g. \"confirmation before a destructive action\" → alert-dialog). Returns ranked matches.",
+        "Find doodleui-react components from a natural-language description via intent-based fuzzy matching. Use this when translating a UI need into specific component names (e.g. \"confirmation before a destructive action\" → alert-dialog). Do NOT use this when you already know the component name — use get_component_docs instead. Do NOT use this for an exhaustive catalog dump — use list_components instead.",
       inputSchema: {
         query: z
           .string()
-          .describe("Natural-language description of the UI need"),
+          .describe(
+            'Natural-language description of the UI need. Examples: "form input fields and a submit action", "confirmation before a destructive action".',
+          ),
         limit: z
           .number()
           .int()
           .min(1)
           .max(25)
           .optional()
-          .describe("Max results to return (default 8)"),
+          .describe("Max results to return (default 8). Example: 5."),
       },
     },
     async ({ query, limit }) => searchComponents(query, limit ?? 8),
@@ -147,13 +153,13 @@ export function createMcpServer(): McpServer {
     {
       title: "Get conventions",
       description:
-        "Return doodleui-react cross-cutting conventions: animate prop defaults, controlled/uncontrolled naming, asChild, compound components, form integration (register vs Controller), SSR/seed rules, and theming.",
+        "Return CROSS-CUTTING doodleui-react library conventions not tied to any single component: animate prop defaults, controlled/uncontrolled naming, asChild, compound components, form integration (register vs Controller), SSR/seed rules, and theming. Use this when implementing patterns that span multiple components. Do NOT use this for a single component's prop table — use get_component_docs instead.",
       inputSchema: {
         topic: z
           .enum(CONVENTION_TOPICS)
           .optional()
           .describe(
-            "Optional topic filter (default: all). One of: animation, forms, controlled-uncontrolled, asChild, compound, ssr, theming, all",
+            'Optional topic filter (default: all). Examples: "forms", "animation", "ssr", "controlled-uncontrolled", "asChild", "compound", "theming", "all".',
           ),
       },
     },
