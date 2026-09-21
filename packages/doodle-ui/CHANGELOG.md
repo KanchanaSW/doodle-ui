@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.0
+
+### Minor Changes
+
+- [`4b153af`](https://github.com/KanchanaSW/doodle-ui/commit/4b153afdab73817a634c91591ddfbe5c0739be95) Thanks [@KanchanaSW](https://github.com/KanchanaSW)! - Add MCP server (`doodleui-react mcp`) so AI agents can discover components, docs, install commands, theming, and conventions.
+
 ## 0.7.2
 
 SSR/hydration safety (deterministic first-render seeds, isomorphic layout effects, theme sync after mount) and component API hardening: shared sizing, icons, form validation props, compound Card/Table/Accordion/Field, and `asChild` on Button/Card/Badge.
