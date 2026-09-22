@@ -4216,6 +4216,188 @@ export const REGISTRY_DATA: Registry = {
       ],
       "componentDependencies": []
     },
+    "prompt-input": {
+      "name": "prompt-input",
+      "displayName": "PromptInput",
+      "description": "Modern AI prompt bar with voice waveform mode that animates into a circular send button when focused or typed into.",
+      "category": "form",
+      "isRadix": false,
+      "radixPrimitive": null,
+      "subparts": [],
+      "props": [
+        {
+          "name": "animate",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "undefined (follow provider)",
+          "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+        },
+        {
+          "name": "bowing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": "How much straight lines bow/curve in rough.js."
+        },
+        {
+          "name": "containerClassName",
+          "type": "string",
+          "required": false,
+          "description": "Additional class name on the root container."
+        },
+        {
+          "name": "containerStyle",
+          "type": "CSSProperties",
+          "required": false,
+          "description": "Additional inline styles on the root container."
+        },
+        {
+          "name": "fillStyle",
+          "type": "FillStyle",
+          "required": false,
+          "defaultValue": "\"hachure\"",
+          "description": "Fill pattern when the shape has a fill color."
+        },
+        {
+          "name": "fillWeight",
+          "type": "number",
+          "required": false,
+          "description": "Weight/thickness of individual hatch lines inside patterned fills."
+        },
+        {
+          "name": "hachureAngle",
+          "type": "number",
+          "required": false,
+          "description": "Angle in degrees of hatch lines for patterned fills."
+        },
+        {
+          "name": "hachureGap",
+          "type": "number",
+          "required": false,
+          "description": "Spacing between hatch lines for patterned fills."
+        },
+        {
+          "name": "keepOpenOnBlur",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Keep the send button visible even after the input loses focus."
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Show a loading spinner inside the send button."
+        },
+        {
+          "name": "onSubmit",
+          "type": "(value: string) => void",
+          "required": false,
+          "description": "Callback fired when the user submits (by pressing Enter or clicking Send)."
+        },
+        {
+          "name": "onVoiceClick",
+          "type": "(event: MouseEvent<HTMLButtonElement>) => void",
+          "required": false,
+          "description": "Callback fired when the voice/waveform icon button is clicked."
+        },
+        {
+          "name": "roughness",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.5",
+          "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+        },
+        {
+          "name": "seed",
+          "type": "number",
+          "required": false,
+          "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+        },
+        {
+          "name": "sendIcon",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Custom send button icon component."
+        },
+        {
+          "name": "showSendButton",
+          "type": "boolean",
+          "required": false,
+          "description": "Manually control send button visibility."
+        },
+        {
+          "name": "size",
+          "type": "PromptInputSize",
+          "required": false,
+          "defaultValue": "\"md\"",
+          "description": "Control size preset."
+        },
+        {
+          "name": "sketchColor",
+          "type": "string",
+          "required": false,
+          "description": "Stroke (outline) color override. Falls back to theme ink."
+        },
+        {
+          "name": "strokeWidth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1.75",
+          "description": "Width of sketch strokes in pixels."
+        },
+        {
+          "name": "variant",
+          "type": "PromptInputVariant",
+          "required": false,
+          "defaultValue": "\"solid\"",
+          "description": "Component visual variant.\n- `\"solid\"`: Sleek dark/light capsule pill and circular send button.\n- `\"sketch\"`: Hand-drawn rough.js sketch borders."
+        },
+        {
+          "name": "voiceIcon",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Custom voice waveform icon component."
+        }
+      ],
+      "example": "<PromptInput\n  placeholder=\"Ask anything...\"\n  onSubmit={(text) => handleSend(text)}\n  onVoiceClick={() => startVoiceMode()}\n/>",
+      "keywords": [
+        "ai",
+        "chat",
+        "prompt",
+        "voice",
+        "send",
+        "waveform",
+        "llm",
+        "input"
+      ],
+      "files": [
+        {
+          "name": "prompt-input.tsx",
+          "path": "components/prompt-input.tsx",
+          "type": "component",
+          "content": "\"use client\";\n\nimport {\n  forwardRef,\n  useCallback,\n  useId,\n  useRef,\n  useState,\n  type ChangeEvent,\n  type CSSProperties,\n  type FocusEvent,\n  type FormEvent,\n  type InputHTMLAttributes,\n  type KeyboardEvent,\n  type MouseEvent,\n  type ReactNode,\n} from \"react\";\nimport { AnimatePresence, motion } from \"framer-motion\";\nimport { useAnimate } from \"../animations\";\nimport { useResolvedSeed } from \"../hooks/useResolvedSeed\";\nimport { useSketchTheme } from \"../hooks/useSketchTheme\";\nimport { DoodleIcon } from \"../primitives/icon\";\nimport { resolveInteractiveState } from \"../primitives/interactive\";\nimport { RoughSvg } from \"../primitives/RoughSvg\";\nimport { resolveSize, type DoodleSize } from \"../primitives/size\";\nimport type { SketchProps } from \"../types\";\nimport { assignRef, cn, deriveSeed, doodleUiFontFamily } from \"../utils\";\nimport { Spinner } from \"./Spinner\";\n\nexport type PromptInputSize = DoodleSize;\nexport type PromptInputVariant = \"sketch\";\n\n/**\n * Props for {@link PromptInput}.\n */\nexport interface PromptInputProps\n  extends Omit<\n      InputHTMLAttributes<HTMLInputElement>,\n      \"size\" | \"color\" | \"onSubmit\"\n    >,\n    SketchProps {\n  /**\n   * Component visual variant.\n   * - `\"solid\"`: Sleek dark/light capsule pill and circular send button.\n   * - `\"sketch\"`: Hand-drawn rough.js sketch borders.\n   * @default \"solid\"\n   * @default \"sketch\"\n   */\n  variant?: PromptInputVariant;\n  /**\n   * Control size preset.\n   * @default \"md\"\n   */\n  size?: PromptInputSize;\n  /**\n   * Callback fired when the user submits (by pressing Enter or clicking Send).\n   */\n  onSubmit?: (value: string) => void;\n  /**\n   * Callback fired when the voice/waveform icon button is clicked.\n   */\n  onVoiceClick?: (event: MouseEvent<HTMLButtonElement>) => void;\n  /**\n   * Custom voice waveform icon component.\n   */\n  voiceIcon?: ReactNode;\n  /**\n   * Custom send button icon component.\n   */\n  sendIcon?: ReactNode;\n  /**\n   * Show a loading spinner inside the send button.\n   * @default false\n   */\n  loading?: boolean;\n  /**\n   * Keep the send button visible even after the input loses focus.\n   * @default false\n   */\n  keepOpenOnBlur?: boolean;\n  /**\n   * Manually control send button visibility.\n   */\n  showSendButton?: boolean;\n  /**\n   * Additional class name on the root container.\n   */\n  containerClassName?: string;\n  /**\n   * Additional inline styles on the root container.\n   */\n  containerStyle?: CSSProperties;\n  /**\n   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).\n   * @default undefined (follow provider)\n   */\n  animate?: boolean;\n}\n\nconst SIZE_CONFIG: Record<\n  PromptInputSize,\n  {\n    height: number;\n    fontSize: number;\n    paddingX: number;\n    iconSize: number;\n    buttonSize: number;\n  }\n> = {\n  sm: {\n    height: 36,\n    fontSize: 13,\n    paddingX: 14,\n    iconSize: 16,\n    buttonSize: 36,\n  },\n  md: {\n    height: 44,\n    fontSize: 15,\n    paddingX: 18,\n    iconSize: 20,\n    buttonSize: 44,\n  },\n  lg: {\n    height: 52,\n    fontSize: 16,\n    paddingX: 22,\n    iconSize: 24,\n    buttonSize: 52,\n  },\n};\n\n/**\n * Built-in audio waveform icon matching the prompt bar design.\n */\nfunction InternalWaveformIcon({\n  size = 20,\n  className,\n  style,\n}: {\n  size?: number;\n  className?: string;\n  style?: CSSProperties;\n}) {\n  return (\n    <svg\n      width={size}\n      height={size}\n      viewBox=\"0 0 24 24\"\n      fill=\"none\"\n      stroke=\"currentColor\"\n      strokeWidth=\"2.2\"\n      strokeLinecap=\"round\"\n      className={className}\n      style={{ display: \"block\", ...style }}\n      aria-hidden=\"true\"\n    >\n      <line x1=\"4\" y1=\"10\" x2=\"4\" y2=\"14\" />\n      <line x1=\"8\" y1=\"6\" x2=\"8\" y2=\"18\" />\n      <line x1=\"12\" y1=\"4\" x2=\"12\" y2=\"20\" />\n      <line x1=\"16\" y1=\"7\" x2=\"16\" y2=\"17\" />\n      <line x1=\"20\" y1=\"10\" x2=\"20\" y2=\"14\" />\n    </svg>\n  );\n}\n\n/**\n * Built-in upward arrow icon for the circular send button.\n */\nfunction InternalArrowUpIcon({\n  size = 20,\n  className,\n  style,\n}: {\n  size?: number;\n  className?: string;\n  style?: CSSProperties;\n}) {\n  return (\n    <svg\n      width={size}\n      height={size}\n      viewBox=\"0 0 24 24\"\n      fill=\"none\"\n      stroke=\"currentColor\"\n      strokeWidth=\"2.2\"\n      strokeLinecap=\"round\"\n      strokeLinejoin=\"round\"\n      className={className}\n      style={{ display: \"block\", ...style }}\n      aria-hidden=\"true\"\n    >\n      <path d=\"M12 19V5\" />\n      <path d=\"m5 12 7-7 7 7\" />\n    </svg>\n  );\n}\n\n/**\n * Modern AI prompt bar with voice waveform mode that animates into a circular send button when focused or typed into.\n *\n * @example\n * <PromptInput\n *   placeholder=\"Ask anything...\"\n *   onSubmit={(text) => handleSend(text)}\n *   onVoiceClick={() => startVoiceMode()}\n * />\n */\nexport const PromptInput = forwardRef<HTMLInputElement, PromptInputProps>(\n  function PromptInput(\n    {\n      className,\n      style,\n      containerClassName,\n      containerStyle,\n      variant = \"solid\",\n      variant: _variant = \"sketch\",\n      size: sizeProp = \"md\",\n      placeholder = \"Ask anything...\",\n      value,\n      defaultValue,\n      onChange,\n      onSubmit,\n      onVoiceClick,\n      voiceIcon,\n      sendIcon,\n      loading = false,\n      disabled = false,\n      keepOpenOnBlur = false,\n      showSendButton: showSendButtonProp,\n      onFocus,\n      onBlur,\n      onKeyDown,\n      roughness,\n      seed,\n      sketchColor,\n      bowing,\n      fillStyle,\n      strokeWidth,\n      hachureGap,\n      hachureAngle,\n      fillWeight,\n      animate,\n      id,\n      ...rest\n    },\n    ref,\n  ) {\n    const inputRef = useRef<HTMLInputElement | null>(null);\n    const generatedId = useId();\n    const inputId = id ?? generatedId;\n    const size = resolveSize(sizeProp);\n    const sizeConf = SIZE_CONFIG[size];\n\n    const [focused, setFocused] = useState(false);\n    const [internalValue, setInternalValue] = useState<string>(\n      () => (defaultValue as string) ?? \"\",\n    );\n\n    const isControlled = value !== undefined;\n    const currentValue = isControlled ? String(value) : internalValue;\n    const hasText = currentValue.trim().length > 0;\n\n    const theme = useSketchTheme(sketchColor);\n    const ink = sketchColor ?? theme.ink;\n    const shouldAnimate = useAnimate(animate);\n    const resolvedSeed = useResolvedSeed(seed);\n    const focusSeed = deriveSeed(resolvedSeed, \"focus\");\n    const sketchSeed = shouldAnimate && focused ? focusSeed : resolvedSeed;\n    const interactive = resolveInteractiveState({ disabled, loading });\n\n    const showSend =\n      showSendButtonProp ??\n      (focused || hasText || (keepOpenOnBlur && focused));\n\n    const handleFocus = useCallback(\n      (e: FocusEvent<HTMLInputElement>) => {\n        setFocused(true);\n        onFocus?.(e);\n      },\n      [onFocus],\n    );\n\n    const handleBlur = useCallback(\n      (e: FocusEvent<HTMLInputElement>) => {\n        setFocused(false);\n        onBlur?.(e);\n      },\n      [onBlur],\n    );\n\n    const handleChange = useCallback(\n      (e: ChangeEvent<HTMLInputElement>) => {\n        if (!isControlled) {\n          setInternalValue(e.target.value);\n        }\n        onChange?.(e);\n      },\n      [isControlled, onChange],\n    );\n\n    const handleSend = useCallback(() => {\n      if (interactive.isDisabled) return;\n      onSubmit?.(currentValue);\n    }, [currentValue, interactive.isDisabled, onSubmit]);\n\n    const handleFormSubmit = useCallback(\n      (e: FormEvent) => {\n        e.preventDefault();\n        handleSend();\n      },\n      [handleSend],\n    );\n\n    const handleKeyDown = useCallback(\n      (e: KeyboardEvent<HTMLInputElement>) => {\n        if (e.key === \"Enter\" && !e.shiftKey) {\n          e.preventDefault();\n          handleSend();\n        }\n        onKeyDown?.(e);\n      },\n      [handleSend, onKeyDown],\n    );\n\n    // Color definitions\n    const isDark = theme.isDark;\n    const textColor = ink;\n    const iconColor = isDark ? \"rgba(243, 244, 246, 0.65)\" : \"rgba(31, 29, 26, 0.65)\";\n    const sendButtonTextColor = hasText\n      ? (sketchColor ?? theme.accent)\n      : iconColor;\n\n    return (\n      <form\n        onSubmit={handleFormSubmit}\n        className={cn(containerClassName)}\n        style={{\n          display: \"flex\",\n          alignItems: \"center\",\n          gap: 8,\n          width: \"100%\",\n          position: \"relative\",\n          boxSizing: \"border-box\",\n          fontFamily: doodleUiFontFamily,\n          ...interactive.style,\n          ...containerStyle,\n        }}\n      >\n        {/* Main Sketch Input Box */}\n        <motion.div\n          layout={shouldAnimate}\n          transition={{ type: \"spring\", stiffness: 450, damping: 35 }}\n          style={{\n            position: \"relative\",\n            display: \"flex\",\n            alignItems: \"center\",\n            flex: 1,\n            minWidth: 0,\n            height: sizeConf.height,\n            background: \"transparent\",\n            boxSizing: \"border-box\",\n          }}\n        >\n          <RoughSvg\n            shape=\"rectangle\"\n            roughness={roughness}\n            seed={sketchSeed}\n            sketchColor={focused ? (sketchColor ?? theme.accent) : ink}\n            bowing={bowing}\n            fillStyle={fillStyle}\n            strokeWidth={\n              focused && !shouldAnimate\n                ? (strokeWidth ?? 1.75) + 0.35\n                : strokeWidth\n            }\n            hachureGap={hachureGap}\n            hachureAngle={hachureAngle}\n            fillWeight={fillWeight}\n          />\n\n          <input\n            ref={(node) => {\n              inputRef.current = node;\n              assignRef(ref, node);\n            }}\n            id={inputId}\n            value={currentValue}\n            placeholder={placeholder}\n            disabled={interactive.isDisabled}\n            aria-disabled={interactive.aria[\"aria-disabled\"]}\n            aria-label={placeholder}\n            onFocus={handleFocus}\n            onBlur={handleBlur}\n            onChange={handleChange}\n            onKeyDown={handleKeyDown}\n            className={cn(className)}\n            style={{\n              flex: 1,\n              minWidth: 0,\n              height: \"100%\",\n              paddingLeft: sizeConf.paddingX,\n              paddingRight: showSend ? sizeConf.paddingX : sizeConf.iconSize + 20,\n              border: \"none\",\n              outline: \"none\",\n              background: \"transparent\",\n              color: textColor,\n              fontSize: sizeConf.fontSize,\n              fontFamily: doodleUiFontFamily,\n              zIndex: 2,\n              boxSizing: \"border-box\",\n              ...style,\n            }}\n            {...rest}\n          />\n\n          {/* Waveform Action inside the input (shown when NOT showing send button) */}\n          <AnimatePresence>\n            {!showSend && (\n              <motion.button\n                key=\"waveform-action\"\n                type=\"button\"\n                onClick={onVoiceClick}\n                disabled={interactive.isDisabled}\n                aria-label=\"Voice input\"\n                initial={\n                  shouldAnimate\n                    ? { opacity: 0, scale: 0.6 }\n                    : false\n                }\n                animate={\n                  shouldAnimate\n                    ? { opacity: 1, scale: 1 }\n                    : { opacity: 1, scale: 1 }\n                }\n                exit={\n                  shouldAnimate\n                    ? { opacity: 0, scale: 0.6 }\n                    : undefined\n                }\n                transition={\n                  shouldAnimate\n                    ? { duration: 0.2, ease: \"easeOut\" }\n                    : { duration: 0 }\n                }\n                style={{\n                  position: \"absolute\",\n                  right: sizeConf.paddingX - 4,\n                  top: 0,\n                  bottom: 0,\n                  display: \"inline-flex\",\n                  alignItems: \"center\",\n                  justifyContent: \"center\",\n                  background: \"transparent\",\n                  border: \"none\",\n                  padding: 0,\n                  width: sizeConf.iconSize + 8,\n                  cursor: interactive.isDisabled ? \"not-allowed\" : \"pointer\",\n                  color: iconColor,\n                  zIndex: 3,\n                  transformOrigin: \"center center\",\n                }}\n              >\n                {voiceIcon ?? <InternalWaveformIcon size={sizeConf.iconSize} />}\n              </motion.button>\n            )}\n          </AnimatePresence>\n        </motion.div>\n\n        {/* Circular Sketch Send Button (animates in beside the input on focus/typing) */}\n        <AnimatePresence>\n          {showSend && (\n            <motion.button\n              key=\"send-action\"\n              type=\"submit\"\n              disabled={interactive.isDisabled}\n              aria-label=\"Send message\"\n              initial={\n                shouldAnimate\n                  ? { opacity: 0, scale: 0.4 }\n                  : false\n              }\n              animate={\n                shouldAnimate\n                  ? { opacity: 1, scale: 1 }\n                  : { opacity: 1, scale: 1 }\n              }\n              exit={\n                shouldAnimate\n                  ? { opacity: 0, scale: 0.4 }\n                  : undefined\n              }\n              transition={\n                shouldAnimate\n                  ? {\n                      type: \"spring\",\n                      stiffness: 480,\n                      damping: 28,\n                    }\n                  : { duration: 0 }\n              }\n              whileTap={\n                !interactive.isDisabled && shouldAnimate\n                  ? { scale: 0.92 }\n                  : undefined\n              }\n              style={{\n                display: \"inline-flex\",\n                alignItems: \"center\",\n                justifyContent: \"center\",\n                width: sizeConf.buttonSize,\n                height: sizeConf.buttonSize,\n                borderRadius: \"50%\",\n                background: \"transparent\",\n                border: \"none\",\n                color: sendButtonTextColor,\n                cursor: interactive.isDisabled ? \"not-allowed\" : \"pointer\",\n                flexShrink: 0,\n                position: \"relative\",\n                outline: \"none\",\n                padding: 0,\n              }}\n            >\n              <RoughSvg\n                shape=\"ellipse\"\n                roughness={roughness}\n                seed={sketchSeed}\n                sketchColor={hasText ? (sketchColor ?? theme.accent) : ink}\n                bowing={bowing}\n                fillStyle={fillStyle}\n                strokeWidth={\n                  hasText\n                    ? (strokeWidth ?? 1.75) + 0.3\n                    : (strokeWidth ?? 1.75)\n                }\n              />\n              {loading ? (\n                <Spinner size={size} sketchColor={sendButtonTextColor} aria-hidden />\n              ) : sendIcon ? (\n                <DoodleIcon size={size}>{sendIcon}</DoodleIcon>\n              ) : (\n                <InternalArrowUpIcon size={sizeConf.iconSize} />\n              )}\n            </motion.button>\n          )}\n        </AnimatePresence>\n      </form>\n    );\n  },\n);\n\nPromptInput.displayName = \"PromptInput\";\n\n/**\n * Alias for {@link PromptInput}.\n */\nexport const ChatInput = PromptInput;\n\nexport const WaveformIcon = InternalWaveformIcon;\nexport const ArrowUpIcon = InternalArrowUpIcon;\n\n"
+        }
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "internalDependencies": [
+        "animations",
+        "hooks/useResolvedSeed",
+        "hooks/useSketchTheme",
+        "primitives/RoughSvg",
+        "primitives/icon",
+        "primitives/interactive",
+        "primitives/size",
+        "types",
+        "utils"
+      ],
+      "componentDependencies": [
+        "spinner"
+      ]
+    },
     "radial-menu": {
       "name": "radial-menu",
       "displayName": "RadialMenu",

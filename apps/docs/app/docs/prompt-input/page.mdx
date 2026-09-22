@@ -1,0 +1,43 @@
+import { ComponentPlayground } from "@/components/ComponentPlayground";
+import { PropsTable } from "@/components/Playground";
+import { promptInputProps } from "@/lib/props";
+import { ComponentCliInstallTabs } from "@/components/InstallCommands";
+
+# PromptInput
+
+Modern AI prompt bar with voice waveform mode that animates into a circular send button when focused or typed into.
+
+<ComponentPlayground name="prompt-input" />
+
+## CLI install
+
+<ComponentCliInstallTabs name="prompt-input" />
+
+## Usage
+
+```tsx
+import { PromptInput } from "doodleui-react";
+
+<PromptInput
+  placeholder="Ask anything..."
+  onSubmit={(value) => console.log("Submitted:", value)}
+  onVoiceClick={() => console.log("Voice mode started")}
+/>
+```
+
+### Animate on Click / Focus
+
+When the user clicks inside the input box, the voice waveform icon smoothly transitions out and a circular send button with an upward arrow (`↑`) animates in beside the input capsule. When submitted or blurred with empty text, it animates back smoothly.
+
+```tsx
+<PromptInput
+  size="lg"
+  placeholder="Ask anything..."
+  onSubmit={(prompt) => sendToLLM(prompt)}
+/>
+```
+
+## Props
+
+<PropsTable rows={promptInputProps} />
+

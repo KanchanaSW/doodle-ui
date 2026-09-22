@@ -983,3 +983,45 @@ export const carouselProps: PropRow[] = [
   animateProp("Draw-in outer frame and nav button borders."),
   ...sharedSketchProps,
 ];
+
+export const promptInputProps: PropRow[] = [
+  {
+    name: "variant",
+    type: '"solid" | "sketch"',
+    defaultValue: '"solid"',
+    description: "Sleek pill capsule (solid) or hand-drawn roughjs borders (sketch).",
+  },
+  {
+    name: "size",
+    type: '"sm" | "md" | "lg"',
+    defaultValue: '"md"',
+    description: "Height and font scale preset.",
+  },
+  {
+    name: "onSubmit",
+    type: "(value: string) => void",
+    defaultValue: "undefined",
+    description: "Callback fired when user submits via Enter key or clicking the send button.",
+  },
+  {
+    name: "onVoiceClick",
+    type: "(event: MouseEvent) => void",
+    defaultValue: "undefined",
+    description: "Callback fired when the voice waveform button is clicked.",
+  },
+  {
+    name: "loading",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Replaces the send icon with a spinner.",
+  },
+  {
+    name: "keepOpenOnBlur",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Keeps the send button visible even after focus moves away.",
+  },
+  animateProp("Spring animation when transitioning between voice waveform and send button."),
+  ...sharedSketchProps,
+];
+

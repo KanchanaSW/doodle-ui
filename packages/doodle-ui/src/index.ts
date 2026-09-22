@@ -505,3 +505,13 @@ export {
   type CarouselArrowProps,
   type CarouselOptions,
 } from "./components/Carousel";
+export {
+  PromptInput,
+  ChatInput,
+  WaveformIcon,
+  ArrowUpIcon,
+  type PromptInputProps,
+  type PromptInputSize,
+  type PromptInputVariant,
+} from "./components/PromptInput";
+

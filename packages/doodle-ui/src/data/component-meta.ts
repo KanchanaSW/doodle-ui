@@ -149,6 +149,10 @@ export const COMPONENT_META: Record<
     category: "feedback",
     keywords: ["bar", "loading", "percent", "completion"],
   },
+  "prompt-input": {
+    category: "form",
+    keywords: ["ai", "chat", "prompt", "voice", "send", "waveform", "llm", "input"],
+  },
   "radial-progress": {
     category: "feedback",
     keywords: ["circular", "gauge", "loader", "percent"],

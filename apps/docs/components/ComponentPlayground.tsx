@@ -109,6 +109,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Progress,
+  PromptInput,
   RadialMenu,
   RadialProgress,
   Radio,
@@ -320,6 +321,8 @@ function ComponentPlaygroundInner({ name }: { name: ComponentSlug }) {
       return <SidebarPlayground />;
     case "carousel":
       return <CarouselPlayground />;
+    case "prompt-input":
+      return <PromptInputPlayground />;
     default:
       return null;
   }
@@ -2486,3 +2489,66 @@ function CarouselPlayground() {
     />
   );
 }
+
+function PromptInputPlayground() {
+  const [submittedText, setSubmittedText] = useState<string | null>(null);
+
+  const controls: Control[] = withAnimate([
+    ...sketchControls,
+    {
+      type: "select",
+      key: "variant",
+      label: "Variant",
+      options: ["solid", "sketch"],
+      defaultValue: "solid",
+    },
+    {
+      type: "select",
+      key: "size",
+      label: "Size",
+      options: ["sm", "md", "lg"],
+      defaultValue: "md",
+    },
+    {
+      type: "toggle",
+      key: "loading",
+      label: "Loading",
+      defaultValue: false,
+    },
+  ]);
+
+  return (
+    <Playground
+      controls={controls}
+      render={(v) => (
+        <div className="w-full max-w-md py-4 flex flex-col items-center gap-3">
+          <PromptInput
+            key={`${String(v.size)}-${String(v.animate)}`}
+            size={v.size as "sm" | "md" | "lg"}
+            loading={Boolean(v.loading)}
+            placeholder="Ask anything..."
+            roughness={Number(v.roughness)}
+            seed={seedFrom(v)}
+            animate={Boolean(v.animate)}
+            onSubmit={(text) => setSubmittedText(text)}
+          />
+          {submittedText && (
+            <p className="text-xs text-mute font-mono">
+              Last submitted: &quot;{submittedText}&quot;
+            </p>
+          )}
+        </div>
+      )}
+      snippet={(v) =>
+        `<PromptInput
+  variant="${v.variant}"
+  size="${v.size}"
+  placeholder="Ask anything..."
+  onSubmit={(value) => console.log(value)}
+  ${snippetExtras(v)}
+/>`
+      }
+    />
+  );
+}
+
