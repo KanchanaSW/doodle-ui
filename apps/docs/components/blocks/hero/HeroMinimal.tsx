@@ -36,18 +36,22 @@ export function HeroMinimal({
       <div className="inline-flex">
         <Badge variant="accent">{badge}</Badge>
       </div>
-      <h1 className="doodle-shuffle-type mx-auto mt-5 max-w-[16ch] text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl">
+      <h1 className="doodle-shuffle-type mx-auto mt-5 max-w-[16ch] text-4xl font-semibold !leading-[1.35] tracking-tight md:text-5xl">
         {title}
       </h1>
       <p className="mx-auto mt-5 max-w-[46ch] text-base leading-relaxed text-mute md:text-lg">
         {description}
       </p>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <Button size="lg" asChild>
-          <a href={primaryAction.href}>{primaryAction.label}</a>
+        <Button size="lg" asChild style={{ lineHeight: 1.45 }}>
+          <a href={primaryAction.href}>
+            <span className="relative z-[1]">{primaryAction.label}</span>
+          </a>
         </Button>
-        <Button size="lg" variant="outline" asChild>
-          <a href={secondaryAction.href}>{secondaryAction.label}</a>
+        <Button size="lg" variant="outline" asChild style={{ lineHeight: 1.45 }}>
+          <a href={secondaryAction.href}>
+            <span className="relative z-[1]">{secondaryAction.label}</span>
+          </a>
         </Button>
       </div>
       <div className="mx-auto mt-10 w-24">

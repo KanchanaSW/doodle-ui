@@ -52,18 +52,22 @@ export function HeroSplit({
       <div className="mx-auto grid max-w-5xl items-center gap-12 md:grid-cols-2">
         <div>
           <Badge variant="accent">{badge}</Badge>
-          <h1 className="doodle-shuffle-type mt-5 max-w-[14ch] text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl">
+          <h1 className="doodle-shuffle-type mt-5 max-w-[14ch] text-4xl font-semibold !leading-[1.35] tracking-tight md:text-5xl">
             {title}
           </h1>
           <p className="mt-5 max-w-[42ch] text-base leading-relaxed text-mute md:text-lg">
             {description}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Button size="lg" asChild>
-              <a href={primaryAction.href}>{primaryAction.label}</a>
+            <Button size="lg" asChild style={{ lineHeight: 1.45 }}>
+              <a href={primaryAction.href}>
+                <span className="relative z-[1]">{primaryAction.label}</span>
+              </a>
             </Button>
-            <Button size="lg" variant="outline" asChild>
-              <a href={secondaryAction.href}>{secondaryAction.label}</a>
+            <Button size="lg" variant="outline" asChild style={{ lineHeight: 1.45 }}>
+              <a href={secondaryAction.href}>
+                <span className="relative z-[1]">{secondaryAction.label}</span>
+              </a>
             </Button>
           </div>
           <p className="mt-4 text-sm text-mute">{note}</p>
@@ -95,7 +99,9 @@ export function HeroSplit({
               </div>
             </CardContent>
             <CardFooter>
-              <Button size="sm">Save changes</Button>
+              <Button size="sm" style={{ lineHeight: 1.45 }}>
+                Save changes
+              </Button>
             </CardFooter>
           </Card>
         </div>
