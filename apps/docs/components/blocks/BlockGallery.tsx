@@ -216,17 +216,17 @@ export function BlockGallery({
     setSelectedId(id);
     const next = `${window.location.pathname}${window.location.search}#${id}`;
     window.history.replaceState(null, "", next);
-    if (window.matchMedia("(max-width: 1279px)").matches) {
+    if (window.matchMedia("(max-width: 1023px)").matches) {
       previewRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 
   return (
-    <div className="mt-6">
+    <div className="mt-6 lg:grid lg:grid-cols-[300px_minmax(0,1fr)] lg:items-start lg:gap-8">
       <div
         role="radiogroup"
         aria-label={`${label} layouts`}
-        className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        className="grid gap-3 sm:grid-cols-2 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:grid-cols-1 lg:overflow-y-auto lg:p-1"
       >
         {blocks.map((block) => {
           const selectedCard = block.id === selected.id;
@@ -237,20 +237,24 @@ export function BlockGallery({
               role="radio"
               aria-checked={selectedCard}
               onClick={() => select(block.id)}
-              className={`flex flex-col gap-3 border p-3 text-left transition-colors hover:bg-ink/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+              className={`flex flex-col gap-3 border p-3 text-left transition-colors hover:bg-ink/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent lg:flex-row lg:items-center ${
                 selectedCard ? "border-accent bg-ink/[0.03]" : "border-ink/25 bg-paper"
               }`}
             >
-              <LayoutThumb layout={block.layout} />
-              <span>
+              <span className="block w-full lg:w-24 lg:shrink-0">
+                <LayoutThumb layout={block.layout} />
+              </span>
+              <span className="min-w-0">
                 <span className="block text-base font-semibold text-ink">{block.title}</span>
-                <span className="mt-1 block text-sm leading-snug text-mute">{block.summary}</span>
+                <span className="mt-1 block text-sm leading-snug text-mute lg:line-clamp-2">
+                  {block.summary}
+                </span>
               </span>
             </button>
           );
         })}
       </div>
-      <div ref={previewRef} className="mt-8 scroll-mt-24">
+      <div ref={previewRef} className="mt-8 scroll-mt-24 lg:mt-0">
         <BlockPreview title={selected.title} source={selected.source}>
           {selected.preview}
         </BlockPreview>
