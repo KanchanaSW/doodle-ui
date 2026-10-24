@@ -19,6 +19,9 @@ export function SiteHeader() {
           <Link href="/docs/button" className="hover:text-accent hidden sm:inline">
             Components
           </Link>
+          <Link href="/blocks" className="hover:text-accent hidden sm:inline">
+            Blocks
+          </Link>
           <Link href="/docs/vs-shadcn" className="hover:text-accent hidden md:inline">
             vs shadcn
           </Link>

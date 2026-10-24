@@ -2,6 +2,100 @@
   "name": "dropdown-menu",
   "displayName": "DropdownMenu",
   "description": "A sketchy-bordered menu panel with hand-drawn item separators, built on Radix Dropdown Menu. Includes items, checkbox items, radio items, labels, and separators.",
+  "category": "overlay",
+  "isRadix": true,
+  "radixPrimitive": "@radix-ui/react-dropdown-menu",
+  "subparts": [
+    "CheckboxItem",
+    "Content",
+    "Group",
+    "Item",
+    "Label",
+    "RadioGroup",
+    "RadioItem",
+    "Separator",
+    "Sub",
+    "Trigger"
+  ],
+  "props": [
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "description": "Draw-in the panel border when the menu opens.\nDefaults to the DoodleUIProvider value (true)."
+    },
+    {
+      "name": "bowing",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1",
+      "description": "How much straight lines bow/curve in rough.js."
+    },
+    {
+      "name": "fill",
+      "type": "string",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "fillStyle",
+      "type": "FillStyle",
+      "required": false,
+      "defaultValue": "\"hachure\"",
+      "description": "Fill pattern when the shape has a fill color."
+    },
+    {
+      "name": "fillWeight",
+      "type": "number",
+      "required": false,
+      "description": "Weight/thickness of individual hatch lines inside patterned fills."
+    },
+    {
+      "name": "hachureAngle",
+      "type": "number",
+      "required": false,
+      "description": "Angle in degrees of hatch lines for patterned fills."
+    },
+    {
+      "name": "hachureGap",
+      "type": "number",
+      "required": false,
+      "description": "Spacing between hatch lines for patterned fills."
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.5",
+      "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "required": false,
+      "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+    },
+    {
+      "name": "sketchColor",
+      "type": "string",
+      "required": false,
+      "description": "Stroke (outline) color override. Falls back to theme ink."
+    },
+    {
+      "name": "strokeWidth",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.75",
+      "description": "Width of sketch strokes in pixels."
+    }
+  ],
+  "example": "<DropdownMenu />",
+  "keywords": [
+    "menu",
+    "dropdown",
+    "actions",
+    "options"
+  ],
   "files": [
     {
       "name": "dropdown-menu.tsx",

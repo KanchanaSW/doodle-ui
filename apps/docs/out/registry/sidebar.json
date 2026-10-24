@@ -2,6 +2,129 @@
   "name": "sidebar",
   "displayName": "Sidebar",
   "description": "Collapsible app sidebar with sketch divider and toggle. Compose with `SidebarLayout` and `SidebarInset`.",
+  "category": "navigation",
+  "isRadix": false,
+  "radixPrimitive": null,
+  "subparts": [
+    "Content",
+    "Footer",
+    "Group",
+    "Header",
+    "Inset",
+    "Item",
+    "Layout",
+    "Provider",
+    "Trigger"
+  ],
+  "props": [
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "description": "Play sketch draw-in animations. Defaults to DoodleUIProvider animate (true)."
+    },
+    {
+      "name": "bowing",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1",
+      "description": "How much straight lines bow/curve in rough.js."
+    },
+    {
+      "name": "defaultCollapsed",
+      "type": "boolean",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "fill",
+      "type": "string",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "fillStyle",
+      "type": "FillStyle",
+      "required": false,
+      "defaultValue": "\"hachure\"",
+      "description": "Fill pattern when the shape has a fill color."
+    },
+    {
+      "name": "fillWeight",
+      "type": "number",
+      "required": false,
+      "description": "Weight/thickness of individual hatch lines inside patterned fills."
+    },
+    {
+      "name": "hachureAngle",
+      "type": "number",
+      "required": false,
+      "description": "Angle in degrees of hatch lines for patterned fills."
+    },
+    {
+      "name": "hachureGap",
+      "type": "number",
+      "required": false,
+      "description": "Spacing between hatch lines for patterned fills."
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.5",
+      "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "required": false,
+      "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+    },
+    {
+      "name": "side",
+      "type": "\"left\" | \"right\"",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "sketchColor",
+      "type": "string",
+      "required": false,
+      "description": "Stroke (outline) color override. Falls back to theme ink."
+    },
+    {
+      "name": "strokeWidth",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.75",
+      "description": "Width of sketch strokes in pixels."
+    }
+  ],
+  "example": "const { collapsed, toggleCollapsed } = useSidebar();",
+  "keywords": [
+    "nav",
+    "app",
+    "layout",
+    "collapsible"
+  ],
   "files": [
     {
       "name": "sidebar.tsx",

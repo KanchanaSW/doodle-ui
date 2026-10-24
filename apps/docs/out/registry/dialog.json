@@ -2,6 +2,99 @@
   "name": "dialog",
   "displayName": "Dialog",
   "description": "A lighter, fully composable sibling to `Modal`. `Modal` is a single-prop, fixed-width, always-shadowed dialog with a forced close button. `Dialog` is the shadcn-style compound API — no forced width or shadow, and you build the header/footer yourself.",
+  "category": "overlay",
+  "isRadix": true,
+  "radixPrimitive": "@radix-ui/react-dialog",
+  "subparts": [
+    "Close",
+    "Content",
+    "Description",
+    "Footer",
+    "Header",
+    "Overlay",
+    "Portal",
+    "Title",
+    "Trigger"
+  ],
+  "props": [
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "description": "Backdrop fade, panel enter/exit, and border draw-in on open.\nDefaults to the DoodleUIProvider value (true)."
+    },
+    {
+      "name": "bowing",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1",
+      "description": "How much straight lines bow/curve in rough.js."
+    },
+    {
+      "name": "fill",
+      "type": "string",
+      "required": false,
+      "description": ""
+    },
+    {
+      "name": "fillStyle",
+      "type": "FillStyle",
+      "required": false,
+      "defaultValue": "\"hachure\"",
+      "description": "Fill pattern when the shape has a fill color."
+    },
+    {
+      "name": "fillWeight",
+      "type": "number",
+      "required": false,
+      "description": "Weight/thickness of individual hatch lines inside patterned fills."
+    },
+    {
+      "name": "hachureAngle",
+      "type": "number",
+      "required": false,
+      "description": "Angle in degrees of hatch lines for patterned fills."
+    },
+    {
+      "name": "hachureGap",
+      "type": "number",
+      "required": false,
+      "description": "Spacing between hatch lines for patterned fills."
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.5",
+      "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "required": false,
+      "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+    },
+    {
+      "name": "sketchColor",
+      "type": "string",
+      "required": false,
+      "description": "Stroke (outline) color override. Falls back to theme ink."
+    },
+    {
+      "name": "strokeWidth",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.75",
+      "description": "Width of sketch strokes in pixels."
+    }
+  ],
+  "example": "import {\n  Dialog,\n  DialogTrigger,\n  DialogContent,\n  DialogHeader,\n  DialogTitle,\n  DialogDescription,\n  DialogFooter,\n  DialogClose,\n  Button,\n  Input,\n} from \"doodleui-react\";\n\n<Dialog>\n  <DialogTrigger asChild>\n    <Button variant=\"outline\">Open dialog</Button>\n  </DialogTrigger>\n  <DialogContent>\n    <DialogHeader>\n      <DialogTitle>Rename sketch</DialogTitle>\n      <DialogDescription>Give this notebook page a new title.</DialogDescription>\n    </DialogHeader>\n    <Input defaultValue=\"Field notes\" />\n    <DialogFooter>\n      <DialogClose asChild><Button variant=\"ghost\">Cancel</Button></DialogClose>\n      <DialogClose asChild><Button variant=\"primary\">Save</Button></DialogClose>\n    </DialogFooter>\n  </DialogContent>\n</Dialog>",
+  "keywords": [
+    "modal",
+    "popup",
+    "overlay",
+    "panel"
+  ],
   "files": [
     {
       "name": "dialog.tsx",

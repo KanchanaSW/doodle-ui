@@ -2,18 +2,131 @@
   "name": "badge",
   "displayName": "Badge",
   "description": "Compact label with a sketch rectangle. Use it for status, counts, or a one-word tag. The border draws in on mount.",
+  "category": "data-display",
+  "isRadix": false,
+  "radixPrimitive": null,
+  "subparts": [],
+  "props": [
+    {
+      "name": "animate",
+      "type": "boolean",
+      "required": false,
+      "defaultValue": "undefined (follow provider)",
+      "description": "Play sketch draw-in animations. Defaults to  `animate` (true)."
+    },
+    {
+      "name": "asChild",
+      "type": "boolean",
+      "required": false,
+      "defaultValue": "false",
+      "description": "Merge props onto the single child instead of rendering a wrapper span."
+    },
+    {
+      "name": "bowing",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1",
+      "description": "How much straight lines bow/curve in rough.js."
+    },
+    {
+      "name": "endIcon",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Trailing icon."
+    },
+    {
+      "name": "fillStyle",
+      "type": "FillStyle",
+      "required": false,
+      "defaultValue": "\"hachure\"",
+      "description": "Fill pattern when the shape has a fill color."
+    },
+    {
+      "name": "fillWeight",
+      "type": "number",
+      "required": false,
+      "description": "Weight/thickness of individual hatch lines inside patterned fills."
+    },
+    {
+      "name": "hachureAngle",
+      "type": "number",
+      "required": false,
+      "description": "Angle in degrees of hatch lines for patterned fills."
+    },
+    {
+      "name": "hachureGap",
+      "type": "number",
+      "required": false,
+      "description": "Spacing between hatch lines for patterned fills."
+    },
+    {
+      "name": "roughness",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.5",
+      "description": "Sketchiness intensity passed to rough.js. Higher values look messier."
+    },
+    {
+      "name": "seed",
+      "type": "number",
+      "required": false,
+      "description": "Locks the hand-drawn wobble. Omit to follow SketchSeedProvider or fixed-then-randomize."
+    },
+    {
+      "name": "size",
+      "type": "BadgeSize",
+      "required": false,
+      "defaultValue": "\"md\"",
+      "description": "Control size preset."
+    },
+    {
+      "name": "sketchColor",
+      "type": "string",
+      "required": false,
+      "description": "Stroke (outline) color override. Falls back to theme ink."
+    },
+    {
+      "name": "startIcon",
+      "type": "ReactNode",
+      "required": false,
+      "description": "Leading icon."
+    },
+    {
+      "name": "strokeWidth",
+      "type": "number",
+      "required": false,
+      "defaultValue": "1.75",
+      "description": "Width of sketch strokes in pixels."
+    },
+    {
+      "name": "variant",
+      "type": "BadgeVariant",
+      "required": false,
+      "defaultValue": "\"default\"",
+      "description": "Visual style preset."
+    }
+  ],
+  "example": "<Badge>New</Badge>\n<Badge asChild><a href=\"/tags/art\">Art</a></Badge>",
+  "keywords": [
+    "tag",
+    "label",
+    "chip",
+    "status"
+  ],
   "files": [
     {
       "name": "badge.tsx",
       "path": "components/badge.tsx",
       "type": "component",
-      "content": "\"use client\";\n\nimport { forwardRef, type HTMLAttributes } from \"react\";\nimport { useSketchTheme } from \"../hooks/useSketchTheme\";\nimport { SketchBox } from \"../primitives/SketchBox\";\nimport type { SketchProps } from \"../types\";\nimport { cn, doodleUiFontWeight } from \"../utils\";\n\nexport type BadgeVariant = \"default\" | \"accent\" | \"outline\";\n\n/**\n * Props for {@link Badge}.\n */\nexport interface BadgeProps\n  extends Omit<HTMLAttributes<HTMLSpanElement>, \"color\">,\n    SketchProps {\n  /**\n   * Visual style preset.\n   * @default \"primary\"\n   */\n  variant?: BadgeVariant;\n  /**\n   * Draw-in the border on mount. Defaults to the DoodleUIProvider value (true).\n   */\n  /**\n   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).\n   * @default undefined (follow provider)\n   */\n  animate?: boolean;\n}\n\n/**\n * Small sketch label for counts and tags.\n *\n * @example\n * <Badge />\n */\nexport const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(\n  {\n    children,\n    className,\n    style,\n    variant = \"default\",\n    roughness,\n    seed,\n    sketchColor,\n    bowing,\n    fillStyle,\n    strokeWidth,\n    hachureGap,\n    hachureAngle,\n    fillWeight,\n    animate,\n    ...rest\n  },\n  ref,\n) {\n  const theme = useSketchTheme(sketchColor);\n  // Brand accent (#e24b3b) fails 4.5:1 on accentFill — use accentInk for text/stroke.\n  const ink =\n    variant === \"accent\"\n      ? sketchColor ?? (theme.isDark ? theme.accent : theme.accentInk)\n      : sketchColor ?? theme.ink;\n\n  const fill =\n    variant === \"accent\"\n      ? (theme.isDark ? (sketchColor ? `${sketchColor}25` : theme.accentFill) : theme.accentFill)\n      : variant === \"outline\"\n        ? undefined\n        : theme.secondaryFill;\n\n  return (\n    <SketchBox\n      className={cn(className)}\n      style={{\n        display: \"inline-flex\",\n        verticalAlign: \"middle\",\n        ...style,\n      }}\n      contentStyle={{\n        padding: \"2px 10px\",\n        fontSize: 12,\n        fontWeight: doodleUiFontWeight(650),\n        lineHeight: 1.4,\n        letterSpacing: \"0.01em\",\n        color: ink,\n      }}\n      fill={fill}\n      fillStyle={fillStyle ?? (fill ? \"hachure\" : undefined)}\n      hachureGap={hachureGap ?? 6}\n      hachureAngle={hachureAngle}\n      fillWeight={fillWeight ?? 0.9}\n      roughness={roughness}\n      seed={seed}\n      sketchColor={ink}\n      bowing={bowing}\n      strokeWidth={strokeWidth ?? 1.4}\n      animate={animate}\n      {...rest}\n    >\n      <span ref={ref}>{children}</span>\n    </SketchBox>\n  );\n});\n"
+      "content": "\"use client\";\n\nimport {\n  forwardRef,\n  memo,\n  type HTMLAttributes,\n  type ReactNode,\n} from \"react\";\nimport { useSketchTheme } from \"../hooks/useSketchTheme\";\nimport { SketchBox } from \"../primitives/SketchBox\";\nimport { DoodleIcon } from \"../primitives/icon\";\nimport {\n  BADGE_SIZE_STYLES,\n  resolveSize,\n  type DoodleSize,\n} from \"../primitives/size\";\nimport type { SketchProps } from \"../types\";\nimport { cn, doodleUiFontWeight } from \"../utils\";\n\nexport type BadgeVariant = \"default\" | \"accent\" | \"outline\";\nexport type BadgeSize = DoodleSize;\n\n/**\n * Props for {@link Badge}.\n */\nexport interface BadgeProps\n  extends Omit<HTMLAttributes<HTMLSpanElement>, \"color\">,\n    SketchProps {\n  /**\n   * Visual style preset.\n   * @default \"default\"\n   */\n  variant?: BadgeVariant;\n  /**\n   * Control size preset.\n   * @default \"md\"\n   */\n  size?: BadgeSize;\n  /**\n   * Merge props onto the single child instead of rendering a wrapper span.\n   * @default false\n   */\n  asChild?: boolean;\n  /** Leading icon. */\n  startIcon?: ReactNode;\n  /** Trailing icon. */\n  endIcon?: ReactNode;\n  /**\n   * Play sketch draw-in animations. Defaults to {@link DoodleUIProvider} `animate` (true).\n   * @default undefined (follow provider)\n   */\n  animate?: boolean;\n}\n\n/**\n * Small sketch label for counts and tags.\n *\n * @example\n * <Badge>New</Badge>\n * <Badge asChild><a href=\"/tags/art\">Art</a></Badge>\n */\nexport const Badge = memo(\n  forwardRef<HTMLSpanElement, BadgeProps>(function Badge(\n    {\n      children,\n      className,\n      style,\n      variant = \"default\",\n      size: sizeProp = \"md\",\n      asChild = false,\n      startIcon,\n      endIcon,\n      roughness,\n      seed,\n      sketchColor,\n      bowing,\n      fillStyle,\n      strokeWidth,\n      hachureGap,\n      hachureAngle,\n      fillWeight,\n      animate,\n      ...rest\n    },\n    ref,\n  ) {\n    const size = resolveSize(sizeProp);\n    const theme = useSketchTheme(sketchColor);\n    const ink =\n      variant === \"accent\"\n        ? sketchColor ?? (theme.isDark ? theme.accent : theme.accentInk)\n        : sketchColor ?? theme.ink;\n\n    const fill =\n      variant === \"accent\"\n        ? theme.isDark\n          ? sketchColor\n            ? `${sketchColor}25`\n            : theme.accentFill\n          : theme.accentFill\n        : variant === \"outline\"\n          ? undefined\n          : theme.secondaryFill;\n\n    const contentStyle = {\n      ...BADGE_SIZE_STYLES[size],\n      fontWeight: doodleUiFontWeight(650),\n      letterSpacing: \"0.01em\",\n      color: ink,\n      display: \"inline-flex\" as const,\n      alignItems: \"center\" as const,\n      gap: 4,\n    };\n\n    return (\n      <SketchBox\n        className={cn(className)}\n        style={{\n          display: \"inline-flex\",\n          verticalAlign: \"middle\",\n          ...style,\n        }}\n        contentStyle={contentStyle}\n        fill={fill}\n        fillStyle={fillStyle ?? (fill ? \"hachure\" : undefined)}\n        hachureGap={hachureGap ?? 6}\n        hachureAngle={hachureAngle}\n        fillWeight={fillWeight ?? 0.9}\n        roughness={roughness}\n        seed={seed}\n        sketchColor={ink}\n        bowing={bowing}\n        strokeWidth={strokeWidth ?? 1.4}\n        animate={animate}\n        asChild={asChild}\n        {...rest}\n      >\n        {asChild ? (\n          children\n        ) : (\n          <span\n            ref={ref}\n            style={{\n              display: \"inline-flex\",\n              alignItems: \"center\",\n              gap: 4,\n            }}\n          >\n            {startIcon ? <DoodleIcon size={size}>{startIcon}</DoodleIcon> : null}\n            {children}\n            {endIcon ? <DoodleIcon size={size}>{endIcon}</DoodleIcon> : null}\n          </span>\n        )}\n      </SketchBox>\n    );\n  }),\n);\nBadge.displayName = \"Badge\";\n"
     }
   ],
   "dependencies": [],
   "internalDependencies": [
     "hooks/useSketchTheme",
     "primitives/SketchBox",
+    "primitives/icon",
+    "primitives/size",
     "types",
     "utils"
   ],

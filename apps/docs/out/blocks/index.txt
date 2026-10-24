@@ -1,0 +1,71 @@
+2:I[9654,["2805","static/chunks/2805-874d2f44e13c1452.js","7675","static/chunks/7675-eb69969e328a9826.js","5737","static/chunks/app/blocks/page-da9502167beb6ef4.js"],"BlockPreview"]
+4:I[7675,["2805","static/chunks/2805-874d2f44e13c1452.js","7675","static/chunks/7675-eb69969e328a9826.js","5737","static/chunks/app/blocks/page-da9502167beb6ef4.js"],"Badge"]
+5:I[7675,["2805","static/chunks/2805-874d2f44e13c1452.js","7675","static/chunks/7675-eb69969e328a9826.js","5737","static/chunks/app/blocks/page-da9502167beb6ef4.js"],"Button"]
+6:I[7675,["2805","static/chunks/2805-874d2f44e13c1452.js","7675","static/chunks/7675-eb69969e328a9826.js","5737","static/chunks/app/blocks/page-da9502167beb6ef4.js"],"Divider"]
+7:I[2728,[],""]
+8:I[9836,[],""]
+9:I[6646,["5411","static/chunks/5411-6fda06b8ad667448.js","2805","static/chunks/2805-874d2f44e13c1452.js","7675","static/chunks/7675-eb69969e328a9826.js","3185","static/chunks/app/layout-1078c3f05ebdb930.js"],"Providers"]
+a:I[5411,["5411","static/chunks/5411-6fda06b8ad667448.js","2805","static/chunks/2805-874d2f44e13c1452.js","828","static/chunks/828-c6de2ecd28e39f4c.js","7675","static/chunks/7675-eb69969e328a9826.js","1931","static/chunks/app/page-312c9ce3320c6961.js"],""]
+b:I[8666,["5411","static/chunks/5411-6fda06b8ad667448.js","2805","static/chunks/2805-874d2f44e13c1452.js","7675","static/chunks/7675-eb69969e328a9826.js","3185","static/chunks/app/layout-1078c3f05ebdb930.js"],"ThemeToggle"]
+c:I[2742,["5411","static/chunks/5411-6fda06b8ad667448.js","2805","static/chunks/2805-874d2f44e13c1452.js","828","static/chunks/828-c6de2ecd28e39f4c.js","7675","static/chunks/7675-eb69969e328a9826.js","1931","static/chunks/app/page-312c9ce3320c6961.js"],"ShuffleButton"]
+3:T759,import { Badge, Button, Divider } from "doodleui-react";
+
+export interface HeroAction {
+  label: string;
+  href: string;
+}
+
+export interface HeroMinimalProps {
+  badge?: string;
+  title?: string;
+  description?: string;
+  primaryAction?: HeroAction;
+  secondaryAction?: HeroAction;
+  className?: string;
+}
+
+const defaultPrimary: HeroAction = { label: "Get started", href: "#" };
+const defaultSecondary: HeroAction = { label: "Learn more", href: "#" };
+
+/**
+ * Centered hero built only from doodle-ui components and theme tokens.
+ * Pass props to swap the copy, or edit this file and paste it into a project.
+ */
+export function HeroMinimal({
+  badge = "Hand-drawn UI",
+  title = "A hero you can drop in and edit",
+  description = "Badge, headline, two actions, and a short rule. Change the props or the markup.",
+  primaryAction = defaultPrimary,
+  secondaryAction = defaultSecondary,
+  className,
+}: HeroMinimalProps) {
+  return (
+    <section
+      className={`bg-paper px-6 py-16 text-center text-ink md:py-24 ${className ?? ""}`.trim()}
+    >
+      <div className="inline-flex">
+        <Badge variant="accent">{badge}</Badge>
+      </div>
+      <h1 className="doodle-shuffle-type mx-auto mt-5 max-w-[16ch] text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl">
+        {title}
+      </h1>
+      <p className="mx-auto mt-5 max-w-[46ch] text-base leading-relaxed text-mute md:text-lg">
+        {description}
+      </p>
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <Button size="lg" asChild>
+          <a href={primaryAction.href}>{primaryAction.label}</a>
+        </Button>
+        <Button size="lg" variant="outline" asChild>
+          <a href={secondaryAction.href}>{secondaryAction.label}</a>
+        </Button>
+      </div>
+      <div className="mx-auto mt-10 w-24">
+        <Divider />
+      </div>
+    </section>
+  );
+}
+0:["4Up7F_YHaul8njSeKDRFG",[[["",{"children":["blocks",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],["",{"children":["blocks",{"children":["__PAGE__",{},[["$L1",["$","main",null,{"className":"mx-auto max-w-[1400px] px-4 py-12 font-sans md:px-8 md:py-16","children":[["$","h1",null,{"className":"text-4xl font-semibold tracking-tight text-ink","children":"Blocks"}],["$","p",null,{"className":"mt-4 max-w-[62ch] leading-relaxed text-mute","children":"Page sections you can preview, copy, and edit. Each block is one file of doodle-ui components. More heroes will land in this list."}],[["$","section","hero",{"className":"mt-12","children":[["$","h2",null,{"className":"text-2xl font-semibold text-ink","children":"Hero"}],["$","div",null,{"className":"mt-6 space-y-12","children":[["$","$L2","hero-minimal",{"title":"Minimal hero","source":"$3","children":["$","section",null,{"className":"bg-paper px-6 py-16 text-center text-ink md:py-24","children":[["$","div",null,{"className":"inline-flex","children":["$","$L4",null,{"variant":"accent","children":"Hand-drawn UI"}]}],["$","h1",null,{"className":"doodle-shuffle-type mx-auto mt-5 max-w-[16ch] text-4xl font-semibold leading-[1.08] tracking-tight md:text-5xl","children":"A hero you can drop in and edit"}],["$","p",null,{"className":"mx-auto mt-5 max-w-[46ch] text-base leading-relaxed text-mute md:text-lg","children":"Badge, headline, two actions, and a short rule. Change the props or the markup."}],["$","div",null,{"className":"mt-8 flex flex-wrap items-center justify-center gap-3","children":[["$","$L5",null,{"size":"lg","asChild":true,"children":["$","a",null,{"href":"#","children":"Get started"}]}],["$","$L5",null,{"size":"lg","variant":"outline","asChild":true,"children":["$","a",null,{"href":"#","children":"Learn more"}]}]]}],["$","div",null,{"className":"mx-auto mt-10 w-24","children":["$","$L6",null,{}]}]]}]}]]}]]}]]]}],null],null],null]},[null,["$","$L7",null,{"parallelRouterKey":"children","segmentPath":["children","blocks","children"],"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L8",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined"}]],null]},[[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/a76a7e8e632daf85.css","precedence":"next","crossOrigin":"$undefined"}]],["$","html",null,{"lang":"en","data-component-theme":"light","data-theme":"light","suppressHydrationWarning":true,"className":"light __variable_ed3508 __variable_97f5e1 __variable_baba7c __variable_a6f23e __variable_fc2130 __variable_fde0d3 __variable_46fe82","children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"(function(){try{var k=\"doodle-ui-component-theme\";var t=localStorage.getItem(k);if(t!==\"light\"&&t!==\"dark\"){var l=localStorage.getItem(\"doodle-ui-site-theme\");if(l===\"light\"||l===\"dark\")t=l;else t=\"light\";}var r=document.documentElement;r.setAttribute(\"data-component-theme\",t);r.setAttribute(\"data-theme\",t);r.classList.remove(\"light\",\"dark\");r.classList.add(t);r.style.colorScheme=t;}catch(e){var f=document.documentElement;f.setAttribute(\"data-component-theme\",\"light\");f.setAttribute(\"data-theme\",\"light\");f.classList.add(\"light\");f.style.colorScheme=\"light\";}})();"}}]}],["$","body",null,{"className":"font-sans antialiased","children":[["$","div",null,{"className":"paper-grain","aria-hidden":"true"}],["$","$L9",null,{"children":[["$","header",null,{"className":"sticky top-0 z-30 h-16 bg-paper/90 backdrop-blur-md border-b border-ink/10","children":["$","div",null,{"className":"max-w-[1400px] mx-auto h-full px-4 md:px-8 flex items-center justify-between gap-4","children":[["$","$La",null,{"href":"/","className":"font-hand text-[28px] leading-none text-ink","children":"doodle-ui"}],["$","nav",null,{"className":"flex items-center gap-4 sm:gap-5 text-sm font-medium font-sans","children":[["$","$La",null,{"href":"/install","className":"hover:text-accent","children":"Install"}],["$","$La",null,{"href":"/customize","className":"hover:text-accent hidden sm:inline","children":"Customize"}],["$","$La",null,{"href":"/docs/button","className":"hover:text-accent hidden sm:inline","children":"Components"}],["$","$La",null,{"href":"/blocks","className":"hover:text-accent hidden sm:inline","children":"Blocks"}],["$","$La",null,{"href":"/docs/vs-shadcn","className":"hover:text-accent hidden md:inline","children":"vs shadcn"}],["$","$Lb",null,{}],["$","$Lc",null,{"size":"sm"}]]}]]}]}],["$","$L7",null,{"parallelRouterKey":"children","segmentPath":["children"],"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L8",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":["$","main",null,{"className":"max-w-xl mx-auto px-4 py-24","children":[["$","h1",null,{"className":"text-4xl font-semibold tracking-tight mb-3","children":"Missing page"}],["$","p",null,{"className":"text-mute","children":"That route is not in the notebook. Try Install or Components."}]]}],"notFoundStyles":[]}]]}]]}]]}]],null],null],["$Ld",null]]]]
+d:[["$","meta","0",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","1",{"charSet":"utf-8"}],["$","title","2",{"children":"Blocks · doodle-ui"}],["$","meta","3",{"name":"description","content":"Copy-paste page sections built from doodle-ui components."}],["$","meta","4",{"name":"next-size-adjust"}]]
+1:null
