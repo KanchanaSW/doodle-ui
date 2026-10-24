@@ -21,6 +21,11 @@ export const BLOCK_CATEGORIES: BlockCategory[] = [
         title: "Minimal hero",
         file: "components/blocks/hero/HeroMinimal.tsx",
       },
+      {
+        id: "hero-split",
+        title: "Split hero",
+        file: "components/blocks/hero/HeroSplit.tsx",
+      },
     ],
   },
 ];
