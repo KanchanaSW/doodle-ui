@@ -224,6 +224,69 @@ function LayoutThumb({ layout }: { layout: BlockLayout }) {
           </div>
         </ThumbFrame>
       );
+    case "bento-feature":
+      return (
+        <ThumbFrame>
+          <div className="grid h-10 w-full grid-cols-4 grid-rows-2 gap-1">
+            <span className={`${box} col-span-2 row-span-2`} />
+            <span className={box} />
+            <span className={box} />
+            <span className={`${box} col-span-2`} />
+          </div>
+        </ThumbFrame>
+      );
+    case "bento-metrics":
+      return (
+        <ThumbFrame>
+          <div className="grid h-10 w-full grid-cols-4 grid-rows-2 gap-1">
+            <span className={box} />
+            <span className={box} />
+            <span className={box} />
+            <span className={`${box} row-span-2 rounded-full`} />
+            <span className={`${box} col-span-3`} />
+          </div>
+        </ThumbFrame>
+      );
+    case "bento-spotlight":
+      return (
+        <ThumbFrame>
+          <div className="grid h-10 w-full grid-cols-3 grid-rows-3 gap-1">
+            <span className={`${box} col-span-2 row-span-3`} />
+            <span className={box} />
+            <span className={box} />
+            <span className={box} />
+          </div>
+        </ThumbFrame>
+      );
+    case "bento-magazine":
+      return (
+        <ThumbFrame>
+          <div className="grid h-10 w-full grid-cols-6 grid-rows-3 gap-1">
+            <span className={`${box} col-span-4 row-span-2`} />
+            <span className={`${box} col-span-2`} />
+            <span className={`${box} col-span-2`} />
+            <span className={`${box} col-span-3`} />
+            <span className={`${box} col-span-3 border-accent`} />
+          </div>
+        </ThumbFrame>
+      );
+    case "bento-bands":
+      return (
+        <ThumbFrame>
+          <div className="grid h-10 w-full grid-rows-3 gap-1">
+            <span className="grid grid-cols-5 gap-1">
+              <span className={`${box} col-span-3`} />
+              <span className={`${box} col-span-2`} />
+            </span>
+            <span className="grid grid-cols-3 gap-1">
+              <span className={box} />
+              <span className={box} />
+              <span className={box} />
+            </span>
+            <span className={box} />
+          </div>
+        </ThumbFrame>
+      );
     case "carousel-thumbs":
       return (
         <ThumbFrame>

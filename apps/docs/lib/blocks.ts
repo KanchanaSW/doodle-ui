@@ -16,7 +16,12 @@ export type BlockLayout =
   | "carousel-multi"
   | "carousel-split"
   | "carousel-vertical"
-  | "carousel-thumbs";
+  | "carousel-thumbs"
+  | "bento-feature"
+  | "bento-metrics"
+  | "bento-spotlight"
+  | "bento-magazine"
+  | "bento-bands";
 
 export interface BlockEntry {
   id: string;
@@ -163,6 +168,47 @@ export const BLOCK_CATEGORIES: BlockCategory[] = [
         summary: "A large slide with numbered thumbs that stay in sync.",
         layout: "carousel-thumbs",
         file: "components/blocks/carousel/CarouselGallery.tsx",
+      },
+    ],
+  },
+  {
+    slug: "bento",
+    title: "Bento",
+    blocks: [
+      {
+        id: "bento-features",
+        title: "Feature mosaic",
+        summary: "A tall promise, two short proofs, and a key row.",
+        layout: "bento-feature",
+        file: "components/blocks/bento/BentoFeatures.tsx",
+      },
+      {
+        id: "bento-metrics",
+        title: "Metrics board",
+        summary: "Three counts, a gauge, and a stack of meters.",
+        layout: "bento-metrics",
+        file: "components/blocks/bento/BentoMetrics.tsx",
+      },
+      {
+        id: "bento-spotlight",
+        title: "Spotlight quote",
+        summary: "A wide quote with three chapters stacked beside it.",
+        layout: "bento-spotlight",
+        file: "components/blocks/bento/BentoSpotlight.tsx",
+      },
+      {
+        id: "bento-magazine",
+        title: "Pamphlet",
+        summary: "A pull quote, a contents list, keys, credits, and a note.",
+        layout: "bento-magazine",
+        file: "components/blocks/bento/BentoMagazine.tsx",
+      },
+      {
+        id: "bento-bands",
+        title: "Three bands",
+        summary: "An uneven row, three equal steps, then one long strip.",
+        layout: "bento-bands",
+        file: "components/blocks/bento/BentoBands.tsx",
       },
     ],
   },

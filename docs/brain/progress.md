@@ -8,7 +8,7 @@
 - Perf audit + memoization — `docs/superpowers/reports/2026-09-18-rendering-performance-audit.md`.
 - CLI (`init`, `add`, `list`, `diff`, `mcp`) + MCP server with tests.
 - CI: lint/typecheck, unit tests + coverage, size-limit, Chromatic, cross-PM smoke tests.
-- Blocks gallery with 12 hero blocks and 5 carousel blocks.
+- Blocks gallery with 12 hero blocks, 5 carousel blocks, and 5 bento blocks.
 
 ## Pending / gaps
 - Dedicated test files exist for 20 of 56 components (+ Smoke, ApiHardening, ControlledCompound, FormIntegration cross-cutting suites). No dedicated tests for e.g. Button, Card, Input, Table, Sidebar, Carousel, Command, Menubar, NavigationMenu.

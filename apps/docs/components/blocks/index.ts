@@ -1,4 +1,9 @@
 import type { ComponentType } from "react";
+import { BentoBands } from "./bento/BentoBands";
+import { BentoFeatures } from "./bento/BentoFeatures";
+import { BentoMagazine } from "./bento/BentoMagazine";
+import { BentoMetrics } from "./bento/BentoMetrics";
+import { BentoSpotlight } from "./bento/BentoSpotlight";
 import { CarouselFeatures } from "./carousel/CarouselFeatures";
 import { CarouselGallery } from "./carousel/CarouselGallery";
 import { CarouselSplit } from "./carousel/CarouselSplit";
@@ -17,6 +22,11 @@ import { HeroTestimonial } from "./hero/HeroTestimonial";
 import { HeroTicket } from "./hero/HeroTicket";
 import { HeroWaitlist } from "./hero/HeroWaitlist";
 
+export { BentoBands } from "./bento/BentoBands";
+export { BentoFeatures } from "./bento/BentoFeatures";
+export { BentoMagazine } from "./bento/BentoMagazine";
+export { BentoMetrics } from "./bento/BentoMetrics";
+export { BentoSpotlight } from "./bento/BentoSpotlight";
 export { CarouselFeatures } from "./carousel/CarouselFeatures";
 export { CarouselGallery } from "./carousel/CarouselGallery";
 export { CarouselSplit } from "./carousel/CarouselSplit";
@@ -37,6 +47,11 @@ export { HeroWaitlist } from "./hero/HeroWaitlist";
 
 /** Live preview component for each block id in `BLOCK_CATEGORIES`. */
 export const BLOCK_COMPONENTS: Record<string, ComponentType> = {
+  "bento-features": BentoFeatures,
+  "bento-metrics": BentoMetrics,
+  "bento-spotlight": BentoSpotlight,
+  "bento-magazine": BentoMagazine,
+  "bento-bands": BentoBands,
   "carousel-testimonials": CarouselTestimonials,
   "carousel-features": CarouselFeatures,
   "carousel-split": CarouselSplit,

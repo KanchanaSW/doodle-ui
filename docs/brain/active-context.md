@@ -3,9 +3,10 @@
 _Last updated: 2026-10-25_
 
 ## Current focus
-- **Docs Blocks gallery** (`/blocks`): Hero (12) plus Carousel (5) in `apps/docs/components/blocks/{hero,carousel}/`, registered in `lib/blocks.ts` + `components/blocks/index.ts`.
+- **Docs Blocks gallery** (`/blocks`): Hero (12), Carousel (5), and Bento (5) in `apps/docs/components/blocks/{hero,carousel,bento}/`, registered in `lib/blocks.ts` + `components/blocks/index.ts`.
 
 ## Recent changes (newest first)
+- 2026-10-25: Bento block category (5 layouts) on `/blocks`. Docs-only; no library API change.
 - 2026-10-25: Carousel block category (5 layouts) on `/blocks`. Docs-only; no library API change.
 - 2026-10-25: Project brain added (this folder, `AGENTS.md`, `.cursor/rules/*.mdc`). No source changes. `.cursorignore` creation was blocked by editor permissions — pending.
 - 2026-10-24: Blocks page, `BlockGallery`, 12 hero blocks.
@@ -13,7 +14,7 @@ _Last updated: 2026-10-25_
 - 2026-09-21: v0.8.0 — MCP server + MCP reliability hardening (#4).
 
 ## Next steps (inferred, confirm with owner)
-- More block categories beyond Hero and Carousel, if wanted.
+- More block categories beyond Hero, Carousel, and Bento, if wanted.
 - Add a changeset for `PromptInput` before next release if it should ship.
 
 ## Open questions
