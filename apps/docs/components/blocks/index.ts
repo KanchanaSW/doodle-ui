@@ -1,4 +1,9 @@
 import type { ComponentType } from "react";
+import { CarouselFeatures } from "./carousel/CarouselFeatures";
+import { CarouselGallery } from "./carousel/CarouselGallery";
+import { CarouselSplit } from "./carousel/CarouselSplit";
+import { CarouselTestimonials } from "./carousel/CarouselTestimonials";
+import { CarouselVertical } from "./carousel/CarouselVertical";
 import { HeroBento } from "./hero/HeroBento";
 import { HeroBrowser } from "./hero/HeroBrowser";
 import { HeroEditorial } from "./hero/HeroEditorial";
@@ -12,6 +17,11 @@ import { HeroTestimonial } from "./hero/HeroTestimonial";
 import { HeroTicket } from "./hero/HeroTicket";
 import { HeroWaitlist } from "./hero/HeroWaitlist";
 
+export { CarouselFeatures } from "./carousel/CarouselFeatures";
+export { CarouselGallery } from "./carousel/CarouselGallery";
+export { CarouselSplit } from "./carousel/CarouselSplit";
+export { CarouselTestimonials } from "./carousel/CarouselTestimonials";
+export { CarouselVertical } from "./carousel/CarouselVertical";
 export { HeroBento } from "./hero/HeroBento";
 export { HeroBrowser } from "./hero/HeroBrowser";
 export { HeroEditorial } from "./hero/HeroEditorial";
@@ -27,6 +37,11 @@ export { HeroWaitlist } from "./hero/HeroWaitlist";
 
 /** Live preview component for each block id in `BLOCK_CATEGORIES`. */
 export const BLOCK_COMPONENTS: Record<string, ComponentType> = {
+  "carousel-testimonials": CarouselTestimonials,
+  "carousel-features": CarouselFeatures,
+  "carousel-split": CarouselSplit,
+  "carousel-vertical": CarouselVertical,
+  "carousel-gallery": CarouselGallery,
   "hero-minimal": HeroMinimal,
   "hero-split": HeroSplit,
   "hero-terminal": HeroTerminal,

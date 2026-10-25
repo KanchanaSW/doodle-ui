@@ -20,7 +20,9 @@
 - **`animate` cannot override reduced motion**; only provider `forceAnimate` can. `animate={false}` always wins.
 - **Docs is a static export**: no API routes, middleware, or `next/image` optimization (`images.unoptimized`). Redirects go in `netlify.toml`.
 - **Docs theme flash prevention** relies on the inline bootstrap script in `app/layout.tsx` + `suppressHydrationWarning` on `<html>`; keep localStorage keys in sync with `lib/component-theme.ts`.
-- **Blocks**: adding a block requires entries in BOTH `lib/blocks.ts` (`BLOCK_CATEGORIES`, with `file` path relative to `apps/docs`) and `components/blocks/index.ts` (`BLOCK_COMPONENTS`). `app/blocks/page.tsx` reads `file` with `fs` at build time — a wrong path fails the build.
+- **Blocks**: adding a block requires entries in BOTH `lib/blocks.ts` (`BLOCK_CATEGORIES`, with `file` path relative to `apps/docs`) and `components/blocks/index.ts` (`BLOCK_COMPONENTS`). `app/blocks/page.tsx` reads `file` with `fs` at build time — a wrong path fails the build. New `BlockLayout` values also need a `LayoutThumb` case in `BlockGallery.tsx`.
+- **Carousel arrows** are `position: absolute` about 52px outside the track (`ARROW_OFFSET` in `Carousel.tsx`). A block that doesn't pad the carousel (about `px-14`, and `py-16` when `orientation="vertical"`) gets its arrows clipped by `BlockPreview`'s `overflow-hidden`.
+- **Vertical carousel has no viewport-height prop.** `CarouselContent` leaves the Embla viewport at `overflow: hidden` with auto height, so every slide stacks in view and the arrows stay disabled. The changelog block pins `h-72` through the bordered sketch frame, its content wrapper, the viewport, and the track (`[&>div:first-child>div:nth-child(2)>div]`). `CarouselItem`'s inline `flex: 0 0 100%` beats a plain Tailwind `basis-*`; use the `!` important modifier (`!basis-full md:!basis-1/2`) when showing more than one slide.
 - **`examples/*` aren't in the workspace**; they install `doodleui-react` independently.
 - **Size budget**: roughjs is bundled (not external). Adding a heavy dependency that isn't externalized will trip `size:check`.
 

@@ -11,7 +11,12 @@ export type BlockLayout =
   | "quote"
   | "ticket"
   | "browser"
-  | "steps";
+  | "steps"
+  | "carousel-single"
+  | "carousel-multi"
+  | "carousel-split"
+  | "carousel-vertical"
+  | "carousel-thumbs";
 
 export interface BlockEntry {
   id: string;
@@ -117,6 +122,47 @@ export const BLOCK_CATEGORIES: BlockCategory[] = [
         summary: "A three-step path with a tab for each step.",
         layout: "steps",
         file: "components/blocks/hero/HeroSteps.tsx",
+      },
+    ],
+  },
+  {
+    slug: "carousel",
+    title: "Carousel",
+    blocks: [
+      {
+        id: "carousel-testimonials",
+        title: "Testimonial carousel",
+        summary: "One quote per slide, with dots that jump to a person.",
+        layout: "carousel-single",
+        file: "components/blocks/carousel/CarouselTestimonials.tsx",
+      },
+      {
+        id: "carousel-features",
+        title: "Feature carousel",
+        summary: "Three cards across on desktop, one on a phone.",
+        layout: "carousel-multi",
+        file: "components/blocks/carousel/CarouselFeatures.tsx",
+      },
+      {
+        id: "carousel-split",
+        title: "Split case studies",
+        summary: "A headline beside slides, with a counter and caption.",
+        layout: "carousel-split",
+        file: "components/blocks/carousel/CarouselSplit.tsx",
+      },
+      {
+        id: "carousel-vertical",
+        title: "Vertical changelog",
+        summary: "Releases stacked, with arrows above and below.",
+        layout: "carousel-vertical",
+        file: "components/blocks/carousel/CarouselVertical.tsx",
+      },
+      {
+        id: "carousel-gallery",
+        title: "Thumbnail gallery",
+        summary: "A large slide with numbered thumbs that stay in sync.",
+        layout: "carousel-thumbs",
+        file: "components/blocks/carousel/CarouselGallery.tsx",
       },
     ],
   },

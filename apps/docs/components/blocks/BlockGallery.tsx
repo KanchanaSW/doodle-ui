@@ -173,6 +173,71 @@ function LayoutThumb({ layout }: { layout: BlockLayout }) {
           </div>
         </ThumbFrame>
       );
+    case "carousel-single":
+      return (
+        <ThumbFrame>
+          <div className="flex w-full flex-col gap-1.5">
+            <span className={`${box} h-7 w-full`} />
+            <span className="flex justify-center gap-1">
+              <span className="h-1.5 w-1.5 bg-accent" />
+              <span className="h-1.5 w-1.5 bg-ink/30" />
+              <span className="h-1.5 w-1.5 bg-ink/30" />
+            </span>
+          </div>
+        </ThumbFrame>
+      );
+    case "carousel-multi":
+      return (
+        <ThumbFrame>
+          <div className="grid w-full grid-cols-3 gap-1">
+            <span className={`${box} h-8`} />
+            <span className={`${box} h-8 border-accent`} />
+            <span className={`${box} h-8`} />
+          </div>
+        </ThumbFrame>
+      );
+    case "carousel-split":
+      return (
+        <ThumbFrame>
+          <div className="flex min-w-0 flex-1 flex-col gap-1">
+            <span className={`${bar} w-4/5`} />
+            <span className={`${faint} w-3/5`} />
+            <span className={button} />
+          </div>
+          <div className="flex w-[42%] shrink-0 flex-col gap-1">
+            <span className={`${box} h-7 w-full`} />
+            <span className={`${faint} mx-auto w-2/5`} />
+          </div>
+        </ThumbFrame>
+      );
+    case "carousel-vertical":
+      return (
+        <ThumbFrame>
+          <div className="flex w-full items-center gap-2">
+            <span className="text-[10px] leading-none text-ink">↑</span>
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+              <span className={`${box} h-3 w-full opacity-40`} />
+              <span className={`${box} h-4 w-full border-accent`} />
+              <span className={`${box} h-3 w-full opacity-40`} />
+            </div>
+            <span className="text-[10px] leading-none text-ink">↓</span>
+          </div>
+        </ThumbFrame>
+      );
+    case "carousel-thumbs":
+      return (
+        <ThumbFrame>
+          <div className="flex w-full flex-col gap-1">
+            <span className={`${box} h-7 w-full`} />
+            <span className="grid grid-cols-4 gap-1">
+              <span className={`${box} h-2.5 border-accent`} />
+              <span className={`${box} h-2.5`} />
+              <span className={`${box} h-2.5`} />
+              <span className={`${box} h-2.5`} />
+            </span>
+          </div>
+        </ThumbFrame>
+      );
     case "center":
       return (
         <ThumbFrame>
