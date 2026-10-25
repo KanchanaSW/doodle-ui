@@ -1,0 +1,26 @@
+---
+description: How agents use and maintain the project brain (AGENTS.md + docs/brain) on every task
+alwaysApply: true
+---
+
+# Workflow: keep the brain alive
+
+## Before starting
+- For any non-trivial task (more than a one-line fix), read `AGENTS.md` and the relevant `docs/brain/*.md`:
+  - always `active-context.md` and `gotchas.md`
+  - `architecture.md` when touching structure, data flow, registry, CLI, or MCP
+  - `decisions.md` before proposing an architectural change (don't relitigate a logged decision silently)
+  - `progress.md` for known bugs / tech debt in the area
+- For component work, also read `CONTRIBUTING.md` sections 1–11.
+
+## While working
+- Follow `.cursor/rules/*.mdc`. If a request conflicts with a rule or logged decision, **stop and flag the conflict** to the user instead of silently deviating.
+- If requirements are unclear (API shape, semver impact, visual behavior), **ask the user** rather than assuming.
+- Do not hand-edit generated registry files; regenerate with `pnpm --filter doodleui-react build:registry`.
+
+## After finishing
+- Update `docs/brain/active-context.md` (what changed, current focus, next steps — replace stale entries, keep it short).
+- Update `docs/brain/progress.md` (move items to Done, add new bugs/tech debt).
+- Append to `docs/brain/decisions.md` if an architectural or public-API decision was made: `| YYYY-MM-DD | decision | reason |`.
+- Add to `docs/brain/gotchas.md` if you hit a non-obvious pitfall.
+- Mark anything you could not verify as `UNVERIFIED`.

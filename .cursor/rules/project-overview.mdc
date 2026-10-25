@@ -1,0 +1,38 @@
+---
+description: doodle-ui project overview — stack, architecture summary, folder map
+alwaysApply: true
+---
+
+# Project overview
+
+`doodleui-react` — hand-drawn React UI library (Radix behavior + rough.js SVG chrome). pnpm + Turborepo monorepo, Node >= 22, pnpm 9.15.9.
+
+## Folder map
+
+```
+packages/doodle-ui/src/
+  components/      56 public components, one PascalCase file each (+ __tests__/)
+  primitives/      RoughSvg, SketchBox, SlidingPanel, icon, size, interactive, validation
+  hooks/           useResolvedSeed, useSketchTheme, useSketchDefaults, useElementSize, useIsomorphicLayoutEffect, useSketchSeed
+  animations/      DoodleUIProvider, useAnimate, useDrawIn, usePrefersReducedMotion, useTweenNumber
+  context/         SketchSeedContext
+  cli/             `doodleui-react` / `doodleui` bin: init, add, list, diff, mcp (commander + @clack/prompts)
+  mcp/             MCP server (stdio) + tools over embedded registry data
+  registry/        types.ts + GENERATED data.ts
+  data/            component-meta.ts, theming.json, conventions.json (feed MCP)
+  stories/         Storybook stories (23)
+  test/            renderWithProviders, matchMedia helpers
+  index.ts         single public entry — every export goes here
+  styles.css       --doodle-ui-* tokens (shipped as doodleui-react/styles.css)
+packages/doodle-ui/scripts/  build-registry, audit-contrast, benchmark, verify-treeshake, verify-ssr-routers
+apps/docs/
+  app/             App Router; app/docs/<slug>/page.mdx per component; blocks/, customize/, install/, benchmark/
+  components/      ComponentPlayground, Playground (PropsTable), DocsNav, blocks/hero/*, home/*
+  lib/             nav.ts (COMPONENT_PAGES), props.ts (hand-written prop tables), blocks.ts, theme-generator.ts
+```
+
+## Architecture in one paragraph
+
+Each component renders real HTML (often a Radix primitive) with `position: relative`, and a `<RoughSvg>` overlay draws the sketch border/fill imperatively into an `aria-hidden` SVG. Seeds come from `useResolvedSeed` (prop → `SketchSeedProvider` → post-mount random). Colors come from `useSketchTheme` (provider theme → CSS vars → `SKETCH_COLORS`). `DoodleUIProvider` sets global `animate`/theme/roughness defaults. `build-registry` turns component sources + JSDoc into JSON consumed by the CLI, MCP server, and docs.
+
+Details: `docs/brain/architecture.md`.

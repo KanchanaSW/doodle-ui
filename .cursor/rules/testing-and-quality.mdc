@@ -1,0 +1,36 @@
+---
+description: How tests and stories are written, lint/typecheck/size gates, changesets, and definition of done
+globs: packages/doodle-ui/src/**/__tests__/**,packages/doodle-ui/src/stories/**,packages/doodle-ui/vitest*.ts,packages/doodle-ui/src/test/**,.github/workflows/**,.changeset/**
+alwaysApply: false
+---
+
+# Testing & quality
+
+## Unit tests (Vitest + jsdom + Testing Library)
+- Render through `renderWithProviders` (`src/test/test-utils.tsx`): wraps `DoodleUIProvider theme="light"` + `SketchSeedProvider initialSeed={42}`.
+- Query by role + accessible name; use `userEvent.setup()`.
+- Each interactive component covers: interaction, keyboard, `animate={false}`, and `setPrefersReducedMotion(true)`.
+
+```tsx
+renderWithProviders(<Switch seed={42} label="Airplane mode" onCheckedChange={onCheckedChange} />);
+const sw = screen.getByRole("switch", { name: "Airplane mode" });
+await user.click(sw);
+expect(sw).toHaveAttribute("aria-checked", "true");
+```
+
+- jsdom stubs (matchMedia, ResizeObserver, SVG geometry, pointer capture, `Element.animate`) live in `vitest.setup.ts` — extend there, not per test.
+- SSR tests: `src/__tests__/ssr.test.tsx` uses `// @vitest-environment node` + `renderToString`; `ssr-hydrate.test.tsx` checks hydration. Add new components there when they touch seeds/theme.
+- MCP: `src/mcp/__tests__/*`; CLI: `src/cli/__tests__/pm.test.ts`.
+- Coverage only measures `src/components` + `src/animations`.
+
+## Stories
+- `src/stories/<Name>.stories.tsx`, `title: "Components/<Name>"`, default `args: { seed: 42, animate: false }`. Pin seeds on every rendered sketch (Chromatic).
+
+## Gates (CI: `.github/workflows/ci.yml`)
+1. `pnpm lint` + `pnpm typecheck` (library `lint` is just `tsc --noEmit`; docs uses `next lint`).
+2. `pnpm --filter doodleui-react test:coverage`.
+3. `build` + `size:check` (`.size-limit.json`: full ESM ≤ 175 kB gz; Button-only must stay smaller than full).
+4. Chromatic (only if token set) and cross-PM smoke test (npm, pnpm, yarn classic/berry, bun) via `scripts/test-pm-consumer.mjs`.
+
+## Definition of done
+Gates above pass locally where possible; new component has story + test + docs MDX + `lib/nav.ts` entry; `build:registry` re-run; `pnpm changeset` added for any `packages/doodle-ui` change (patch/minor/major per CONTRIBUTING.md); brain files updated.

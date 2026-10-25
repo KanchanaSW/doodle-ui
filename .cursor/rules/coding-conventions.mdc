@@ -1,0 +1,47 @@
+---
+description: Naming, file structure, component/hook patterns, TypeScript and import conventions for doodle-ui
+globs: packages/doodle-ui/src/**/*.{ts,tsx},apps/docs/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Coding conventions
+
+## Files & naming
+- Library components: `src/components/<PascalCase>.tsx`, one component family per file. Registry/CLI/docs slugs are kebab-case (`AlertDialog` → `alert-dialog`), derived automatically.
+- Hooks: `src/hooks/useXxx.ts`; animation hooks live in `src/animations/` and are re-exported from `animations/index.ts`.
+- Tests: `src/components/__tests__/<Name>.test.tsx`; stories: `src/stories/<Name>.stories.tsx`.
+- Docs app imports use the `@/` alias (`@/components/...`, `@/lib/...`). Library uses relative imports only (the CLI transformer rewrites `../x` and `./PascalCase` imports — keep that shape).
+
+## Component pattern (library)
+- First line `"use client";` (all 56 components have it).
+- `export interface XProps extends Omit<HTMLAttributes<...>, "color">, SketchProps` with JSDoc on every prop (`@default`, `@example`) — JSDoc is extracted into registry/MCP docs.
+- `forwardRef` with a named inner function, then `X.displayName = "X"`. Compose refs with `assignRef(ref, node)`.
+- Compound APIs: export the parts AND attach them via `Object.assign(Root, { Header, ... })` (Card, Table, Accordion, Field).
+- Context-only parts throw when used outside the root: `throw new Error("Table parts must be used inside <Table>.")`.
+
+```tsx
+export const Button = memo(
+  forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+    { variant = "primary", size: sizeProp = "md", roughness, seed, sketchColor, animate, ...rest },
+    ref,
+  ) {
+    const theme = useSketchTheme(sketchColor);
+    const shouldAnimate = useAnimate(animate);
+    const resolvedSeed = useResolvedSeed(seed);
+    // ...
+  }),
+);
+Button.displayName = "Button";
+```
+
+- Derive per-part seeds with `deriveSeed(resolvedSeed, "hover")` so parts redraw together on Shuffle.
+- Icon-only controls call `warnIfMissingAriaLabel(...)` from `primitives/icon`.
+- Sizes go through `resolveSize` + `CONTROL_SIZE_STYLES` from `primitives/size` (`DoodleSize`).
+
+## TypeScript
+- `strict`, `noUncheckedIndexedAccess`, `noUnusedLocals`, `noUnusedParameters` (packages/tsconfig/base.json). Use `!` only after an explicit length/index check.
+- `import type` / inline `type` specifiers for type-only imports.
+- Style: double quotes, semicolons, trailing commas, 2-space indent (no Prettier config exists — match surrounding code).
+
+## Exports
+- Every public component, its props type, and variant types are re-exported from `src/index.ts`. Unexported = not public.

@@ -1,0 +1,38 @@
+---
+description: State management, registry/data flow, CLI + MCP data access, and error handling conventions
+globs: packages/doodle-ui/src/{animations,context,hooks,cli,mcp,registry,data}/**,packages/doodle-ui/scripts/build-registry.ts,apps/docs/components/ComponentThemeProvider.tsx,apps/docs/lib/**
+alwaysApply: false
+---
+
+# Data & state
+
+There is no backend, API layer, or data-fetching library. State is React context + local component state.
+
+## Library state
+- `DoodleUIProvider` (`animations/DoodleUIProvider.tsx`): global `animate`, `forceAnimate`, `theme` ("light" | "dark" | "system"), `roughness`, `strokeWidth`, … Read via `useDoodleUI()` / `useAnimate(prop)` / `useSketchDefaults()`.
+- `SketchSeedProvider` (`context/SketchSeedContext.tsx`, hook in `hooks/useSketchSeed.ts`): shared seed + `shuffle()`.
+- Precedence everywhere: **explicit prop → provider → CSS variable → library constant**.
+- Controlled/uncontrolled: Radix-backed components forward Radix `value`/`onValueChange`/`open`/`onOpenChange`; tested in `ControlledCompound.test.tsx`.
+- Memoize context values with `useMemo` (perf audit fix — see `Table.tsx` `sketchContext`).
+
+## Registry data flow
+`scripts/build-registry.ts` reads `src/components/*.tsx` + JSDoc + `data/component-meta.ts` → writes `src/registry/data.ts`, root `registry.json` + `registry/*.json`, and `apps/docs/public/registry*`. Runs on every `build`.
+
+## CLI (`src/cli`)
+- `fetchRegistry()` GETs `DOODLEUI_REGISTRY_URL` or GitHub raw `master/registry.json` with a 4s abort, and silently falls back to the bundled `REGISTRY_DATA`:
+
+```ts
+  } catch {
+    // Network or parse failure: fallback to bundled registry
+  }
+  return REGISTRY_DATA;
+```
+- Commands catch at the top level: `console.error("\nAdd error:", err?.message || err); process.exit(1);`.
+
+## MCP (`src/mcp`)
+- Tools read embedded data only (no network): registry, `theming.json`, `conventions.json`.
+- Application errors return `structuredErrorResult(code, message, { suggestions })` as JSON text (no protocol `isError`), with Levenshtein-based name suggestions.
+
+## Docs app
+- Static export: no API routes, no runtime server. Build-time `fs` reads are allowed in server components (e.g. `app/blocks/page.tsx` reads block source files).
+- Theme persisted in `localStorage` keys `doodle-ui-component-theme` / `doodle-ui-site-theme`.
